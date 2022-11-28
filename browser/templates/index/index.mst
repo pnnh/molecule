@@ -1,0 +1,49 @@
+{{ define "index/index.mst" }}
+	<!DOCTYPE html>
+	<html lang="zh">
+	<head>
+        {{ template "partial/headmeta.mst" }}
+        {{ template "partial/analytics.mst" }}
+		<title>泛涵</title>
+        {{ template "res/css.mst" }}
+	</head>
+	<body class="home-page">
+	<div> 
+        {{ template "partial/header.mst" }}
+		<main>
+			<div class="fx-grid">
+				<div class="ms-Grid-col ms-sm12 ms-xl8">
+					<div class="article-list">
+                        {{range .list}}
+							<div class="article-item">
+								<div data-name="{{.Pk}}" data-type="object">
+									<input type="hidden" data-name="pk" data-value="{{.Pk}}"/>
+									<div class="article-link">
+										<a href="/article/read/{{.Pk}}">{{.Title}}</a>
+									</div>
+									<div class="article-description">
+                                        {{.Description}}
+									</div>
+									<div class="article-info">
+										<a class="article-creator" href="/user/{{.Creator}}"><i class="ri-user-line"></i>{{.NickName}}</a>
+										<span class="update-time"><i class="ri-time-line"></i></span>
+										<span class="views"><i class="ri-eye-line"></i>{{.Views}}</span>
+									</div>
+								</div>
+							</div>
+                        {{end}}
+					</div>
+					<div class="page-list">
+						{{ .pagesHtml }}
+					</div>
+				</div>
+			</div>
+		</main>
+        {{ template "partial/footer.mst" }}
+	</div>
+	<div id="root"></div>
+	<script id="data" type="application/json">{{.data}}</script>
+    {{ template "res/js.mst" }}
+	</body>
+	</html>
+{{ end }}

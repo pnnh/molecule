@@ -1,0 +1,25 @@
+@import "src/styles/base";
+@import "src/styles/navtop";
+@import "src/styles/controls";
+@import "src/styles/pages";
+
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/fonts/material-icons.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Cookie';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/fonts/Cookie-Regular.ttf');
+}
+
+.brown-text {
+  color: brown;
+}
+
+.red-text {
+  color: red;
+}
