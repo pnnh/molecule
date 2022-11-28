@@ -75,31 +75,19 @@ func NewWebServer(smw *middleware.ServerMiddleware) (*WebServer, error) {
 
 func (s *WebServer) Init() error {
 	indexHandler := pages.NewIndexHandler(s.middleware)
-	s.router.GET("/", indexHandler.Query)
-	//indexRestfulHandler := restful.NewIndexRestfulHandler(s.middleware)
-	resourcesHandler := handlers.NewResourcesHandler(s.middleware)
-	//s.router.POST("/restful/index", indexRestfulHandler.Query)
-	s.router.POST("/restful/resources/query", resourcesHandler.Query)
-	s.router.POST("/restful/resources/find", resourcesHandler.Find)
-	sitemapHandler := handlers.NewSitemapHandler(s.middleware)
-	s.router.GET("/seo/sitemap", sitemapHandler.HandleSitemap)
-	s.router.GET("/utils/random/password", handlers.HandleRandomPassword)
-	s.router.GET("/utils/encrypt/md5", handlers.HandleCalcMd5)
-	s.router.GET("/utils/timestamp", handlers.HandleTimestamp)
-
-	s.router.GET("/register/begin/:username", BeginRegistration)
-	s.router.POST("/register/finish/:username", FinishRegistration)
-	s.router.GET("/login/begin/:username", BeginLogin)
-	s.router.POST("/login/finish/:username", FinishLogin)
-
-	s.resources["post"] = resources.NewArticleResource(s.middleware)
+	s.router.GET("/account/", indexHandler.Query)
+	s.router.GET("/account/register/begin/:username", BeginRegistration)
+	s.router.POST("/account/register/finish/:username", FinishRegistration)
+	s.router.GET("/account/login/begin/:username", BeginLogin)
+	s.router.POST("/account/login/finish/:username", FinishLogin)
+ 
 	s.resources["account"] = resources.NewAccountResource(s.middleware)
 	s.resources["user"] = resources.NewUserResource(s.middleware)
 
 	for name, resource := range s.resources {
 		resource.RegisterRouter(s.router, name)
 	}
-	auth.InitOAuth2(s.router)
+	auth.InitOAuth2(s.router, s.middleware)
 
 	return nil
 }
@@ -107,7 +95,7 @@ func (s *WebServer) Init() error {
 func (s *WebServer) Start() error {
 	port := os.Getenv("PORT")
 	if len(port) < 1 {
-		port = "8080"
+		port = "8081"
 	}
 	var handler http.Handler = s
 
