@@ -8,7 +8,8 @@ import (
 	"time"
 
 	"quantum/config"
-	"quantum/server/auth" 
+	"quantum/server/auth"
+	"quantum/server/handlers"
 	"quantum/server/handlers/pages"
 	"quantum/server/middleware"
 	"quantum/server/utils"
@@ -31,7 +32,7 @@ func NewWebServer(smw *middleware.ServerMiddleware) (*WebServer, error) {
 	router.Use(gin.Recovery())
 	server := &WebServer{
 		router:     router,
-		middleware: smw,}
+		middleware: smw}
 	router.SetFuncMap(utils.FuncMap())
 	router.LoadHTMLGlob("browser/templates/**/*.mst")
 
@@ -69,6 +70,10 @@ func (s *WebServer) Init() error {
 	s.router.POST("/register/finish/:username", FinishRegistration)
 	s.router.GET("/login/begin/:username", BeginLogin)
 	s.router.POST("/login/finish/:username", FinishLogin)
+
+	accountHandler := handlers.NewAccountHandler(s.middleware)
+
+	s.router.GET("/login/html", accountHandler.LoginByWebAuthn)
 
 	auth.InitOAuth2(s.router, s.middleware)
 

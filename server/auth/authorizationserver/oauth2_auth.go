@@ -18,7 +18,7 @@ func AuthEndpointGet(gctx *gin.Context) {
 
 	// 尚未登录，跳转至登录页面
 	if authuser == nil {
-		redirect := fmt.Sprintf("/account/login?redirect=%s", url.QueryEscape(gctx.Request.RequestURI))
+		redirect := fmt.Sprintf("/login?redirect=%s", url.QueryEscape(gctx.Request.RequestURI))
 		gctx.Redirect(http.StatusSeeOther, redirect)
 		return
 	}
