@@ -2,8 +2,7 @@
 	<!DOCTYPE html>
 	<html lang="zh">
 	<head>
-        {{ template "partial/headmeta.mst" }}
-        {{ template "partial/analytics.mst" }}
+        {{ template "partial/headmeta.mst" }} 
 		<title>泛涵</title>
         {{ template "res/css.mst" }}
 	</head>

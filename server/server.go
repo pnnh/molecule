@@ -8,10 +8,8 @@ import (
 	"time"
 
 	"quantum/config"
-	"quantum/server/auth"
-	"quantum/server/handlers"
+	"quantum/server/auth" 
 	"quantum/server/handlers/pages"
-	"quantum/server/handlers/resources"
 	"quantum/server/middleware"
 	"quantum/server/utils"
 
@@ -24,7 +22,6 @@ import (
 type WebServer struct {
 	router     *gin.Engine
 	middleware *middleware.ServerMiddleware
-	resources  map[string]resources.IResource
 }
 
 func NewWebServer(smw *middleware.ServerMiddleware) (*WebServer, error) {
@@ -34,8 +31,7 @@ func NewWebServer(smw *middleware.ServerMiddleware) (*WebServer, error) {
 	router.Use(gin.Recovery())
 	server := &WebServer{
 		router:     router,
-		middleware: smw,
-		resources:  make(map[string]resources.IResource)}
+		middleware: smw,}
 	router.SetFuncMap(utils.FuncMap())
 	router.LoadHTMLGlob("browser/templates/**/*.mst")
 
@@ -58,15 +54,8 @@ func NewWebServer(smw *middleware.ServerMiddleware) (*WebServer, error) {
 
 	//router.NoRoute(handlers.ClientPage)
 	//router.NoRoute(debugStaticWebHandler)
-	router.NoRoute(staticWebHandler)
+	//router.NoRoute(staticWebHandler)
 
-	router.Static("fonts", "browser/fonts")
-	router.Static("images", "browser/images")
-	router.Static("scripts", "browser/scripts/dist")
-
-	if config.Debug() {
-		router.Static("files", "files")
-	}
 	store := cookie.NewStore([]byte("secret"))
 	router.Use(sessions.Sessions("mysession", store))
 
@@ -75,18 +64,12 @@ func NewWebServer(smw *middleware.ServerMiddleware) (*WebServer, error) {
 
 func (s *WebServer) Init() error {
 	indexHandler := pages.NewIndexHandler(s.middleware)
-	s.router.GET("/account/", indexHandler.Query)
-	s.router.GET("/account/register/begin/:username", BeginRegistration)
-	s.router.POST("/account/register/finish/:username", FinishRegistration)
-	s.router.GET("/account/login/begin/:username", BeginLogin)
-	s.router.POST("/account/login/finish/:username", FinishLogin)
- 
-	s.resources["account"] = resources.NewAccountResource(s.middleware)
-	s.resources["user"] = resources.NewUserResource(s.middleware)
+	s.router.GET("/", indexHandler.Query)
+	s.router.GET("/register/begin/:username", BeginRegistration)
+	s.router.POST("/register/finish/:username", FinishRegistration)
+	s.router.GET("/login/begin/:username", BeginLogin)
+	s.router.POST("/login/finish/:username", FinishLogin)
 
-	for name, resource := range s.resources {
-		resource.RegisterRouter(s.router, name)
-	}
 	auth.InitOAuth2(s.router, s.middleware)
 
 	return nil
