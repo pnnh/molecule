@@ -39,23 +39,23 @@ var appClientConfRotated = clientcredentials.Config{
 }
 
 func InitOAuth2(router *gin.Engine, middleware *middleware.ServerMiddleware) {
-	router.GET("/auth", func(gctx *gin.Context) {
+	router.GET("/oauth2/auth", func(gctx *gin.Context) {
 		authorizationserver.AuthEndpointGet(gctx)
 	})
-	router.POST("/auth", func(gctx *gin.Context) {
+	router.POST("/oauth2/auth", func(gctx *gin.Context) {
 		authorizationserver.AuthEndpoint(gctx)
 	})
-	router.POST("/token", func(gctx *gin.Context) {
+	router.POST("/oauth2/token", func(gctx *gin.Context) {
 		authorizationserver.TokenEndpoint(gctx.Writer, gctx.Request)
 	})
-	router.GET("/revoke", func(gctx *gin.Context) {
+	router.GET("/oauth2/revoke", func(gctx *gin.Context) {
 		authorizationserver.RevokeEndpoint(gctx.Writer, gctx.Request)
 	})
-	router.GET("/introspect", func(gctx *gin.Context) {
+	router.GET("/oauth2/introspect", func(gctx *gin.Context) {
 		authorizationserver.IntrospectionEndpoint(gctx.Writer, gctx.Request)
 	})
 
-	router.GET("/protected", func(gctx *gin.Context) {
+	router.GET("/oauth2/protected", func(gctx *gin.Context) {
 		resourceserver.ProtectedEndpoint(appClientConf)(gctx.Writer, gctx.Request)
 	})
 }
