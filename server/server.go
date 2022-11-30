@@ -66,14 +66,16 @@ func NewWebServer(smw *middleware.ServerMiddleware) (*WebServer, error) {
 func (s *WebServer) Init() error {
 	indexHandler := pages.NewIndexHandler(s.middleware)
 	s.router.GET("/", indexHandler.Query)
-	s.router.GET("/register/begin/:username", BeginRegistration)
-	s.router.POST("/register/finish/:username", FinishRegistration)
-	s.router.GET("/login/begin/:username", BeginLogin)
-	s.router.POST("/login/finish/:username", FinishLogin)
+
+	authHandler := &webauthnHandler{middleware: s.middleware}
+	s.router.GET("/register/begin/:username", authHandler.BeginRegistration)
+	s.router.POST("/register/finish/:username", authHandler.FinishRegistration)
+	s.router.GET("/login/begin/:username", authHandler.BeginLogin)
+	s.router.POST("/login/finish/:username", authHandler.FinishLogin)
 
 	accountHandler := handlers.NewAccountHandler(s.middleware)
 
-	s.router.GET("/login/html", accountHandler.LoginByWebAuthn)
+	s.router.GET("/login", accountHandler.LoginByWebAuthn)
 
 	auth.InitOAuth2(s.router, s.middleware)
 

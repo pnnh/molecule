@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"quantum/config"
 	"quantum/models"
+	"quantum/server/middleware"
 	"quantum/server/utils"
 	"strings"
 
@@ -25,14 +26,14 @@ var sessionStore *session.Store
 // Your initialization function
 func init() {
 	webauthnConfig := &webauthn.Config{
-		RPDisplayName: "sfx",             // Display Name for your site
-		RPID:          "sfx.xyz",         // Generally the FQDN for your site
-		RPOrigin:      "https://sfx.xyz", // The origin URL for WebAuthn requests
+		RPDisplayName: "Polaris",             // Display Name for your site
+		RPID:          "account.polaris.direct",         // Generally the FQDN for your site
+		RPOrigin:      "https://account.polaris.direct", // The origin URL for WebAuthn requests
 		//RPIcon: "https://sfx.xyz/logo.png", // Optional icon URL for your site
 	}
 	if config.Debug() {
-		webauthnConfig.RPID = "drm.sfx.xyz"
-		webauthnConfig.RPOrigin = "https://drm.sfx.xyz"
+		webauthnConfig.RPID = "account.bitpie.xyz"
+		webauthnConfig.RPOrigin = "https://account.bitpie.xyz"
 		webauthnConfig.Debug = true
 	}
 	var err error
@@ -49,7 +50,12 @@ func init() {
 	}
 }
 
-func BeginRegistration(gctx *gin.Context) {
+
+type webauthnHandler struct {
+	middleware *middleware.ServerMiddleware
+}
+
+func (s *webauthnHandler)  BeginRegistration(gctx *gin.Context) {
 
 	username := gctx.Param("username")
 	if len(username) < 1 {
@@ -93,7 +99,7 @@ func BeginRegistration(gctx *gin.Context) {
 	jsonResponse(gctx.Writer, options, http.StatusOK)
 }
 
-func FinishRegistration(gctx *gin.Context) {
+func (s *webauthnHandler)  FinishRegistration(gctx *gin.Context) {
 
 	username := gctx.Param("username")
 	if len(username) < 1 {
@@ -130,7 +136,7 @@ func FinishRegistration(gctx *gin.Context) {
 	jsonResponse(gctx.Writer, "Registration Success", http.StatusOK)
 }
 
-func BeginLogin(gctx *gin.Context) {
+func (s *webauthnHandler)  BeginLogin(gctx *gin.Context) {
 
 	username := gctx.Param("username")
 	if len(username) < 1 {
@@ -167,7 +173,7 @@ func BeginLogin(gctx *gin.Context) {
 	jsonResponse(gctx.Writer, options, http.StatusOK)
 }
 
-func FinishLogin(gctx *gin.Context) {
+func (s *webauthnHandler)  FinishLogin(gctx *gin.Context) {
 
 	username := gctx.Param("username")
 	if len(username) < 1 {
