@@ -36,12 +36,10 @@ func (app *Application) Use(key string, serv IService) {
 	app.services[key] = serv
 }
 
-func (app *Application) initMiddleware() (*middleware.ServerMiddleware, error) {
-	dbsvc := db.NewDBService(config.DBDSN)
-	app.Use("db", dbsvc)
+func (app *Application) initMiddleware() (*middleware.ServerMiddleware, error) { 
 	mailSvc := email.NewService()
 	app.Use("mail", mailSvc)
-	sqlsvc := db.NewSqlxService(config.DBDSN)
+	sqlsvc := db.NewSqlxService(config.ACCOUNT_DB_DSN)
 	app.Use("sqlx", sqlsvc)
 	s3Svc := services.NewAwsS3Service()
 	app.Use("aws-s3", s3Svc)
@@ -50,8 +48,7 @@ func (app *Application) initMiddleware() (*middleware.ServerMiddleware, error) {
 	tmpls := templs.NewService()
 	app.Use("templs", tmpls)
 
-	serverMiddleware := &middleware.ServerMiddleware{
-		DB:          dbsvc,
+	serverMiddleware := &middleware.ServerMiddleware{ 
 		Mail:        mailSvc,
 		Templs:      tmpls,
 		SqlxService: sqlsvc,

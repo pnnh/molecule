@@ -7,8 +7,7 @@ import (
 	"quantum/services/templs"
 )
 
-type ServerMiddleware struct {
-	DB          *db.DBService
+type ServerMiddleware struct { 
 	SqlxService *db.SqlxService
 	Mail        *email.Service
 	Templs      *templs.Service

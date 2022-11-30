@@ -2,8 +2,7 @@ package pages
 
 import (
 	"net/http"
-	"quantum/server/middleware"
-	"quantum/server/utils"
+	"quantum/server/middleware" 
 
 	"github.com/gin-gonic/gin"
 )
@@ -24,7 +23,4 @@ func NewIndexHandler(md *middleware.ServerMiddleware) *indexHandler {
 		md: md,
 	}
 }
-
-func ClientPage(gctx *gin.Context) {
-	utils.ClientPage(gctx, http.StatusOK, nil)
-}
+ 

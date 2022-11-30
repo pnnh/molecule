@@ -1,6 +1,6 @@
 {{ define "oauth2/auth.mst" }}
 <!DOCTYPE html>
-<html>
+<html lang="zh">
 
 <head>
   <meta charset="utf-8">

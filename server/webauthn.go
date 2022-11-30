@@ -20,16 +20,15 @@ import (
 )
 
 var webAuthn *webauthn.WebAuthn
-var userDB *userdb
 var sessionStore *session.Store
 
 // Your initialization function
 func init() {
 	webauthnConfig := &webauthn.Config{
-		RPDisplayName: "Polaris",             // Display Name for your site
-		RPID:          "account.polaris.direct",         // Generally the FQDN for your site
-		RPOrigin:      "https://account.polaris.direct", // The origin URL for WebAuthn requests
-		//RPIcon: "https://sfx.xyz/logo.png", // Optional icon URL for your site
+		RPDisplayName: "Polaris",                                               // Display Name for your site
+		RPID:          "account.polaris.direct",                                // Generally the FQDN for your site
+		RPOrigin:      "https://account.polaris.direct",                        // The origin URL for WebAuthn requests
+		RPIcon:        "https://account.polaris.direct/static/images/logo.png", // Optional icon URL for your site
 	}
 	if config.Debug() {
 		webauthnConfig.RPID = "account.bitpie.xyz"
@@ -42,20 +41,17 @@ func init() {
 		logrus.Fatalln("webauthn初始化出错: %w", err)
 	}
 
-	userDB = DB()
-
 	sessionStore, err = session.NewStore()
 	if err != nil {
 		log.Fatal("failed to create session store:", err)
 	}
 }
 
-
 type webauthnHandler struct {
 	middleware *middleware.ServerMiddleware
 }
 
-func (s *webauthnHandler)  BeginRegistration(gctx *gin.Context) {
+func (s *webauthnHandler) BeginRegistration(gctx *gin.Context) {
 
 	username := gctx.Param("username")
 	if len(username) < 1 {
@@ -64,21 +60,29 @@ func (s *webauthnHandler)  BeginRegistration(gctx *gin.Context) {
 	}
 
 	// get user
-	user, err := userDB.GetUser(username)
+	model, err := models.GetAccount(s.middleware.SqlxService, username)
 	// user doesn't exist, create new user
 	if err != nil {
+		utils.ResponseServerError(gctx, "GetAccount error: %w", err)
+		return
+	}
+	if model == nil {
 		displayName := strings.Split(username, "@")[0]
-		user = models.NewUser(username, displayName)
-		userDB.PutUser(user)
+		model = models.NewAccountModel(username, displayName)
+
+		if err = models.PutAccount(s.middleware.SqlxService, model); err != nil {
+			utils.ResponseServerError(gctx, "PutAccount error", err)
+			return
+		}
 	}
 
 	registerOptions := func(credCreationOpts *protocol.PublicKeyCredentialCreationOptions) {
-		credCreationOpts.CredentialExcludeList = user.CredentialExcludeList()
+		credCreationOpts.CredentialExcludeList = model.CredentialExcludeList()
 	}
 
 	// generate PublicKeyCredentialCreationOptions, session data
 	options, sessionData, err := webAuthn.BeginRegistration(
-		user,
+		model,
 		registerOptions,
 	)
 
@@ -99,7 +103,7 @@ func (s *webauthnHandler)  BeginRegistration(gctx *gin.Context) {
 	jsonResponse(gctx.Writer, options, http.StatusOK)
 }
 
-func (s *webauthnHandler)  FinishRegistration(gctx *gin.Context) {
+func (s *webauthnHandler) FinishRegistration(gctx *gin.Context) {
 
 	username := gctx.Param("username")
 	if len(username) < 1 {
@@ -108,11 +112,15 @@ func (s *webauthnHandler)  FinishRegistration(gctx *gin.Context) {
 	}
 
 	// get user
-	user, err := userDB.GetUser(username)
+	user, err := models.GetAccount(s.middleware.SqlxService, username)
 	// user doesn't exist
 	if err != nil {
 		log.Println(err)
 		utils.ResponseServerError(gctx, "参数有误5", err)
+		return
+	}
+	if user == nil { 
+		utils.ResponseServerError(gctx, fmt.Sprintf("GetAccount结果为空: %s", username), nil)
 		return
 	}
 
@@ -133,10 +141,16 @@ func (s *webauthnHandler)  FinishRegistration(gctx *gin.Context) {
 
 	user.AddCredential(*credential)
 
+	err = models.UpdateAccountCredentials(s.middleware.SqlxService, user)
+	if err != nil { 
+		utils.ResponseServerError(gctx, "UpdateAccountCredentials: %w", err)
+		return
+	}
+
 	jsonResponse(gctx.Writer, "Registration Success", http.StatusOK)
 }
 
-func (s *webauthnHandler)  BeginLogin(gctx *gin.Context) {
+func (s *webauthnHandler) BeginLogin(gctx *gin.Context) {
 
 	username := gctx.Param("username")
 	if len(username) < 1 {
@@ -145,7 +159,7 @@ func (s *webauthnHandler)  BeginLogin(gctx *gin.Context) {
 	}
 
 	// get user
-	user, err := userDB.GetUser(username)
+	user, err := models.GetAccount(s.middleware.SqlxService, username)
 
 	// user doesn't exist
 	if err != nil {
@@ -173,7 +187,7 @@ func (s *webauthnHandler)  BeginLogin(gctx *gin.Context) {
 	jsonResponse(gctx.Writer, options, http.StatusOK)
 }
 
-func (s *webauthnHandler)  FinishLogin(gctx *gin.Context) {
+func (s *webauthnHandler) FinishLogin(gctx *gin.Context) {
 
 	username := gctx.Param("username")
 	if len(username) < 1 {
@@ -182,7 +196,7 @@ func (s *webauthnHandler)  FinishLogin(gctx *gin.Context) {
 	}
 
 	// get user
-	user, err := userDB.GetUser(username)
+	user, err := models.GetAccount(s.middleware.SqlxService, username)
 
 	// user doesn't exist
 	if err != nil {
@@ -217,7 +231,6 @@ func (s *webauthnHandler)  FinishLogin(gctx *gin.Context) {
 	jsonResponse(gctx.Writer, "Login Success", http.StatusOK)
 }
 
-// from: https://github.com/duo-labs/webauthn.io/blob/3f03b482d21476f6b9fb82b2bf1458ff61a61d41/server/response.go#L15
 func jsonResponse(w http.ResponseWriter, d interface{}, c int) {
 	dj, err := json.Marshal(d)
 	if err != nil {

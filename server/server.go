@@ -52,11 +52,7 @@ func NewWebServer(smw *middleware.ServerMiddleware) (*WebServer, error) {
 		AllowCredentials: true,
 		MaxAge:           12 * time.Hour,
 	}))
-
-	//router.NoRoute(handlers.ClientPage)
-	//router.NoRoute(debugStaticWebHandler)
-	//router.NoRoute(staticWebHandler)
-
+ 
 	store := cookie.NewStore([]byte("secret"))
 	router.Use(sessions.Sessions("mysession", store))
 
@@ -67,6 +63,7 @@ func (s *WebServer) Init() error {
 	indexHandler := pages.NewIndexHandler(s.middleware)
 	s.router.GET("/", indexHandler.Query)
 
+	s.router.Static("/static", "./browser")
 	authHandler := &webauthnHandler{middleware: s.middleware}
 	s.router.GET("/register/begin/:username", authHandler.BeginRegistration)
 	s.router.POST("/register/finish/:username", authHandler.FinishRegistration)
