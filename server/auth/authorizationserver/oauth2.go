@@ -1,17 +1,20 @@
 package authorizationserver
 
 import (
-	"crypto/rand"
 	"crypto/rsa"
-	"github.com/ory/fosite" 
+	"crypto/x509"
+	"encoding/pem"
+	"io/ioutil"
 	"time"
+
+	"github.com/ory/fosite"
+	"github.com/sirupsen/logrus"
 
 	"github.com/ory/fosite/compose"
 	"github.com/ory/fosite/handler/openid"
 	"github.com/ory/fosite/storage"
 	"github.com/ory/fosite/token/jwt"
 )
- 
 
 // fosite requires four parameters for the server to get up and running:
 // 1. config - for any enforcement you may desire, you can do this using `compose.Config`. You like PKCE, enforce it!
@@ -19,7 +22,7 @@ import (
 //    fosite is incredibly composable, and the store parameter enables you to build and BYODb (Bring Your Own Database)
 // 3. secret - required for code, access and refresh token generation.
 // 4. privateKey - required for id/jwt token generation.
- 
+
 var (
 	// Check the api documentation of `compose.Config` for further configuration options.
 	config = &fosite.Config{
@@ -111,12 +114,65 @@ var (
 	secret = []byte("some-cool-secret-that-is-32bytes")
 
 	// privateKey is used to sign JWT tokens. The default strategy uses RS256 (RSA Signature with SHA-256)
-	privateKey, _ = rsa.GenerateKey(rand.Reader, 2048)
+	//privateKey, _ = rsa.GenerateKey(rand.Reader, 2048)
+	privateKey *rsa.PrivateKey
 )
 
+func init() {
+	privateBytes, err := ioutil.ReadFile("./files/cert/rs256-private.pem")
+	if err != nil {
+		logrus.Fatalln("privatekey init", err)
+		return
+	}
+	// key, err := ssh.ParseRawPrivateKey(bytes)
+	// if err != nil {
+	// 	logrus.Fatalln("ParseRawPrivateKey ", err)
+	// 	return
+	// }
+	// privateKey = key.(*rsa.PrivateKey)
+
+	block, _ := pem.Decode(privateBytes) //将密钥解析成私钥实例
+	if block == nil {
+		panic("private key error!")
+	}
+	priv, err := x509.ParsePKCS1PrivateKey(block.Bytes) //解析pem.Decode（）返回的Block指针实例
+	if err != nil {
+		panic(err)
+	}
+	privateKey = priv
+
+	oauth2 = compose.ComposeAllEnabled(config, store, privateKey)
+
+	/// 以下手动生成====
+	// privateKey, _ = rsa.GenerateKey(rand.Reader, 2048)
+
+	// pkcs1PrivateKey := x509.MarshalPKCS1PrivateKey(privateKey)
+	// block:=&pem.Block{
+	// 	Type:"RSA PRIVATE KEY",
+	// 	Bytes:pkcs1PrivateKey,
+	// }
+	// privateBuffer := bytes.NewBufferString("")
+	// ok := pem.Encode(privateBuffer,block)
+	// fmt.Printf("privateBuffer %v\n%s", ok, privateBuffer.String())
+
+	// PublicKey := &privateKey.PublicKey
+
+	// pkixPublicKey, err := x509.MarshalPKIXPublicKey(PublicKey)
+	// if err != nil {
+	// 	panic(fmt.Sprintf("MarshalPKIXPublicKey(PublicKey) %v", err))
+	// }
+	// block1:=&pem.Block{
+	// 	Type:"RSA PUBLIC KEY",
+	// 	Bytes:pkixPublicKey,
+	// }
+	// publicBuffer := bytes.NewBufferString("")
+	// ok = pem.Encode(publicBuffer, block1)
+	// fmt.Printf("publicBuffer %v\n%s", ok, publicBuffer.String())
+}
+
 // Build a fosite instance with all OAuth2 and OpenID Connect handlers enabled, plugging in our configurations as specified above.
-var oauth2 = compose.ComposeAllEnabled(config, store, privateKey)
- 
+//var oauth2 = compose.ComposeAllEnabled(config, store, privateKey)
+var oauth2 fosite.OAuth2Provider
 
 // A session is passed from the `/auth` to the `/token` endpoint. You probably want to store data like: "Who made the request",
 // "What organization does that person belong to" and so on.
@@ -127,7 +183,7 @@ var oauth2 = compose.ComposeAllEnabled(config, store, privateKey)
 // setting up multiple strategies it is a bit longer.
 // Usually, you could do:
 //
-//  session = new(fosite.DefaultSession)
+//	session = new(fosite.DefaultSession)
 func newSession(user string) *openid.DefaultSession {
 	return &openid.DefaultSession{
 		Claims: &jwt.IDTokenClaims{
