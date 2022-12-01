@@ -54,7 +54,7 @@ var (
 				ID:             "pwa",
 				Secret:         []byte(`$2a$10$IxMdI6d.LIRZPpSfEwNoeu4rY3FhDREsxFJXikcgdRRAStxUlsuEO`),            // = "foobar"
 				RotatedSecrets: [][]byte{[]byte(`$2y$10$X51gLxUQJ.hGw1epgHTE5u0bt64xM0COU7K9iAp.OFg8p2pUd.1zC `)}, // = "foobaz",
-				RedirectURIs:   []string{"https://bitpie.xyz/login/callback"},
+				RedirectURIs:   []string{"https://127.0.0.1:3500/login/callback"},
 				ResponseTypes:  []string{"id_token", "code", "token", "id_token token", "code id_token", "code token", "code id_token token"},
 				GrantTypes:     []string{"implicit", "refresh_token", "authorization_code", "password", "client_credentials"},
 				Scopes:         []string{"fosite", "openid", "photos", "offline"},
