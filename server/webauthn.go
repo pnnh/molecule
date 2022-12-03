@@ -31,8 +31,8 @@ func init() {
 		RPIcon:        "https://account.polaris.direct/static/images/logo.png", // Optional icon URL for your site
 	}
 	if config.Debug() {
-		webauthnConfig.RPID = "account.bitpie.xyz"
-		webauthnConfig.RPOrigin = "https://account.bitpie.xyz"
+		webauthnConfig.RPID = "account.eulers.xyz"
+		webauthnConfig.RPOrigin = "https://account.eulers.xyz"
 		webauthnConfig.Debug = true
 	}
 	var err error
@@ -119,7 +119,7 @@ func (s *webauthnHandler) FinishRegistration(gctx *gin.Context) {
 		utils.ResponseServerError(gctx, "参数有误5", err)
 		return
 	}
-	if user == nil { 
+	if user == nil {
 		utils.ResponseServerError(gctx, fmt.Sprintf("GetAccount结果为空: %s", username), nil)
 		return
 	}
@@ -142,7 +142,7 @@ func (s *webauthnHandler) FinishRegistration(gctx *gin.Context) {
 	user.AddCredential(*credential)
 
 	err = models.UpdateAccountCredentials(s.middleware.SqlxService, user)
-	if err != nil { 
+	if err != nil {
 		utils.ResponseServerError(gctx, "UpdateAccountCredentials: %w", err)
 		return
 	}
