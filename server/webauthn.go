@@ -26,13 +26,13 @@ var sessionStore *session.Store
 func init() {
 	webauthnConfig := &webauthn.Config{
 		RPDisplayName: "Polaris",                                               // Display Name for your site
-		RPID:          "account.polaris.direct",                                // Generally the FQDN for your site
-		RPOrigin:      "https://account.polaris.direct",                        // The origin URL for WebAuthn requests
-		RPIcon:        "https://account.polaris.direct/static/images/logo.png", // Optional icon URL for your site
+		RPID:          "polaris.direct",                                // Generally the FQDN for your site
+		RPOrigin:      "https://polaris.direct",                        // The origin URL for WebAuthn requests
+		RPIcon:        "https://polaris.direct/static/images/logo.png", // Optional icon URL for your site
 	}
 	if config.Debug() {
-		webauthnConfig.RPID = "account.eulers.xyz"
-		webauthnConfig.RPOrigin = "https://account.eulers.xyz"
+		webauthnConfig.RPID = "debug.polaris.direct"
+		webauthnConfig.RPOrigin = "http://debug.polaris.direct"
 		webauthnConfig.Debug = true
 	}
 	var err error
@@ -60,7 +60,7 @@ func (s *webauthnHandler) BeginRegistration(gctx *gin.Context) {
 	}
 
 	// get user
-	model, err := models.GetAccount(s.middleware.SqlxService, username)
+	model, err := models.GetAccount(username)
 	// user doesn't exist, create new user
 	if err != nil {
 		utils.ResponseServerError(gctx, "GetAccount error: %w", err)
@@ -70,7 +70,7 @@ func (s *webauthnHandler) BeginRegistration(gctx *gin.Context) {
 		displayName := strings.Split(username, "@")[0]
 		model = models.NewAccountModel(username, displayName)
 
-		if err = models.PutAccount(s.middleware.SqlxService, model); err != nil {
+		if err = models.PutAccount(model); err != nil {
 			utils.ResponseServerError(gctx, "PutAccount error", err)
 			return
 		}
@@ -112,7 +112,7 @@ func (s *webauthnHandler) FinishRegistration(gctx *gin.Context) {
 	}
 
 	// get user
-	user, err := models.GetAccount(s.middleware.SqlxService, username)
+	user, err := models.GetAccount(username)
 	// user doesn't exist
 	if err != nil {
 		log.Println(err)
@@ -141,7 +141,7 @@ func (s *webauthnHandler) FinishRegistration(gctx *gin.Context) {
 
 	user.AddCredential(*credential)
 
-	err = models.UpdateAccountCredentials(s.middleware.SqlxService, user)
+	err = models.UpdateAccountCredentials(user)
 	if err != nil {
 		utils.ResponseServerError(gctx, "UpdateAccountCredentials: %w", err)
 		return
@@ -159,7 +159,7 @@ func (s *webauthnHandler) BeginLogin(gctx *gin.Context) {
 	}
 
 	// get user
-	user, err := models.GetAccount(s.middleware.SqlxService, username)
+	user, err := models.GetAccount(username)
 
 	// user doesn't exist
 	if err != nil {
@@ -196,7 +196,7 @@ func (s *webauthnHandler) FinishLogin(gctx *gin.Context) {
 	}
 
 	// get user
-	user, err := models.GetAccount(s.middleware.SqlxService, username)
+	user, err := models.GetAccount(username)
 
 	// user doesn't exist
 	if err != nil {

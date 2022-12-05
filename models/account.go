@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"quantum/server/utils"
-	"quantum/services/db"
+	"quantum/services/sqlxsvc"
 	"time"
 
 	"github.com/duo-labs/webauthn/protocol"
@@ -105,7 +105,7 @@ func (model *AccountModel) MarshalCredentials() (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("MarshalCredentials error: %w", err)
 	}
-	
+
 	return base64.StdEncoding.EncodeToString(data), nil
 }
 
@@ -125,13 +125,13 @@ func (u *AccountModel) CredentialExcludeList() []protocol.CredentialDescriptor {
 	return credentialExcludeList
 }
 
-func GetAccount(sqlxService *db.SqlxService, account string) (*AccountModel, error) {
+func GetAccount(account string) (*AccountModel, error) {
 	sqlText := `select pk, account, mail, nickname, credentials from accounts where account = :account and status = 1;`
 
 	sqlParams := map[string]interface{}{"account": account}
 	var sqlResults []*AccountTable
 
-	rows, err := sqlxService.NamedQuery(sqlText, sqlParams)
+	rows, err := sqlxsvc.NamedQuery(sqlText, sqlParams)
 	if err != nil {
 		return nil, fmt.Errorf("NamedQuery: %w", err)
 	}
@@ -146,21 +146,21 @@ func GetAccount(sqlxService *db.SqlxService, account string) (*AccountModel, err
 	return nil, nil
 }
 
-func PutAccount(sqlxService *db.SqlxService, model *AccountModel) error {
+func PutAccount(model *AccountModel) error {
 	sqlText := `insert into accounts(pk, createat, updateat, account, password, nickname, status)
 	values(:pk, :createat, :updateat, :account, :password, :nickname, 1)`
 
 	sqlParams := map[string]interface{}{"pk": model.Pk, "createat": model.CreateAt, "updateat": model.UpdateAt,
 		"account": model.Account, "password": "", "nickname": model.Nickname}
 
-	_, err := sqlxService.NamedExec(sqlText, sqlParams)
+	_, err := sqlxsvc.NamedExec(sqlText, sqlParams)
 	if err != nil {
 		return fmt.Errorf("PutAccount: %w", err)
 	}
 	return nil
 }
 
-func UpdateAccountCredentials(sqlxService *db.SqlxService, model *AccountModel) error {
+func UpdateAccountCredentials(model *AccountModel) error {
 	sqlText := `update accounts set credentials = :credentials where pk = :pk;`
 
 	credentials, err := model.MarshalCredentials()
@@ -170,7 +170,7 @@ func UpdateAccountCredentials(sqlxService *db.SqlxService, model *AccountModel) 
 
 	sqlParams := map[string]interface{}{"pk": model.Pk, "credentials": credentials}
 
-	_, err = sqlxService.NamedExec(sqlText, sqlParams)
+	_, err = sqlxsvc.NamedExec(sqlText, sqlParams)
 	if err != nil {
 		return fmt.Errorf("PutAccount: %w", err)
 	}

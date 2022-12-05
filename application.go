@@ -7,8 +7,7 @@ import (
 	"quantum/config"
 	"quantum/server"
 	"quantum/server/middleware"
-	"quantum/services"
-	"quantum/services/db"
+	"quantum/services" 
 	"quantum/services/email"
 	"quantum/services/templs"
 
@@ -39,8 +38,8 @@ func (app *Application) Use(key string, serv IService) {
 func (app *Application) initMiddleware() (*middleware.ServerMiddleware, error) { 
 	mailSvc := email.NewService()
 	app.Use("mail", mailSvc)
-	sqlsvc := db.NewSqlxService(config.ACCOUNT_DB_DSN)
-	app.Use("sqlx", sqlsvc)
+	// sqlsvc := db.NewSqlxService(config.ACCOUNT_DB_DSN)
+	// app.Use("sqlx", sqlsvc)
 	s3Svc := services.NewAwsS3Service()
 	app.Use("aws-s3", s3Svc)
 	redisSvc := services.NewRedisService()
@@ -51,7 +50,7 @@ func (app *Application) initMiddleware() (*middleware.ServerMiddleware, error) {
 	serverMiddleware := &middleware.ServerMiddleware{ 
 		Mail:        mailSvc,
 		Templs:      tmpls,
-		SqlxService: sqlsvc,
+		//SqlxService: sqlsvc,
 		AwsS3:       s3Svc,
 		Redis:       redisSvc,
 	}

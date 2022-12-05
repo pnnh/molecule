@@ -1,14 +1,16 @@
 package authorizationserver
 
 import (
-	 "context"
-	 "sync"
-	 "time"
- 
-	 "gopkg.in/square/go-jose.v2"
- 
-	 "github.com/ory/fosite"
- )
+	"context"
+	"fmt"
+	"quantum/models"
+	"sync"
+	"time"
+
+	"gopkg.in/square/go-jose.v2"
+
+	"github.com/ory/fosite"
+)
  
  type DatabaseUserRelation struct {
 	 Username string
@@ -115,13 +117,23 @@ import (
  func (s *DatabaseStore) GetClient(_ context.Context, id string) (fosite.Client, error) {
 	 s.clientsMutex.RLock()
 	 defer s.clientsMutex.RUnlock()
- 
-	 cl, ok := s.Clients[id]
-	 if !ok {
+
+	 client, err := models.GetClient(id) 
+	 if err != nil {
+		return nil, fmt.Errorf("getclient error: %w", &err)
+	 }
+	  
+	 if client == nil {
 		 return nil, fosite.ErrNotFound
 	 }
-	 return cl, nil
- }
+	 return client , nil
+ 
+	//  cl, ok := s.Clients[id]
+	//  if !ok {
+	// 	 return nil, fosite.ErrNotFound
+	//  }
+	//  return cl, nil
+ } 
  
  func (s *DatabaseStore) ClientAssertionJWTValid(_ context.Context, jti string) error {
 	 s.blacklistedJTIsMutex.RLock()
