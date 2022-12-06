@@ -13,6 +13,8 @@ const customResolver = nodeResolve({
   extensions: ['.mjs', '.js', '.jsx', '.json', '.sass', '.scss']
 })
 
+const isProduction = process.env.NODE_ENV === 'production';
+
 const outDir = '../static/assets'
 
 export default {
@@ -38,7 +40,7 @@ export default {
       include: /\.[jt]sx?$/, // default, inferred from `loaders` option
       exclude: /node_modules/, // default
       sourceMap: true, // default
-      minify: process.env.NODE_ENV === 'production',
+      minify: isProduction,
       target: 'esnext', // default, or 'es20XX', 'esnext'
       jsx: 'transform', // default, or 'preserve'
       jsxFactory: 'React.createElement',
@@ -69,12 +71,12 @@ export default {
     }),
     strip({
       include: '**/*.(js|mjs|ts|tsx)',
-      debugger: true,
-      functions: ['console.log', 'console.debug'],
-      sourceMap: true
+      debugger: !isProduction,
+      functions: isProduction ? ['console.log', 'console.debug'] : [],
+      sourceMap: isProduction
     }),
     visualizer({
-      filename: 'status.html'
+      filename: 'debug/status.html'
     })
   ]
 }

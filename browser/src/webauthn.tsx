@@ -1,41 +1,28 @@
 
-$(document).ready(function () {
-
-  // check whether current browser supports WebAuthn
-  if (!window.PublicKeyCredential) {
-    alert("Error: this browser does not support WebAuthn");
-    return;
-  }
-});
-  
-// Base64 to ArrayBuffer
-function bufferDecode(value) {
-  return Uint8Array.from(atob(value), c => c.charCodeAt(0));
+  // Base64 to ArrayBuffer
+function bufferDecode(value: string) {
+  let buffer = atob(value);
+  //let buffer = Buffer.from(value, 'base64');
+  return Uint8Array.from(buffer, c => c.charCodeAt(0));
 }
-  
-// ArrayBuffer to URLBase64
-function bufferEncode(value) {
+
+function bufferEncode(value: string) {
   return btoa(String.fromCharCode.apply(null, new Uint8Array(value)))
     .replace(/\+/g, "-")
     .replace(/\//g, "_")
     .replace(/=/g, "");;
 }
   
-export function registerUser() {
-  
-  username = $("#email").val()
+export function registerUser(username: string) {
+   
   if (username === "") {
     alert("Please enter a username");
     return;
   }
   
-  $.get(
+  fetch(
     '/register/begin/' + username,
-    null,
-    function (data) {
-      return data
-    },
-    'json')
+    {method: 'GET'})
     .then((credentialCreationOptions) => {
       console.log("credentialCreationOptions", credentialCreationOptions)
       credentialCreationOptions.publicKey.challenge = bufferDecode(credentialCreationOptions.publicKey.challenge);
@@ -56,22 +43,21 @@ export function registerUser() {
       let clientDataJSON = credential.response.clientDataJSON;
       let rawId = credential.rawId;
   
-      $.post(
+      fetch(
         '/register/finish/' + username,
-        JSON.stringify({
-          id: credential.id,
+        {
+          method: 'POST',
+          body: JSON.stringify({
+            id: credential.id,
           rawId: bufferEncode(rawId),
           type: credential.type,
           response: {
             attestationObject: bufferEncode(attestationObject),
             clientDataJSON: bufferEncode(clientDataJSON),
           },
-        }),
-        function (data) {
-          console.log("data", credential)
-          return data
-        },
-        'json')
+          })
+          
+        })
     })
     .then((success) => {
       alert("successfully registered " + username + "!")
@@ -84,73 +70,65 @@ export function registerUser() {
     })
 }
   
-export function loginUser() {
-   
-  let username = $("#email").val()
+export async  function loginUser(username: string) {
+    
   if (username === "") {
     alert("Please enter a username");
     return;
   }
   
-  $.get(
-    '/login/begin/' + username,
-    null,
-    function (data) {
-      return data
-    },
-    'json')
-    .then((credentialRequestOptions) => {
-      console.log(credentialRequestOptions)
+  try {
+     
+  let response = await fetch('/login/begin/' + username, {method: 'GET'});
+
+    let credentialRequestOptions = await response.json();
+      console.log("credentialRequestOptions", credentialRequestOptions)
       credentialRequestOptions.publicKey.challenge = bufferDecode(credentialRequestOptions.publicKey.challenge);
       credentialRequestOptions.publicKey.allowCredentials.forEach(function (listItem) {
         listItem.id = bufferDecode(listItem.id)
       });
   
-      return navigator.credentials.get({
+      let assertion = await navigator.credentials.get({
         publicKey: credentialRequestOptions.publicKey
       })
-    })
-    .then((assertion) => {
-      console.log(assertion)
+      console.log("assertion", assertion)
       let authData = assertion.response.authenticatorData;  
       let clientDataJSON = assertion.response.clientDataJSON;
       let rawId = assertion.rawId;
       let sig = assertion.response.signature;
       let userHandle = assertion.response.userHandle;
   
-      $.post(
+  let finishResponse =      await fetch(
         '/login/finish/' + username,
-        JSON.stringify({
-          id: assertion.id,
-          rawId: bufferEncode(rawId),
-          type: assertion.type,
-          response: {
-            authenticatorData: bufferEncode(authData),
-            clientDataJSON: bufferEncode(clientDataJSON),
-            signature: bufferEncode(sig),
-            userHandle: bufferEncode(userHandle),
-          },
-        }),
-        function (data) {
-          return data
+        {method: 'POST', headers: {
+          'Content-Type': 'application/json'
+          // 'Content-Type': 'application/x-www-form-urlencoded',
         },
-        'json')
-    })
-    .then((success) => { 
-      alert("successfully logged in " + username + "!")
+      body: JSON.stringify({
+        id: assertion.id,
+        rawId: bufferEncode(rawId),
+        type: assertion.type,
+        response: {
+          authenticatorData: bufferEncode(authData),
+          clientDataJSON: bufferEncode(clientDataJSON),
+          signature: bufferEncode(sig),
+          userHandle: bufferEncode(userHandle),
+        },
+      })})
+    
+     let finishJson = await finishResponse.json();
+     console.log("successfully logged in " + username + "!", finishJson)
    
-      const urlParams = new URLSearchParams(window.location.search);
-      let myParam = urlParams.get('redirect'); 
-      console.log("redirect",  window.location.host + myParam) 
-      if (!myParam) {
-        myParam = '/login'
-      }
-      window.location.href= myParam
-      return
-    })
-    .catch((error) => {
-      console.log(error)
-      alert("failed to register " + username)
-    })
+     const urlParams = new URLSearchParams(window.location.search);
+     let myParam = urlParams.get('redirect'); 
+     console.log("redirect",  window.location.host + myParam) 
+     if (!myParam) {
+       myParam = '/login'
+     }
+     window.location.href= myParam  
+    } catch(error) {
+ 
+      console.error("failed to register " + username, error)
+    }
 }
   

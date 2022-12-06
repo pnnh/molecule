@@ -12,7 +12,6 @@
   "dependencies": {
     "axios": "^0.27.2",
     "is-hotkey": "^0.2.0",
-    "jquery": "^3.6.0",
     "locate-character": "^2.0.5",
     "lodash": "^4.17.21",
     "prismjs": "^1.26.0",
@@ -27,7 +26,6 @@
     "@rollup/plugin-replace": "^5.0.0",
     "@rollup/plugin-strip": "^2.1.0",
     "@types/estree": "^0.0.51",
-    "@types/jquery": "^3.5.14",
     "@types/node": "^17.0.2",
     "@types/prismjs": "^1.26.0",
     "@types/react": "^18.0.9",

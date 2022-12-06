@@ -1,30 +1,32 @@
 import ReactDOM from 'react-dom/client'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {registerUser, loginUser} from './webauthn'
 import './index.scss' 
-
-import $ from 'jquery'
-
-
+  
 function LoginPage () {
+  useEffect(() => { 
+  if (!window.PublicKeyCredential) {
+    alert("Error: this browser does not support WebAuthn");
+    return;
+  }
+  }, [])
+  const [username, setUsername] = useState('larry');
   return <div>
       Username: 
-  <input type="text" name="username" id="email" value='larry' placeholder="i.e. foo@bar.com"/> 
-  <button onClick={registerUser}>Register</button>
-  <button onClick={loginUser}>Login</button>
+  <input type="text" name="username" id="email" value={username} onChange={(event) => {
+    setUsername(event.target.value)
+  }} placeholder="i.e. foo@bar.com"/> 
+  <button onClick={() => registerUser(username)}>Register</button>
+  <button onClick={() => loginUser(username).then() }>Login</button>
   </div>
 }
 
-$(function () {
 
-  const goTopElement2 = $('#root').get(0)
+  const goTopElement2 = document.getElementById("root")
   if (goTopElement2) { 
     const root = ReactDOM.createRoot(goTopElement2)
     root.render(<LoginPage/>)
   }
-  
-})
-
  
 console.debug('async fun2', location.pathname)
 

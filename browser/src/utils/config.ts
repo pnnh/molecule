@@ -40,17 +40,6 @@ export function getHost (): string {
 
 const ApiUrl = {
   home: '/',
-  post: {
-    list: '/post',
-    new: '/post/new',
-    delete: '/post/delete/'
-  },
-  article: {
-    new: '/article/new',
-    edit: '/article/edit/',
-    delete: '/article/delete/',
-    read: '/article/read/'
-  },
   account: {
     personal: '/account/personal',
     edit: '/account/edit'

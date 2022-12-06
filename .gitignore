@@ -3,3 +3,6 @@ build/
 gen/
 __debug_bin
 data/
+browser/dist/
+browser/debug/
+static/assets/
