@@ -25,35 +25,40 @@ type ClientTable struct {
 
 func (t *ClientTable) ToModel() *ClientModel {
 	model := &ClientModel{
-		ID:             t.ID,
-		Secret:         []byte(t.Secret),
+		ID:     t.ID,
+		Secret: []byte(t.Secret),
 		//RotatedSecrets: make([][]byte, 0),
 		//RedirectURIs:   []string{t.RedirectURIs.String},
 		//GrantTypes:     []string{t.GrantTypes.String},
 		//ResponseTypes:  []string{t.ResponseTypes.String},
 		//Scopes:         []string{t.Scopes.String},
-		//Audience:       []string{t.Audience.String}, 
+		//Audience:       []string{t.Audience.String},
 	}
 
 	for _, v := range strings.Split(t.RotatedSecrets.String, ",") {
 		model.RotatedSecrets = append(model.RotatedSecrets, []byte(v))
 	}
 
-	for _, v := range strings.Split(t.RedirectURIs.String, ",") {
-		model.RedirectURIs = append(model.RedirectURIs,  v)
-	}
-	for _, v := range strings.Split(t.GrantTypes.String, ",") {
-		model.GrantTypes = append(model.GrantTypes,  v)
-	}
-	for _, v := range strings.Split(t.ResponseTypes.String, ",") {
-		model.ResponseTypes = append(model.ResponseTypes,  v)
-	}
-	for _, v := range strings.Split(t.Scopes.String, ",") {
-		model.Scopes = append(model.Scopes,  v)
-	}
-	for _, v := range strings.Split(t.Audience.String, ",") {
-		model.Audience = append(model.Audience,  v)
-	}
+	// for _, v := range strings.Split(t.RedirectURIs.String, ",") {
+	// 	model.RedirectURIs = append(model.RedirectURIs,  v)
+	// }
+	model.RedirectURIs = append(model.RedirectURIs, strings.Split(t.RedirectURIs.String, ",")...)
+	// for _, v := range strings.Split(t.GrantTypes.String, ",") {
+	// 	model.GrantTypes = append(model.GrantTypes,  v)
+	// }
+	model.GrantTypes = append(model.GrantTypes, strings.Split(t.GrantTypes.String, ",")...)
+	// for _, v := range strings.Split(t.ResponseTypes.String, ",") {
+	// 	model.ResponseTypes = append(model.ResponseTypes,  v)
+	// }
+	model.ResponseTypes = append(model.ResponseTypes, strings.Split(t.ResponseTypes.String, ",")...)
+	// for _, v := range strings.Split(t.Scopes.String, ",") {
+	// 	model.Scopes = append(model.Scopes,  v)
+	// }
+	model.Scopes = append(model.Scopes, strings.Split(t.Scopes.String, ",")...)
+	// for _, v := range strings.Split(t.Audience.String, ",") {
+	// 	model.Audience = append(model.Audience,  v)
+	// }
+	model.Audience = append(model.Audience, strings.Split(t.Audience.String, ",")...)
 
 	if t.Public.Valid && t.Public.Int32 == 1 {
 		model.Public = true

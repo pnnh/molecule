@@ -1,8 +1,7 @@
 package auth
 
 import (
-	"quantum/server/auth/authorizationserver"
-	"quantum/server/auth/resourceserver"
+	"quantum/server/auth/authorizationserver" 
 	"quantum/server/middleware"
 
 	"github.com/gin-gonic/gin"
@@ -48,14 +47,14 @@ func InitOAuth2(router *gin.Engine, middleware *middleware.ServerMiddleware) {
 	router.POST("/oauth2/token", func(gctx *gin.Context) {
 		authorizationserver.TokenEndpoint(gctx.Writer, gctx.Request)
 	})
-	router.GET("/oauth2/revoke", func(gctx *gin.Context) {
-		authorizationserver.RevokeEndpoint(gctx.Writer, gctx.Request)
-	})
-	router.GET("/oauth2/introspect", func(gctx *gin.Context) {
-		authorizationserver.IntrospectionEndpoint(gctx.Writer, gctx.Request)
-	})
+	// router.GET("/oauth2/revoke", func(gctx *gin.Context) {
+	// 	authorizationserver.RevokeEndpoint(gctx.Writer, gctx.Request)
+	// })
+	// router.GET("/oauth2/introspect", func(gctx *gin.Context) {
+	// 	authorizationserver.IntrospectionEndpoint(gctx.Writer, gctx.Request)
+	// })
 
-	router.GET("/oauth2/protected", func(gctx *gin.Context) {
-		resourceserver.ProtectedEndpoint(appClientConf)(gctx.Writer, gctx.Request)
-	})
+	// router.GET("/oauth2/protected", func(gctx *gin.Context) {
+	// 	resourceserver.ProtectedEndpoint(appClientConf)(gctx.Writer, gctx.Request)
+	// })
 }

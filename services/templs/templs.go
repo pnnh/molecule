@@ -7,7 +7,7 @@ import (
 	"quantum/server/utils"
 )
 
-const templatesDir string = "browser/templates"
+const templatesDir string = "static/templates"
 
 type Service struct {
 	bootstrap *template.Template

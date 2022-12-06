@@ -34,14 +34,14 @@ func NewWebServer(smw *middleware.ServerMiddleware) (*WebServer, error) {
 		router:     router,
 		middleware: smw}
 	router.SetFuncMap(utils.FuncMap())
-	router.LoadHTMLGlob("browser/templates/**/*.mst")
+	router.LoadHTMLGlob("static/templates/**/*.mst")
 
 	router.Use(cors.New(cors.Config{
 		//AllowOrigins:     corsDomain,
 		AllowOriginFunc: func(origin string) bool {
 			if config.Debug() {
 				return true
-			} else if strings.HasSuffix(origin, ".sfx.xyz") {
+			} else if strings.HasSuffix(origin, ".polaris.direct") {
 				return true
 			}
 			return false
@@ -63,7 +63,7 @@ func (s *WebServer) Init() error {
 	indexHandler := pages.NewIndexHandler(s.middleware)
 	s.router.GET("/", indexHandler.Query)
 
-	s.router.Static("/static", "./browser")
+	s.router.Static("/assets", "./static/assets")
 	authHandler := &webauthnHandler{middleware: s.middleware}
 	s.router.GET("/register/begin/:username", authHandler.BeginRegistration)
 	s.router.POST("/register/finish/:username", authHandler.FinishRegistration)

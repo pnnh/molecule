@@ -45,7 +45,3 @@ func ResponseMessageWithError(gctx *gin.Context, code int, msg string, err error
 	gctx.JSON(code, gin.H{"msg": msg})
 	return
 }
-
-func ServePWA(gctx *gin.Context) {
-	http.ServeFile(gctx.Writer, gctx.Request, "browser/web/index.html")
-}
