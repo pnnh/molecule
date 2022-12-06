@@ -7,9 +7,9 @@ export {}
 declare global {
   interface Window {
     Module: any;
-    QtLoader: any;
-
-    randomString(length: number, letter: boolean,
-                 uppercaseLetter: boolean, symbol: boolean): string;
+  }
+  interface Credential {
+    response: any;
+    rawId: any;
   }
 }

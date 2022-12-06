@@ -16,7 +16,7 @@ function LoginPage () {
   <input type="text" name="username" id="email" value={username} onChange={(event) => {
     setUsername(event.target.value)
   }} placeholder="i.e. foo@bar.com"/> 
-  <button onClick={() => registerUser(username)}>Register</button>
+  <button onClick={() => registerUser(username).then()}>Register</button>
   <button onClick={() => loginUser(username).then() }>Login</button>
   </div>
 }

@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "types": ["node"],
+    "types": ["node","@types/webappsec-credential-management"],
     "experimentalDecorators": true,
     "useDefineForClassFields": false,
     "module": "ESNext",
