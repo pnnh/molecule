@@ -120,7 +120,7 @@ import (
 
 	 client, err := models.GetClient(id) 
 	 if err != nil {
-		return nil, fmt.Errorf("getclient error: %w", &err)
+		return nil, fmt.Errorf("getclient error: %w", err)
 	 }
 	  
 	 if client == nil {

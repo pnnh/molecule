@@ -11,12 +11,13 @@ import (
 )
 
 type ClientTable struct {
+	Pk             string         `json:"pk"`
 	ID             string         `json:"id"`
-	Secret         string         `json:"client_secret,omitempty"`
-	RotatedSecrets sql.NullString `json:"rotated_secrets,omitempty"`
-	RedirectURIs   sql.NullString `json:"redirect_uris"`
-	GrantTypes     sql.NullString `json:"grant_types"`
-	ResponseTypes  sql.NullString `json:"response_types"`
+	Secret         string         `json:"secret"`
+	RotatedSecrets sql.NullString `json:"rotated_secrets" db:"rotated_secrets"`
+	RedirectURIs   sql.NullString `json:"redirect_uris" db:"redirect_uris"`
+	GrantTypes     sql.NullString `json:"grant_types" db:"grant_types"`
+	ResponseTypes  sql.NullString `json:"response_types" db:"response_types"`
 	Scopes         sql.NullString `json:"scopes"`
 	Audience       sql.NullString `json:"audience"`
 	Public         sql.NullInt32  `json:"public"`
