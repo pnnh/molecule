@@ -3,7 +3,7 @@ package models
 import (
 	"database/sql"
 	"fmt"
-	"quantum/services/sqlxsvc"
+	"github.com/pnnh/polaris/services/sqlxsvc"
 	"strings"
 
 	"github.com/jmoiron/sqlx"

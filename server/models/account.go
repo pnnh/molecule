@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"quantum/server/helpers"
-	"quantum/services/sqlxsvc"
+	"github.com/pnnh/polaris/services/sqlxsvc"
 	"time"
 
 	"github.com/duo-labs/webauthn/protocol"
