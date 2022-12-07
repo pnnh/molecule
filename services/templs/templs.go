@@ -4,7 +4,7 @@ import (
 	"html/template"
 	"strings"
 
-	"quantum/server/utils"
+	"quantum/server/helpers"
 )
 
 const templatesDir string = "static/templates"
@@ -20,7 +20,7 @@ func NewService() *Service {
 }
 
 func (s *Service) Init() error {
-	funcMap := utils.FuncMap()
+	funcMap := helpers.FuncMap()
 	bootstrap, err := template.New("templates").Funcs(funcMap).ParseGlob(templatesDir + "/**/*.mst")
 	if err != nil {
 		return err

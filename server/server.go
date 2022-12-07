@@ -12,7 +12,7 @@ import (
 	"quantum/server/handlers"
 	"quantum/server/handlers/pages"
 	"quantum/server/middleware"
-	"quantum/server/utils"
+	"quantum/server/helpers"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-contrib/sessions"
@@ -33,7 +33,7 @@ func NewWebServer(smw *middleware.ServerMiddleware) (*WebServer, error) {
 	server := &WebServer{
 		router:     router,
 		middleware: smw}
-	router.SetFuncMap(utils.FuncMap())
+	router.SetFuncMap(helpers.FuncMap())
 	router.LoadHTMLGlob("static/templates/**/*.mst")
 
 	router.Use(cors.New(cors.Config{

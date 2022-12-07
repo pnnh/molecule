@@ -5,7 +5,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"quantum/server/utils"
+	"quantum/server/helpers"
 	"quantum/services/sqlxsvc"
 	"time"
 
@@ -39,7 +39,7 @@ type AccountModel struct {
 func NewAccountModel(name string, displayName string) *AccountModel {
 	user := &AccountModel{
 		AccountTable: AccountTable{
-			Pk:       utils.NewPostId(),
+			Pk:       helpers.NewPostId(),
 			Account:  name,
 			CreateAt: time.Now(),
 			UpdateAt: time.Now(),

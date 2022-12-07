@@ -7,7 +7,10 @@ function bufferDecode(value: string) {
 }
 
 function bufferEncode(value: string) {
-  return btoa(String.fromCharCode.apply(null, new Uint8Array(value)))
+  var enc = new TextEncoder();
+  let aa = enc.encode(value)
+  var array = Array.from(aa)
+  return btoa(String.fromCharCode.apply(null, array))
     .replace(/\+/g, "-")
     .replace(/\//g, "_")
     .replace(/=/g, "");;

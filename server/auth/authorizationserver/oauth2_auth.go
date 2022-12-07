@@ -5,13 +5,14 @@ import (
 	"log"
 	"net/http"
 	"net/url"
-	"quantum/server/utils"
+	"quantum/server/helpers" 
+	"quantum/server/protocols"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 )
 
-func AuthEndpointGet(gctx *gin.Context) {
+func AuthEndpointHtml(gctx *gin.Context) {
 	session := sessions.Default(gctx)
 
 	authuser := session.Get("authuser")
@@ -44,7 +45,7 @@ func AuthEndpointGet(gctx *gin.Context) {
 	gctx.HTML(http.StatusOK, "oauth2/auth.mst", gin.H{})
 }
 
-func AuthEndpoint(gctx *gin.Context) {
+func AuthEndpointJson(gctx *gin.Context) {
 	// This context will be passed to all methods.
 
 	session := sessions.Default(gctx)
@@ -52,8 +53,8 @@ func AuthEndpoint(gctx *gin.Context) {
 	authuser := session.Get("authuser")
 
 	// 尚未登录，调整至登录页面
-	if authuser == nil {
-		utils.ResponseServerError(gctx, "尚未登录", nil)
+	if authuser == nil { 
+		helpers.ResponseCode(gctx, protocols.CodeNotLogin)
 		return
 	}
 

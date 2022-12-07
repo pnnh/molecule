@@ -5,10 +5,11 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"quantum/config"
-	"quantum/models"
+	"quantum/config" 
+	"quantum/server/helpers"
 	"quantum/server/middleware"
-	"quantum/server/utils"
+	"quantum/server/protocols"
+	"quantum/server/models"
 	"strings"
 
 	"github.com/duo-labs/webauthn.io/session"
@@ -55,15 +56,15 @@ func (s *webauthnHandler) BeginRegistration(gctx *gin.Context) {
 
 	username := gctx.Param("username")
 	if len(username) < 1 {
-		utils.ResponseServerError(gctx, "参数有误", nil)
+		helpers.ResponseCode(gctx, protocols.CodeInvalidParameter)
 		return
 	}
 
 	// get user
 	model, err := models.GetAccount(username)
 	// user doesn't exist, create new user
-	if err != nil {
-		utils.ResponseServerError(gctx, "GetAccount error: %w", err)
+	if err != nil { 
+		helpers.ResponseCodeMessageError(gctx, protocols.CodeError, "GetAccount error", err)
 		return
 	}
 	if model == nil {
@@ -71,7 +72,7 @@ func (s *webauthnHandler) BeginRegistration(gctx *gin.Context) {
 		model = models.NewAccountModel(username, displayName)
 
 		if err = models.PutAccount(model); err != nil {
-			utils.ResponseServerError(gctx, "PutAccount error", err)
+			helpers.ResponseMessageError(gctx, "PutAccount error", err)
 			return
 		}
 	}
@@ -88,7 +89,7 @@ func (s *webauthnHandler) BeginRegistration(gctx *gin.Context) {
 
 	if err != nil {
 		log.Println(err)
-		utils.ResponseServerError(gctx, "参数有误2", err)
+		helpers.ResponseMessageError(gctx, "参数有误2", err)
 		return
 	}
 
@@ -96,7 +97,7 @@ func (s *webauthnHandler) BeginRegistration(gctx *gin.Context) {
 	err = sessionStore.SaveWebauthnSession("registration", sessionData, gctx.Request, gctx.Writer)
 	if err != nil {
 		log.Println(err)
-		utils.ResponseServerError(gctx, "参数有误3", err)
+		helpers.ResponseMessageError(gctx, "参数有误3", err)
 		return
 	}
 
@@ -107,7 +108,7 @@ func (s *webauthnHandler) FinishRegistration(gctx *gin.Context) {
 
 	username := gctx.Param("username")
 	if len(username) < 1 {
-		utils.ResponseServerError(gctx, "参数有误a", nil)
+		helpers.ResponseMessageError(gctx, "参数有误a", nil)
 		return
 	}
 
@@ -116,11 +117,11 @@ func (s *webauthnHandler) FinishRegistration(gctx *gin.Context) {
 	// user doesn't exist
 	if err != nil {
 		log.Println(err)
-		utils.ResponseServerError(gctx, "参数有误5", err)
+		helpers.ResponseMessageError(gctx, "参数有误5", err)
 		return
 	}
 	if user == nil {
-		utils.ResponseServerError(gctx, fmt.Sprintf("GetAccount结果为空: %s", username), nil)
+		helpers.ResponseMessageError(gctx, fmt.Sprintf("GetAccount结果为空: %s", username), nil)
 		return
 	}
 
@@ -128,14 +129,14 @@ func (s *webauthnHandler) FinishRegistration(gctx *gin.Context) {
 	sessionData, err := sessionStore.GetWebauthnSession("registration", gctx.Request)
 	if err != nil {
 		log.Println(err)
-		utils.ResponseServerError(gctx, "参数有误6", err)
+		helpers.ResponseMessageError(gctx, "参数有误6", err)
 		return
 	}
 
 	credential, err := webAuthn.FinishRegistration(user, sessionData, gctx.Request)
 	if err != nil {
 		log.Println(err)
-		utils.ResponseServerError(gctx, "参数有误37", err)
+		helpers.ResponseMessageError(gctx, "参数有误37", err)
 		return
 	}
 
@@ -143,7 +144,7 @@ func (s *webauthnHandler) FinishRegistration(gctx *gin.Context) {
 
 	err = models.UpdateAccountCredentials(user)
 	if err != nil {
-		utils.ResponseServerError(gctx, "UpdateAccountCredentials: %w", err)
+		helpers.ResponseMessageError(gctx, "UpdateAccountCredentials: %w", err)
 		return
 	}
 
@@ -154,7 +155,7 @@ func (s *webauthnHandler) BeginLogin(gctx *gin.Context) {
 
 	username := gctx.Param("username")
 	if len(username) < 1 {
-		utils.ResponseServerError(gctx, "参数有误b", nil)
+		helpers.ResponseMessageError(gctx, "参数有误b", nil)
 		return
 	}
 
@@ -164,7 +165,12 @@ func (s *webauthnHandler) BeginLogin(gctx *gin.Context) {
 	// user doesn't exist
 	if err != nil {
 		log.Println(err)
-		utils.ResponseServerError(gctx, "参数有误316", err)
+		helpers.ResponseMessageError(gctx, "参数有误316", err)
+		return
+	}
+
+	if user == nil { 
+		helpers.ResponseCode(gctx, protocols.CodeAccountNotExists)
 		return
 	}
 
@@ -172,7 +178,7 @@ func (s *webauthnHandler) BeginLogin(gctx *gin.Context) {
 	options, sessionData, err := webAuthn.BeginLogin(user)
 	if err != nil {
 		log.Println(err)
-		utils.ResponseServerError(gctx, "参数有误39", err)
+		helpers.ResponseMessageError(gctx, "参数有误39", err)
 		return
 	}
 
@@ -180,7 +186,7 @@ func (s *webauthnHandler) BeginLogin(gctx *gin.Context) {
 	err = sessionStore.SaveWebauthnSession("authentication", sessionData, gctx.Request, gctx.Writer)
 	if err != nil {
 		log.Println(err)
-		utils.ResponseServerError(gctx, "参数有误310", err)
+		helpers.ResponseMessageError(gctx, "参数有误310", err)
 		return
 	}
 
@@ -191,7 +197,7 @@ func (s *webauthnHandler) FinishLogin(gctx *gin.Context) {
 
 	username := gctx.Param("username")
 	if len(username) < 1 {
-		utils.ResponseServerError(gctx, "参数有误", nil)
+		helpers.ResponseMessageError(gctx, "参数有误", nil)
 		return
 	}
 
@@ -201,7 +207,7 @@ func (s *webauthnHandler) FinishLogin(gctx *gin.Context) {
 	// user doesn't exist
 	if err != nil {
 		log.Println(err)
-		utils.ResponseServerError(gctx, "参数有误312", err)
+		helpers.ResponseMessageError(gctx, "参数有误312", err)
 		return
 	}
 
@@ -209,7 +215,7 @@ func (s *webauthnHandler) FinishLogin(gctx *gin.Context) {
 	sessionData, err := sessionStore.GetWebauthnSession("authentication", gctx.Request)
 	if err != nil {
 		log.Println(err)
-		utils.ResponseServerError(gctx, "参数有误314", err)
+		helpers.ResponseMessageError(gctx, "参数有误314", err)
 		return
 	}
 
@@ -219,7 +225,7 @@ func (s *webauthnHandler) FinishLogin(gctx *gin.Context) {
 	_, err = webAuthn.FinishLogin(user, sessionData, gctx.Request)
 	if err != nil {
 		log.Println(err)
-		utils.ResponseServerError(gctx, "参数有误315", err)
+		helpers.ResponseMessageError(gctx, "参数有误315", err)
 		return
 	}
 	session := sessions.Default(gctx)

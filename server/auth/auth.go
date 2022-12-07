@@ -39,10 +39,10 @@ var appClientConfRotated = clientcredentials.Config{
 
 func InitOAuth2(router *gin.Engine, middleware *middleware.ServerMiddleware) {
 	router.GET("/oauth2/auth", func(gctx *gin.Context) {
-		authorizationserver.AuthEndpointGet(gctx)
+		authorizationserver.AuthEndpointHtml(gctx)
 	})
 	router.POST("/oauth2/auth", func(gctx *gin.Context) {
-		authorizationserver.AuthEndpoint(gctx)
+		authorizationserver.AuthEndpointJson(gctx)
 	})
 	router.POST("/oauth2/token", func(gctx *gin.Context) {
 		authorizationserver.TokenEndpoint(gctx.Writer, gctx.Request)

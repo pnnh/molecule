@@ -3,7 +3,7 @@ package authorizationserver
 import (
 	"context"
 	"fmt"
-	"quantum/models"
+	"quantum/server/models"
 	"sync"
 	"time"
 
