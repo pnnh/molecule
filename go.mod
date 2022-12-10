@@ -1,4 +1,4 @@
-module quantum
+module github.com/pnnh/multiverse-server
 
 go 1.19
 
@@ -19,7 +19,7 @@ require (
 	github.com/google/uuid v1.3.0
 	github.com/jmoiron/sqlx v1.3.5
 	github.com/ory/fosite v0.42.3-0.20220508104133-3a0c9520791b
-	github.com/pnnh/polaris v0.0.0-20221207094902-b36c0d98468d
+	github.com/pnnh/quantum-go v0.0.0-00010101000000-000000000000
 	github.com/pquerna/otp v1.3.0
 	github.com/sirupsen/logrus v1.9.0
 	github.com/tdewolff/minify/v2 v2.12.4
@@ -30,7 +30,7 @@ require (
 	gopkg.in/square/go-jose.v2 v2.5.2-0.20210529014059-a5c7eec3c614
 )
 
-replace github.com/pnnh/polaris => ../polaris
+replace github.com/pnnh/quantum-go => ../quantum-go
 
 require (
 	github.com/agl/ed25519 v0.0.0-20170116200512-5312a6153412 // indirect
@@ -110,3 +110,4 @@ require (
 	gopkg.in/ini.v1 v1.57.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
+ 

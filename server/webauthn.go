@@ -5,12 +5,17 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"quantum/config" 
-	"quantum/server/helpers"
-	"quantum/server/middleware"
-	"quantum/server/protocols"
-	"quantum/server/models"
 	"strings"
+
+	"github.com/pnnh/multiverse-server/server/protocols"
+
+	"github.com/pnnh/multiverse-server/server/models"
+
+	"github.com/pnnh/multiverse-server/server/middleware"
+
+	"github.com/pnnh/multiverse-server/server/helpers"
+
+	"github.com/pnnh/multiverse-server/config"
 
 	"github.com/duo-labs/webauthn.io/session"
 	"github.com/duo-labs/webauthn/protocol"
@@ -26,7 +31,7 @@ var sessionStore *session.Store
 // Your initialization function
 func init() {
 	webauthnConfig := &webauthn.Config{
-		RPDisplayName: "Polaris",                                               // Display Name for your site
+		RPDisplayName: "Polaris",                                       // Display Name for your site
 		RPID:          "polaris.direct",                                // Generally the FQDN for your site
 		RPOrigin:      "https://polaris.direct",                        // The origin URL for WebAuthn requests
 		RPIcon:        "https://polaris.direct/static/images/logo.png", // Optional icon URL for your site
@@ -63,7 +68,7 @@ func (s *webauthnHandler) BeginRegistration(gctx *gin.Context) {
 	// get user
 	model, err := models.GetAccount(username)
 	// user doesn't exist, create new user
-	if err != nil { 
+	if err != nil {
 		helpers.ResponseCodeMessageError(gctx, protocols.CodeError, "GetAccount error", err)
 		return
 	}
@@ -169,7 +174,7 @@ func (s *webauthnHandler) BeginLogin(gctx *gin.Context) {
 		return
 	}
 
-	if user == nil { 
+	if user == nil {
 		helpers.ResponseCode(gctx, protocols.CodeAccountNotExists)
 		return
 	}

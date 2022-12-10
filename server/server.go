@@ -7,12 +7,17 @@ import (
 	"strings"
 	"time"
 
-	"quantum/config"
-	"quantum/server/auth"
-	"quantum/server/handlers"
-	"quantum/server/handlers/pages"
-	"quantum/server/middleware"
-	"quantum/server/helpers"
+	"github.com/pnnh/multiverse-server/server/middleware"
+
+	"github.com/pnnh/multiverse-server/server/helpers"
+
+	"github.com/pnnh/multiverse-server/server/handlers/pages"
+
+	"github.com/pnnh/multiverse-server/server/handlers"
+
+	"github.com/pnnh/multiverse-server/server/auth"
+
+	"github.com/pnnh/multiverse-server/config"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-contrib/sessions"
@@ -52,7 +57,7 @@ func NewWebServer(smw *middleware.ServerMiddleware) (*WebServer, error) {
 		AllowCredentials: true,
 		MaxAge:           12 * time.Hour,
 	}))
- 
+
 	store := cookie.NewStore([]byte("secret"))
 	router.Use(sessions.Sessions("mysession", store))
 

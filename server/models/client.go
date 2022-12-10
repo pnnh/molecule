@@ -3,7 +3,7 @@ package models
 import (
 	"database/sql"
 	"fmt"
-	"github.com/pnnh/polaris/services/sqlxsvc"
+	"github.com/pnnh/quantum-go/services/sqlxsvc"
 	"strings"
 
 	"github.com/jmoiron/sqlx"
@@ -134,7 +134,7 @@ func (c *ClientModel) GetResponseTypes() fosite.Arguments {
 func GetClient(id string) (*ClientModel, error) {
 	sqlText := `select pk, id, secret, rotated_secrets, redirect_uris, response_types, grant_types, scopes,
 		audience, public
-	from clients where id = :id;`
+	from applications where id = :id;`
 
 	sqlParams := map[string]interface{}{"id": id}
 	var sqlResults []*ClientTable

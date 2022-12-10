@@ -4,7 +4,7 @@ import (
 	"html/template"
 	"strings"
 
-	"quantum/server/helpers"
+	"github.com/pnnh/multiverse-server/server/helpers"
 )
 
 const templatesDir string = "static/templates"

@@ -4,15 +4,20 @@ import (
 	"fmt"
 	"sync"
 
-	"quantum/config"
-	"quantum/server"
-	"quantum/server/middleware"
-	"quantum/services"
-	"quantum/services/email"
-	"quantum/services/templs"
+	"github.com/pnnh/multiverse-server/services/templs"
+
+	"github.com/pnnh/multiverse-server/services/email"
+
+	"github.com/pnnh/multiverse-server/services"
+
+	"github.com/pnnh/multiverse-server/server/middleware"
+
+	"github.com/pnnh/multiverse-server/server"
+
+	"github.com/pnnh/multiverse-server/config"
 
 	"github.com/gin-gonic/gin"
-	"github.com/pnnh/polaris/services/sqlxsvc"
+	"github.com/pnnh/quantum-go/services/sqlxsvc"
 
 	"github.com/sirupsen/logrus"
 )
@@ -36,9 +41,9 @@ func (app *Application) Use(key string, serv IService) {
 	app.services[key] = serv
 }
 
-func (app *Application) initMiddleware() (*middleware.ServerMiddleware, error) { 
+func (app *Application) initMiddleware() (*middleware.ServerMiddleware, error) {
 	mailSvc := email.NewService()
-	app.Use("mail", mailSvc) 
+	app.Use("mail", mailSvc)
 	if err := sqlxsvc.Init(config.ACCOUNT_DB_DSN); err != nil {
 		logrus.Fatalln("sqlxsvc: ", err)
 	}
@@ -49,11 +54,11 @@ func (app *Application) initMiddleware() (*middleware.ServerMiddleware, error) {
 	tmpls := templs.NewService()
 	app.Use("templs", tmpls)
 
-	serverMiddleware := &middleware.ServerMiddleware{ 
-		Mail:        mailSvc,
-		Templs:      tmpls, 
-		AwsS3:       s3Svc,
-		Redis:       redisSvc,
+	serverMiddleware := &middleware.ServerMiddleware{
+		Mail:   mailSvc,
+		Templs: tmpls,
+		AwsS3:  s3Svc,
+		Redis:  redisSvc,
 	}
 	return serverMiddleware, nil
 }

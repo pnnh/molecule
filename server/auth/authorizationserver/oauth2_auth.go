@@ -5,8 +5,10 @@ import (
 	"log"
 	"net/http"
 	"net/url"
-	"quantum/server/helpers" 
-	"quantum/server/protocols"
+
+	"github.com/pnnh/multiverse-server/server/protocols"
+
+	"github.com/pnnh/multiverse-server/server/helpers"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -53,7 +55,7 @@ func AuthEndpointJson(gctx *gin.Context) {
 	authuser := session.Get("authuser")
 
 	// 尚未登录，调整至登录页面
-	if authuser == nil { 
+	if authuser == nil {
 		helpers.ResponseCode(gctx, protocols.CodeNotLogin)
 		return
 	}

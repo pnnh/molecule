@@ -1,17 +1,17 @@
 package handlers
 
-import (  
-	"net/http"  
-	"quantum/server/middleware" 
+import (
+	"net/http"
+	"github.com/pnnh/multiverse-server/server/middleware"
 
 	"github.com/gin-contrib/sessions"
-	"github.com/gin-gonic/gin" 
+	"github.com/gin-gonic/gin"
 )
 
 type accountHandler struct {
 	middleware *middleware.ServerMiddleware
 }
-   
+
 func (s *accountHandler) LoginByWebAuthn(gctx *gin.Context) {
 	session := sessions.Default(gctx)
 	authuser := session.Get("authuser")
@@ -25,7 +25,7 @@ func (s *accountHandler) LoginByWebAuthn(gctx *gin.Context) {
 
 	gctx.HTML(http.StatusOK, "account/webauthn.mst", gin.H{})
 }
- 
+
 func NewAccountHandler(middleware *middleware.ServerMiddleware) *accountHandler {
 	return &accountHandler{
 		middleware,

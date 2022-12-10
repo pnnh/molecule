@@ -1,8 +1,9 @@
 package auth
 
 import (
-	"quantum/server/auth/authorizationserver" 
-	"quantum/server/middleware"
+	"github.com/pnnh/multiverse-server/server/middleware"
+
+	"github.com/pnnh/multiverse-server/server/auth/authorizationserver"
 
 	"github.com/gin-gonic/gin"
 	goauth "golang.org/x/oauth2"

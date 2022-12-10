@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"quantum/config"
+	"github.com/pnnh/multiverse-server/config"
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"

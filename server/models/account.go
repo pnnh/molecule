@@ -5,9 +5,10 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"quantum/server/helpers"
-	"github.com/pnnh/polaris/services/sqlxsvc"
 	"time"
+
+	"github.com/pnnh/multiverse-server/server/helpers"
+	"github.com/pnnh/quantum-go/services/sqlxsvc"
 
 	"github.com/duo-labs/webauthn/protocol"
 	"github.com/duo-labs/webauthn/webauthn"

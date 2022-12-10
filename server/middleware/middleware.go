@@ -1,15 +1,17 @@
 package middleware
 
 import (
-	"quantum/services" 
-	"quantum/services/email"
-	"quantum/services/templs"
+	"github.com/pnnh/multiverse-server/services/templs"
+
+	"github.com/pnnh/multiverse-server/services/email"
+
+	"github.com/pnnh/multiverse-server/services"
 )
 
-type ServerMiddleware struct { 
+type ServerMiddleware struct {
 	//SqlxService *db.SqlxService
-	Mail        *email.Service
-	Templs      *templs.Service
-	AwsS3       *services.AwsS3Service
-	Redis       *services.RedisService
+	Mail   *email.Service
+	Templs *templs.Service
+	AwsS3  *services.AwsS3Service
+	Redis  *services.RedisService
 }

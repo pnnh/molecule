@@ -5,8 +5,9 @@ import (
 	"encoding/base64"
 	"fmt"
 	"image/png"
-	"quantum/config"
 	"time"
+
+	"github.com/pnnh/multiverse-server/config"
 
 	"github.com/pquerna/otp"
 	"github.com/pquerna/otp/totp"
@@ -51,7 +52,7 @@ func Validate(secret, passcode string) error {
 		Period:    30,
 		Skew:      1,
 		Digits:    otp.DigitsSix,
-		Algorithm: otp.AlgorithmSHA1, 
+		Algorithm: otp.AlgorithmSHA1,
 	}
 	//valid := totp.Validate(passcode, secret)
 	valid, err := totp.ValidateCustom(passcode, secret, time.Now(), totpOpts)

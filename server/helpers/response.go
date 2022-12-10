@@ -4,8 +4,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/pnnh/multiverse-server/server/protocols"
 	"github.com/sirupsen/logrus"
-	"quantum/server/protocols"
 )
 
 func ResponseCode(gctx *gin.Context, code int) {
@@ -35,17 +35,17 @@ func ResponseCodeError(gctx *gin.Context, code int, err error) {
 	message := protocols.CodeMessage(code)
 	ResponseCodeMessageData(gctx, code, message, nil)
 }
- 
+
 func ResponseCodeMessageError(gctx *gin.Context, code int, message string, err error) {
 	if err != nil {
 		logrus.Errorln("ResponseCodeMessageError", gctx.FullPath(), message, err)
-	} 
+	}
 	ResponseCodeMessageData(gctx, code, message, nil)
 }
 
 func ResponseMessageError(gctx *gin.Context, message string, err error) {
 	if err != nil {
 		logrus.Errorln("ResponseMessageError", gctx.FullPath(), message, err)
-	} 
+	}
 	ResponseCodeMessageData(gctx, protocols.CodeError, message, nil)
 }

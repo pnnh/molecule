@@ -4,7 +4,7 @@ import (
 	"strconv"
 	"strings"
 
-	"quantum/config"
+	"github.com/pnnh/multiverse-server/config"
 
 	redis "github.com/go-redis/redis/v8"
 	"github.com/sirupsen/logrus"

@@ -3,7 +3,7 @@ package email
 import (
 	"fmt"
 
-	"quantum/config"
+	"github.com/pnnh/multiverse-server/config"
 
 	"golang.org/x/time/rate"
 

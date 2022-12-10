@@ -2,7 +2,8 @@ package pages
 
 import (
 	"net/http"
-	"quantum/server/middleware" 
+
+	"github.com/pnnh/multiverse-server/server/middleware"
 
 	"github.com/gin-gonic/gin"
 )
@@ -14,13 +15,12 @@ type indexHandler struct {
 }
 
 func (s *indexHandler) Query(gctx *gin.Context) {
-	
+
 	gctx.HTML(http.StatusOK, "index/index.mst", gin.H{})
 }
- 
+
 func NewIndexHandler(md *middleware.ServerMiddleware) *indexHandler {
 	return &indexHandler{
 		md: md,
 	}
 }
- 
