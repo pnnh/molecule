@@ -45,7 +45,7 @@ func ResponseCodeMessageError(gctx *gin.Context, code int, message string, err e
 
 func ResponseMessageError(gctx *gin.Context, message string, err error) {
 	if err != nil {
-		logrus.Errorln("ResponseMessageError", gctx.FullPath(), message, err)
+		logrus.Errorln("ResponseMessageError", message, err)
 	}
 	ResponseCodeMessageData(gctx, protocols.CodeError, message, nil)
 }

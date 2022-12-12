@@ -1,11 +1,33 @@
 package main
 
 import (
-	"github.com/sirupsen/logrus" 
+	"path"
+	"runtime"
+	"time"
+
+	"github.com/pnnh/multiverse-server/config"
+	"github.com/sirupsen/logrus"
 )
 
+func init() {
+
+	if config.Debug() {
+		logrus.SetLevel(logrus.DebugLevel)
+		logrus.SetReportCaller(true)
+		logrus.SetFormatter(&logrus.TextFormatter{
+			ForceColors:     true,
+			TimestampFormat: time.RFC3339,
+			CallerPrettyfier: func(frame *runtime.Frame) (function string, file string) {
+				//处理文件名
+				fileName := path.Base(frame.File)
+				return "", fileName
+			}, 
+		})
+	}
+}
+
 func main() {
-	app :=  NewApplication()
+	app := NewApplication()
 
 	if err := app.Init(); err != nil {
 		logrus.Fatalln("应用程序初始化出错: %w", err)

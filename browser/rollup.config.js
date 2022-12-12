@@ -15,6 +15,8 @@ const customResolver = nodeResolve({
 
 const isProduction = process.env.NODE_ENV === 'production';
 
+console.info("isProduction", isProduction)
+
 const outDir = '../static/assets'
 
 export default {

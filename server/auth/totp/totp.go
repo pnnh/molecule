@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/pnnh/multiverse-server/config"
+	"github.com/sirupsen/logrus"
 
 	"github.com/pquerna/otp"
 	"github.com/pquerna/otp/totp"
@@ -44,7 +45,7 @@ func Register(account string) (*RegisterOut, error) {
 
 func Validate(secret, passcode string) error {
 	// 通过account从数据库中查询secret
-	fmt.Println("Validating TOTP...")
+	logrus.Println("Validating TOTP...")
 	if len(secret) < 1 {
 		return fmt.Errorf("key不存在")
 	}

@@ -23,12 +23,12 @@ export function isRelease (): boolean {
   return jsEnv === 'release'
 }
 
-export function getApiUrl (): string {
-  if (isDev()) {
-    return 'http://127.0.0.1:8080'
-  }
-  return 'https://sfx.xyz'
-}
+// export function getApiUrl (): string {
+//   if (isDev()) {
+//     return 'http://127.0.0.1:8080'
+//   }
+//   return 'https://sfx.xyz'
+// }
 
 export function getHost (): string {
   console.log('getHost', isDev())

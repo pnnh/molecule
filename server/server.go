@@ -46,7 +46,7 @@ func NewWebServer(smw *middleware.ServerMiddleware) (*WebServer, error) {
 		AllowOriginFunc: func(origin string) bool {
 			if config.Debug() {
 				return true
-			} else if strings.HasSuffix(origin, ".polaris.direct") {
+			} else if strings.HasSuffix(origin, ".multiverse.direct") {
 				return true
 			}
 			return false

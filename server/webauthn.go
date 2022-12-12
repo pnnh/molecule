@@ -2,8 +2,7 @@ package server
 
 import (
 	"encoding/json"
-	"fmt"
-	"log"
+	"fmt" 
 	"net/http"
 	"strings"
 
@@ -31,14 +30,14 @@ var sessionStore *session.Store
 // Your initialization function
 func init() {
 	webauthnConfig := &webauthn.Config{
-		RPDisplayName: "Polaris",                                       // Display Name for your site
-		RPID:          "polaris.direct",                                // Generally the FQDN for your site
-		RPOrigin:      "https://polaris.direct",                        // The origin URL for WebAuthn requests
-		RPIcon:        "https://polaris.direct/static/images/logo.png", // Optional icon URL for your site
+		RPDisplayName: "Multiverse",                                          // Display Name for your site
+		RPID:          "multiverse.direct",                                // Generally the FQDN for your site
+		RPOrigin:      "https://multiverse.direct",                        // The origin URL for WebAuthn requests
+		RPIcon:        "https://multiverse.direct/static/images/logo.png", // Optional icon URL for your site
 	}
 	if config.Debug() {
-		webauthnConfig.RPID = "debug.polaris.direct"
-		webauthnConfig.RPOrigin = "http://debug.polaris.direct"
+		webauthnConfig.RPID = "debug.multiverse.direct"
+		webauthnConfig.RPOrigin = "http://debug.multiverse.direct"
 		webauthnConfig.Debug = true
 	}
 	var err error
@@ -49,7 +48,7 @@ func init() {
 
 	sessionStore, err = session.NewStore()
 	if err != nil {
-		log.Fatal("failed to create session store:", err)
+		logrus.Fatal("failed to create session store:", err)
 	}
 }
 
@@ -93,7 +92,6 @@ func (s *webauthnHandler) BeginRegistration(gctx *gin.Context) {
 	)
 
 	if err != nil {
-		log.Println(err)
 		helpers.ResponseMessageError(gctx, "参数有误2", err)
 		return
 	}
@@ -101,7 +99,6 @@ func (s *webauthnHandler) BeginRegistration(gctx *gin.Context) {
 	// store session data as marshaled JSON
 	err = sessionStore.SaveWebauthnSession("registration", sessionData, gctx.Request, gctx.Writer)
 	if err != nil {
-		log.Println(err)
 		helpers.ResponseMessageError(gctx, "参数有误3", err)
 		return
 	}
@@ -121,7 +118,6 @@ func (s *webauthnHandler) FinishRegistration(gctx *gin.Context) {
 	user, err := models.GetAccount(username)
 	// user doesn't exist
 	if err != nil {
-		log.Println(err)
 		helpers.ResponseMessageError(gctx, "参数有误5", err)
 		return
 	}
@@ -133,14 +129,16 @@ func (s *webauthnHandler) FinishRegistration(gctx *gin.Context) {
 	// load the session data
 	sessionData, err := sessionStore.GetWebauthnSession("registration", gctx.Request)
 	if err != nil {
-		log.Println(err)
 		helpers.ResponseMessageError(gctx, "参数有误6", err)
 		return
 	}
 
+	// bodyBytes, err := ioutil.ReadAll(gctx.Request.Body)
+	// bodyString := string(bodyBytes)
+	// logrus.Debugln("bodyString", bodyString)
+
 	credential, err := webAuthn.FinishRegistration(user, sessionData, gctx.Request)
 	if err != nil {
-		log.Println(err)
 		helpers.ResponseMessageError(gctx, "参数有误37", err)
 		return
 	}
@@ -169,7 +167,6 @@ func (s *webauthnHandler) BeginLogin(gctx *gin.Context) {
 
 	// user doesn't exist
 	if err != nil {
-		log.Println(err)
 		helpers.ResponseMessageError(gctx, "参数有误316", err)
 		return
 	}
@@ -182,7 +179,6 @@ func (s *webauthnHandler) BeginLogin(gctx *gin.Context) {
 	// generate PublicKeyCredentialRequestOptions, session data
 	options, sessionData, err := webAuthn.BeginLogin(user)
 	if err != nil {
-		log.Println(err)
 		helpers.ResponseMessageError(gctx, "参数有误39", err)
 		return
 	}
@@ -190,7 +186,6 @@ func (s *webauthnHandler) BeginLogin(gctx *gin.Context) {
 	// store session data as marshaled JSON
 	err = sessionStore.SaveWebauthnSession("authentication", sessionData, gctx.Request, gctx.Writer)
 	if err != nil {
-		log.Println(err)
 		helpers.ResponseMessageError(gctx, "参数有误310", err)
 		return
 	}
@@ -211,7 +206,6 @@ func (s *webauthnHandler) FinishLogin(gctx *gin.Context) {
 
 	// user doesn't exist
 	if err != nil {
-		log.Println(err)
 		helpers.ResponseMessageError(gctx, "参数有误312", err)
 		return
 	}
@@ -219,7 +213,6 @@ func (s *webauthnHandler) FinishLogin(gctx *gin.Context) {
 	// load the session data
 	sessionData, err := sessionStore.GetWebauthnSession("authentication", gctx.Request)
 	if err != nil {
-		log.Println(err)
 		helpers.ResponseMessageError(gctx, "参数有误314", err)
 		return
 	}
@@ -229,7 +222,6 @@ func (s *webauthnHandler) FinishLogin(gctx *gin.Context) {
 	// and then increment the credentials counter
 	_, err = webAuthn.FinishLogin(user, sessionData, gctx.Request)
 	if err != nil {
-		log.Println(err)
 		helpers.ResponseMessageError(gctx, "参数有误315", err)
 		return
 	}

@@ -30,7 +30,7 @@ require (
 	gopkg.in/square/go-jose.v2 v2.5.2-0.20210529014059-a5c7eec3c614
 )
 
-replace github.com/pnnh/quantum-go => ../quantum-go
+replace github.com/pnnh/quantum-go => ../../quantum/quantum-go
 
 require (
 	github.com/agl/ed25519 v0.0.0-20170116200512-5312a6153412 // indirect

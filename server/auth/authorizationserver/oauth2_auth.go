@@ -2,11 +2,11 @@ package authorizationserver
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"net/url"
 
 	"github.com/pnnh/multiverse-server/server/protocols"
+	"github.com/sirupsen/logrus"
 
 	"github.com/pnnh/multiverse-server/server/helpers"
 
@@ -30,7 +30,7 @@ func AuthEndpointHtml(gctx *gin.Context) {
 	// It will analyze the request and extract important information like scopes, response type and others.
 	ar, err := oauth2.NewAuthorizeRequest(gctx, gctx.Request)
 	if err != nil {
-		log.Printf("Error occurred in NewAuthorizeRequest: %+v", err)
+		logrus.Printf("Error occurred in NewAuthorizeRequest: %+v", err)
 		oauth2.WriteAuthorizeError(gctx, gctx.Writer, ar, err)
 		return
 	}
@@ -66,7 +66,7 @@ func AuthEndpointJson(gctx *gin.Context) {
 	// It will analyze the request and extract important information like scopes, response type and others.
 	ar, err := oauth2.NewAuthorizeRequest(ctx, gctx.Request)
 	if err != nil {
-		log.Printf("Error occurred in NewAuthorizeRequest: %+v", err)
+		logrus.Printf("Error occurred in NewAuthorizeRequest: %+v", err)
 		oauth2.WriteAuthorizeError(ctx, gctx.Writer, ar, err)
 		return
 	}
@@ -137,7 +137,7 @@ func AuthEndpointJson(gctx *gin.Context) {
 	// * invalid redirect
 	// * ...
 	if err != nil {
-		log.Printf("Error occurred in NewAuthorizeResponse: %+v", err)
+		logrus.Printf("Error occurred in NewAuthorizeResponse: %+v", err)
 		oauth2.WriteAuthorizeError(ctx, gctx.Writer, ar, err)
 		return
 	}

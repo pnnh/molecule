@@ -1,19 +1,19 @@
 
 // Base64 to ArrayBuffer
 function bufferDecode(value: string) {
-  let buffer = atob(value);
+  let buffer = window.atob(value);
   //let buffer = Buffer.from(value, 'base64');
   return Uint8Array.from(buffer, c => c.charCodeAt(0));
 }
 
-function bufferEncode(value: string) {
-  var enc = new TextEncoder();
-  let aa = enc.encode(value)
-  var array = Array.from(aa)
-  return btoa(String.fromCharCode.apply(null, array))
+function bufferEncode(value: ArrayBuffer) {
+  var u8Array = new Uint8Array(value) 
+  let result = Array.from(u8Array);
+  return window.btoa(String.fromCharCode.apply(null, result))
     .replace(/\+/g, "-")
     .replace(/\//g, "_")
     .replace(/=/g, "");;
+
 }
 
 export async function registerUser(username: string) {
