@@ -7,7 +7,7 @@ import (
 	"github.com/pnnh/multiverse-server/server/helpers"
 )
 
-const templatesDir string = "static/templates"
+const templatesDir string = "docker/templates"
 
 type Service struct {
 	bootstrap *template.Template

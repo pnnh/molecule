@@ -10,7 +10,6 @@ import (
 )
 
 func init() {
-
 	if config.Debug() {
 		logrus.SetLevel(logrus.DebugLevel)
 		logrus.SetReportCaller(true)
@@ -21,7 +20,14 @@ func init() {
 				//处理文件名
 				fileName := path.Base(frame.File)
 				return "", fileName
-			}, 
+			},
+		})
+	} else {
+		logrus.SetLevel(logrus.ErrorLevel)
+		logrus.SetReportCaller(false)
+		logrus.SetFormatter(&logrus.TextFormatter{
+			ForceColors:     false,
+			TimestampFormat: time.RFC3339,
 		})
 	}
 }

@@ -4,14 +4,14 @@ import (
 	"crypto/rsa"
 	"crypto/x509"
 	"encoding/pem"
-	"io/ioutil"
 	"time"
 
 	"github.com/ory/fosite"
+	"github.com/pnnh/multiverse-server/config"
 	"github.com/sirupsen/logrus"
 
 	"github.com/ory/fosite/compose"
-	"github.com/ory/fosite/handler/openid" 
+	"github.com/ory/fosite/handler/openid"
 	"github.com/ory/fosite/token/jwt"
 )
 
@@ -24,7 +24,7 @@ import (
 
 var (
 	// Check the api documentation of `compose.Config` for further configuration options.
-	config = &fosite.Config{
+	fositeConfig = &fosite.Config{
 		AccessTokenLifespan: time.Minute * 30,
 		GlobalSecret:        secret,
 		// ...
@@ -102,29 +102,40 @@ var (
 )
 
 func init() {
-	privateBytes, err := ioutil.ReadFile("./files/cert/rs256-private.pem")
-	if err != nil {
-		logrus.Fatalln("privatekey init", err)
-		return
-	}
-	// key, err := ssh.ParseRawPrivateKey(bytes)
+	// privateBytes, err := ioutil.ReadFile("./files/cert/rs256-private.pem")
 	// if err != nil {
-	// 	logrus.Fatalln("ParseRawPrivateKey ", err)
+	// 	logrus.Fatalln("privatekey init", err)
 	// 	return
 	// }
-	// privateKey = key.(*rsa.PrivateKey)
+	// // key, err := ssh.ParseRawPrivateKey(bytes)
+	// // if err != nil {
+	// // 	logrus.Fatalln("ParseRawPrivateKey ", err)
+	// // 	return
+	// // }
+	// // privateKey = key.(*rsa.PrivateKey)
 
-	block, _ := pem.Decode(privateBytes) //将密钥解析成私钥实例
+	// block, _ := pem.Decode(privateBytes) //将密钥解析成私钥实例
+	// if block == nil {
+	// 	panic("private key error!")
+	// }
+	// priv, err := x509.ParsePKCS1PrivateKey(block.Bytes) //解析pem.Decode（）返回的Block指针实例
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// privateKey = priv
+
+	privateString := config.LoadAwsConfig("rs256-private.pem", "default")
+	block, _ := pem.Decode([]byte(privateString)) //将密钥解析成私钥实例
 	if block == nil {
-		panic("private key error!")
+		logrus.Fatalln("private key error!")
 	}
 	priv, err := x509.ParsePKCS1PrivateKey(block.Bytes) //解析pem.Decode（）返回的Block指针实例
 	if err != nil {
-		panic(err)
+		logrus.Fatalln("privateKeyBytes", err)
 	}
 	privateKey = priv
 
-	oauth2 = compose.ComposeAllEnabled(config, store, privateKey)
+	oauth2 = compose.ComposeAllEnabled(fositeConfig, store, privateKey)
 
 	/// 以下手动生成====
 	// privateKey, _ = rsa.GenerateKey(rand.Reader, 2048)

@@ -5,4 +5,5 @@ __debug_bin
 data/
 browser/dist/
 browser/debug/
-static/assets/
+docker/assets/
+docker/bin

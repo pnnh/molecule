@@ -17,7 +17,7 @@ const isProduction = process.env.NODE_ENV === 'production';
 
 console.info("isProduction", isProduction)
 
-const outDir = '../static/assets'
+const outDir = '../docker/assets'
 
 export default {
   input: 'src/index.tsx',

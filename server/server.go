@@ -39,7 +39,7 @@ func NewWebServer(smw *middleware.ServerMiddleware) (*WebServer, error) {
 		router:     router,
 		middleware: smw}
 	router.SetFuncMap(helpers.FuncMap())
-	router.LoadHTMLGlob("static/templates/**/*.mst")
+	router.LoadHTMLGlob("docker/templates/**/*.mst")
 
 	router.Use(cors.New(cors.Config{
 		//AllowOrigins:     corsDomain,
@@ -68,7 +68,7 @@ func (s *WebServer) Init() error {
 	indexHandler := pages.NewIndexHandler(s.middleware)
 	s.router.GET("/", indexHandler.Query)
 
-	s.router.Static("/assets", "./static/assets")
+	s.router.Static("/assets", "./docker/assets")
 	authHandler := &webauthnHandler{middleware: s.middleware}
 	s.router.GET("/register/begin/:username", authHandler.BeginRegistration)
 	s.router.POST("/register/finish/:username", authHandler.FinishRegistration)
@@ -91,9 +91,10 @@ func (s *WebServer) Start() error {
 	}
 	var handler http.Handler = s
 
-	if config.Release() {
-		handler = Minify(s)
-	}
+	// 压缩时似乎会出现长度不匹配的错误
+	// if config.Release() {
+	// 	handler = Minify(s)
+	// }
 
 	serv := &http.Server{
 		Addr:           ":" + port,

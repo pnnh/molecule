@@ -9,16 +9,11 @@ import (
 )
 
 var ACCOUNT_DB_DSN = ""
-var REDIS = ""
 var GINMODE = "release"
 var ISSUER = "sfx.xyz" // TOTP发行机构
 var JWTRealm = "sfx.xyz"
 var JWTKey = ""
 var CSRFToken = ""
-var ServerUrl = "https://sfx.xyz"
-var DefaultPhotoUrl = ""
-var QuestKey = ""
-var RunVersion = "0.1.0" // 当前程序版本标识，在构建时自动生成
 
 var (
 	MailHost     = ""
@@ -43,21 +38,8 @@ func init() {
 		logrus.Fatalln("数据库未配置")
 	}
 
-	REDIS = configMap["REDIS"]
-	if len(REDIS) < 1 {
-		logrus.Fatalln("Redis未配置")
-	}
-
-	JWTKey = configMap["JWT_KEY"]
-	CSRFToken = configMap["CSRF_TOKEN"]
-	if len(JWTKey) < 1 {
-		JWTKey = uuid.New().String()[:32]
-	}
 	if len(CSRFToken) < 1 {
 		CSRFToken = uuid.New().String()[:32]
-	}
-	if Debug() {
-		ServerUrl = "http://127.0.0.1:5000"
 	}
 }
 

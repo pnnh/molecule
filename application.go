@@ -8,8 +8,6 @@ import (
 
 	"github.com/pnnh/multiverse-server/services/email"
 
-	"github.com/pnnh/multiverse-server/services"
-
 	"github.com/pnnh/multiverse-server/server/middleware"
 
 	"github.com/pnnh/multiverse-server/server"
@@ -47,18 +45,11 @@ func (app *Application) initMiddleware() (*middleware.ServerMiddleware, error) {
 	if err := sqlxsvc.Init(config.ACCOUNT_DB_DSN); err != nil {
 		logrus.Fatalln("sqlxsvc: ", err)
 	}
-	s3Svc := services.NewAwsS3Service()
-	app.Use("aws-s3", s3Svc)
-	redisSvc := services.NewRedisService()
-	app.Use("redis", redisSvc)
 	tmpls := templs.NewService()
 	app.Use("templs", tmpls)
 
 	serverMiddleware := &middleware.ServerMiddleware{
-		Mail:   mailSvc,
 		Templs: tmpls,
-		AwsS3:  s3Svc,
-		Redis:  redisSvc,
 	}
 	return serverMiddleware, nil
 }

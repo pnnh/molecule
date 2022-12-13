@@ -11,31 +11,36 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-func loadAwsConfig() string {
+var awsAppConfigClient *appconfig.Client
+
+func init() {
 	cfg, err := config.LoadDefaultConfig(context.TODO(), config.WithRegion("ap-east-1"))
 	if err != nil {
 		logrus.Fatalf("unable to load SDK config, %v", err) 
 	}
 	svc := appconfig.NewFromConfig(cfg)
+	awsAppConfigClient = svc
 
+}
+
+func LoadAwsConfig(fileName, env string) string {
 	hostname, err := os.Hostname()
 	if err != nil {
 		logrus.Fatalln("获取主机名出错", err)
 	}
 
 	in := &appconfig.GetConfigurationInput{
-		Application:   aws.String("sfx"),
+		Application:   aws.String("multiverse.direct"),
 		ClientId:      aws.String(hostname),
-		Configuration: aws.String("release.config"),
-		Environment:   aws.String("release"),
+		Configuration: aws.String(fileName),
+		Environment:   aws.String(env),
 	}
 	if Debug() {
-		in.Configuration = aws.String("debug.config")
-		in.Environment = aws.String("debug")
+		in.Application = aws.String("debug.multiverse.direct") 
 	}
-	out, err := svc.GetConfiguration(context.Background(), in)
+	out, err := awsAppConfigClient.GetConfiguration(context.Background(), in)
 	if err != nil {
-		logrus.Fatalln("获取配置出错", err)
+		logrus.Fatalln("获取配置出错", fileName, env, err)
 	}
 	content := string(out.Content)
 	return content
@@ -44,7 +49,7 @@ func loadAwsConfig() string {
 func GetConfigurationMap() (map[string]string, error) {
 	var cmdEnv []string
 
-	awsConfig := loadAwsConfig()
+	awsConfig := LoadAwsConfig("main.config", "default")
 	awsEnvs := strings.Split(awsConfig, "\n")
 	for _, e := range awsEnvs {
 		cmdEnv = append(cmdEnv, e)
