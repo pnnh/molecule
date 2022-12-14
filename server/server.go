@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"net/http"
 	"os"
-	"strings"
 	"time"
 
 	"github.com/pnnh/multiverse-server/server/middleware"
@@ -41,16 +40,14 @@ func NewWebServer(smw *middleware.ServerMiddleware) (*WebServer, error) {
 	router.SetFuncMap(helpers.FuncMap())
 	router.LoadHTMLGlob("docker/templates/**/*.mst")
 
+	corsDomain := []string{"https://multiverse.direct", "https://www.multiverse.direct"}
+
+	if config.Debug() {
+		corsDomain = append(corsDomain, "https://debug.multiverse.direct")
+	}
+
 	router.Use(cors.New(cors.Config{
-		//AllowOrigins:     corsDomain,
-		AllowOriginFunc: func(origin string) bool {
-			if config.Debug() {
-				return true
-			} else if strings.HasSuffix(origin, ".multiverse.direct") {
-				return true
-			}
-			return false
-		},
+		AllowOrigins: corsDomain,
 		AllowMethods:     []string{"PUT", "PATCH", "POST", "GET"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},
