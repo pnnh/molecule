@@ -7,3 +7,4 @@ browser/dist/
 browser/debug/
 docker/assets/
 docker/bin
+.vscode/
