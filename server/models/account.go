@@ -10,8 +10,8 @@ import (
 	"github.com/pnnh/multiverse-server/server/helpers"
 	"github.com/pnnh/quantum-go/services/sqlxsvc"
 
-	"github.com/duo-labs/webauthn/protocol"
-	"github.com/duo-labs/webauthn/webauthn"
+	"github.com/go-webauthn/webauthn/protocol"
+	"github.com/go-webauthn/webauthn/webauthn"
 	"github.com/jmoiron/sqlx"
 	"github.com/sirupsen/logrus"
 )

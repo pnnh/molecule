@@ -15,17 +15,16 @@ import (
 	"github.com/pnnh/multiverse-server/server/helpers"
 
 	"github.com/pnnh/multiverse-server/config"
-
-	"github.com/duo-labs/webauthn.io/session"
-	"github.com/duo-labs/webauthn/protocol"
-	"github.com/duo-labs/webauthn/webauthn"
+  
+	"github.com/go-webauthn/webauthn/webauthn"
+	"github.com/go-webauthn/webauthn/protocol"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 )
 
 var webAuthn *webauthn.WebAuthn
-var sessionStore *session.Store
+//var sessionStore *session.Store
 
 // Your initialization function
 func init() {
@@ -46,10 +45,10 @@ func init() {
 		logrus.Fatalln("webauthn初始化出错: %w", err)
 	}
 
-	sessionStore, err = session.NewStore()
-	if err != nil {
-		logrus.Fatal("failed to create session store:", err)
-	}
+	// sessionStore, err = session.NewStore()
+	// if err != nil {
+	// 	logrus.Fatal("failed to create session store:", err)
+	// }
 }
 
 type webauthnHandler struct {
@@ -97,11 +96,16 @@ func (s *webauthnHandler) BeginRegistration(gctx *gin.Context) {
 	}
 
 	// store session data as marshaled JSON
-	err = sessionStore.SaveWebauthnSession("registration", sessionData, gctx.Request, gctx.Writer)
-	if err != nil {
-		helpers.ResponseMessageError(gctx, "参数有误3", err)
-		return
-	}
+	// err = sessionStore.SaveWebauthnSession("registration", sessionData, gctx.Request, gctx.Writer)
+	// if err != nil {
+	// 	helpers.ResponseMessageError(gctx, "参数有误3", err)
+	// 	return
+	// }
+
+	session := sessions.Default(gctx)
+
+	session.Set("registration", sessionData)
+	session.Save()
 
 	jsonResponse(gctx.Writer, options, http.StatusOK)
 }
@@ -127,11 +131,14 @@ func (s *webauthnHandler) FinishRegistration(gctx *gin.Context) {
 	}
 
 	// load the session data
-	sessionData, err := sessionStore.GetWebauthnSession("registration", gctx.Request)
-	if err != nil {
-		helpers.ResponseMessageError(gctx, "参数有误6", err)
-		return
-	}
+	// sessionData, err := sessionStore.GetWebauthnSession("registration", gctx.Request)
+	// if err != nil {
+	// 	helpers.ResponseMessageError(gctx, "参数有误6", err)
+	// 	return
+	// }
+	session := sessions.Default(gctx)
+
+	sessionData:= session.Get("registration").(webauthn.SessionData)
 
 	// bodyBytes, err := ioutil.ReadAll(gctx.Request.Body)
 	// bodyString := string(bodyBytes)
@@ -184,11 +191,15 @@ func (s *webauthnHandler) BeginLogin(gctx *gin.Context) {
 	}
 
 	// store session data as marshaled JSON
-	err = sessionStore.SaveWebauthnSession("authentication", sessionData, gctx.Request, gctx.Writer)
-	if err != nil {
-		helpers.ResponseMessageError(gctx, "参数有误310", err)
-		return
-	}
+	// err = sessionStore.SaveWebauthnSession("authentication", sessionData, gctx.Request, gctx.Writer)
+	// if err != nil {
+	// 	helpers.ResponseMessageError(gctx, "参数有误310", err)
+	// 	return
+	// }
+	session := sessions.Default(gctx)
+
+	session.Set("authentication", sessionData)
+	session.Save()
 
 	jsonResponse(gctx.Writer, options, http.StatusOK)
 }
@@ -211,11 +222,14 @@ func (s *webauthnHandler) FinishLogin(gctx *gin.Context) {
 	}
 
 	// load the session data
-	sessionData, err := sessionStore.GetWebauthnSession("authentication", gctx.Request)
-	if err != nil {
-		helpers.ResponseMessageError(gctx, "参数有误314", err)
-		return
-	}
+	// sessionData, err := sessionStore.GetWebauthnSession("authentication", gctx.Request)
+	// if err != nil {
+	// 	helpers.ResponseMessageError(gctx, "参数有误314", err)
+	// 	return
+	// }
+	session := sessions.Default(gctx)
+
+	sessionData:= session.Get("authentication").(webauthn.SessionData)
 
 	// in an actual implementation, we should perform additional checks on
 	// the returned 'credential', i.e. check 'credential.Authenticator.CloneWarning'
@@ -224,8 +238,7 @@ func (s *webauthnHandler) FinishLogin(gctx *gin.Context) {
 	if err != nil {
 		helpers.ResponseMessageError(gctx, "参数有误315", err)
 		return
-	}
-	session := sessions.Default(gctx)
+	} 
 
 	session.Set("authuser", username)
 	session.Save()
