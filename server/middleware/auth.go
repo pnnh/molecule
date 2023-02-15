@@ -28,7 +28,10 @@ func GetAuth(gctx *gin.Context) (string, error) {
 }
 
 func ParseToken(token string) (string, error) {
-	j := NewJWT()
+	j, err := NewJWT()
+	if err != nil {
+		return "", fmt.Errorf("NewJWT出错: %w", err)
+	}
 	claims, err := j.ParseToken(token)
 	if err != nil {
 		return "", fmt.Errorf("parse出错: %w", err)
@@ -38,15 +41,23 @@ func ParseToken(token string) (string, error) {
 
 // 生成令牌
 func GenerateToken(user string) (string, error) {
+	jwtKey, ok := config.GetConfiguration("JWTKey")
+	if !ok || jwtKey == nil {
+		return "", errors.New("JWTKey未配置")
+	}
+	jwtIssure, ok := config.GetConfiguration("ISSUER")
+	if !ok || jwtKey == nil {
+		return "", errors.New("ISSUER未配置")
+	}
 	j := &JWT{
-		[]byte(config.JWTKey),
+		[]byte(jwtKey.(string)),
 	}
 	nowUnix := time.Now().Unix()
 	claims := CustomClaims{
 		StandardClaims: jwt.StandardClaims{
 			NotBefore: nowUnix - 1000,      // 签名生效时间
 			ExpiresAt: nowUnix + 3600*24*7, // 过期时间
-			Issuer:    config.ISSUER,       //签名的发行者
+			Issuer:    jwtIssure.(string),       //签名的发行者
 		},
 		User: user,
 	}
@@ -79,10 +90,14 @@ type CustomClaims struct {
 }
 
 // 新建一个jwt实例
-func NewJWT() *JWT {
-	return &JWT{
-		[]byte(config.JWTKey),
+func NewJWT() (*JWT, error) {
+	jwtKey, ok := config.GetConfiguration("JWTKey")
+	if !ok || jwtKey == nil {
+		return nil, errors.New("JWTKey未配置")
 	}
+	return &JWT{
+		[]byte(jwtKey.(string)),
+	}, nil
 }
 
 // CreateToken 生成一个token

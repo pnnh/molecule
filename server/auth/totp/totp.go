@@ -6,8 +6,7 @@ import (
 	"fmt"
 	"image/png"
 	"time"
-
-	"github.com/pnnh/multiverse-server/config"
+ 
 	"github.com/sirupsen/logrus"
 
 	"github.com/pquerna/otp"
@@ -21,7 +20,7 @@ type RegisterOut struct {
 
 func Register(account string) (*RegisterOut, error) {
 	key, err := totp.Generate(totp.GenerateOpts{
-		Issuer:      config.ISSUER,
+		Issuer:      "",//config.ISSUER,
 		AccountName: account,
 	})
 	if err != nil {

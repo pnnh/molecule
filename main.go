@@ -1,38 +1,16 @@
 package main
 
-import (
-	"path"
-	"runtime"
-	"time"
-
+import (  
 	"github.com/pnnh/multiverse-server/config"
-	"github.com/sirupsen/logrus"
+	"github.com/pnnh/multiverse-server/server/auth/authorizationserver"
+	"github.com/sirupsen/logrus" 
 )
 
-func init() {
-	if config.Debug() {
-		logrus.SetLevel(logrus.DebugLevel)
-		logrus.SetReportCaller(true)
-		logrus.SetFormatter(&logrus.TextFormatter{
-			ForceColors:     true,
-			TimestampFormat: time.RFC3339,
-			CallerPrettyfier: func(frame *runtime.Frame) (function string, file string) {
-				//处理文件名
-				fileName := path.Base(frame.File)
-				return "", fileName
-			},
-		})
-	} else {
-		logrus.SetLevel(logrus.ErrorLevel)
-		logrus.SetReportCaller(false)
-		logrus.SetFormatter(&logrus.TextFormatter{
-			ForceColors:     false,
-			TimestampFormat: time.RFC3339,
-		})
-	}
-}
-
 func main() {
+	config.InitApp()
+
+	authorizationserver.InitOAuth2()
+
 	app := NewApplication()
 
 	if err := app.Init(); err != nil {

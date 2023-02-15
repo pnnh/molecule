@@ -8,3 +8,4 @@ browser/debug/
 docker/assets/
 docker/bin
 .vscode/
+debug/

@@ -1,71 +1,102 @@
 package config
 
-import (
-	"context" 
+import (   
+	"flag" 
 	"os"
+	"path"
+	"runtime"
 	"strings"
-
-	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/aws/aws-sdk-go-v2/config"
-	"github.com/aws/aws-sdk-go-v2/service/appconfig"
+	"time"
+  
 	"github.com/sirupsen/logrus"
+	"gopkg.in/yaml.v2"
 )
 
-var awsAppConfigClient *appconfig.Client
+var globalConfigMap map[interface{}]interface{}
 
-func init() {
-	cfg, err := config.LoadDefaultConfig(context.TODO(), config.WithRegion("ap-east-1"))
-	if err != nil {
-		logrus.Fatalf("unable to load SDK config, %v", err) 
-	}
-	svc := appconfig.NewFromConfig(cfg)
-	awsAppConfigClient = svc
+var configFile = flag.String("config", "config.yml", "配置文件路径")
+var runMode = flag.String("mode", "release", "运行模式(debug, release)")
 
-}
+func InitApp() {
+	configMap := make(map[interface{}]interface{})
+	flag.Parse()
 
-func LoadAwsConfig(fileName, env string) string {
-	hostname, err := os.Hostname()
-	if err != nil {
-		logrus.Fatalln("获取主机名出错", err)
+	if _, err := os.Stat(*configFile); err == nil {
+		configData, err := os.ReadFile(*configFile)
+		if err != nil {
+			logrus.Fatalln("读取配置文件出错: ", err)
+		}
+		err = yaml.Unmarshal(configData, &configMap)
+		if err != nil {
+			logrus.Fatalln("解析配置文件出错: ", err)
+		}
 	}
 
-	in := &appconfig.GetConfigurationInput{
-		Application:   aws.String("multiverse.direct"),
-		ClientId:      aws.String(hostname),
-		Configuration: aws.String(fileName),
-		Environment:   aws.String(env),
-	}
-	if Debug() {
-		in.Application = aws.String("debug.multiverse.direct") 
-	}
-	out, err := awsAppConfigClient.GetConfiguration(context.Background(), in)
-	if err != nil {
-		logrus.Fatalln("获取配置出错", fileName, env, err)
-	}
-	content := string(out.Content)
-	return content
-}
-
-func GetConfigurationMap() (map[string]string, error) {
 	var cmdEnv []string
 
-	awsConfig := LoadAwsConfig("main.config", "default")
-	awsEnvs := strings.Split(awsConfig, "\n")
-	for _, e := range awsEnvs {
-		cmdEnv = append(cmdEnv, e)
-	}
-	// 系统环境变量可以覆盖掉默认配置
 	osEnv := os.Environ()
-	for _, e := range osEnv {
-		cmdEnv = append(cmdEnv, e)
-	}
-	configMap := make(map[string]string)
+	cmdEnv = append(cmdEnv, osEnv...)
 	for _, e := range cmdEnv {
 		index := strings.Index(e, "=")
 		if index > 0 {
 			configMap[e[:index]] = e[index+1:]
 		}
 	}
+	configMap["config"] = *configFile
+	configMap["mode"] = *runMode
 
-	return configMap, nil
+	globalConfigMap = configMap
+
+	var filePrefix = "file://"
+	for key, value := range globalConfigMap {
+		if strings.HasPrefix(value.(string), filePrefix) {
+			valueData, err := os.ReadFile(value.(string)[len(filePrefix):])
+			if err != nil {
+				logrus.Fatalln("读取配置文件出错: ", err)
+			}
+			value = string(valueData)
+			globalConfigMap[key] = value
+		}
+	}
+
+	configLog()
+}
+
+
+func GetConfiguration(key interface{}) (interface{}, bool) {
+	value, ok := globalConfigMap[key]
+	return value, ok
+}
+
+func Debug() bool {
+	var mode, ok = GetConfiguration("mode")
+	if ok && mode == "debug" {
+		return true
+	}
+	return false
+}
+ 
+
+func configLog() {
+ 
+	if Debug() {
+		logrus.SetLevel(logrus.DebugLevel)
+		logrus.SetReportCaller(true)
+		logrus.SetFormatter(&logrus.TextFormatter{
+			ForceColors:     true,
+			TimestampFormat: time.RFC3339,
+			CallerPrettyfier: func(frame *runtime.Frame) (function string, file string) {
+				//处理文件名
+				fileName := path.Base(frame.File)
+				return "", fileName
+			},
+		})
+	} else {
+		logrus.SetLevel(logrus.ErrorLevel)
+		logrus.SetReportCaller(false)
+		logrus.SetFormatter(&logrus.TextFormatter{
+			ForceColors:     false,
+			TimestampFormat: time.RFC3339,
+		})
+	}
 }

@@ -3,18 +3,12 @@ module github.com/pnnh/multiverse-server
 go 1.19
 
 require (
-	github.com/aws/aws-sdk-go-v2 v1.16.16
-	github.com/aws/aws-sdk-go-v2/config v1.17.8
-	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.35
-	github.com/aws/aws-sdk-go-v2/service/appconfig v1.14.1
-	github.com/aws/aws-sdk-go-v2/service/s3 v1.28.0
 	github.com/bwmarrin/snowflake v0.3.0
 	github.com/gin-contrib/cors v1.4.0
 	github.com/gin-contrib/sessions v0.0.5
 	github.com/gin-gonic/gin v1.8.1
 	github.com/go-webauthn/webauthn v0.7.1
 	github.com/golang-jwt/jwt v3.2.2+incompatible
-	github.com/google/uuid v1.3.0
 	github.com/jmoiron/sqlx v1.3.5
 	github.com/ory/fosite v0.42.3-0.20220508104133-3a0c9520791b
 	github.com/pnnh/quantum-go v0.1.0
@@ -22,28 +16,12 @@ require (
 	github.com/sirupsen/logrus v1.9.0
 	golang.org/x/net v0.6.0
 	golang.org/x/oauth2 v0.2.0
-	golang.org/x/time v0.1.0
-	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
 	gopkg.in/square/go-jose.v2 v2.5.2-0.20210529014059-a5c7eec3c614
+	gopkg.in/yaml.v2 v2.4.0
 )
 
 require (
 	github.com/asaskevich/govalidator v0.0.0-20200428143746-21a406dcc535 // indirect
-	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.4.8 // indirect
-	github.com/aws/aws-sdk-go-v2/credentials v1.12.21 // indirect
-	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.12.17 // indirect
-	github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.23 // indirect
-	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.4.17 // indirect
-	github.com/aws/aws-sdk-go-v2/internal/ini v1.3.24 // indirect
-	github.com/aws/aws-sdk-go-v2/internal/v4a v1.0.14 // indirect
-	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.9.9 // indirect
-	github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.1.18 // indirect
-	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.17 // indirect
-	github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.13.17 // indirect
-	github.com/aws/aws-sdk-go-v2/service/sso v1.11.23 // indirect
-	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.13.6 // indirect
-	github.com/aws/aws-sdk-go-v2/service/sts v1.16.19 // indirect
-	github.com/aws/smithy-go v1.13.3 // indirect
 	github.com/boombuler/barcode v1.0.1 // indirect
 	github.com/cespare/xxhash v1.1.0 // indirect
 	github.com/dgraph-io/ristretto v0.0.3 // indirect
@@ -58,13 +36,13 @@ require (
 	github.com/golang-jwt/jwt/v4 v4.4.3 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/go-tpm v0.3.3 // indirect
+	github.com/google/uuid v1.3.0 // indirect
 	github.com/gorilla/context v1.1.1 // indirect
 	github.com/gorilla/securecookie v1.1.1 // indirect
 	github.com/gorilla/sessions v1.2.1 // indirect
 	github.com/gorilla/websocket v1.4.2 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
-	github.com/jmespath/go-jmespath v0.4.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/leodido/go-urn v1.2.1 // indirect
 	github.com/lib/pq v1.10.7 // indirect
@@ -97,7 +75,5 @@ require (
 	golang.org/x/tools v0.1.12 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
-	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
 	gopkg.in/ini.v1 v1.57.0 // indirect
-	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
