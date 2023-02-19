@@ -6,48 +6,41 @@ import (
 	"os"
 	"time"
 
-	"github.com/pnnh/multiverse-server/server/middleware"
-
-	"github.com/pnnh/multiverse-server/server/helpers"
-
-	"github.com/pnnh/multiverse-server/server/handlers/pages"
-
-	"github.com/pnnh/multiverse-server/server/handlers"
-
-	"github.com/pnnh/multiverse-server/server/auth"
-
-	"github.com/pnnh/multiverse-server/config"
-
 	"github.com/gin-contrib/cors"
-	"github.com/gin-contrib/sessions"
-	"github.com/gin-contrib/sessions/cookie"
+	"github.com/pnnh/multiverse-cloud-server/server/auth/authorizationserver"
+	"github.com/pnnh/multiverse-cloud-server/server/handlers"
+	"github.com/pnnh/quantum-go/config"
+
 	"github.com/gin-gonic/gin"
 )
 
-type WebServer struct {
-	router     *gin.Engine
-	middleware *middleware.ServerMiddleware
+type IResource interface {
+	RegisterRouter(router *gin.Engine, name string)
 }
 
-func NewWebServer(smw *middleware.ServerMiddleware) (*WebServer, error) {
+type WebServer struct {
+	router    *gin.Engine
+	resources map[string]IResource
+}
+
+func NewWebServer() (*WebServer, error) {
 	router := gin.Default()
 
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
 	server := &WebServer{
-		router:     router,
-		middleware: smw}
-	router.SetFuncMap(helpers.FuncMap())
-	router.LoadHTMLGlob("docker/templates/**/*.mst")
+		router:    router,
+		resources: make(map[string]IResource)}
 
 	corsDomain := []string{"https://multiverse.direct", "https://www.multiverse.direct"}
 
 	if config.Debug() {
+		corsDomain = append(corsDomain, "http://127.0.0.1:3500")
 		corsDomain = append(corsDomain, "https://debug.multiverse.direct")
 	}
 
 	router.Use(cors.New(cors.Config{
-		AllowOrigins: corsDomain,
+		AllowOrigins:     corsDomain,
 		AllowMethods:     []string{"PUT", "PATCH", "POST", "GET"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},
@@ -55,43 +48,39 @@ func NewWebServer(smw *middleware.ServerMiddleware) (*WebServer, error) {
 		MaxAge:           12 * time.Hour,
 	}))
 
-	store := cookie.NewStore([]byte("secret"))
-	router.Use(sessions.Sessions("mysession", store))
-
 	return server, nil
 }
 
 func (s *WebServer) Init() error {
-	indexHandler := pages.NewIndexHandler(s.middleware)
+	indexHandler := handlers.NewIndexHandler()
 	s.router.GET("/", indexHandler.Query)
 
-	s.router.Static("/assets", "./docker/assets")
-	authHandler := &webauthnHandler{middleware: s.middleware}
-	s.router.GET("/register/begin/:username", authHandler.BeginRegistration)
-	s.router.POST("/register/finish/:username", authHandler.FinishRegistration)
-	s.router.GET("/login/begin/:username", authHandler.BeginLogin)
-	s.router.POST("/login/finish/:username", authHandler.FinishLogin)
+	authHandler := &webauthnHandler{}
+	s.router.GET("/server/register/begin/:username", authHandler.BeginRegistration)
+	s.router.POST("/server/register/finish/:username", authHandler.FinishRegistration)
+	s.router.GET("/server/login/begin/:username", authHandler.BeginLogin)
+	s.router.POST("/server/login/finish/:username", authHandler.FinishLogin)
 
-	accountHandler := handlers.NewAccountHandler(s.middleware)
-
-	s.router.GET("/login", accountHandler.LoginByWebAuthn)
-
-	auth.InitOAuth2(s.router, s.middleware)
+	s.router.GET("/server/oauth2/auth", func(gctx *gin.Context) {
+		authorizationserver.AuthEndpointHtml(gctx)
+	})
+	s.router.POST("/server/oauth2/auth", func(gctx *gin.Context) {
+		authorizationserver.AuthEndpointJson(gctx)
+	})
+ 
+	s.router.POST("/server/oauth2/token", func(gctx *gin.Context) {
+		authorizationserver.TokenEndpoint(gctx.Writer, gctx.Request)
+	})
 
 	return nil
 }
 
 func (s *WebServer) Start() error {
-	port := os.Getenv("PORT")
+	port := os.Getenv("port")
 	if len(port) < 1 {
-		port = "8081"
+		port = "8080"
 	}
 	var handler http.Handler = s
-
-	// 压缩时似乎会出现长度不匹配的错误
-	// if config.Release() {
-	// 	handler = Minify(s)
-	// }
 
 	serv := &http.Server{
 		Addr:           ":" + port,

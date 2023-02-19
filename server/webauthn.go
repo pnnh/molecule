@@ -1,42 +1,38 @@
 package server
 
 import (
+	"database/sql"
+	"encoding/base64"
 	"encoding/json"
-	"fmt" 
+	"fmt"
 	"net/http"
 	"strings"
 
-	"github.com/pnnh/multiverse-server/server/protocols"
+	"github.com/pnnh/multiverse-cloud-server/protocols"
 
-	"github.com/pnnh/multiverse-server/server/models"
+	"github.com/pnnh/multiverse-cloud-server/models"
 
-	"github.com/pnnh/multiverse-server/server/middleware"
+	"github.com/pnnh/multiverse-cloud-server/server/helpers"
+	"github.com/pnnh/quantum-go/config"
 
-	"github.com/pnnh/multiverse-server/server/helpers"
-
-	"github.com/pnnh/multiverse-server/config"
-  
-	"github.com/go-webauthn/webauthn/webauthn"
-	"github.com/go-webauthn/webauthn/protocol"
-	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
+	"github.com/go-webauthn/webauthn/protocol"
+	"github.com/go-webauthn/webauthn/webauthn"
 	"github.com/sirupsen/logrus"
 )
 
 var webAuthn *webauthn.WebAuthn
-//var sessionStore *session.Store
 
-// Your initialization function
-func init() {
+func InitWebauthn() {
 	webauthnConfig := &webauthn.Config{
-		RPDisplayName: "Multiverse",                                          // Display Name for your site
+		RPDisplayName: "Multiverse",                                       // Display Name for your site
 		RPID:          "multiverse.direct",                                // Generally the FQDN for your site
-		RPOrigin:      "https://multiverse.direct",                        // The origin URL for WebAuthn requests
+		RPOrigins:      []string{"https://debug.multiverse.direct"},                        // The origin URL for WebAuthn requests
 		RPIcon:        "https://multiverse.direct/static/images/logo.png", // Optional icon URL for your site
 	}
 	if config.Debug() {
 		webauthnConfig.RPID = "debug.multiverse.direct"
-		webauthnConfig.RPOrigin = "http://debug.multiverse.direct"
+		webauthnConfig.RPOrigins = []string{"https://debug.multiverse.direct"}
 		webauthnConfig.Debug = true
 	}
 	var err error
@@ -45,14 +41,9 @@ func init() {
 		logrus.Fatalln("webauthn初始化出错: %w", err)
 	}
 
-	// sessionStore, err = session.NewStore()
-	// if err != nil {
-	// 	logrus.Fatal("failed to create session store:", err)
-	// }
 }
 
 type webauthnHandler struct {
-	middleware *middleware.ServerMiddleware
 }
 
 func (s *webauthnHandler) BeginRegistration(gctx *gin.Context) {
@@ -63,64 +54,57 @@ func (s *webauthnHandler) BeginRegistration(gctx *gin.Context) {
 		return
 	}
 
-	// get user
 	model, err := models.GetAccount(username)
-	// user doesn't exist, create new user
 	if err != nil {
 		helpers.ResponseCodeMessageError(gctx, protocols.CodeError, "GetAccount error", err)
 		return
 	}
-	if model == nil {
-		displayName := strings.Split(username, "@")[0]
-		model = models.NewAccountModel(username, displayName)
-
-		if err = models.PutAccount(model); err != nil {
-			helpers.ResponseMessageError(gctx, "PutAccount error", err)
-			return
-		}
+	if model != nil {
+		helpers.ResponseCodeMessageError(gctx, protocols.CodeError, "账号已存在", err)
+		return
 	}
+	displayName := strings.Split(username, "@")[0]
+	model = models.NewAccountModel(username, displayName)
 
 	registerOptions := func(credCreationOpts *protocol.PublicKeyCredentialCreationOptions) {
 		credCreationOpts.CredentialExcludeList = model.CredentialExcludeList()
 	}
 
-	// generate PublicKeyCredentialCreationOptions, session data
 	options, sessionData, err := webAuthn.BeginRegistration(
 		model,
 		registerOptions,
 	)
-
 	if err != nil {
 		helpers.ResponseMessageError(gctx, "参数有误2", err)
 		return
 	}
-
-	// store session data as marshaled JSON
-	// err = sessionStore.SaveWebauthnSession("registration", sessionData, gctx.Request, gctx.Writer)
-	// if err != nil {
-	// 	helpers.ResponseMessageError(gctx, "参数有误3", err)
-	// 	return
-	// }
-
-	session := sessions.Default(gctx)
-
-	session.Set("registration", sessionData)
-	session.Save()
+	sessionBytes, err := json.Marshal(sessionData)
+	if err != nil {
+		helpers.ResponseMessageError(gctx, "序列化sessionData出错: ", err)
+		return
+	}
+	logrus.Infoln("sessionBytes: ", string(sessionBytes))
+	sessionText := base64.StdEncoding.EncodeToString(sessionBytes)
+	model.Session = sql.NullString{String: sessionText, Valid: true}
+	logrus.Infoln("sessionData: ", sessionData)
+	if err = models.PutAccount(model); err != nil {
+		helpers.ResponseMessageError(gctx, "PutAccount error", err)
+		return
+	}
 
 	jsonResponse(gctx.Writer, options, http.StatusOK)
 }
 
 func (s *webauthnHandler) FinishRegistration(gctx *gin.Context) {
-
+	logrus.Infoln("FinishRegistration333")
 	username := gctx.Param("username")
 	if len(username) < 1 {
 		helpers.ResponseMessageError(gctx, "参数有误a", nil)
 		return
 	}
 
-	// get user
 	user, err := models.GetAccount(username)
-	// user doesn't exist
+
 	if err != nil {
 		helpers.ResponseMessageError(gctx, "参数有误5", err)
 		return
@@ -129,20 +113,20 @@ func (s *webauthnHandler) FinishRegistration(gctx *gin.Context) {
 		helpers.ResponseMessageError(gctx, fmt.Sprintf("GetAccount结果为空: %s", username), nil)
 		return
 	}
-
-	// load the session data
-	// sessionData, err := sessionStore.GetWebauthnSession("registration", gctx.Request)
-	// if err != nil {
-	// 	helpers.ResponseMessageError(gctx, "参数有误6", err)
-	// 	return
-	// }
-	session := sessions.Default(gctx)
-
-	sessionData:= session.Get("registration").(webauthn.SessionData)
-
-	// bodyBytes, err := ioutil.ReadAll(gctx.Request.Body)
-	// bodyString := string(bodyBytes)
-	// logrus.Debugln("bodyString", bodyString)
+	sessionText := user.Session.String
+	sessionBytes, err := base64.StdEncoding.DecodeString(sessionText)
+	if err != nil {
+		helpers.ResponseMessageError(gctx, fmt.Sprintf("反序列化session出错: %s", username), nil)
+		return
+	}
+	logrus.Infoln("sessionBytes2: ", string(sessionBytes))
+	sessionData := webauthn.SessionData{}
+	err = json.Unmarshal(sessionBytes, &sessionData)
+	if err != nil {
+		helpers.ResponseMessageError(gctx, "序列化sessionData出错2: ", err)
+		return
+	}
+	logrus.Infoln("sessionData2: ", sessionData)
 
 	credential, err := webAuthn.FinishRegistration(user, sessionData, gctx.Request)
 	if err != nil {
@@ -190,16 +174,11 @@ func (s *webauthnHandler) BeginLogin(gctx *gin.Context) {
 		return
 	}
 
-	// store session data as marshaled JSON
-	// err = sessionStore.SaveWebauthnSession("authentication", sessionData, gctx.Request, gctx.Writer)
-	// if err != nil {
-	// 	helpers.ResponseMessageError(gctx, "参数有误310", err)
-	// 	return
-	// }
-	session := sessions.Default(gctx)
-
-	session.Set("authentication", sessionData)
-	session.Save()
+	err = models.UpdateAccountSession(user, sessionData)
+	if err != nil {
+		helpers.ResponseMessageError(gctx, "UpdateAccountSession: %w", err)
+		return
+	}
 
 	jsonResponse(gctx.Writer, options, http.StatusOK)
 }
@@ -220,30 +199,14 @@ func (s *webauthnHandler) FinishLogin(gctx *gin.Context) {
 		helpers.ResponseMessageError(gctx, "参数有误312", err)
 		return
 	}
+	sessionData, err := models.UnmarshalWebauthnSession(user.Session.String)
 
-	// load the session data
-	// sessionData, err := sessionStore.GetWebauthnSession("authentication", gctx.Request)
-	// if err != nil {
-	// 	helpers.ResponseMessageError(gctx, "参数有误314", err)
-	// 	return
-	// }
-	session := sessions.Default(gctx)
-
-	sessionData:= session.Get("authentication").(webauthn.SessionData)
-
-	// in an actual implementation, we should perform additional checks on
-	// the returned 'credential', i.e. check 'credential.Authenticator.CloneWarning'
-	// and then increment the credentials counter
-	_, err = webAuthn.FinishLogin(user, sessionData, gctx.Request)
+	_, err = webAuthn.FinishLogin(user, *sessionData, gctx.Request)
 	if err != nil {
 		helpers.ResponseMessageError(gctx, "参数有误315", err)
 		return
-	} 
+	}
 
-	session.Set("authuser", username)
-	session.Save()
-
-	// handle successful login
 	jsonResponse(gctx.Writer, "Login Success", http.StatusOK)
 }
 
@@ -253,6 +216,7 @@ func jsonResponse(w http.ResponseWriter, d interface{}, c int) {
 		http.Error(w, "Error creating JSON response", http.StatusInternalServerError)
 	}
 	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Test", "Custom")
 	w.WriteHeader(c)
 	fmt.Fprintf(w, "%s", dj)
 }

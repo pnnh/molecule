@@ -6,7 +6,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/pnnh/multiverse-server/server/models"
+	"github.com/pnnh/multiverse-cloud-server/server/models"
 
 	"gopkg.in/square/go-jose.v2"
 

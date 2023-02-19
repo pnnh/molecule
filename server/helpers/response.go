@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/pnnh/multiverse-server/server/protocols"
+	"github.com/pnnh/multiverse-cloud-server/protocols"
 	"github.com/sirupsen/logrus"
 )
 

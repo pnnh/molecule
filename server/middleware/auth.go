@@ -4,9 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"time"
-
-	"github.com/pnnh/multiverse-server/config"
-
+ 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
 )

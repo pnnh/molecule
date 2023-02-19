@@ -4,16 +4,11 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/pnnh/multiverse-server/services/templs" 
-
-	"github.com/pnnh/multiverse-server/server/middleware"
-
-	"github.com/pnnh/multiverse-server/server"
-
-	"github.com/pnnh/multiverse-server/config"
+	"github.com/pnnh/multiverse-cloud-server/server"
+	"github.com/pnnh/quantum-go/config"
+	"github.com/pnnh/quantum-go/services/sqlxsvc"
 
 	"github.com/gin-gonic/gin"
-	"github.com/pnnh/quantum-go/services/sqlxsvc"
 
 	"github.com/sirupsen/logrus"
 )
@@ -37,34 +32,22 @@ func (app *Application) Use(key string, serv IService) {
 	app.services[key] = serv
 }
 
-func (app *Application) initMiddleware() (*middleware.ServerMiddleware, error) {
+func (app *Application) Init() error {
 	accountDSN, ok := config.GetConfiguration("ACCOUNT_DB")
 	if !ok || accountDSN == nil {
-		return nil, fmt.Errorf("ACCOUNT_DB未配置")
+		return fmt.Errorf("ACCOUNT_DB未配置")
 	}
 
 	if err := sqlxsvc.Init(accountDSN.(string)); err != nil {
 		logrus.Fatalln("sqlxsvc: ", err)
 	}
-	tmpls := templs.NewService()
-	app.Use("templs", tmpls)
-
-	serverMiddleware := &middleware.ServerMiddleware{
-		Templs: tmpls,
-	}
-	return serverMiddleware, nil
-}
-
-func (app *Application) Init() error {
-	gin.SetMode(gin.ReleaseMode)
+	//gin.SetMode(gin.ReleaseMode)
 	if config.Debug() {
-		gin.SetMode(gin.DebugMode) 
+		gin.SetMode(gin.DebugMode)
+		logrus.SetLevel(logrus.DebugLevel)
 	}
-	mw, err := app.initMiddleware()
-	if err != nil {
-		return err
-	}
-	webServer, err := server.NewWebServer(mw)
+
+	webServer, err := server.NewWebServer()
 	if err != nil {
 		return fmt.Errorf("创建web server出错: %w", err)
 	}
