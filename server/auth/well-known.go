@@ -59,9 +59,7 @@ func OpenIdConfigurationHandler(gctx *gin.Context) {
 		],
 		"grant_types_supported": [
 			"authorization_code",
-			"refresh_token",
-			"urn:ietf:params:oauth:grant-type:device_code",
-			"urn:ietf:params:oauth:grant-type:jwt-bearer"
+			"refresh_token"
 		]
 	}
 	`
