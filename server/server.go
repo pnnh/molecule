@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/gin-contrib/cors"
+	"github.com/pnnh/multiverse-cloud-server/server/auth"
 	"github.com/pnnh/multiverse-cloud-server/server/auth/authorizationserver"
 	"github.com/pnnh/multiverse-cloud-server/server/handlers"
 	"github.com/pnnh/quantum-go/config"
@@ -67,14 +68,16 @@ func (s *WebServer) Init() error {
 	s.router.POST("/server/oauth2/auth", func(gctx *gin.Context) {
 		authorizationserver.AuthEndpointJson(gctx)
 	})
- 
+
 	s.router.POST("/server/oauth2/token", authorizationserver.TokenEndpoint)
 	s.router.POST("/server/oauth2/revoke", func(gctx *gin.Context) {
 		authorizationserver.RevokeEndpoint(gctx)
 	})
-	s.router.POST("/server/oauth2/introspect", func(gctx *gin.Context) { 
+	s.router.POST("/server/oauth2/introspect", func(gctx *gin.Context) {
 		authorizationserver.IntrospectionEndpoint(gctx)
-	}) 
+	})
+
+	s.router.GET("/.well-known/openid-configuration", auth.OpenIdConfigurationHandler)
 
 	return nil
 }
