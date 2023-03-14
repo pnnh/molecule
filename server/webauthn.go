@@ -27,7 +27,7 @@ func InitWebauthn() {
 	webauthnConfig := &webauthn.Config{
 		RPDisplayName: "Multiverse",                                       // Display Name for your site
 		RPID:          "multiverse.direct",                                // Generally the FQDN for your site
-		RPOrigins:      []string{"https://debug.multiverse.direct"},                        // The origin URL for WebAuthn requests
+		RPOrigins:     []string{"https://debug.multiverse.direct"},        // The origin URL for WebAuthn requests
 		RPIcon:        "https://multiverse.direct/static/images/logo.png", // Optional icon URL for your site
 	}
 	if config.Debug() {
@@ -92,7 +92,14 @@ func (s *webauthnHandler) BeginRegistration(gctx *gin.Context) {
 		return
 	}
 
-	jsonResponse(gctx.Writer, options, http.StatusOK)
+	resp := make(map[string]interface{})
+	resp["code"] = 200
+	resp["data"] = map[string]interface{}{
+		"session": username,
+		"options": options.Response,
+	}
+
+	jsonResponse(gctx.Writer, resp, http.StatusOK)
 }
 
 func (s *webauthnHandler) FinishRegistration(gctx *gin.Context) {
@@ -142,6 +149,9 @@ func (s *webauthnHandler) FinishRegistration(gctx *gin.Context) {
 		return
 	}
 
+	resp := make(map[string]interface{})
+	resp["code"] = 200
+	resp["data"] = "Registration Success"
 	jsonResponse(gctx.Writer, "Registration Success", http.StatusOK)
 }
 
@@ -179,8 +189,14 @@ func (s *webauthnHandler) BeginLogin(gctx *gin.Context) {
 		helpers.ResponseMessageError(gctx, "UpdateAccountSession: %w", err)
 		return
 	}
+	resp := make(map[string]interface{})
+	resp["code"] = 200
+	resp["data"] = map[string]interface{}{
+		"session": username,
+		"options": options.Response,
+	}
 
-	jsonResponse(gctx.Writer, options, http.StatusOK)
+	jsonResponse(gctx.Writer, resp, http.StatusOK)
 }
 
 func (s *webauthnHandler) FinishLogin(gctx *gin.Context) {
@@ -207,10 +223,20 @@ func (s *webauthnHandler) FinishLogin(gctx *gin.Context) {
 		return
 	}
 
-	jsonResponse(gctx.Writer, "Login Success", http.StatusOK)
+	jwtToken, err := helpers.GenerateJwtToken(username)
+	if (jwtToken == "") || (err != nil) {
+		helpers.ResponseMessageError(gctx, "参数有误316", err)
+		return
+	}
+
+	resp := make(map[string]interface{})
+	resp["code"] = 200
+	resp["data"] = map[string]interface{}{"authorization": jwtToken}
+	jsonResponse(gctx.Writer, resp, http.StatusOK)
 }
 
 func jsonResponse(w http.ResponseWriter, d interface{}, c int) {
+
 	dj, err := json.Marshal(d)
 	if err != nil {
 		http.Error(w, "Error creating JSON response", http.StatusInternalServerError)

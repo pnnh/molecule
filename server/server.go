@@ -57,9 +57,9 @@ func (s *WebServer) Init() error {
 	s.router.GET("/", indexHandler.Query)
 
 	authHandler := &webauthnHandler{}
-	s.router.GET("/server/register/begin/:username", authHandler.BeginRegistration)
+	s.router.POST("/server/register/begin/:username", authHandler.BeginRegistration)
 	s.router.POST("/server/register/finish/:username", authHandler.FinishRegistration)
-	s.router.GET("/server/login/begin/:username", authHandler.BeginLogin)
+	s.router.POST("/server/login/begin/:username", authHandler.BeginLogin)
 	s.router.POST("/server/login/finish/:username", authHandler.FinishLogin)
 
 	s.router.GET("/server/oauth2/auth", func(gctx *gin.Context) {
@@ -85,7 +85,7 @@ func (s *WebServer) Init() error {
 func (s *WebServer) Start() error {
 	port := os.Getenv("port")
 	if len(port) < 1 {
-		port = "8080"
+		port = "8001"
 	}
 	var handler http.Handler = s
 
