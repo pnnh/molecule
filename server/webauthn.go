@@ -216,6 +216,10 @@ func (s *webauthnHandler) FinishLogin(gctx *gin.Context) {
 		return
 	}
 	sessionData, err := models.UnmarshalWebauthnSession(user.Session.String)
+	if err != nil {
+		helpers.ResponseMessageError(gctx, "参数有误3122", err)
+		return
+	}
 
 	_, err = webAuthn.FinishLogin(user, *sessionData, gctx.Request)
 	if err != nil {

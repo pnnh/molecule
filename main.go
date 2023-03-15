@@ -2,13 +2,11 @@ package main
 
 import (
 	"github.com/pnnh/multiverse-cloud-server/server"
-	"github.com/pnnh/multiverse-cloud-server/server/auth/authorizationserver"
-	"github.com/pnnh/quantum-go/config"
+	"github.com/pnnh/multiverse-cloud-server/server/auth/authorizationserver" 
 	"github.com/sirupsen/logrus"
 )
 
-func main() {
-	config.InitApp()
+func main() { 
 	server.InitWebauthn()
 	authorizationserver.InitOAuth2()
 	app := NewApplication()

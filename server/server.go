@@ -57,23 +57,26 @@ func (s *WebServer) Init() error {
 	s.router.GET("/", indexHandler.Query)
 
 	authHandler := &webauthnHandler{}
-	s.router.POST("/server/register/begin/:username", authHandler.BeginRegistration)
-	s.router.POST("/server/register/finish/:username", authHandler.FinishRegistration)
-	s.router.POST("/server/login/begin/:username", authHandler.BeginLogin)
-	s.router.POST("/server/login/finish/:username", authHandler.FinishLogin)
+	s.router.POST("/register/begin/:username", authHandler.BeginRegistration)
+	s.router.POST("/register/finish/:username", authHandler.FinishRegistration)
+	s.router.POST("/login/begin/:username", authHandler.BeginLogin)
+	s.router.POST("/login/finish/:username", authHandler.FinishLogin)
 
-	s.router.GET("/server/oauth2/auth", func(gctx *gin.Context) {
+	sessionHandler := &handlers.SessionHandler{}
+	s.router.POST("/session/introspect", sessionHandler.Introspect)
+
+	s.router.GET("/oauth2/auth", func(gctx *gin.Context) {
 		authorizationserver.AuthEndpointHtml(gctx)
 	})
-	s.router.POST("/server/oauth2/auth", func(gctx *gin.Context) {
+	s.router.POST("/oauth2/auth", func(gctx *gin.Context) {
 		authorizationserver.AuthEndpointJson(gctx)
 	})
 
-	s.router.POST("/server/oauth2/token", authorizationserver.TokenEndpoint)
-	s.router.POST("/server/oauth2/revoke", func(gctx *gin.Context) {
+	s.router.POST("/oauth2/token", authorizationserver.TokenEndpoint)
+	s.router.POST("/oauth2/revoke", func(gctx *gin.Context) {
 		authorizationserver.RevokeEndpoint(gctx)
 	})
-	s.router.POST("/server/oauth2/introspect", func(gctx *gin.Context) {
+	s.router.POST("/oauth2/introspect", func(gctx *gin.Context) {
 		authorizationserver.IntrospectionEndpoint(gctx)
 	})
 

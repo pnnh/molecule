@@ -11,8 +11,8 @@ require (
 	github.com/ory/fosite v0.44.0
 	github.com/pnnh/quantum-go v0.1.0
 	github.com/sirupsen/logrus v1.9.0
-	golang.org/x/net v0.7.0
-	golang.org/x/oauth2 v0.5.0
+	golang.org/x/net v0.7.0 // indirect
+	golang.org/x/oauth2 v0.5.0 // indirect
 	gopkg.in/square/go-jose.v2 v2.6.0
 )
 
@@ -37,7 +37,7 @@ require (
 	github.com/go-webauthn/revoke v0.1.9 // indirect
 	github.com/goccy/go-json v0.10.0 // indirect
 	github.com/golang-jwt/jwt/v4 v4.4.3 // indirect
-	github.com/golang-jwt/jwt/v5 v5.0.0-rc.1 // indirect
+	github.com/golang-jwt/jwt/v5 v5.0.0-rc.1
 	github.com/golang/glog v1.0.0 // indirect
 	github.com/golang/mock v1.6.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
