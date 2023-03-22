@@ -1,23 +1,23 @@
 package helpers
 
 import (
+	"github.com/pnnh/multiverse-cloud-server/models"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/pnnh/multiverse-cloud-server/protocols"
 	"github.com/sirupsen/logrus"
 )
 
-func ResponseCode(gctx *gin.Context, code int) {
-	message := protocols.CodeMessage(code)
+func ResponseCode(gctx *gin.Context, code models.MCode) {
+	message := models.CodeMessage(code)
 	ResponseCodeMessageData(gctx, code, message, nil)
 }
 
-func ResponseCodeMessage(gctx *gin.Context, code int, message string) {
+func ResponseCodeMessage(gctx *gin.Context, code models.MCode, message string) {
 	ResponseCodeMessageData(gctx, code, message, nil)
 }
 
-func ResponseCodeMessageData(gctx *gin.Context, code int, message string, data interface{}) {
+func ResponseCodeMessageData(gctx *gin.Context, code models.MCode, message string, data interface{}) {
 	jsonBody := gin.H{"code": code}
 	if len(message) > 0 {
 		jsonBody["message"] = message
@@ -28,15 +28,15 @@ func ResponseCodeMessageData(gctx *gin.Context, code int, message string, data i
 	gctx.JSON(http.StatusOK, jsonBody)
 }
 
-func ResponseCodeError(gctx *gin.Context, code int, err error) {
+func ResponseCodeError(gctx *gin.Context, code models.MCode, err error) {
 	if err != nil {
 		logrus.Errorln("ResponseCodeError", gctx.FullPath(), err)
 	}
-	message := protocols.CodeMessage(code)
+	message := models.CodeMessage(code)
 	ResponseCodeMessageData(gctx, code, message, nil)
 }
 
-func ResponseCodeMessageError(gctx *gin.Context, code int, message string, err error) {
+func ResponseCodeMessageError(gctx *gin.Context, code models.MCode, message string, err error) {
 	if err != nil {
 		logrus.Errorln("ResponseCodeMessageError", gctx.FullPath(), message, err)
 	}
@@ -47,5 +47,5 @@ func ResponseMessageError(gctx *gin.Context, message string, err error) {
 	if err != nil {
 		logrus.Errorln("ResponseMessageError", message, err)
 	}
-	ResponseCodeMessageData(gctx, protocols.CodeError, message, nil)
+	ResponseCodeMessageData(gctx, models.CodeError, message, nil)
 }

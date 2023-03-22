@@ -65,6 +65,9 @@ func (s *WebServer) Init() error {
 	sessionHandler := &handlers.SessionHandler{}
 	s.router.POST("/session/introspect", sessionHandler.Introspect)
 
+	s.router.POST("/register/email/send_code", handlers.SendCodeHandler)
+	s.router.POST("/register/email/send_code/finish", handlers.SendCodeFinishHandler)
+
 	s.router.GET("/oauth2/auth", func(gctx *gin.Context) {
 		authorizationserver.AuthEndpointHtml(gctx)
 	})

@@ -8,8 +8,6 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/pnnh/multiverse-cloud-server/protocols"
-
 	"github.com/pnnh/multiverse-cloud-server/models"
 
 	"github.com/pnnh/multiverse-cloud-server/server/helpers"
@@ -50,28 +48,28 @@ func (s *webauthnHandler) BeginRegistration(gctx *gin.Context) {
 
 	username := gctx.Param("username")
 	if len(username) < 1 {
-		helpers.ResponseCode(gctx, protocols.CodeInvalidParameter)
+		helpers.ResponseCode(gctx, models.CodeInvalidParameter)
 		return
 	}
 
 	model, err := models.GetAccount(username)
 	if err != nil {
-		helpers.ResponseCodeMessageError(gctx, protocols.CodeError, "GetAccount error", err)
+		helpers.ResponseCodeMessageError(gctx, models.CodeError, "GetAccount error", err)
 		return
 	}
 	if model != nil {
-		helpers.ResponseCodeMessageError(gctx, protocols.CodeError, "账号已存在", err)
+		helpers.ResponseCodeMessageError(gctx, models.CodeError, "账号已存在", err)
 		return
 	}
 	displayName := strings.Split(username, "@")[0]
-	model = models.NewAccountModel(username, displayName)
+	webauthnModel := models.NewWebauthnAccount(username, displayName)
 
 	registerOptions := func(credCreationOpts *protocol.PublicKeyCredentialCreationOptions) {
-		credCreationOpts.CredentialExcludeList = model.CredentialExcludeList()
+		credCreationOpts.CredentialExcludeList = webauthnModel.CredentialExcludeList()
 	}
 
 	options, sessionData, err := webAuthn.BeginRegistration(
-		model,
+		webauthnModel,
 		registerOptions,
 	)
 	if err != nil {
@@ -135,15 +133,16 @@ func (s *webauthnHandler) FinishRegistration(gctx *gin.Context) {
 	}
 	logrus.Infoln("sessionData2: ", sessionData)
 
-	credential, err := webAuthn.FinishRegistration(user, sessionData, gctx.Request)
+	webauthnModel := models.CopyWebauthnAccount(user)
+	credential, err := webAuthn.FinishRegistration(webauthnModel, sessionData, gctx.Request)
 	if err != nil {
 		helpers.ResponseMessageError(gctx, "参数有误37", err)
 		return
 	}
 
-	user.AddCredential(*credential)
+	webauthnModel.AddCredential(*credential)
 
-	err = models.UpdateAccountCredentials(user)
+	err = models.UpdateAccountCredentials(webauthnModel)
 	if err != nil {
 		helpers.ResponseMessageError(gctx, "UpdateAccountCredentials: %w", err)
 		return
@@ -173,12 +172,12 @@ func (s *webauthnHandler) BeginLogin(gctx *gin.Context) {
 	}
 
 	if user == nil {
-		helpers.ResponseCode(gctx, protocols.CodeAccountNotExists)
+		helpers.ResponseCode(gctx, models.CodeAccountNotExists)
 		return
 	}
 
-	// generate PublicKeyCredentialRequestOptions, session data
-	options, sessionData, err := webAuthn.BeginLogin(user)
+	webauthnModel := models.CopyWebauthnAccount(user)
+	options, sessionData, err := webAuthn.BeginLogin(webauthnModel)
 	if err != nil {
 		helpers.ResponseMessageError(gctx, "参数有误39", err)
 		return
@@ -220,8 +219,8 @@ func (s *webauthnHandler) FinishLogin(gctx *gin.Context) {
 		helpers.ResponseMessageError(gctx, "参数有误3122", err)
 		return
 	}
-
-	_, err = webAuthn.FinishLogin(user, *sessionData, gctx.Request)
+	webauthnModel := models.CopyWebauthnAccount(user)
+	_, err = webAuthn.FinishLogin(webauthnModel, *sessionData, gctx.Request)
 	if err != nil {
 		helpers.ResponseMessageError(gctx, "参数有误315", err)
 		return

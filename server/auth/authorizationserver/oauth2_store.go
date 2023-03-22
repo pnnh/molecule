@@ -3,10 +3,9 @@ package authorizationserver
 import (
 	"context"
 	"fmt"
+	"github.com/pnnh/multiverse-cloud-server/models"
 	"sync"
 	"time"
-
-	"github.com/pnnh/multiverse-cloud-server/server/models"
 
 	"gopkg.in/square/go-jose.v2"
 

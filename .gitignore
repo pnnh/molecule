@@ -10,3 +10,4 @@ target/assets/
 target/bin/
 .vscode/
 debug/
+data/
