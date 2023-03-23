@@ -1,9 +1,9 @@
 package authorizationserver
 
-import ( 
+import (
 	"fmt"
-	"net/http" 
- 
+	"net/http"
+
 	"github.com/sirupsen/logrus"
 
 	"github.com/gin-gonic/gin"
@@ -46,8 +46,6 @@ func AuthEndpointJson(gctx *gin.Context) {
 
 	mySessionData := newSession("peter")
 
-
-
 	// When using the HMACSHA strategy you must use something that implements the HMACSessionContainer.
 	// It brings you the power of overriding the default values.
 	//
@@ -82,7 +80,7 @@ func AuthEndpointJson(gctx *gin.Context) {
 	// 	oauth2.WriteAuthorizeError(ctx, gctx.Writer, ar, err)
 	// 	return
 	// }
-	// code := response.GetParameters().Get("code") 
+	// code := response.GetParameters().Get("code")
 	// userSession := &models.SessionTable{
 	// 	Pk:            helpers.NewPostId(),
 	// 	Username:      "peter",

@@ -61,7 +61,7 @@ func newSession(user string) *openid.DefaultSession {
 			RequestedAt: time.Now(),
 			AuthTime:    time.Now(),
 		},
-		Subject: user,
+		Subject:  user,
 		Username: user,
 		Headers: &jwt.Headers{
 			Extra: make(map[string]interface{}),

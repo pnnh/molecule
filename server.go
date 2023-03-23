@@ -1,15 +1,16 @@
-package server
+package main
 
 import (
 	"fmt"
+	handlers "github.com/pnnh/multiverse-cloud-server/handlers"
+	"github.com/pnnh/multiverse-cloud-server/handlers/account"
+	"github.com/pnnh/multiverse-cloud-server/handlers/auth"
+	"github.com/pnnh/multiverse-cloud-server/handlers/auth/authorizationserver"
 	"net/http"
 	"os"
 	"time"
 
 	"github.com/gin-contrib/cors"
-	"github.com/pnnh/multiverse-cloud-server/server/auth"
-	"github.com/pnnh/multiverse-cloud-server/server/auth/authorizationserver"
-	"github.com/pnnh/multiverse-cloud-server/server/handlers"
 	"github.com/pnnh/quantum-go/config"
 
 	"github.com/gin-gonic/gin"
@@ -56,7 +57,7 @@ func (s *WebServer) Init() error {
 	indexHandler := handlers.NewIndexHandler()
 	s.router.GET("/", indexHandler.Query)
 
-	authHandler := &webauthnHandler{}
+	authHandler := &handlers.WebauthnHandler{}
 	s.router.POST("/register/begin/:username", authHandler.BeginRegistration)
 	s.router.POST("/register/finish/:username", authHandler.FinishRegistration)
 	s.router.POST("/login/begin/:username", authHandler.BeginLogin)
@@ -65,8 +66,10 @@ func (s *WebServer) Init() error {
 	sessionHandler := &handlers.SessionHandler{}
 	s.router.POST("/session/introspect", sessionHandler.Introspect)
 
-	s.router.POST("/register/email/send_code", handlers.SendCodeHandler)
-	s.router.POST("/register/email/send_code/finish", handlers.SendCodeFinishHandler)
+	s.router.POST("/account/signup/email/begin", account.MailSignupBeginHandler)
+	s.router.POST("/account/signup/email/finish", account.MailSignupFinishHandler)
+	s.router.POST("/account/signin/email/begin", account.MailSigninBeginHandler)
+	s.router.POST("/account/signin/email/finish", account.MailSigninFinishHandler)
 
 	s.router.GET("/oauth2/auth", func(gctx *gin.Context) {
 		authorizationserver.AuthEndpointHtml(gctx)
@@ -89,6 +92,9 @@ func (s *WebServer) Init() error {
 }
 
 func (s *WebServer) Start() error {
+	if err := s.Init(); err != nil {
+		return fmt.Errorf("初始化出错: %w", err)
+	}
 	port := os.Getenv("port")
 	if len(port) < 1 {
 		port = "8001"
@@ -110,9 +116,5 @@ func (s *WebServer) Start() error {
 }
 
 func (s *WebServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	//if config.Debug() && strings.HasPrefix(r.URL.Path, "/blog/") {
-	//	devBlogHandler(w, r)
-	//	return
-	//}
 	s.router.ServeHTTP(w, r)
 }

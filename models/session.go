@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/jmoiron/sqlx"
-	"github.com/pnnh/quantum-go/services/sqlxsvc"
+	"github.com/pnnh/quantum-go/services/datastore"
 )
 
 type SessionModel struct {
@@ -27,7 +27,7 @@ func PutSession(model *SessionModel) error {
 		"update_time": model.UpdateTime, "user": model.User, "type": model.Type,
 		"code": model.Code.String}
 
-	_, err := sqlxsvc.NamedExec(sqlText, sqlParams)
+	_, err := datastore.NamedExec(sqlText, sqlParams)
 	if err != nil {
 		return fmt.Errorf("PutSession: %w", err)
 	}
@@ -40,7 +40,7 @@ func GetSession(pk string) (*SessionModel, error) {
 	sqlParams := map[string]interface{}{"pk": pk}
 	var sqlResults []*SessionModel
 
-	rows, err := sqlxsvc.NamedQuery(sqlText, sqlParams)
+	rows, err := datastore.NamedQuery(sqlText, sqlParams)
 	if err != nil {
 		return nil, fmt.Errorf("NamedQuery: %w", err)
 	}

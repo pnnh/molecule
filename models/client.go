@@ -3,7 +3,7 @@ package models
 import (
 	"database/sql"
 	"fmt"
-	"github.com/pnnh/quantum-go/services/sqlxsvc"
+	"github.com/pnnh/quantum-go/services/datastore"
 	"strings"
 
 	"github.com/jmoiron/sqlx"
@@ -139,7 +139,7 @@ func GetClient(id string) (*ClientModel, error) {
 	sqlParams := map[string]interface{}{"id": id}
 	var sqlResults []*ClientTable
 
-	rows, err := sqlxsvc.NamedQuery(sqlText, sqlParams)
+	rows, err := datastore.NamedQuery(sqlText, sqlParams)
 	if err != nil {
 		return nil, fmt.Errorf("NamedQuery: %w", err)
 	}

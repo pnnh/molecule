@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"github.com/go-webauthn/webauthn/protocol"
 	"github.com/go-webauthn/webauthn/webauthn"
-	"github.com/pnnh/quantum-go/services/sqlxsvc"
+	"github.com/pnnh/quantum-go/services/datastore"
 	"github.com/sirupsen/logrus"
 )
 
@@ -118,7 +118,7 @@ func UpdateAccountCredentials(model *WebauthnAccount) error {
 
 	sqlParams := map[string]interface{}{"pk": model.Pk, "credentials": credentials}
 
-	_, err = sqlxsvc.NamedExec(sqlText, sqlParams)
+	_, err = datastore.NamedExec(sqlText, sqlParams)
 	if err != nil {
 		return fmt.Errorf("UpdateAccountCredentials: %w", err)
 	}

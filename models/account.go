@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"github.com/pnnh/quantum-go/server/helpers"
-	"github.com/pnnh/quantum-go/services/sqlxsvc"
+	"github.com/pnnh/quantum-go/services/datastore"
 
 	"github.com/go-webauthn/webauthn/webauthn"
 	"github.com/jmoiron/sqlx"
@@ -45,7 +45,7 @@ func GetAccount(pk string) (*AccountModel, error) {
 	sqlParams := map[string]interface{}{"pk": pk}
 	var sqlResults []*AccountModel
 
-	rows, err := sqlxsvc.NamedQuery(sqlText, sqlParams)
+	rows, err := datastore.NamedQuery(sqlText, sqlParams)
 	if err != nil {
 		return nil, fmt.Errorf("NamedQuery: %w", err)
 	}
@@ -67,7 +67,7 @@ func GetAccountByUsername(username string) (*AccountModel, error) {
 	sqlParams := map[string]interface{}{"account": username}
 	var sqlResults []*AccountModel
 
-	rows, err := sqlxsvc.NamedQuery(sqlText, sqlParams)
+	rows, err := datastore.NamedQuery(sqlText, sqlParams)
 	if err != nil {
 		return nil, fmt.Errorf("NamedQuery: %w", err)
 	}
@@ -90,7 +90,7 @@ func PutAccount(model *AccountModel) error {
 		"account": model.Account, "password": "", "nickname": model.Nickname,
 		"session": model.Session.String}
 
-	_, err := sqlxsvc.NamedExec(sqlText, sqlParams)
+	_, err := datastore.NamedExec(sqlText, sqlParams)
 	if err != nil {
 		return fmt.Errorf("PutAccount: %w", err)
 	}
@@ -112,7 +112,7 @@ func UpdateAccountSession(model *AccountModel, sessionData *webauthn.SessionData
 
 	sqlParams := map[string]interface{}{"pk": model.Pk, "session": model.Session.String}
 
-	_, err = sqlxsvc.NamedExec(sqlText, sqlParams)
+	_, err = datastore.NamedExec(sqlText, sqlParams)
 	if err != nil {
 		return fmt.Errorf("UpdateAccountSession: %w", err)
 	}

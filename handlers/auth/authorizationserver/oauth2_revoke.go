@@ -1,6 +1,6 @@
 package authorizationserver
 
-import ( 
+import (
 	"github.com/gin-gonic/gin"
 )
 

@@ -13,10 +13,6 @@ func ResponseCode(gctx *gin.Context, code models.MCode) {
 	ResponseCodeMessageData(gctx, code, message, nil)
 }
 
-func ResponseCodeMessage(gctx *gin.Context, code models.MCode, message string) {
-	ResponseCodeMessageData(gctx, code, message, nil)
-}
-
 func ResponseCodeMessageData(gctx *gin.Context, code models.MCode, message string, data interface{}) {
 	jsonBody := gin.H{"code": code}
 	if len(message) > 0 {
@@ -26,14 +22,6 @@ func ResponseCodeMessageData(gctx *gin.Context, code models.MCode, message strin
 		jsonBody["data"] = data
 	}
 	gctx.JSON(http.StatusOK, jsonBody)
-}
-
-func ResponseCodeError(gctx *gin.Context, code models.MCode, err error) {
-	if err != nil {
-		logrus.Errorln("ResponseCodeError", gctx.FullPath(), err)
-	}
-	message := models.CodeMessage(code)
-	ResponseCodeMessageData(gctx, code, message, nil)
 }
 
 func ResponseCodeMessageError(gctx *gin.Context, code models.MCode, message string, err error) {

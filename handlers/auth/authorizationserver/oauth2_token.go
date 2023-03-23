@@ -1,15 +1,14 @@
 package authorizationserver
 
-import ( 
-
-	"github.com/gin-gonic/gin" 
+import (
+	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 )
 
 func TokenEndpoint(gctx *gin.Context) {
-	rw := gctx.Writer 
+	rw := gctx.Writer
 	req := gctx.Request
-	
+
 	ctx := req.Context()
 
 	oauth2Session := newSession("xxx_token_user")
