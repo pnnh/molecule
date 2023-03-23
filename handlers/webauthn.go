@@ -23,10 +23,10 @@ var webAuthn *webauthn.WebAuthn
 
 func InitWebauthn() {
 	webauthnConfig := &webauthn.Config{
-		RPDisplayName: "Multiverse",                                       // Display Name for your site
-		RPID:          "multiverse.direct",                                // Generally the FQDN for your site
-		RPOrigins:     []string{"https://debug.multiverse.direct"},        // The origin URL for WebAuthn requests
-		RPIcon:        "https://multiverse.direct/static/images/logo.png", // Optional icon URL for your site
+		RPDisplayName: "Multiverse",                                // Display Name for your site
+		RPID:          "multiverse.direct",                         // Generally the FQDN for your site
+		RPOrigins:     []string{"https://debug.multiverse.direct"}, // The origin URL for WebAuthn requests
+		//RPIcon:        "https://multiverse.direct/static/images/logo.png", // Optional icon URL for your site
 	}
 	if config.Debug() {
 		webauthnConfig.RPID = "debug.multiverse.direct"
@@ -207,7 +207,7 @@ func (s *WebauthnHandler) FinishLogin(gctx *gin.Context) {
 	}
 
 	// get user
-	user, err := models.GetAccount(username)
+	user, err := models.GetAccountByUsername(username)
 
 	// user doesn't exist
 	if err != nil {
@@ -239,7 +239,6 @@ func (s *WebauthnHandler) FinishLogin(gctx *gin.Context) {
 }
 
 func jsonResponse(w http.ResponseWriter, d interface{}, c int) {
-
 	dj, err := json.Marshal(d)
 	if err != nil {
 		http.Error(w, "Error creating JSON response", http.StatusInternalServerError)
@@ -247,5 +246,8 @@ func jsonResponse(w http.ResponseWriter, d interface{}, c int) {
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Test", "Custom")
 	w.WriteHeader(c)
-	fmt.Fprintf(w, "%s", dj)
+	_, err = fmt.Fprintf(w, "%s", dj)
+	if err != nil {
+		http.Error(w, "Error creating JSON response", http.StatusInternalServerError)
+	}
 }

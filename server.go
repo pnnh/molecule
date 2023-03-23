@@ -58,18 +58,17 @@ func (s *WebServer) Init() error {
 	s.router.GET("/", indexHandler.Query)
 
 	authHandler := &handlers.WebauthnHandler{}
-	s.router.POST("/register/begin/:username", authHandler.BeginRegistration)
-	s.router.POST("/register/finish/:username", authHandler.FinishRegistration)
-	s.router.POST("/login/begin/:username", authHandler.BeginLogin)
-	s.router.POST("/login/finish/:username", authHandler.FinishLogin)
-
-	sessionHandler := &handlers.SessionHandler{}
-	s.router.POST("/session/introspect", sessionHandler.Introspect)
-
+	s.router.POST("/account/signup/webauthn/begin/:username", authHandler.BeginRegistration)
+	s.router.POST("account/signup/webauthn/finish:username", authHandler.FinishRegistration)
+	s.router.POST("/account/signin/webauthn/begin/:username", authHandler.BeginLogin)
+	s.router.POST("/account/signin/webauthn/finish/:username", authHandler.FinishLogin)
 	s.router.POST("/account/signup/email/begin", account.MailSignupBeginHandler)
 	s.router.POST("/account/signup/email/finish", account.MailSignupFinishHandler)
 	s.router.POST("/account/signin/email/begin", account.MailSigninBeginHandler)
 	s.router.POST("/account/signin/email/finish", account.MailSigninFinishHandler)
+
+	sessionHandler := &handlers.SessionHandler{}
+	s.router.POST("/account/session/introspect", sessionHandler.Introspect)
 
 	s.router.GET("/oauth2/auth", func(gctx *gin.Context) {
 		authorizationserver.AuthEndpointHtml(gctx)

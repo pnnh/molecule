@@ -2,6 +2,7 @@ package account
 
 import (
 	"database/sql"
+	helpers2 "github.com/pnnh/multiverse-cloud-server/helpers"
 	"net/http"
 	"time"
 
@@ -56,7 +57,7 @@ func MailSignupBeginHandler(gctx *gin.Context) {
 	}
 
 	session := &models.SessionModel{
-		Pk:         helpers.NewPostId(),
+		Pk:         helpers.MustUuid(),
 		Content:    "",
 		CreateTime: time.Now(),
 		UpdateTime: time.Now(),
@@ -145,7 +146,7 @@ func MailSigninBeginHandler(gctx *gin.Context) {
 	}
 
 	session := &models.SessionModel{
-		Pk:         helpers.NewPostId(),
+		Pk:         helpers.MustUuid(),
 		Content:    "",
 		CreateTime: time.Now(),
 		UpdateTime: time.Now(),
@@ -177,8 +178,6 @@ func MailSigninBeginHandler(gctx *gin.Context) {
 	gctx.JSON(http.StatusOK, result)
 }
 
-// todo 这里不应该传session,而应该传username参数以供校验
-// 如校验该账号下是否有匹配该验证码的登陆会话，并验证时效性
 func MailSigninFinishHandler(gctx *gin.Context) {
 	session := gctx.PostForm("session")
 	code := gctx.PostForm("code")
@@ -200,8 +199,22 @@ func MailSigninFinishHandler(gctx *gin.Context) {
 		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("验证码错误"))
 		return
 	}
+
+	user, err := models.GetAccount(sessionModel.User)
+
+	if err != nil || user == nil {
+		helpers2.ResponseMessageError(gctx, "获取用户信息出错", err)
+		return
+	}
+
+	jwtToken, err := helpers2.GenerateJwtToken(user.Account)
+	if (jwtToken == "") || (err != nil) {
+		helpers2.ResponseMessageError(gctx, "参数有误316", err)
+		return
+	}
+
 	sessionData := map[string]interface{}{
-		"session": sessionModel.Pk,
+		"authorization": jwtToken,
 	}
 
 	result := models.CodeOk.WithData(sessionData)
