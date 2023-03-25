@@ -15,15 +15,18 @@ import (
 )
 
 type AccountModel struct {
-	Pk          string         `json:"pk"`    // 主键标识
-	Account     string         `json:"uname"` // 账号
-	Password    string         `json:"upass"` // 密码
+	Pk          string         `json:"pk"`       // 主键标识
+	Account     string         `json:"account"`  // 账号
+	Password    string         `json:"password"` // 密码
+	Photo       sql.NullString `json:"photo"`    // 密码
 	CreateAt    time.Time      `json:"createat"`
 	UpdateAt    time.Time      `json:"updateat"`
 	Nickname    string         `json:"nickname"`
 	Mail        sql.NullString `json:"mail"`
 	Credentials sql.NullString `json:"credentials"`
 	Session     sql.NullString `json:"session"`
+	Description sql.NullString `json:"description"`
+	Status      int            `json:"status"`
 }
 
 func NewAccountModel(name string, displayName string) *AccountModel {
@@ -39,8 +42,7 @@ func NewAccountModel(name string, displayName string) *AccountModel {
 }
 
 func GetAccount(pk string) (*AccountModel, error) {
-	sqlText := `select pk, account, mail, nickname, credentials, session
-	from accounts where pk = :pk and status = 1;`
+	sqlText := `select * from accounts where pk = :pk and status = 1;`
 
 	sqlParams := map[string]interface{}{"pk": pk}
 	var sqlResults []*AccountModel
@@ -129,4 +131,16 @@ func UnmarshalWebauthnSession(session string) (*webauthn.SessionData, error) {
 		return nil, fmt.Errorf("反序列化sessionData出错: %s", err)
 	}
 	return sessionData, nil
+}
+
+func UpdateAccountPassword(pk string, password string) error {
+	sqlText := `update accounts set password = :password where pk = :pk;`
+
+	sqlParams := map[string]interface{}{"pk": pk, "password": password}
+
+	_, err := datastore.NamedExec(sqlText, sqlParams)
+	if err != nil {
+		return fmt.Errorf("UpdateAccountPassword: %w", err)
+	}
+	return nil
 }

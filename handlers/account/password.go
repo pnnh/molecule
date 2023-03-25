@@ -9,22 +9,14 @@ import (
 	"github.com/pnnh/multiverse-cloud-server/models"
 
 	"github.com/gin-gonic/gin"
-	"github.com/go-playground/validator/v10"
-	"github.com/pnnh/quantum-go/config"
 	"github.com/pnnh/quantum-go/server/helpers"
-	"github.com/pnnh/quantum-go/services/email"
 )
 
-func MailSignupBeginHandler(gctx *gin.Context) {
+func PasswordSignupBeginHandler(gctx *gin.Context) {
 	username := gctx.PostForm("username")
 	nickname := gctx.PostForm("nickname")
 	if username == "" {
 		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("account为空"))
-		return
-	}
-	validate := validator.New()
-	if err := validate.Var(username, "required,email"); err != nil {
-		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("account格式错误"))
 		return
 	}
 	accountModel, err := models.GetAccountByUsername(username)
@@ -53,32 +45,17 @@ func MailSignupBeginHandler(gctx *gin.Context) {
 		return
 	}
 
-	mailSender := config.MustGetConfigurationString("MAIL_SENDER")
-	if len(mailSender) < 3 {
-		gctx.JSON(http.StatusOK, models.CodeAccountExists.WithMessage("邮箱发送者未配置"))
-		return
-	}
-
 	session := &models.SessionModel{
 		Pk:         helpers.MustUuid(),
 		Content:    "",
 		CreateTime: time.Now(),
 		UpdateTime: time.Now(),
 		User:       accountModel.Pk,
-		Type:       "signup",
+		Type:       "signup_password",
 		Code:       sql.NullString{String: helpers.RandNumberRunes(6)},
 	}
 
 	if err := models.PutSession(session); err != nil {
-		gctx.JSON(http.StatusOK, models.CodeError.ToResult())
-		return
-	}
-
-	subject := "注册验证码"
-	body := "您的验证码是: " + session.Code.String
-
-	err = email.SendMail(mailSender, subject, body, username)
-	if err != nil {
 		gctx.JSON(http.StatusOK, models.CodeError.ToResult())
 		return
 	}
@@ -92,10 +69,10 @@ func MailSignupBeginHandler(gctx *gin.Context) {
 	gctx.JSON(http.StatusOK, result)
 }
 
-func MailSignupFinishHandler(gctx *gin.Context) {
+func PasswordSignupFinishHandler(gctx *gin.Context) {
 	session := gctx.PostForm("session")
-	code := gctx.PostForm("code")
-	if session == "" || code == "" {
+	password := gctx.PostForm("password")
+	if session == "" || password == "" {
 		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("code或session为空"))
 		return
 	}
@@ -108,10 +85,21 @@ func MailSignupFinishHandler(gctx *gin.Context) {
 		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("sessionModel不存在"))
 		return
 	}
-	if sessionModel.Code.String != code {
-		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("验证码错误"))
+	if sessionModel.Type != "signup_password" {
+		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("sessionModel类型不对"))
 		return
 	}
+	encrypted, err := helpers.HashPassword(password)
+	if err != nil {
+		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("RsaEncryptString error"))
+		return
+	}
+
+	if err := models.UpdateAccountPassword(sessionModel.User, encrypted); err != nil {
+		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("UpdateAccountPassword error"))
+		return
+	}
+
 	sessionData := map[string]interface{}{
 		"session": sessionModel.Pk,
 	}
@@ -121,15 +109,10 @@ func MailSignupFinishHandler(gctx *gin.Context) {
 	gctx.JSON(http.StatusOK, result)
 }
 
-func MailSigninBeginHandler(gctx *gin.Context) {
+func PasswordSigninBeginHandler(gctx *gin.Context) {
 	username := gctx.PostForm("username")
 	if username == "" {
 		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("account为空"))
-		return
-	}
-	validate := validator.New()
-	if err := validate.Var(username, "required,email"); err != nil {
-		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("account格式错误"))
 		return
 	}
 	accountModel, err := models.GetAccountByUsername(username)
@@ -142,32 +125,17 @@ func MailSigninBeginHandler(gctx *gin.Context) {
 		return
 	}
 
-	mailSender := config.MustGetConfigurationString("MAIL_SENDER")
-	if len(mailSender) < 3 {
-		gctx.JSON(http.StatusOK, models.CodeAccountExists.WithMessage("邮箱发送者未配置"))
-		return
-	}
-
 	session := &models.SessionModel{
 		Pk:         helpers.MustUuid(),
 		Content:    "",
 		CreateTime: time.Now(),
 		UpdateTime: time.Now(),
 		User:       accountModel.Pk,
-		Type:       "signin",
+		Type:       "signin_password",
 		Code:       sql.NullString{String: helpers.RandNumberRunes(6)},
 	}
 
 	if err := models.PutSession(session); err != nil {
-		gctx.JSON(http.StatusOK, models.CodeError.ToResult())
-		return
-	}
-
-	subject := "登陆验证码"
-	body := "您的验证码是: " + session.Code.String
-
-	err = email.SendMail(mailSender, subject, body, username)
-	if err != nil {
 		gctx.JSON(http.StatusOK, models.CodeError.ToResult())
 		return
 	}
@@ -181,10 +149,10 @@ func MailSigninBeginHandler(gctx *gin.Context) {
 	gctx.JSON(http.StatusOK, result)
 }
 
-func MailSigninFinishHandler(gctx *gin.Context) {
+func PasswordSigninFinishHandler(gctx *gin.Context) {
 	session := gctx.PostForm("session")
-	code := gctx.PostForm("code")
-	if session == "" || code == "" {
+	password := gctx.PostForm("password")
+	if session == "" || password == "" {
 		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("code或session为空"))
 		return
 	}
@@ -197,20 +165,20 @@ func MailSigninFinishHandler(gctx *gin.Context) {
 		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("sessionModel不存在"))
 		return
 	}
-
-	if sessionModel.Code.String != code {
-		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("验证码错误"))
+	account, err := models.GetAccount(sessionModel.User)
+	if err != nil {
+		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("GetAccount error"))
 		return
 	}
 
-	user, err := models.GetAccount(sessionModel.User)
+	ok := helpers.CheckPasswordHash(password, account.Password)
 
-	if err != nil || user == nil {
-		helpers2.ResponseMessageError(gctx, "获取用户信息出错", err)
+	if !ok {
+		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("密码错误"))
 		return
 	}
 
-	jwtToken, err := helpers2.GenerateJwtToken(user.Account)
+	jwtToken, err := helpers2.GenerateJwtToken(account.Account)
 	if (jwtToken == "") || (err != nil) {
 		helpers2.ResponseMessageError(gctx, "参数有误316", err)
 		return
