@@ -51,7 +51,7 @@ func (s *WebauthnHandler) BeginRegistration(gctx *gin.Context) {
 		return
 	}
 
-	model, err := models.GetAccount(username)
+	model, err := models.GetAccountByUsername(username)
 	if err != nil {
 		helpers2.ResponseCodeMessageError(gctx, models.CodeError, "GetAccount error", err)
 		return
@@ -107,7 +107,7 @@ func (s *WebauthnHandler) FinishRegistration(gctx *gin.Context) {
 		return
 	}
 
-	user, err := models.GetAccount(username)
+	user, err := models.GetAccountByUsername(username)
 
 	if err != nil {
 		helpers2.ResponseMessageError(gctx, "参数有误5", err)
@@ -162,7 +162,7 @@ func (s *WebauthnHandler) BeginLogin(gctx *gin.Context) {
 	}
 
 	// get user
-	user, err := models.GetAccount(username)
+	user, err := models.GetAccountByUsername(username)
 
 	// user doesn't exist
 	if err != nil {

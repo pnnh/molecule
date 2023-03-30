@@ -130,7 +130,7 @@ func (s *DatabaseStore) GetClient(_ context.Context, id string) (fosite.Client, 
 
 	//  cl, ok := s.Clients[id]
 	//  if !ok {
-	// 	 return nil, fosite.ErrNotFound
+	// 	 return nil, fosite.CodeNotFound
 	//  }
 	//  return cl, nil
 }

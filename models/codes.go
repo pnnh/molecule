@@ -29,24 +29,22 @@ func (c MCode) WithError(err error) *CommonResult {
 }
 
 const (
-	CodeOk                 MCode = 200
-	CodeError              MCode = 500
-	CodeAccountExists      MCode = 600 // 账号已存在
-	CodeAccountNotExists   MCode = 601 // 账号不存在
-	CodeNotLogin           MCode = 602
-	CodeInvalidParameter   MCode = 603
-	MarkLangCustom         MCode = 604
-	MarkLangMarkdown       MCode = 605
-	ErrNotFound            MCode = 404
-	StatusAccountExists    MCode = 607 // 账号已存在
-	StatusLoginCodeInvalid MCode = 608 // 登录验证码无效
+	CodeOk               MCode = 200
+	CodeError            MCode = 500
+	CodeAccountExists    MCode = 600 // 账号已存在
+	CodeAccountNotExists MCode = 601 // 账号不存在
+	CodeNotLogin         MCode = 602
+	CodeInvalidParameter MCode = 603
+	CodeNotFound         MCode = 404
+	StatusAccountExists  MCode = 607 // 账号已存在
+	CodeInvalidParams    MCode = 609 // 参数无效
 )
 
 func CodeMessage(code MCode) string {
 	switch code {
 	case CodeOk:
 		return "成功"
-	case ErrNotFound:
+	case CodeNotFound:
 		return "资源未找到"
 	case CodeAccountNotExists:
 		return "账号不存在"

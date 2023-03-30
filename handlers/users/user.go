@@ -7,19 +7,43 @@ import (
 	"net/http"
 )
 
-func UserSelectHandler(gctx *gin.Context) {
-	offset := gctx.PostForm("offset")
-	limit := gctx.PostForm("limit")
+func UserGetHandler(ctx *gin.Context) {
+	//pk := ctx.Query("pk")
+	//username := ctx.Query("username")
+	//if pk == "" && username == "" {
+	//	ctx.JSON(http.StatusOK, models.CodeInvalidParams)
+	//	return
+	//}
+	//var model *models.AccountModel
+	//var err error
+	//if pk != "" {
+	//	model, err = helpers.AccountsTable.Get(pk)
+	//} else {
+	//	//model, err = helpers.AccountsTable.Get(pk)
+	//}
+	//if err != nil {
+	//	ctx.JSON(http.StatusOK, models.CodeError.WithError(err))
+	//	return
+	//}
+	//
+	//result := models.CodeOk.WithData(model)
+	//
+	//ctx.JSON(http.StatusOK, result)
+}
+
+func UserSelectHandler(ctx *gin.Context) {
+	offset := ctx.PostForm("offset")
+	limit := ctx.PostForm("limit")
 	logrus.Debugln("offset", offset, "limit", limit)
 
 	accounts, err := models.SelectAccounts(0, 10)
 	if err != nil {
-		gctx.JSON(http.StatusOK, models.CodeError.WithError(err))
+		ctx.JSON(http.StatusOK, models.CodeError.WithError(err))
 		return
 	}
 	count, err := models.CountAccounts()
 	if err != nil {
-		gctx.JSON(http.StatusOK, models.CodeError.WithError(err))
+		ctx.JSON(http.StatusOK, models.CodeError.WithError(err))
 		return
 	}
 	sessionData := map[string]interface{}{
@@ -29,5 +53,5 @@ func UserSelectHandler(gctx *gin.Context) {
 
 	result := models.CodeOk.WithData(sessionData)
 
-	gctx.JSON(http.StatusOK, result)
+	ctx.JSON(http.StatusOK, result)
 }

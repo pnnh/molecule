@@ -78,10 +78,12 @@ func (s *WebServer) Init() error {
 	s.router.POST("/account/signin/password/finish", account.PasswordSigninFinishHandler)
 
 	s.router.GET("/users/select", users.UserSelectHandler)
+	s.router.GET("/users/get", users.UserGetHandler)
 
 	s.router.GET("/applications/select", applications.ApplicationSelectHandler)
 
 	s.router.GET("/roles/select", roles.RoleSelectHandler)
+	s.router.GET("/roles/get", roles.RoleGetHandler)
 
 	s.router.GET("/permissions/select", permissions.PermissionSelectHandler)
 
