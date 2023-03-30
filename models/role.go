@@ -1,10 +1,11 @@
-//go:generate go run /home/azureuser/Projects/Quantum/quantum-go/services/datastore/generator/generator
+//go:generate /home/azureuser/Projects/Quantum/quantum-go/services/datastore/generator/generator
 package models
 
 import (
 	"time"
 )
 
+// RoleModel table: roles
 type RoleModel struct {
 	Pk          string    `json:"pk"`
 	Name        string    `json:"name"`

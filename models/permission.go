@@ -1,9 +1,12 @@
+//go:generate /home/azureuser/Projects/Quantum/quantum-go/services/datastore/generator/generator
+
 package models
 
 import (
 	"time"
 )
 
+// PermissionModel 权限模型 table: permissions
 type PermissionModel struct {
 	Pk          string    `json:"pk"`
 	Name        string    `json:"name"`

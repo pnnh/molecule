@@ -1,3 +1,5 @@
+//go:generate /home/azureuser/Projects/Quantum/quantum-go/services/datastore/generator/generator
+
 package models
 
 import (
@@ -13,6 +15,7 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
+// AccountModel 账号模型 table: accounts
 type AccountModel struct {
 	Pk          string    `json:"pk"`       // 主键标识
 	Username    string    `json:"username"` // 账号
