@@ -44,7 +44,7 @@ func (u *WebauthnAccount) WebAuthnID() []byte {
 // WebAuthnName returns the user's username
 func (u *WebauthnAccount) WebAuthnName() string {
 	//return u.Name
-	return u.Account
+	return u.Username
 }
 
 // WebAuthnDisplayName returns the user's display name
@@ -64,8 +64,8 @@ func (u *WebauthnAccount) AddCredential(cred webauthn.Credential) {
 
 // WebAuthnCredentials returns credentials owned by the user
 func (u *WebauthnAccount) WebAuthnCredentials() []webauthn.Credential {
-	if len(u.CredentialsSlice) < 1 && u.Credentials.Valid {
-		decodeBytes, err := base64.StdEncoding.DecodeString(u.Credentials.String)
+	if len(u.CredentialsSlice) < 1 && u.Credentials != "" {
+		decodeBytes, err := base64.StdEncoding.DecodeString(u.Credentials)
 		if err != nil {
 			logrus.Errorln("WebAuthnCredentials DecodeString: %w", err)
 			return u.CredentialsSlice

@@ -27,14 +27,14 @@ func PasswordSignupBeginHandler(gctx *gin.Context) {
 	if accountModel == nil {
 		accountModel = &models.AccountModel{
 			Pk:          helpers.NewPostId(),
-			Account:     username,
+			Username:    username,
 			Password:    "",
-			CreateAt:    time.Now(),
-			UpdateAt:    time.Now(),
+			CreateTime:  time.Now(),
+			UpdateTime:  time.Now(),
 			Nickname:    nickname,
-			Mail:        sql.NullString{String: username},
-			Credentials: sql.NullString{String: ""},
-			Session:     sql.NullString{String: ""},
+			Mail:        username,
+			Credentials: "",
+			Session:     "",
 		}
 		if err := models.PutAccount(accountModel); err != nil {
 			gctx.JSON(http.StatusOK, models.CodeError.WithError(err))
@@ -178,7 +178,7 @@ func PasswordSigninFinishHandler(gctx *gin.Context) {
 		return
 	}
 
-	jwtToken, err := helpers2.GenerateJwtToken(account.Account)
+	jwtToken, err := helpers2.GenerateJwtToken(account.Username)
 	if (jwtToken == "") || (err != nil) {
 		helpers2.ResponseMessageError(gctx, "参数有误316", err)
 		return

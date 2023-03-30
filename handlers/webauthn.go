@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"database/sql"
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
@@ -83,7 +82,7 @@ func (s *WebauthnHandler) BeginRegistration(gctx *gin.Context) {
 	}
 	logrus.Infoln("sessionBytes: ", string(sessionBytes))
 	sessionText := base64.StdEncoding.EncodeToString(sessionBytes)
-	model.Session = sql.NullString{String: sessionText, Valid: true}
+	model.Session = sessionText
 	logrus.Infoln("sessionData: ", sessionData)
 	if err = models.PutAccount(model); err != nil {
 		helpers2.ResponseMessageError(gctx, "PutAccount error", err)
@@ -118,7 +117,7 @@ func (s *WebauthnHandler) FinishRegistration(gctx *gin.Context) {
 		helpers2.ResponseMessageError(gctx, fmt.Sprintf("GetAccount结果为空: %s", username), nil)
 		return
 	}
-	sessionText := user.Session.String
+	sessionText := user.Session
 	sessionBytes, err := base64.StdEncoding.DecodeString(sessionText)
 	if err != nil {
 		helpers2.ResponseMessageError(gctx, fmt.Sprintf("反序列化session出错: %s", username), nil)
@@ -214,7 +213,7 @@ func (s *WebauthnHandler) FinishLogin(gctx *gin.Context) {
 		helpers2.ResponseMessageError(gctx, "参数有误312", err)
 		return
 	}
-	sessionData, err := models.UnmarshalWebauthnSession(user.Session.String)
+	sessionData, err := models.UnmarshalWebauthnSession(user.Session)
 	if err != nil {
 		helpers2.ResponseMessageError(gctx, "参数有误3122", err)
 		return

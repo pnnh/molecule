@@ -37,7 +37,7 @@ const (
 	CodeInvalidParameter   MCode = 603
 	MarkLangCustom         MCode = 604
 	MarkLangMarkdown       MCode = 605
-	ErrNotFound            MCode = 606
+	ErrNotFound            MCode = 404
 	StatusAccountExists    MCode = 607 // 账号已存在
 	StatusLoginCodeInvalid MCode = 608 // 登录验证码无效
 )
