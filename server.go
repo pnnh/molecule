@@ -7,6 +7,8 @@ import (
 	"github.com/pnnh/multiverse-cloud-server/handlers/applications"
 	"github.com/pnnh/multiverse-cloud-server/handlers/auth"
 	"github.com/pnnh/multiverse-cloud-server/handlers/auth/authorizationserver"
+	"github.com/pnnh/multiverse-cloud-server/handlers/permissions"
+	"github.com/pnnh/multiverse-cloud-server/handlers/roles"
 	"github.com/pnnh/multiverse-cloud-server/handlers/users"
 	"net/http"
 	"os"
@@ -78,6 +80,10 @@ func (s *WebServer) Init() error {
 	s.router.GET("/users/select", users.UserSelectHandler)
 
 	s.router.GET("/applications/select", applications.ApplicationSelectHandler)
+
+	s.router.GET("/roles/select", roles.RoleSelectHandler)
+
+	s.router.GET("/permissions/select", permissions.PermissionSelectHandler)
 
 	sessionHandler := &handlers.SessionHandler{}
 	s.router.POST("/account/session/introspect", sessionHandler.Introspect)
