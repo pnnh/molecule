@@ -4,7 +4,7 @@ import (
 	"github.com/pnnh/quantum-go/services/datastore"
 )
 
-type RoleSchema struct {
+type PermissionSchema struct {
 	Pk          datastore.ModelCondition
 	Name        datastore.ModelCondition
 	CreateTime  datastore.ModelCondition
@@ -12,8 +12,8 @@ type RoleSchema struct {
 	Description datastore.ModelCondition
 }
 
-func NewRoleSchema() RoleSchema {
-	where := RoleSchema{
+func NewPermissionSchema() PermissionSchema {
+	where := PermissionSchema{
 		Pk:          datastore.NewCondition("Pk", "string", "pk", "varchar"),
 		Name:        datastore.NewCondition("Name", "string", "name", "varchar"),
 		CreateTime:  datastore.NewCondition("CreateTime", "time", "create_time", "varchar"),
@@ -23,7 +23,7 @@ func NewRoleSchema() RoleSchema {
 	return where
 }
 
-func (r RoleSchema) GetConditions() []datastore.ModelCondition {
+func (r PermissionSchema) GetConditions() []datastore.ModelCondition {
 	return []datastore.ModelCondition{
 		r.Pk,
 		r.Name,
@@ -33,5 +33,5 @@ func (r RoleSchema) GetConditions() []datastore.ModelCondition {
 	}
 }
 
-var RoleDataSet = datastore.NewTable[RoleSchema, RoleModel]("roles",
-	NewRoleSchema())
+var PermissionDataSet = datastore.NewTable[PermissionSchema, PermissionModel]("permissions",
+	NewPermissionSchema())

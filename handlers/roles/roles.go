@@ -17,9 +17,9 @@ func RoleGetHandler(ctx *gin.Context) {
 	var model *models.RoleModel
 	var err error
 	if pk != "" {
-		model, err = models.RolesTable.Get(pk)
+		model, err = models.RoleDataSet.Get(pk)
 	} else {
-		model, err = models.RolesTable.GetWhere(func(m models.RoleSchema) {
+		model, err = models.RoleDataSet.GetWhere(func(m models.RoleSchema) {
 			m.Name.Eq(name)
 		})
 	}
@@ -38,12 +38,12 @@ func RoleSelectHandler(gctx *gin.Context) {
 	limit := gctx.PostForm("limit")
 	logrus.Debugln("offset", offset, "limit", limit)
 
-	accounts, err := models.RolesTable.Select(0, 10)
+	accounts, err := models.RoleDataSet.Select(0, 10)
 	if err != nil {
 		gctx.JSON(http.StatusOK, models.CodeError.WithError(err))
 		return
 	}
-	count, err := models.RolesTable.Count()
+	count, err := models.RoleDataSet.Count()
 	if err != nil {
 		gctx.JSON(http.StatusOK, models.CodeError.WithError(err))
 		return

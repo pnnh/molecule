@@ -1,4 +1,4 @@
-//go:generate /home/azureuser/Projects/Quantum/quantum-go/services/datastore/generator/generator
+//go:generate generator
 package models
 
 import (

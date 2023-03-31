@@ -8,27 +8,29 @@ import (
 )
 
 func UserGetHandler(ctx *gin.Context) {
-	//pk := ctx.Query("pk")
-	//username := ctx.Query("username")
-	//if pk == "" && username == "" {
-	//	ctx.JSON(http.StatusOK, models.CodeInvalidParams)
-	//	return
-	//}
-	//var model *models.AccountModel
-	//var err error
-	//if pk != "" {
-	//	model, err = helpers.AccountsTable.Get(pk)
-	//} else {
-	//	//model, err = helpers.AccountsTable.Get(pk)
-	//}
-	//if err != nil {
-	//	ctx.JSON(http.StatusOK, models.CodeError.WithError(err))
-	//	return
-	//}
-	//
-	//result := models.CodeOk.WithData(model)
-	//
-	//ctx.JSON(http.StatusOK, result)
+	pk := ctx.Query("pk")
+	username := ctx.Query("username")
+	if pk == "" && username == "" {
+		ctx.JSON(http.StatusOK, models.CodeInvalidParams)
+		return
+	}
+	var model *models.AccountModel
+	var err error
+	if pk != "" {
+		model, err = models.AccountDataSet.Get(pk)
+	} else {
+		model, err = models.AccountDataSet.GetWhere(func(m models.AccountSchema) {
+			m.Username.Eq(username)
+		})
+	}
+	if err != nil {
+		ctx.JSON(http.StatusOK, models.CodeError.WithError(err))
+		return
+	}
+
+	result := models.CodeOk.WithData(model)
+
+	ctx.JSON(http.StatusOK, result)
 }
 
 func UserSelectHandler(ctx *gin.Context) {
