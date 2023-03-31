@@ -2,7 +2,6 @@ package roles
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/pnnh/multiverse-cloud-server/helpers"
 	"github.com/pnnh/multiverse-cloud-server/models"
 	"github.com/sirupsen/logrus"
 	"net/http"
@@ -18,9 +17,9 @@ func RoleGetHandler(ctx *gin.Context) {
 	var model *models.RoleModel
 	var err error
 	if pk != "" {
-		model, err = helpers.RolesTable.Get(pk)
+		model, err = models.RolesTable.Get(pk)
 	} else {
-		model, err = helpers.RolesTable.GetWhere(func(m models.RoleTable) {
+		model, err = models.RolesTable.GetWhere(func(m models.RoleSchema) {
 			m.Name.Eq(name)
 		})
 	}
@@ -39,12 +38,12 @@ func RoleSelectHandler(gctx *gin.Context) {
 	limit := gctx.PostForm("limit")
 	logrus.Debugln("offset", offset, "limit", limit)
 
-	accounts, err := helpers.RolesTable.Select(0, 10)
+	accounts, err := models.RolesTable.Select(0, 10)
 	if err != nil {
 		gctx.JSON(http.StatusOK, models.CodeError.WithError(err))
 		return
 	}
-	count, err := helpers.RolesTable.Count()
+	count, err := models.RolesTable.Count()
 	if err != nil {
 		gctx.JSON(http.StatusOK, models.CodeError.WithError(err))
 		return

@@ -2,34 +2,33 @@ package users
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/pnnh/multiverse-cloud-server/helpers"
 	"github.com/pnnh/multiverse-cloud-server/models"
 	"github.com/sirupsen/logrus"
 	"net/http"
 )
 
 func UserGetHandler(ctx *gin.Context) {
-	pk := ctx.Query("pk")
-	username := ctx.Query("username")
-	if pk == "" && username == "" {
-		ctx.JSON(http.StatusOK, models.CodeInvalidParams)
-		return
-	}
-	var model *models.AccountModel
-	var err error
-	if pk != "" {
-		model, err = helpers.AccountsTable.Get(pk)
-	} else {
-		//model, err = helpers.AccountsTable.Get(pk)
-	}
-	if err != nil {
-		ctx.JSON(http.StatusOK, models.CodeError.WithError(err))
-		return
-	}
-
-	result := models.CodeOk.WithData(model)
-
-	ctx.JSON(http.StatusOK, result)
+	//pk := ctx.Query("pk")
+	//username := ctx.Query("username")
+	//if pk == "" && username == "" {
+	//	ctx.JSON(http.StatusOK, models.CodeInvalidParams)
+	//	return
+	//}
+	//var model *models.AccountModel
+	//var err error
+	//if pk != "" {
+	//	model, err = helpers.AccountsTable.Get(pk)
+	//} else {
+	//	//model, err = helpers.AccountsTable.Get(pk)
+	//}
+	//if err != nil {
+	//	ctx.JSON(http.StatusOK, models.CodeError.WithError(err))
+	//	return
+	//}
+	//
+	//result := models.CodeOk.WithData(model)
+	//
+	//ctx.JSON(http.StatusOK, result)
 }
 
 func UserSelectHandler(ctx *gin.Context) {

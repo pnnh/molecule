@@ -4,26 +4,31 @@ import (
 	"github.com/pnnh/quantum-go/services/datastore"
 )
 
-type RoleTable struct {
-	*RoleModel
-	*datastore.Table[RoleTable, RoleModel]
-	Pk          *datastore.ModelCondition[RoleTable, RoleModel]
-	Name        *datastore.ModelCondition[RoleTable, RoleModel]
-	CreateTime  *datastore.ModelCondition[RoleTable, RoleModel]
-	UpdateTime  *datastore.ModelCondition[RoleTable, RoleModel]
-	Description *datastore.ModelCondition[RoleTable, RoleModel]
+type RoleSchema struct {
+	//*RoleModel
+	//datastore.Table[RoleSchema, RoleModel]
+	Pk          datastore.ModelCondition
+	Name        datastore.ModelCondition
+	CreateTime  datastore.ModelCondition
+	UpdateTime  datastore.ModelCondition
+	Description datastore.ModelCondition
 }
 
-func NewRoleTable() *RoleTable {
-	table := datastore.NewTable[RoleTable, RoleModel]("roles")
-	where := RoleTable{
-		Table:       table,
-		Pk:          table.NewCondition("Pk", "string", "pk", "varchar"),
-		Name:        table.NewCondition("Name", "string", "name", "varchar"),
-		CreateTime:  table.NewCondition("CreateTime", "time", "create_time", "varchar"),
-		UpdateTime:  table.NewCondition("UpdateTime", "time", "update_time", "varchar"),
-		Description: table.NewCondition("Description", "string", "description", "varchar"),
+func NewRoleTable() RoleSchema {
+	where := RoleSchema{
+		//Table:       table,
+		Pk:          datastore.NewCondition("Pk", "string", "pk", "varchar"),
+		Name:        datastore.NewCondition("Name", "string", "name", "varchar"),
+		CreateTime:  datastore.NewCondition("CreateTime", "time", "create_time", "varchar"),
+		UpdateTime:  datastore.NewCondition("UpdateTime", "time", "update_time", "varchar"),
+		Description: datastore.NewCondition("Description", "string", "description", "varchar"),
 	}
-	table.SetTable(where)
-	return &where
+	return where
 }
+
+func (r RoleSchema) GetConditions() []datastore.ModelCondition {
+	return []datastore.ModelCondition{r.Pk, r.Name, r.CreateTime, r.UpdateTime, r.Description}
+}
+
+var RolesTable = datastore.NewTable[RoleSchema, RoleModel]("roles",
+	NewRoleTable())
