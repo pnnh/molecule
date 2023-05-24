@@ -224,8 +224,13 @@ func (s *WebauthnHandler) FinishLogin(gctx *gin.Context) {
 		helpers2.ResponseMessageError(gctx, "参数有误315", err)
 		return
 	}
-
-	jwtToken, err := helpers2.GenerateJwtToken(username)
+	jwtKey, _ := config.GetConfigurationString("JWT_KEY")
+	if jwtKey == "" {
+		logrus.Fatalln("JWT_KEY未配置")
+		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("JWT_KEY未配置"))
+		return
+	}
+	jwtToken, err := helpers2.GenerateJwtToken(username, jwtKey)
 	if (jwtToken == "") || (err != nil) {
 		helpers2.ResponseMessageError(gctx, "参数有误316", err)
 		return

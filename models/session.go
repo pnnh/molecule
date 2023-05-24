@@ -1,7 +1,6 @@
 package models
 
 import (
-	"database/sql"
 	"fmt"
 	"time"
 
@@ -10,13 +9,13 @@ import (
 )
 
 type SessionModel struct {
-	Pk         string         `json:"pk"`
-	Content    string         `json:"content"`
-	CreateTime time.Time      `json:"create_time" db:"create_time"`
-	UpdateTime time.Time      `json:"update_time" db:"update_time"`
-	User       string         `json:"user"`
-	Type       string         `json:"type"`
-	Code       sql.NullString `json:"code"`
+	Pk         string    `json:"pk"`
+	Content    string    `json:"content"`
+	CreateTime time.Time `json:"create_time" db:"create_time"`
+	UpdateTime time.Time `json:"update_time" db:"update_time"`
+	User       string    `json:"user"`
+	Type       string    `json:"type"`
+	Code       string    `json:"code"`
 }
 
 func PutSession(model *SessionModel) error {
@@ -25,7 +24,7 @@ func PutSession(model *SessionModel) error {
 
 	sqlParams := map[string]interface{}{"pk": model.Pk, "content": model.Content, "create_time": model.CreateTime,
 		"update_time": model.UpdateTime, "user": model.User, "type": model.Type,
-		"code": model.Code.String}
+		"code": model.Code}
 
 	_, err := datastore.NamedExec(sqlText, sqlParams)
 	if err != nil {

@@ -1,19 +1,24 @@
-package auth
+package authorizationserver
 
-import "github.com/gin-gonic/gin"
+import (
+	"fmt"
+	"github.com/gin-gonic/gin"
+)
 
 func OpenIdConfigurationHandler(gctx *gin.Context) {
+	issuer := getIssuer()
+	resourcesServer := getResourcesServer()
 
-	responseText := `
+	responseTemplate := `
 	{
-		"issuer": "https://debug.multiverse.direct",
-		"authorization_endpoint": "https://debug.multiverse.direct/server/oauth2/auth",
-		"device_authorization_endpoint": "https://debug.multiverse.direct/server/device/code",
-		"token_endpoint": "https://debug.multiverse.direct/server/oauth2/token",
-		"userinfo_endpoint": "https://debug.multiverse.direct/server/resources/userinfo",
-		"revocation_endpoint": "https://debug.multiverse.direct/server/oauth2/revoke",
-		"introspection_endpoint": "https://debug.multiverse.direct/server/oauth2/introspect",
-		"jwks_uri": "https://debug.multiverse.direct/server/oauth2/certs",
+		"issuer": "%s",
+		"authorization_endpoint": "%s/oauth2/auth",
+		"device_authorization_endpoint": "%s/device/code",
+		"token_endpoint": "%s/oauth2/token",
+		"userinfo_endpoint": "%s/resources/userinfo",
+		"revocation_endpoint": "%s/oauth2/revoke",
+		"introspection_endpoint": "%s/oauth2/introspect",
+		"jwks_uri": "%s/oauth2/jwks",
 		"response_types_supported": [
 			"code",
 			"token",
@@ -63,5 +68,8 @@ func OpenIdConfigurationHandler(gctx *gin.Context) {
 		]
 	}
 	`
+
+	responseText := fmt.Sprintf(responseTemplate, issuer, issuer, issuer, issuer,
+		resourcesServer, issuer, issuer, issuer)
 	gctx.Data(200, "application/json", []byte(responseText))
 }

@@ -50,12 +50,29 @@ func InitOAuth2() {
 
 var oauth2 fosite.OAuth2Provider
 
+func getIssuer() string {
+	issuer := "https://authsvc.bitpie.xyz"
+	if !config.Debug() {
+		issuer = "https://authsvc.diverse.site"
+	}
+	return issuer
+}
+
+func getResourcesServer() string {
+	server := "https://ressvc.bitpie.xyz"
+	if !config.Debug() {
+		server = "https://ressvc.diverse.site"
+	}
+	return server
+}
+
 func newSession(user string) *openid.DefaultSession {
+	issuer := getIssuer()
 	return &openid.DefaultSession{
 		Claims: &jwt.IDTokenClaims{
-			Issuer:      "https://fosite.my-application.com",
+			Issuer:      issuer,
 			Subject:     user,
-			Audience:    []string{"https://my-client.my-application.com"},
+			Audience:    []string{},
 			ExpiresAt:   time.Now().Add(time.Hour * 6),
 			IssuedAt:    time.Now(),
 			RequestedAt: time.Now(),

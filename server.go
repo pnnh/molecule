@@ -5,7 +5,6 @@ import (
 	handlers "github.com/pnnh/multiverse-cloud-server/handlers"
 	"github.com/pnnh/multiverse-cloud-server/handlers/account"
 	"github.com/pnnh/multiverse-cloud-server/handlers/applications"
-	"github.com/pnnh/multiverse-cloud-server/handlers/auth"
 	"github.com/pnnh/multiverse-cloud-server/handlers/auth/authorizationserver"
 	"github.com/pnnh/multiverse-cloud-server/handlers/permissions"
 	"github.com/pnnh/multiverse-cloud-server/handlers/roles"
@@ -38,11 +37,10 @@ func NewWebServer() (*WebServer, error) {
 		router:    router,
 		resources: make(map[string]IResource)}
 
-	corsDomain := []string{"https://multiverse.direct", "https://www.multiverse.direct"}
+	corsDomain := []string{"https://auth.diverse.site"}
 
 	if config.Debug() {
-		corsDomain = append(corsDomain, "http://127.0.0.1:3500")
-		corsDomain = append(corsDomain, "https://debug.multiverse.direct")
+		corsDomain = append(corsDomain, "https://auth.bitpie.xyz")
 	}
 
 	router.Use(cors.New(cors.Config{
@@ -104,8 +102,14 @@ func (s *WebServer) Init() error {
 	s.router.POST("/oauth2/introspect", func(gctx *gin.Context) {
 		authorizationserver.IntrospectionEndpoint(gctx)
 	})
+	s.router.GET("/oauth2/jwks", func(gctx *gin.Context) {
+		authorizationserver.JwksEndpoint(gctx)
+	})
+	s.router.POST("/oauth2/signin", func(gctx *gin.Context) {
+		authorizationserver.OAuth2SigninEndpoint(gctx)
+	})
 
-	s.router.GET("/.well-known/openid-configuration", auth.OpenIdConfigurationHandler)
+	s.router.GET("/.well-known/openid-configuration", authorizationserver.OpenIdConfigurationHandler)
 
 	return nil
 }

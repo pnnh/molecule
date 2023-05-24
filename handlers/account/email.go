@@ -1,8 +1,8 @@
 package account
 
 import (
-	"database/sql"
 	helpers2 "github.com/pnnh/multiverse-cloud-server/helpers"
+	"github.com/sirupsen/logrus"
 	"net/http"
 	"time"
 
@@ -66,7 +66,7 @@ func MailSignupBeginHandler(gctx *gin.Context) {
 		UpdateTime: time.Now(),
 		User:       accountModel.Pk,
 		Type:       "signup",
-		Code:       sql.NullString{String: helpers.RandNumberRunes(6)},
+		Code:       helpers.RandNumberRunes(6),
 	}
 
 	if err := models.PutSession(session); err != nil {
@@ -75,7 +75,7 @@ func MailSignupBeginHandler(gctx *gin.Context) {
 	}
 
 	subject := "注册验证码"
-	body := "您的验证码是: " + session.Code.String
+	body := "您的验证码是: " + session.Code
 
 	err = email.SendMail(mailSender, subject, body, username)
 	if err != nil {
@@ -108,7 +108,7 @@ func MailSignupFinishHandler(gctx *gin.Context) {
 		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("sessionModel不存在"))
 		return
 	}
-	if sessionModel.Code.String != code {
+	if sessionModel.Code != code {
 		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("验证码错误"))
 		return
 	}
@@ -155,7 +155,7 @@ func MailSigninBeginHandler(gctx *gin.Context) {
 		UpdateTime: time.Now(),
 		User:       accountModel.Pk,
 		Type:       "signin",
-		Code:       sql.NullString{String: helpers.RandNumberRunes(6)},
+		Code:       helpers.RandNumberRunes(6),
 	}
 
 	if err := models.PutSession(session); err != nil {
@@ -164,7 +164,7 @@ func MailSigninBeginHandler(gctx *gin.Context) {
 	}
 
 	subject := "登陆验证码"
-	body := "您的验证码是: " + session.Code.String
+	body := "您的验证码是: " + session.Code
 
 	err = email.SendMail(mailSender, subject, body, username)
 	if err != nil {
@@ -198,7 +198,7 @@ func MailSigninFinishHandler(gctx *gin.Context) {
 		return
 	}
 
-	if sessionModel.Code.String != code {
+	if sessionModel.Code != code {
 		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("验证码错误"))
 		return
 	}
@@ -209,8 +209,14 @@ func MailSigninFinishHandler(gctx *gin.Context) {
 		helpers2.ResponseMessageError(gctx, "获取用户信息出错", err)
 		return
 	}
+	jwtKey, _ := config.GetConfigurationString("JWT_KEY")
+	if jwtKey == "" {
+		logrus.Fatalln("JWT_KEY未配置")
+		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("JWT_KEY未配置"))
+		return
+	}
 
-	jwtToken, err := helpers2.GenerateJwtToken(user.Username)
+	jwtToken, err := helpers2.GenerateJwtToken(user.Username, jwtKey)
 	if (jwtToken == "") || (err != nil) {
 		helpers2.ResponseMessageError(gctx, "参数有误316", err)
 		return

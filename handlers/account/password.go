@@ -1,8 +1,9 @@
 package account
 
 import (
-	"database/sql"
 	helpers2 "github.com/pnnh/multiverse-cloud-server/helpers"
+	"github.com/pnnh/quantum-go/config"
+	"github.com/sirupsen/logrus"
 	"net/http"
 	"time"
 
@@ -52,7 +53,7 @@ func PasswordSignupBeginHandler(gctx *gin.Context) {
 		UpdateTime: time.Now(),
 		User:       accountModel.Pk,
 		Type:       "signup_password",
-		Code:       sql.NullString{String: helpers.RandNumberRunes(6)},
+		Code:       helpers.RandNumberRunes(6),
 	}
 
 	if err := models.PutSession(session); err != nil {
@@ -132,7 +133,7 @@ func PasswordSigninBeginHandler(gctx *gin.Context) {
 		UpdateTime: time.Now(),
 		User:       accountModel.Pk,
 		Type:       "signin_password",
-		Code:       sql.NullString{String: helpers.RandNumberRunes(6)},
+		Code:       helpers.RandNumberRunes(6),
 	}
 
 	if err := models.PutSession(session); err != nil {
@@ -177,8 +178,13 @@ func PasswordSigninFinishHandler(gctx *gin.Context) {
 		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("密码错误"))
 		return
 	}
-
-	jwtToken, err := helpers2.GenerateJwtToken(account.Username)
+	jwtKey, _ := config.GetConfigurationString("JWT_KEY")
+	if jwtKey == "" {
+		logrus.Fatalln("JWT_KEY未配置")
+		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("JWT_KEY未配置"))
+		return
+	}
+	jwtToken, err := helpers2.GenerateJwtToken(account.Username, jwtKey)
 	if (jwtToken == "") || (err != nil) {
 		helpers2.ResponseMessageError(gctx, "参数有误316", err)
 		return

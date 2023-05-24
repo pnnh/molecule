@@ -2,12 +2,9 @@
 build/
 gen/
 __debug_bin
-data/
 target/assets/
 go.work
 go.work.sum
-target/assets/
 target/bin/
 .vscode/
 debug/
-data/

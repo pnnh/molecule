@@ -1,8 +1,13 @@
 package authorizationserver
 
 import (
+	"encoding/base64"
 	"fmt"
+	"github.com/pnnh/multiverse-cloud-server/helpers"
+	"github.com/pnnh/multiverse-cloud-server/models"
+	"github.com/pnnh/quantum-go/config"
 	"net/http"
+	"strings"
 
 	"github.com/sirupsen/logrus"
 
@@ -17,12 +22,33 @@ func AuthEndpointHtml(gctx *gin.Context) {
 		return
 	}
 
-	var requestedScopes string
-	for _, this := range ar.GetRequestedScopes() {
-		requestedScopes += fmt.Sprintf(`<li><input type="checkbox" name="scopes" value="%s">%s</li>`, this, this)
+	webUrl, _ := config.GetConfiguration("WEB_URL")
+	if webUrl == "" {
+		logrus.Errorln("WEB_URL未配置")
+		oauth2.WriteAuthorizeError(gctx, gctx.Writer, ar, err)
+		return
+	}
+	webAuthUrl := fmt.Sprintf("%s%s?%s", webUrl, gctx.Request.URL.Path, gctx.Request.URL.RawQuery)
+	authInfo := base64.URLEncoding.EncodeToString([]byte(webAuthUrl))
+	webSigninUrl := fmt.Sprintf("%s/oauth2/signin?authinfo=%s", webUrl, authInfo)
+
+	// 检查是否已登录
+	authHeader := gctx.Request.Header.Get("Authorization")
+	if authHeader == "" {
+		gctx.Redirect(http.StatusFound, webSigninUrl)
+		return
 	}
 
-	gctx.Redirect(http.StatusFound, "/authorization")
+	jwtToken := strings.TrimPrefix(authHeader, "Bearer ")
+	jwtKey, _ := config.GetConfigurationString("JWT_KEY")
+	if jwtKey == "" {
+		logrus.Fatalln("JWT_KEY未配置")
+		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("JWT_KEY未配置"))
+		return
+	}
+	_, err = helpers.ParseJwtToken(jwtToken, jwtKey)
+
+	gctx.Redirect(http.StatusFound, webAuthUrl)
 }
 
 func AuthEndpointJson(gctx *gin.Context) {
@@ -40,62 +66,14 @@ func AuthEndpointJson(gctx *gin.Context) {
 		requestedScopes += fmt.Sprintf(`<li><input type="checkbox" name="scopes" value="%s">%s</li>`, this, this)
 	}
 
-	for _, scope := range gctx.Request.PostForm["scopes"] {
+	scopes := gctx.Request.PostForm["scopes"]
+	for _, scope := range scopes {
 		ar.GrantScope(scope)
 	}
 
 	mySessionData := newSession("peter")
 
-	// When using the HMACSHA strategy you must use something that implements the HMACSessionContainer.
-	// It brings you the power of overriding the default values.
-	//
-	// mySessionData.HMACSession = &strategy.HMACSession{
-	//	AccessTokenExpiry: time.Now().Add(time.Day),
-	//	AuthorizeCodeExpiry: time.Now().Add(time.Day),
-	// }
-	//
-
-	// If you're using the JWT strategy, there's currently no distinction between access token and authorize code claims.
-	// Therefore, you both access token and authorize code will have the same "exp" claim. If this is something you
-	// need let us know on github.
-	//
-	// mySessionData.JWTClaims.ExpiresAt = time.Now().Add(time.Day)
-
-	// It's also wise to check the requested scopes, e.g.:
-	// if ar.GetRequestedScopes().Has("admin") {
-	//     http.Error(rw, "you're not allowed to do that", http.StatusForbidden)
-	//     return
-	// }
-
 	response, err := oauth2.NewAuthorizeResponse(ctx, ar, mySessionData)
-
-	// oauth2SessionBytes, err := json.Marshal(mySessionData)
-	// if err != nil {
-	// 	logrus.Printf("序列化OAuth2 session出错", err)
-	// 	oauth2.WriteAuthorizeError(ctx, gctx.Writer, ar, err)
-	// 	return
-	// }
-	// if err != nil {
-	// 	logrus.Printf("Error occurred in NewAuthorizeResponse: %+v", err)
-	// 	oauth2.WriteAuthorizeError(ctx, gctx.Writer, ar, err)
-	// 	return
-	// }
-	// code := response.GetParameters().Get("code")
-	// userSession := &models.SessionTable{
-	// 	Pk:            helpers.NewPostId(),
-	// 	Username:      "peter",
-	// 	OAuth2Token:   sql.NullString{Valid: false},
-	// 	OAuth2Code:    sql.NullString{String: code, Valid: true},
-	// 	Oauth2Session: sql.NullString{String: string(oauth2SessionBytes), Valid: true},
-	// 	CreateTime:    time.Now(),
-	// 	UpdateTime:    time.Now(),
-	// 	Webauthn:      sql.NullString{Valid: false},
-	// }
-	// if err = models.SaveSession(userSession); err != nil {
-	// 	logrus.Printf("保存OAuth2 session出错", err)
-	// 	oauth2.WriteAuthorizeError(ctx, gctx.Writer, ar, err)
-	// 	return
-	// }
 
 	oauth2.WriteAuthorizeResponse(ctx, gctx.Writer, ar, response)
 }

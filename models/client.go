@@ -1,7 +1,6 @@
 package models
 
 import (
-	"database/sql"
 	"fmt"
 	"github.com/pnnh/quantum-go/services/datastore"
 	"strings"
@@ -10,23 +9,10 @@ import (
 	"github.com/ory/fosite"
 )
 
-type ClientTable struct {
-	Pk             string         `json:"pk"`
-	ID             string         `json:"id"`
-	Secret         string         `json:"secret"`
-	RotatedSecrets sql.NullString `json:"rotated_secrets" db:"rotated_secrets"`
-	RedirectURIs   sql.NullString `json:"redirect_uris" db:"redirect_uris"`
-	GrantTypes     sql.NullString `json:"grant_types" db:"grant_types"`
-	ResponseTypes  sql.NullString `json:"response_types" db:"response_types"`
-	Scopes         sql.NullString `json:"scopes"`
-	Audience       sql.NullString `json:"audience"`
-	Public         sql.NullInt32  `json:"public"`
-}
-
-func (t *ClientTable) ToModel() *ClientModel {
+func ApplicationToClient(app *ApplicationModel) *ClientModel {
 	model := &ClientModel{
-		ID:     t.ID,
-		Secret: []byte(t.Secret),
+		ID:     app.Id,
+		Secret: []byte(app.Secret),
 		//RotatedSecrets: make([][]byte, 0),
 		//RedirectURIs:   []string{t.RedirectURIs.String},
 		//GrantTypes:     []string{t.GrantTypes.String},
@@ -35,32 +21,32 @@ func (t *ClientTable) ToModel() *ClientModel {
 		//Audience:       []string{t.Audience.String},
 	}
 
-	for _, v := range strings.Split(t.RotatedSecrets.String, ",") {
+	for _, v := range strings.Split(app.RotatedSecrets, ",") {
 		model.RotatedSecrets = append(model.RotatedSecrets, []byte(v))
 	}
 
 	// for _, v := range strings.Split(t.RedirectURIs.String, ",") {
 	// 	model.RedirectURIs = append(model.RedirectURIs,  v)
 	// }
-	model.RedirectURIs = append(model.RedirectURIs, strings.Split(t.RedirectURIs.String, ",")...)
+	model.RedirectURIs = append(model.RedirectURIs, strings.Split(app.RedirectUris, ",")...)
 	// for _, v := range strings.Split(t.GrantTypes.String, ",") {
 	// 	model.GrantTypes = append(model.GrantTypes,  v)
 	// }
-	model.GrantTypes = append(model.GrantTypes, strings.Split(t.GrantTypes.String, ",")...)
+	model.GrantTypes = append(model.GrantTypes, strings.Split(app.GrantTypes, ",")...)
 	// for _, v := range strings.Split(t.ResponseTypes.String, ",") {
 	// 	model.ResponseTypes = append(model.ResponseTypes,  v)
 	// }
-	model.ResponseTypes = append(model.ResponseTypes, strings.Split(t.ResponseTypes.String, ",")...)
+	model.ResponseTypes = append(model.ResponseTypes, strings.Split(app.ResponseTypes, ",")...)
 	// for _, v := range strings.Split(t.Scopes.String, ",") {
 	// 	model.Scopes = append(model.Scopes,  v)
 	// }
-	model.Scopes = append(model.Scopes, strings.Split(t.Scopes.String, ",")...)
+	model.Scopes = append(model.Scopes, strings.Split(app.Scopes, ",")...)
 	// for _, v := range strings.Split(t.Audience.String, ",") {
 	// 	model.Audience = append(model.Audience,  v)
 	// }
-	model.Audience = append(model.Audience, strings.Split(t.Audience.String, ",")...)
+	model.Audience = append(model.Audience, strings.Split(app.Audience, ",")...)
 
-	if t.Public.Valid && t.Public.Int32 == 1 {
+	if app.Public == 1 {
 		model.Public = true
 	}
 
@@ -108,11 +94,6 @@ func (c *ClientModel) GetScopes() fosite.Arguments {
 }
 
 func (c *ClientModel) GetGrantTypes() fosite.Arguments {
-	// https://openid.net/specs/openid-connect-registration-1_0.html#ClientMetadata
-	//
-	// JSON array containing a list of the OAuth 2.0 Grant Types that the Client is declaring
-	// that it will restrict itself to using.
-	// If omitted, the default is that the Client will use only the authorization_code Grant Type.
 	if len(c.GrantTypes) == 0 {
 		return fosite.Arguments{"authorization_code"}
 	}
@@ -120,11 +101,7 @@ func (c *ClientModel) GetGrantTypes() fosite.Arguments {
 }
 
 func (c *ClientModel) GetResponseTypes() fosite.Arguments {
-	// https://openid.net/specs/openid-connect-registration-1_0.html#ClientMetadata
-	//
-	// JSON array containing a list of the OAuth 2.0 response_type values that the Client is declaring
-	// that it will restrict itself to using. If omitted, the default is that the Client will use
-	// only the code Response Type.
+
 	if len(c.ResponseTypes) == 0 {
 		return fosite.Arguments{"code"}
 	}
@@ -137,7 +114,7 @@ func GetClient(id string) (*ClientModel, error) {
 	from applications where id = :id;`
 
 	sqlParams := map[string]interface{}{"id": id}
-	var sqlResults []*ClientTable
+	var sqlResults []*ApplicationModel
 
 	rows, err := datastore.NamedQuery(sqlText, sqlParams)
 	if err != nil {
@@ -148,7 +125,7 @@ func GetClient(id string) (*ClientModel, error) {
 	}
 
 	for _, v := range sqlResults {
-		model := v.ToModel()
+		model := ApplicationToClient(v)
 		return model, nil
 	}
 
