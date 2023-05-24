@@ -1,0 +1,16 @@
+bin/
+obj/
+/packages/
+riderModule.iml
+/_ReSharper.Caches/
+.idea/
+.vs/
+Gliese/wwwroot/assets/
+Browser/debug/
+Docker/bin
+.vscode/
+build/
+debug/
+appsettings.Development.json
+*.DotSettings.user
+data/

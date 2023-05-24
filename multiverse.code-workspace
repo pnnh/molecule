@@ -1,0 +1,16 @@
+{
+  "folders": [
+    {
+      "path": "client/web"
+    },
+    {
+      "path": "client/desktop"
+    },
+    {
+      "path": "server/authorization"
+    },
+    {
+      "path": "server/resources"
+    }
+  ]
+}
