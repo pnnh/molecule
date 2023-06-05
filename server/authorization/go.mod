@@ -8,9 +8,8 @@ require (
 	github.com/go-webauthn/webauthn v0.8.2
 	github.com/jmoiron/sqlx v1.3.5
 	github.com/ory/fosite v0.44.0
-	github.com/pnnh/quantum-go v0.1.0
+	github.com/pnnh/quantum-go v0.1.1
 	github.com/sirupsen/logrus v1.9.0
-	golang.org/x/time v0.3.0
 	gopkg.in/square/go-jose.v2 v2.6.0
 )
 
@@ -20,9 +19,8 @@ require (
 	github.com/klauspost/cpuid/v2 v2.2.4 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	golang.org/x/arch v0.3.0 // indirect
+	golang.org/x/time v0.3.0 // indirect
 )
-
-replace github.com/pnnh/quantum-go => ../../Quantum/quantum-go
 
 require (
 	github.com/asaskevich/govalidator v0.0.0-20230301143203-a9d515a09cc2 // indirect
@@ -91,7 +89,7 @@ require (
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/protobuf v1.30.0 // indirect
 	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
-	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
+	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect

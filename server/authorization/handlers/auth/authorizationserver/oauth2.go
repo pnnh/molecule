@@ -18,7 +18,7 @@ import (
 var (
 	// Check the api documentation of `compose.Config` for further configuration options.
 	fositeConfig = &fosite.Config{
-		AccessTokenLifespan: time.Minute * 30,
+		AccessTokenLifespan: time.Hour * 72,
 		GlobalSecret:        secret,
 		// ...
 	}
