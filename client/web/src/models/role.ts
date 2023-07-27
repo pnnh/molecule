@@ -1,6 +1,7 @@
-import {RestfulAddress} from '@/utils/config'
+ 
 import axios from 'axios'
 import {CommonReslut} from './common-result'
+import { serverConfig } from '@/services/server/config'
 
 export interface RoleModel {
     pk: string
@@ -22,7 +23,7 @@ export async function selectRoles (page: number, size: number, token: string): P
     offset = 0
   }
   const response = await axios.get<CommonReslut<selectResultModel>>(
-    RestfulAddress.ServerUrl + '/roles/select',
+    serverConfig.SERVER + '/roles/select',
     {
       params: {offset, limit: size},
       headers: {Authorization: token},

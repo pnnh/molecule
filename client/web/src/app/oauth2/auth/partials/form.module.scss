@@ -1,0 +1,95 @@
+
+.loginContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  height: 28rem;
+  width: 40rem;   // 因为隐藏了授权选择部分，所以宽度可以缩小
+  margin: 0 auto;
+
+  .loginSection {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    border: solid 0.5px #ccc6;
+    border-radius: 8px;
+    background: #FFFFFF;
+    padding: 0;
+    margin-top: 8rem;
+
+    .sectionLeft {
+      flex-grow: 1;
+      padding: 1rem;
+
+      .logoRow {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        margin-top: 2rem;
+      }
+      .fieldsRow {
+        margin-top: 2rem;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        .fieldsRowContent {
+          display: flex;
+          flex-direction: row;
+          gap: 1rem;
+        }
+      }
+      .captchaRow {
+        margin-top: 2rem;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        .fieldsRowContent {
+          display: flex;
+          flex-direction: row;
+          gap: 1rem;
+        }
+        .captchaWrap{
+          position: absolute;
+          top: 450px;
+          left: 50%;
+          margin-left: -150px;
+          width: 300px;
+        }
+
+        .captchaBtn{
+          position: relative;
+          width: 300px !important;
+          margin: 0 auto !important;
+        }
+      }
+      .submitRow {
+        display: flex;
+        margin-top: 2rem;
+        flex-direction: row;
+        justify-content: center;
+        .buttons {
+          display: flex;
+          flex-direction: column;
+        }
+      }
+      .errorRow {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        margin-top: 32px;
+        color: red;
+      }
+    }
+    .sectionRight {
+      display: none; // 暂时隐藏授权范围选择窗口，后续视功能需要打开
+      flex-grow: 1;
+      padding: 1rem 0 1rem 1rem;
+      background: whitesmoke;
+
+      .scopeTitle {
+        font-size: 1rem;
+        margin-bottom: 1rem;
+      }
+    }
+  }
+}

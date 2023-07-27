@@ -1,6 +1,7 @@
-import {RestfulAddress} from '@/utils/config'
+ 
 import axios from 'axios'
 import {CommonReslut} from './common-result'
+import { serverConfig } from '@/services/server/config'
 
 export class SessionModel {
   pk = ''
@@ -17,7 +18,7 @@ export function genBasicToken (username: string): string {
 }
 
 export async function sessionIntrospect (token: string): Promise<SessionModel | null> {
-  const url = RestfulAddress.ServerUrl + '/account/session/introspect'
+  const url = serverConfig.SERVER + '/account/session/introspect'
   const response = await axios.post<CommonReslut<SessionModel>>(url,
     {},
     {

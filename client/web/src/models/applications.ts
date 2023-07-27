@@ -1,6 +1,7 @@
-import {RestfulAddress} from '@/utils/config'
+
 import axios from 'axios'
 import {CommonReslut} from './common-result'
+import { serverConfig } from '@/services/server/config'
 
 export interface ApplicationModel {
     pk: string
@@ -22,7 +23,7 @@ export async function selectPublicApplications (page: number, size: number): Pro
     offset = 0
   }
   const response = await axios.get<CommonReslut<selectResultModel>>(
-    RestfulAddress.ServerUrl + '/public/applications/select',
+    serverConfig.SERVER + '/public/applications/select',
     {
       params: {offset, limit: size},
     })
@@ -35,7 +36,7 @@ export async function selectApplications (page: number, size: number, token: str
     offset = 0
   }
   const response = await axios.get<CommonReslut<selectResultModel>>(
-    RestfulAddress.ServerUrl + '/applications/select',
+    serverConfig.SERVER + '/applications/select',
     {
       params: {offset, limit: size},
       headers: {Authorization: token},

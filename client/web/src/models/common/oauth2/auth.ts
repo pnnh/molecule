@@ -5,6 +5,8 @@ export interface ServerAuthParams {
     scope: string
     state: string
     nonce: string
+    error: string
+    authed: string
 }
 
 export interface ServerAuthResponse {

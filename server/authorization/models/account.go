@@ -65,10 +65,10 @@ func GetAccount(pk string) (*AccountModel, error) {
 }
 
 func GetAccountByUsername(username string) (*AccountModel, error) {
-	sqlText := `select pk, account, mail, nickname, credentials, session
-	from accounts where account = :account and status = 1;`
+	sqlText := `select *
+	from accounts where username = :username and status = 1;`
 
-	sqlParams := map[string]interface{}{"account": username}
+	sqlParams := map[string]interface{}{"username": username}
 	var sqlResults []*AccountModel
 
 	rows, err := datastore.NamedQuery(sqlText, sqlParams)

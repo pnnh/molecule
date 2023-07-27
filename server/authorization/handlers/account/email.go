@@ -1,10 +1,11 @@
 package account
 
 import (
-	helpers2 "github.com/pnnh/multiverse-cloud-server/helpers"
-	"github.com/sirupsen/logrus"
 	"net/http"
 	"time"
+
+	"github.com/pnnh/multiverse-cloud-server/handlers/auth/authorizationserver"
+	helpers2 "github.com/pnnh/multiverse-cloud-server/helpers"
 
 	"github.com/pnnh/multiverse-cloud-server/models"
 
@@ -209,14 +210,8 @@ func MailSigninFinishHandler(gctx *gin.Context) {
 		helpers2.ResponseMessageError(gctx, "获取用户信息出错", err)
 		return
 	}
-	jwtKey, _ := config.GetConfigurationString("JWT_KEY")
-	if jwtKey == "" {
-		logrus.Fatalln("JWT_KEY未配置")
-		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("JWT_KEY未配置"))
-		return
-	}
 
-	jwtToken, err := helpers2.GenerateJwtToken(user.Username, jwtKey)
+	jwtToken, err := helpers2.GenerateJwtTokenRs256(user.Username, authorizationserver.PrivateKeyString)
 	if (jwtToken == "") || (err != nil) {
 		helpers2.ResponseMessageError(gctx, "参数有误316", err)
 		return

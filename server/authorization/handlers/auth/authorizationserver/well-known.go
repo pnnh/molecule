@@ -6,8 +6,8 @@ import (
 )
 
 func OpenIdConfigurationHandler(gctx *gin.Context) {
-	issuer := getIssuer()
-	resourcesServer := getResourcesServer()
+	issuer := getIssure()
+	resourcesServer := getUserServer()
 
 	responseTemplate := `
 	{

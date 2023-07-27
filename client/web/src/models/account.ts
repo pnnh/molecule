@@ -1,7 +1,8 @@
-import {RestfulAddress} from '@/utils/config'
+
 import axios from 'axios'
 import {CommonReslut} from './common-result'
 import FormData from '~/form-data'
+import { serverConfig } from '@/services/server/config'
 
 
 export class AccountModel {
@@ -14,7 +15,7 @@ export class AccountModel {
 }
 
 export async function getAccountModel (token: string): Promise<AccountModel | null> {
-  const response = await axios.post<CommonReslut<AccountModel>>(RestfulAddress.ServerUrl + '/account/userinfo',
+  const response = await axios.post<CommonReslut<AccountModel>>(serverConfig.SERVER + '/account/userinfo',
     {},
     {
       params: {},
@@ -36,7 +37,7 @@ export async function serverSignupByMailBegin (username: string, nickname: strin
   const requestForm = new FormData()
   requestForm.append('username', username)
   requestForm.append('nickname', nickname)
-  const url = RestfulAddress.ServerUrl + '/account/signup/email/begin'
+  const url = serverConfig.SERVER + '/account/signup/email/begin'
   const response = await axios.post<CommonReslut<{ session: string }>>(url,
     requestForm,
     {
@@ -60,7 +61,7 @@ export async function serverSignupByMailFinish (session: string, code: string) {
   const requestForm = new FormData()
   requestForm.append('session', session)
   requestForm.append('code', code)
-  const url = RestfulAddress.ServerUrl + '/account/signup/email/finish'
+  const url = serverConfig.SERVER + '/account/signup/email/finish'
   const response = await axios.post<CommonReslut<string>>(url,
     requestForm,
     {
@@ -83,7 +84,7 @@ export async function serverSignupByMailFinish (session: string, code: string) {
 export async function serverSigninByMailBegin (username: string) {
   const requestForm = new FormData()
   requestForm.append('username', username)
-  const url = RestfulAddress.ServerUrl + '/account/signin/email/begin'
+  const url = serverConfig.SERVER + '/account/signin/email/begin'
   const response = await axios.post<CommonReslut<{ session: string }>>(url,
     requestForm,
     {
@@ -107,7 +108,7 @@ export async function serverSigninByMailFinish (session: string, code: string) {
   const requestForm = new FormData()
   requestForm.append('session', session)
   requestForm.append('code', code)
-  const url = RestfulAddress.ServerUrl + '/account/signin/email/finish'
+  const url = serverConfig.SERVER + '/account/signin/email/finish'
   const response = await axios.post<CommonReslut<{ authorization: string }>>(url,
     requestForm,
     {
@@ -131,7 +132,7 @@ export async function serverSignupByPasswordBegin (username: string, nickname: s
   const requestForm = new FormData()
   requestForm.append('username', username)
   requestForm.append('nickname', nickname)
-  const url = RestfulAddress.ServerUrl + '/account/signup/password/begin'
+  const url = serverConfig.SERVER + '/account/signup/password/begin'
   const response = await axios.post<CommonReslut<{ session: string }>>(url,
     requestForm,
     {
@@ -155,7 +156,7 @@ export async function serverSignupByPasswordFinish (session: string, password: s
   const requestForm = new FormData()
   requestForm.append('session', session)
   requestForm.append('password', password)
-  const url = RestfulAddress.ServerUrl + '/account/signup/password/finish'
+  const url = serverConfig.SERVER + '/account/signup/password/finish'
   const response = await axios.post<CommonReslut<string>>(url,
     requestForm,
     {
@@ -178,7 +179,7 @@ export async function serverSignupByPasswordFinish (session: string, password: s
 export async function serverSigninByPasswordBegin (username: string) {
   const requestForm = new FormData()
   requestForm.append('username', username)
-  const url = RestfulAddress.ServerUrl + '/account/signin/password/begin'
+  const url = serverConfig.SERVER + '/account/signin/password/begin'
   const response = await axios.post<CommonReslut<{ session: string }>>(url,
     requestForm,
     {
@@ -202,7 +203,7 @@ export async function serverSigninByPasswordFinish (session: string, password: s
   const requestForm = new FormData()
   requestForm.append('session', session)
   requestForm.append('password', password)
-  const url = RestfulAddress.ServerUrl + '/account/signin/password/finish'
+  const url = serverConfig.SERVER + '/account/signin/password/finish'
   const response = await axios.post<CommonReslut<{ authorization: string }>>(url,
     requestForm,
     {

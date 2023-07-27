@@ -1,10 +1,9 @@
+import { serverConfig } from '@/services/server/config'
 import crypto from 'crypto'
-import {loadConfig} from '@/utils/config'
-
-const config = loadConfig()
+ 
 const algorithm = 'aes-256-ctr'
-const secretKey = config.AES_KEY
-const iv = Buffer.from(config.AES_IV ?? '', 'utf-8')
+const secretKey = serverConfig.AES_KEY
+const iv = Buffer.from(serverConfig.AES_IV ?? '', 'utf-8')
 
 if (!secretKey) throw new Error('AES_KEY is not defined')
 if (!iv) throw new Error('AES_IV is not defined')

@@ -1,9 +1,9 @@
-import {RestfulAddress} from '@/utils/config'
+ 
 import axios from 'axios'
 import {CommonReslut} from './common-result'
 
 export async function makeCredentialOptions (username: string, formData: unknown) {
-  const url = RestfulAddress.ServerUrl + '/account/signup/webauthn/begin/' + username
+  const url = serverConfig.SERVER + '/account/signup/webauthn/begin/' + username
   const response = await axios.post<CommonReslut<unknown>>(url,
     formData,
     {
@@ -20,7 +20,7 @@ export async function makeCredentialOptions (username: string, formData: unknown
 }
 
 export async function makeCredential (username: string, formData: unknown): Promise<unknown | null> {
-  const url = RestfulAddress.ServerUrl + '/account/signup/webauthn/finish/' + username
+  const url = serverConfig.SERVER + '/account/signup/webauthn/finish/' + username
   const response = await axios.post<CommonReslut<unknown>>(url,
     formData,
     {
@@ -39,7 +39,7 @@ export async function makeCredential (username: string, formData: unknown): Prom
 }
 
 export async function makeAssertionOptions (username: string, formData: unknown): Promise<unknown | null> {
-  const url = RestfulAddress.ServerUrl + '/account/signin/webauthn/begin/' + username
+  const url = serverConfig.SERVER + '/account/signin/webauthn/begin/' + username
   const response = await axios.post<CommonReslut<unknown>>(url,
     formData,
     {
@@ -60,7 +60,7 @@ export interface makeAssertionResult {
 }
 
 export async function makeAssertion (username: string, formData: unknown): Promise<CommonReslut<makeAssertionResult> | null> {
-  const url = RestfulAddress.ServerUrl + '/account/signin/webauthn/finish/' + username
+  const url = serverConfig.SERVER + '/account/signin/webauthn/finish/' + username
   const response = await axios.post<CommonReslut<makeAssertionResult>>(url,
     formData,
     {

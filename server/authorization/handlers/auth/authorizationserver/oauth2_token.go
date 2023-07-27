@@ -1,7 +1,11 @@
 package authorizationserver
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
+	"github.com/pnnh/multiverse-cloud-server/helpers"
+	"github.com/pnnh/multiverse-cloud-server/models"
 	"github.com/sirupsen/logrus"
 )
 
@@ -11,27 +15,20 @@ func TokenEndpoint(gctx *gin.Context) {
 
 	ctx := req.Context()
 
-	oauth2Session := newSession("xxx_token_user")
-	// authToken := gctx.PostForm("code")
-	// logrus.Infoln("authToken: ", authToken, gctx.Request.Form)
-	// if authToken == "" {
-	// 	log.Printf("Error occurred in NewIntrospectionRequestaaa")
-	// 	oauth2.WriteIntrospectionError(ctx, gctx.Writer, errors.New("xxxfd"))
-	// 	return
-	// }
-	// userSession, err := models.FindSessionByOAuth2(authToken)
-	// if err != nil || userSession == nil {
+	authCode := gctx.PostForm("code")
+	clientId := gctx.PostForm("client_id")
+	if authCode == "" || clientId == "" {
+		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("BasicAuth 2"))
+		return
+	}
 
-	// 	log.Printf("Error occurred in NewIntrospectionRequestbbb: %+v", err)
-	// 	oauth2.WriteIntrospectionError(ctx, gctx.Writer, err)
-	// 	return
-	// }
-	// oauth2Session := &openid.DefaultSession{}
-	// if err = json.Unmarshal([]byte(userSession.Oauth2Session.String), oauth2Session); err != nil {
-	// 	log.Printf("Error occurred in NewIntrospectionRequestcccc: %+v", err)
-	// 	oauth2.WriteIntrospectionError(ctx, gctx.Writer, err)
-	// 	return
-	// }
+	session, err := models.FindSessionByCode(clientId, authCode)
+	if session == nil || err != nil {
+		gctx.JSON(http.StatusOK, models.CodeError.WithError(err))
+		return
+	}
+
+	oauth2Session := newSession(session.User)
 
 	accessRequest, err := oauth2.NewAccessRequest(ctx, req, oauth2Session)
 
@@ -50,6 +47,22 @@ func TokenEndpoint(gctx *gin.Context) {
 	response, err := oauth2.NewAccessResponse(ctx, accessRequest)
 	if err != nil {
 		logrus.Printf("Error occurred in NewAccessResponse: %+v", err)
+		oauth2.WriteAccessError(ctx, rw, accessRequest, err)
+		return
+	}
+
+	idTokenExtra := response.GetExtra("id_token").(string)
+	accessToken := response.GetAccessToken()
+
+	parsedClaims, err := helpers.ParseJwtTokenRs256(idTokenExtra, PublicKeyString)
+	if err != nil {
+		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("idToken为空"))
+		return
+	}
+
+	err = models.UpdateSessionToken(session.Pk, accessToken, idTokenExtra, parsedClaims.ID)
+	if err != nil {
+		logrus.Printf("Error occurred in NewAccessResponse2222: %+v", err)
 		oauth2.WriteAccessError(ctx, rw, accessRequest, err)
 		return
 	}

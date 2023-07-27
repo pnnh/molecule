@@ -1,0 +1,14 @@
+ACCOUNT_DB: host=127.0.0.1 user=postgres password=SrL^cEHL0NgZ$tQp dbname=multiverse port=5432 sslmode=disable
+JWT_KEY: fELMB#NT82ZrgxXUR8Sj0t&I@725ARLN
+OAUTH2_PRIVATE_KEY: file://data/rs256-private.pem
+OAUTH2_PUBLIC_KEY: file://data/rs256-public.pem
+OAUTH2_JWK: file://data/rs256-jwk.json
+WEB_URL: https://portal.huable.xyz
+SELF_URL: https://teleport.huable.xyz
+RESOURCE_URL: https://fields.huable.xyz
+MAIL_HOST: smtp.zoho.com
+MAIL_PORT: 587
+MAIL_USER: support@multiverse.direct
+MAIL_PASSWORD: nXZn*SOW6avYB^Js
+MAIL_SENDER: support@multiverse.direct
+WEB_URL: https://portal.huable.xyz

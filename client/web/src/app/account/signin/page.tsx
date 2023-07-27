@@ -5,10 +5,15 @@ import styles from './page.module.scss'
 import {handleSignInSubmit} from '@/services/client/webauthn'
 import Link from '~/next/link'
 import validator from 'validator'
+import queryString from 'query-string'
 import {useRouter} from 'next/navigation'
 import {signinByMailBegin, signinByPasswordBegin} from '@/services/client/account'
 
-export default function Home () {
+export default function Home ({searchParams}: {
+  searchParams: Record<string, string>
+}) {
+  const rawQuery = queryString.stringify(searchParams)
+  console.debug('rawQuery', rawQuery)
   const [username, setUsername] = useState('xspanni@gmail.com')
   const [errorMessage, setErrorMessage] = useState('')
   const router = useRouter()
@@ -42,7 +47,7 @@ export default function Home () {
                     const result = await signinByMailBegin(username)
                     console.log('register result', result)
                     if (result && result.code === 200) {
-                      router.replace('/account/signin/email/' + result.data.session)
+                      router.replace('/account/signin/email/' + result.data.session + '?' + rawQuery)
                     }
                   } else {
                     setErrorMessage('请输入正确的邮箱地址')
@@ -55,7 +60,7 @@ export default function Home () {
                   const result = await signinByPasswordBegin(username)
                   console.log('register result', result)
                   if (result && result.code === 200) {
-                    router.replace('/account/signin/password/' + result.data.session)
+                    router.replace('/account/signin/password/' + result.data.session + '?' + rawQuery)
                   }
                 }}>账号密码登陆
                 </button>

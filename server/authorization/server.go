@@ -2,16 +2,18 @@ package main
 
 import (
 	"fmt"
+	"net/http"
+	"os"
+	"time"
+
 	handlers "github.com/pnnh/multiverse-cloud-server/handlers"
 	"github.com/pnnh/multiverse-cloud-server/handlers/account"
 	"github.com/pnnh/multiverse-cloud-server/handlers/applications"
 	"github.com/pnnh/multiverse-cloud-server/handlers/auth/authorizationserver"
+	"github.com/pnnh/multiverse-cloud-server/handlers/captcha"
 	"github.com/pnnh/multiverse-cloud-server/handlers/permissions"
 	"github.com/pnnh/multiverse-cloud-server/handlers/roles"
 	"github.com/pnnh/multiverse-cloud-server/handlers/users"
-	"net/http"
-	"os"
-	"time"
 
 	"github.com/gin-contrib/cors"
 	"github.com/pnnh/quantum-go/config"
@@ -37,10 +39,10 @@ func NewWebServer() (*WebServer, error) {
 		router:    router,
 		resources: make(map[string]IResource)}
 
-	corsDomain := []string{"https://auth.diverse.site"}
+	corsDomain := []string{"https://portal.huable.com"}
 
 	if config.Debug() {
-		corsDomain = append(corsDomain, "https://auth.bitpie.xyz")
+		corsDomain = append(corsDomain, "https://portal.huable.xyz")
 	}
 
 	router.Use(cors.New(cors.Config{
@@ -85,8 +87,8 @@ func (s *WebServer) Init() error {
 
 	s.router.GET("/permissions/select", permissions.PermissionSelectHandler)
 
-	sessionHandler := &handlers.SessionHandler{}
-	s.router.POST("/account/session/introspect", sessionHandler.Introspect)
+	// sessionHandler := &handlers.SessionHandler{}
+	// s.router.POST("/account/session/introspect", sessionHandler.Introspect)
 
 	s.router.GET("/oauth2/auth", func(gctx *gin.Context) {
 		authorizationserver.AuthEndpointHtml(gctx)
@@ -104,12 +106,15 @@ func (s *WebServer) Init() error {
 	})
 	s.router.GET("/oauth2/jwks", func(gctx *gin.Context) {
 		authorizationserver.JwksEndpoint(gctx)
-	})
-	s.router.POST("/oauth2/signin", func(gctx *gin.Context) {
-		authorizationserver.OAuth2SigninEndpoint(gctx)
+	}) 
+	s.router.POST("/oauth2/user", func(gctx *gin.Context) {
+		authorizationserver.UserEndpoint(gctx)
 	})
 
 	s.router.GET("/.well-known/openid-configuration", authorizationserver.OpenIdConfigurationHandler)
+
+	s.router.GET("/api/go_captcha_data", captcha.GetCaptchaData)
+	s.router.POST("/api/go_captcha_check_data", captcha.CheckCaptcha)
 
 	return nil
 }

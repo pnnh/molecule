@@ -1,7 +1,0 @@
-{
-  "ENV": "development",
-  "SERVER": "https://authsvc.bitpie.xyz",
-  "RESOURCE_SERVER": "https://authres.bitpie.xyz",
-  "AES_KEY": "vOVH6sdmpNWjRRIqCc7rdxs01lwHzfr3",
-  "AES_IV": "cwVPn3yX3sp6Bbj0"
-}

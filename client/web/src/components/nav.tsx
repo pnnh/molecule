@@ -1,18 +1,23 @@
 import Link from 'next/link'
-import React from 'react'
-import {getSession} from '@/services/auth'
-import styles from './nav.module.css'
-import {PSLinkButton} from './client/controls'
-import {SessionModel} from '@/models/session'
+import React from 'react' 
+import styles from './nav.module.css' 
+import { fullAuthUrl } from '@/services/common/const'
+import { clientConfig } from '@/services/client/config'
+import { getIdentity } from '@/services/auth' 
+import { encodeBase64String } from '@/utils/base64'
 
 export async function loadHeaderNav () {
-  const auth = await getSession()
-  console.log('auth:', auth)
+  const session = await getIdentity()
+  console.log('auth:', session)
   let helloElement: JSX.Element
-  if (auth) {
-    helloElement = <NavConsole session={auth}/>
-  } else {
-    helloElement = <PSLinkButton href={'/account/signin'} className={styles.loginLink}>登录</PSLinkButton>
+  if (session) {
+    helloElement = <NavConsole session={session}/>
+  } else { 
+    const state = encodeBase64String(`${clientConfig.SELF_URL}/`)
+  
+    const clientAuthUrl = fullAuthUrl(clientConfig.SERVER, clientConfig.SELF_URL, state)
+    helloElement = <Link
+      href={clientAuthUrl} className={styles.loginLink}>登录</Link>
   }
   return <nav className={styles.navHeader}>
         <div className={styles.headerRow}>
@@ -29,9 +34,9 @@ export async function loadHeaderNav () {
     </nav>
 }
 
-function NavConsole (props: { session: SessionModel }) {
+function NavConsole (props: { session: string }) {
   return <div>
         <Link href={'/console'}>控制台</Link>
         欢迎：
-        <Link href={'/account'}>{props.session.username}</Link></div>
+        <Link href={'/account'}>{props.session}</Link></div>
 }

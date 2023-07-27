@@ -10,7 +10,7 @@ export default async function Home () {
           {headerNav}
         </header>
         <main className={styles.layoutChildren}>
-          首页
+          统一的门户站点，认证中心
         </main>
         <footer></footer>
   </div>

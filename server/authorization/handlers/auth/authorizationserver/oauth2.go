@@ -7,35 +7,42 @@ import (
 	"time"
 
 	"github.com/ory/fosite"
-	"github.com/pnnh/quantum-go/config"
-	"github.com/sirupsen/logrus"
-
 	"github.com/ory/fosite/compose"
 	"github.com/ory/fosite/handler/openid"
 	"github.com/ory/fosite/token/jwt"
+	"github.com/pnnh/quantum-go/config"
+	"github.com/sirupsen/logrus"
 )
 
 var (
-	// Check the api documentation of `compose.Config` for further configuration options.
 	fositeConfig = &fosite.Config{
-		AccessTokenLifespan: time.Hour * 72,
+		AccessTokenLifespan: time.Hour * 48,
 		GlobalSecret:        secret,
-		// ...
 	}
 
-	store = NewDatabaseStore()
+	fositeStore = NewDatabaseStore()
 
 	secret = []byte("some-cool-secret-that-is-32bytes")
 
-	privateKey *rsa.PrivateKey
+	PublicKeyString  = ""
+	PrivateKeyString = ""
+	PrivateKey       *rsa.PrivateKey
 )
 
 func InitOAuth2() {
-	privateString, ok := config.GetConfiguration("OAUTH2_PRIVATE_KEY")
+	privStr, ok := config.GetConfiguration("OAUTH2_PRIVATE_KEY")
 	if !ok {
 		logrus.Fatalln("private key error22!")
 	}
-	block, _ := pem.Decode([]byte(privateString.(string))) //将密钥解析成私钥实例
+	PrivateKeyString = privStr.(string)
+
+	pubStr, ok := config.GetConfiguration("OAUTH2_PUBLIC_KEY")
+	if !ok {
+		logrus.Fatalln("public key error22!")
+	}
+	PublicKeyString = pubStr.(string)
+
+	block, _ := pem.Decode([]byte(PrivateKeyString)) //将密钥解析成私钥实例
 	if block == nil {
 		logrus.Fatalln("private key error333!")
 	}
@@ -43,37 +50,31 @@ func InitOAuth2() {
 	if err != nil {
 		logrus.Fatalln("privateKeyBytes", err)
 	}
-	privateKey = priv
+	PrivateKey = priv
 
-	oauth2 = compose.ComposeAllEnabled(fositeConfig, store, privateKey)
+	oauth2 = compose.ComposeAllEnabled(fositeConfig, fositeStore, PrivateKey)
 }
 
 var oauth2 fosite.OAuth2Provider
 
-func getIssuer() string {
-	issuer := "https://authsvc.bitpie.xyz"
-	if !config.Debug() {
-		issuer = "https://authsvc.diverse.site"
-	}
-	return issuer
+func getIssure() string {
+	issure := config.MustGetConfigurationString("SELF_URL")
+	return issure
 }
 
-func getResourcesServer() string {
-	server := "https://ressvc.bitpie.xyz"
-	if !config.Debug() {
-		server = "https://ressvc.diverse.site"
-	}
-	return server
+func getUserServer() string {
+	issure := config.MustGetConfigurationString("RESOURCE_URL")
+	return issure
 }
 
 func newSession(user string) *openid.DefaultSession {
-	issuer := getIssuer()
+	issure := getIssure()
 	return &openid.DefaultSession{
 		Claims: &jwt.IDTokenClaims{
-			Issuer:      issuer,
+			Issuer:      issure,
 			Subject:     user,
 			Audience:    []string{},
-			ExpiresAt:   time.Now().Add(time.Hour * 6),
+			ExpiresAt:   time.Now().Add(time.Hour * 48),
 			IssuedAt:    time.Now(),
 			RequestedAt: time.Now(),
 			AuthTime:    time.Now(),
