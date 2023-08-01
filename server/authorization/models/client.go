@@ -13,37 +13,16 @@ func ApplicationToClient(app *ApplicationModel) *ClientModel {
 	model := &ClientModel{
 		ID:     app.Id,
 		Secret: []byte(app.Secret),
-		//RotatedSecrets: make([][]byte, 0),
-		//RedirectURIs:   []string{t.RedirectURIs.String},
-		//GrantTypes:     []string{t.GrantTypes.String},
-		//ResponseTypes:  []string{t.ResponseTypes.String},
-		//Scopes:         []string{t.Scopes.String},
-		//Audience:       []string{t.Audience.String},
 	}
 
 	for _, v := range strings.Split(app.RotatedSecrets, ",") {
 		model.RotatedSecrets = append(model.RotatedSecrets, []byte(v))
 	}
 
-	// for _, v := range strings.Split(t.RedirectURIs.String, ",") {
-	// 	model.RedirectURIs = append(model.RedirectURIs,  v)
-	// }
 	model.RedirectURIs = append(model.RedirectURIs, strings.Split(app.RedirectUris, ",")...)
-	// for _, v := range strings.Split(t.GrantTypes.String, ",") {
-	// 	model.GrantTypes = append(model.GrantTypes,  v)
-	// }
 	model.GrantTypes = append(model.GrantTypes, strings.Split(app.GrantTypes, ",")...)
-	// for _, v := range strings.Split(t.ResponseTypes.String, ",") {
-	// 	model.ResponseTypes = append(model.ResponseTypes,  v)
-	// }
 	model.ResponseTypes = append(model.ResponseTypes, strings.Split(app.ResponseTypes, ",")...)
-	// for _, v := range strings.Split(t.Scopes.String, ",") {
-	// 	model.Scopes = append(model.Scopes,  v)
-	// }
 	model.Scopes = append(model.Scopes, strings.Split(app.Scopes, ",")...)
-	// for _, v := range strings.Split(t.Audience.String, ",") {
-	// 	model.Audience = append(model.Audience,  v)
-	// }
 	model.Audience = append(model.Audience, strings.Split(app.Audience, ",")...)
 
 	if app.Public == 1 {

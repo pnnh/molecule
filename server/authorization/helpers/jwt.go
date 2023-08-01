@@ -9,14 +9,19 @@ import (
 
 func GenerateJwtTokenRs256(username string, privKeyString string) (string, error) {
 	claims := jwt.MapClaims{
-		"username": username,
+		//"username": username,
+		"exp":      time.Now().Add(time.Hour * 24 * 30).Unix(),
+		"iat":      time.Now().Unix(),
+		"sub":      username,
+		//"iss":      "multiverse.cloud",
+		//"aud":      []string{"multiverse.cloud"},
+		//"jti":      "123456789",
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodRS256, claims)
 
 	privKey, err := jwt.ParseRSAPrivateKeyFromPEM([]byte(privKeyString))
 	if err != nil {
-
 		return "", fmt.Errorf("解析私钥错误: %w", err)
 	}
 

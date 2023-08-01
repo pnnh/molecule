@@ -1,11 +1,12 @@
 package account
 
 import (
+	"encoding/base64"
 	"net/http"
 	"time"
 
 	"github.com/pnnh/multiverse-cloud-server/handlers/auth/authorizationserver"
-	helpers2 "github.com/pnnh/multiverse-cloud-server/helpers" 
+	helpers2 "github.com/pnnh/multiverse-cloud-server/helpers"
 
 	"github.com/pnnh/multiverse-cloud-server/models"
 
@@ -151,9 +152,10 @@ func PasswordSigninBeginHandler(gctx *gin.Context) {
 }
 
 func PasswordSigninFinishHandler(gctx *gin.Context) {
+	source, _ := gctx.GetQuery("source")
 	session := gctx.PostForm("session")
 	password := gctx.PostForm("password")
-	if session == "" || password == "" {
+	if session == "" || password == "" || source == "" {
 		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("code或session为空"))
 		return
 	}
@@ -185,11 +187,31 @@ func PasswordSigninFinishHandler(gctx *gin.Context) {
 		return
 	}
 
-	sessionData := map[string]interface{}{
-		"authorization": jwtToken,
+	// selfUrl, _ := config.GetConfigurationString("SELF_URL")
+	// if selfUrl == "" {
+	// 	gctx.JSON(http.StatusOK, models.CodeError.WithMessage("SELF_URL未配置"))
+	// 	return
+	// }
+	// 登录成功后设置cookie
+	gctx.SetCookie("Authorization", jwtToken, 3600*48, "/", "", true, true)
+
+	// sessionData := map[string]interface{}{
+	// 	"authorization": jwtToken,
+	// } 
+
+    sourceData, err := base64.URLEncoding.DecodeString(source)
+	if err != nil {
+		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("source解析失败"))
+		return
 	}
+	sourceUrl := string(sourceData)
+	if len(sourceUrl) < 1 {
+		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("sourceUrl为空"))
+		return
+	}
+	gctx.Redirect(http.StatusFound, sourceUrl)
 
-	result := models.CodeOk.WithData(sessionData)
+	// result := models.CodeOk.WithData(sessionData)
 
-	gctx.JSON(http.StatusOK, result)
+	// gctx.JSON(http.StatusOK, result)
 }

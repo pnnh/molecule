@@ -57,26 +57,14 @@ func AuthEndpointHtml(gctx *gin.Context) {
 		return
 	}
 	// 检查是否已经登录
-	authCookie, err := gctx.Request.Cookie("Authorization")
-	if err != nil && err != http.ErrNoCookie {
-		logrus.Errorln("获取cookie出错2", err)
-		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("获取cookie出错2"))
+	authedUser, err := parseUsername(gctx)
+	if err != nil {
+		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("username为空3"))
 		return
 	}
-	authedUser := ""
-	if authCookie != nil && authCookie.Value != "" {
-		jwtToken := strings.TrimPrefix(authCookie.Value, "Bearer ")
-		parsedClaims, err := helpers.ParseJwtTokenRs256(jwtToken, PublicKeyString)
-		if err != nil && !errors.Is(err, jwt.ErrTokenExpired) {
-			logrus.Errorln("token解析失败", err)
-		}
-		if parsedClaims != nil {
-			authedUser = parsedClaims.Subject
-		}
-	}
-	sourceUrl := fmt.Sprintf("%s%s?%s", selfUrl, gctx.Request.URL.Path, gctx.Request.URL.RawQuery)
-	sourceUrlQuery := base64.URLEncoding.EncodeToString([]byte(sourceUrl))
 	if authedUser == "" {
+		sourceUrl := fmt.Sprintf("%s%s?%s", selfUrl, gctx.Request.URL.Path, gctx.Request.URL.RawQuery)
+		sourceUrlQuery := base64.URLEncoding.EncodeToString([]byte(sourceUrl))
 		gctx.Redirect(http.StatusFound, fmt.Sprintf("%s%s?source=%s", webUrl, "/account/signin", sourceUrlQuery))
 		return
 	}
@@ -101,19 +89,6 @@ func AuthEndpointJson(gctx *gin.Context) {
 		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("client_id为空"))
 		return
 	}
-	captchaKey := gctx.PostForm("captcha_key")
-	if captchaKey == "" {
-		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("captcha_key为空"))
-		return
-	}
-
-	captchaModel, err := models.FindCaptcha(captchaKey)
-	if captchaModel == nil || err != nil || captchaModel.Checked != 1 ||
-		time.Now().Sub(captchaModel.CreateTime).Minutes() > 5 {
-		logrus.Errorln("验证码错误", captchaKey, err)
-		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("验证码错误，请重试"))
-		return
-	}
 
 	authedUser, err := parseUsername(gctx)
 	if err != nil {
@@ -122,30 +97,32 @@ func AuthEndpointJson(gctx *gin.Context) {
 	}
 	// 若用户名不一致认为是重新登陆
 	if username != authedUser {
-		password := gctx.PostForm("password")
-		if password == "" {
-			gctx.JSON(http.StatusOK, models.CodeError.WithMessage("password为空"))
-			return
-		}
-		accountModel, err := models.GetAccountByUsername(username)
-		if err != nil {
-			logrus.Errorln("查找用户出错", err)
-			gctx.JSON(http.StatusOK, models.CodeError.WithMessage("查找用户出错"))
-			return
-		}
+		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("出现错误，请重新登陆"))
+		return
+		// password := gctx.PostForm("password")
+		// if password == "" {
+		// 	gctx.JSON(http.StatusOK, models.CodeError.WithMessage("password为空"))
+		// 	return
+		// }
+		// accountModel, err := models.GetAccountByUsername(username)
+		// if err != nil {
+		// 	logrus.Errorln("查找用户出错", err)
+		// 	gctx.JSON(http.StatusOK, models.CodeError.WithMessage("查找用户出错"))
+		// 	return
+		// }
 
-		if accountModel == nil || !helpers.CheckPasswordHash(password, accountModel.Password) {
-			logrus.Errorln("用户不存在或密码不匹配")
-			gctx.JSON(http.StatusOK, models.CodeError.WithMessage("密码签名出错"))
-		}
+		// if accountModel == nil || !helpers.CheckPasswordHash(password, accountModel.Password) {
+		// 	logrus.Errorln("用户不存在或密码不匹配")
+		// 	gctx.JSON(http.StatusOK, models.CodeError.WithMessage("密码签名出错"))
+		// }
 
-		jwtToken, err := helpers.GenerateJwtTokenRs256(username, PrivateKeyString)
-		if (jwtToken == "") || (err != nil) {
-			helpers.ResponseMessageError(gctx, "参数有误316", err)
-			return
-		}
+		// jwtToken, err := helpers.GenerateJwtTokenRs256(username, PrivateKeyString)
+		// if (jwtToken == "") || (err != nil) {
+		// 	helpers.ResponseMessageError(gctx, "参数有误316", err)
+		// 	return
+		// }
 
-		gctx.SetCookie("Authorization", jwtToken, 3600*48, "/", "", false, true)
+		// gctx.SetCookie("Authorization", jwtToken, 3600*48, "/", "", false, true)
 	}
 
 	ar, err := oauth2.NewAuthorizeRequest(ctx, gctx.Request)
