@@ -5,12 +5,7 @@ import React, {useEffect, useState} from 'react'
 import queryString from 'query-string'
 import styles from './form.module.scss'
 import Image from '~/next/image'
-import {Button, message} from 'antd'
-import {clientConfig} from '@/services/client/config'
-import Qs from 'qs'
-import Axios from 'axios'
-import Lodash from 'lodash'
-import GoCaptchaBtn from './captcha_button'
+import {message} from 'antd'
 
 export function FormEdit (props: {params: ServerAuthParams, scopes: string[], server: string}) {
   const searchParams = props.params
@@ -20,11 +15,6 @@ export function FormEdit (props: {params: ServerAuthParams, scopes: string[], se
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
-  const [captBase64, setCaptBase64] = useState('')
-  const [captThumbBase64, setCaptThumbBase64] = useState('')
-  const [captKey, setCaptKey] = useState('')
-  const [captStatus, setCaptStatus] = useState('default')
-  const [captAutoRefreshCount, setCaptAutoRefreshCount] = useState(0)
   const [error, setError] = useState(searchParams.error)
 
   const isChecked = (item: string) => checked.includes(item)
@@ -56,81 +46,6 @@ export function FormEdit (props: {params: ServerAuthParams, scopes: string[], se
   </div>
 
 
-
-  const handleRequestCaptCode = () => {
-    setCaptBase64('')
-    setCaptThumbBase64('')
-    setCaptKey('')
-
-    Axios({
-      method: 'get',
-      url: `${clientConfig.SERVER}/api/go_captcha_data`,
-    }).then((response)=>{
-      const {data = {}} = response
-      if ((data.code || 0) === 0) {
-        if (Lodash.isEmpty(data)) {
-          return
-        }
-        setCaptBase64(data.image_base64 || '')
-        setCaptThumbBase64(data.thumb_base64 || '')
-        setCaptKey(data.captcha_key || '')
-      } else {
-        message.warning('获取人机验证数据失败').then(r => r)
-      }
-    })
-  }
-
-  const handleConfirm = (dots: {x:number, y:number}[]) => {
-    if (Lodash.size(dots) <= 0) {
-      message.warning('请进行人机验证再操作')
-      return
-    }
-
-    const dotArr: number[] = []
-    Lodash.forEach(dots, (dot) => {
-      dotArr.push(dot.x, dot.y)
-    })
-
-    Axios({
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      method: 'post',
-      url: `${clientConfig.SERVER}/api/go_captcha_check_data`,
-      data: Qs.stringify({
-        dots: dotArr.join(','),
-        key: captKey || ''
-      })
-    }).then((response)=>{
-      const {data = {}} = response
-
-      if ((data.code || 0) === 0) {
-        message.success('人机验证成功').then(r => r)
-
-        setCaptStatus('success')
-        setCaptAutoRefreshCount(0)
-        const form = document.getElementById('loginForm') as HTMLFormElement
-        if (form) {
-          form.submit()
-        }
-      } else {
-        message.warning('人机验证失败', 0.5).then(r => r)
-
-        if (captAutoRefreshCount > 5) {
-          setCaptStatus('overing')
-          setCaptAutoRefreshCount(0)
-
-          return
-        }
-
-        handleRequestCaptCode()
-        setCaptStatus('error')
-        setCaptAutoRefreshCount(captAutoRefreshCount + 1)
-      }
-    })
-  }
-
-
   return <form id={'loginForm'} method={'POST'} action={postUrl} onSubmit={(event) => {
 
     if (checked.length < 1) {
@@ -143,7 +58,6 @@ export function FormEdit (props: {params: ServerAuthParams, scopes: string[], se
     }
   }}>
 
-    <input type={'hidden'} name={'captcha_key'} value={captKey}/>
     <div className={styles.loginContainer + ' row'}>
     <div className={styles.loginSection + ' h-100 gradient-form'}>
       <div className={styles.sectionLeft}>
@@ -167,26 +81,7 @@ export function FormEdit (props: {params: ServerAuthParams, scopes: string[], se
                           </div>
 
                         </div>
-                    </div>
-          <div className={styles.captchaRow}>
-              <div className={styles.fieldsRowContent}>
-
-                  <div className={styles.loginFields + ' w-80'}>
-                      <GoCaptchaBtn
-                          class="go-captcha-btn"
-                          value={captStatus}
-                          width="100%"
-                          height="50px"
-                          imageBase64={captBase64}
-                          thumbBase64={captThumbBase64}
-                          changeValue={(val: string) => setCaptStatus(val)}
-                          confirm={handleConfirm}
-                          refresh={handleRequestCaptCode}
-                      />
-                  </div>
-
-              </div>
-          </div>
+                    </div> 
         {error && <div className={styles.errorRow}>
           <div>{error}</div>
         </div>}

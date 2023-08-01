@@ -1,8 +1,14 @@
 
 import './global.css' 
+import {UIProvider} from './partials/fluent'
 
 // 隔几秒重新验证下数据
 export const revalidate = 10
+
+export const metadata = {
+  title: 'Next.js, Fluent UI and Me',
+  description: 'My first website created with Next.js and Fluent UI',
+}
 
 export default async function RootLayout ({
   children,
@@ -24,7 +30,10 @@ export default async function RootLayout ({
         <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
       </head>
       <body> 
+        <UIProvider>
+
           {children} 
+        </UIProvider>
       </body>
     </html>
   )

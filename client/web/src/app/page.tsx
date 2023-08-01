@@ -1,6 +1,6 @@
 import { loadHeaderNav } from '@/components/nav'
 import React from 'react'
-import styles from './page.module.scss'
+import styles from './page.module.css'
 
 export default async function Home () {
   const headerNav = await loadHeaderNav()
