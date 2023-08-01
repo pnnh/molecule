@@ -99,30 +99,6 @@ func AuthEndpointJson(gctx *gin.Context) {
 	if username != authedUser {
 		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("出现错误，请重新登陆"))
 		return
-		// password := gctx.PostForm("password")
-		// if password == "" {
-		// 	gctx.JSON(http.StatusOK, models.CodeError.WithMessage("password为空"))
-		// 	return
-		// }
-		// accountModel, err := models.GetAccountByUsername(username)
-		// if err != nil {
-		// 	logrus.Errorln("查找用户出错", err)
-		// 	gctx.JSON(http.StatusOK, models.CodeError.WithMessage("查找用户出错"))
-		// 	return
-		// }
-
-		// if accountModel == nil || !helpers.CheckPasswordHash(password, accountModel.Password) {
-		// 	logrus.Errorln("用户不存在或密码不匹配")
-		// 	gctx.JSON(http.StatusOK, models.CodeError.WithMessage("密码签名出错"))
-		// }
-
-		// jwtToken, err := helpers.GenerateJwtTokenRs256(username, PrivateKeyString)
-		// if (jwtToken == "") || (err != nil) {
-		// 	helpers.ResponseMessageError(gctx, "参数有误316", err)
-		// 	return
-		// }
-
-		// gctx.SetCookie("Authorization", jwtToken, 3600*48, "/", "", false, true)
 	}
 
 	ar, err := oauth2.NewAuthorizeRequest(ctx, gctx.Request)

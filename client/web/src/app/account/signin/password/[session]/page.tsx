@@ -4,6 +4,7 @@ import React, {useState} from 'react'
 import styles from '@/app/account/signup/email/[session]/page.module.scss'
 import { clientConfig } from '@/services/client/config'
 import queryString from 'query-string'
+import { Button, Input } from '@fluentui/react-components'
 
 export default function Home ({params, searchParams}: { params: { session: string }, 
   searchParams: Record<string, string> }) { 
@@ -23,7 +24,7 @@ export default function Home ({params, searchParams}: { params: { session: strin
                 <h1 className={styles.signupTitle}>输入密码</h1>
                 <div className={styles.formBox}>
                     <div className={styles.fieldRow}>
-                        <input name='password' className="input input-bordered w-full" type="password" placeholder="输入密码"
+                        <Input name='password' className="input input-bordered w-full" type="password" placeholder="输入密码"
                                value={password} onChange={(event) => {
                                  setPassword(event.target.value)
                                }}/>
@@ -35,21 +36,7 @@ export default function Home ({params, searchParams}: { params: { session: strin
                     }
 
                     <div className={styles.actionRow}>
-                        {/* <button className="btn" onClick={async () => {
-                          if (password) {
-                            const result = await signinByPasswordFinish(params.session, password)
-                            console.log('signin result', result, searchParams.source)
-                            if (result && result.code === 200) {
-                              const redirectUrl = decodeBase64String(searchParams.source)
-                              console.log('redirectUrl', redirectUrl)
-                              //router.replace(redirectUrl)
-                            }
-                          } else {
-                            setErrorMessage('请输入有效的密码')
-                          }
-                        }}>密码登陆
-                        </button> */}
-                        <button className="btn" type='submit'>密码登陆</button>
+                        <Button className="btn" type='submit'>密码登陆</Button>
                     </div>
                 </div>
             </div>

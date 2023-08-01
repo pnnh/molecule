@@ -9,10 +9,11 @@ import queryString from 'query-string'
 import {useRouter} from 'next/navigation'
 import {signinByMailBegin, signinByPasswordBegin} from '@/services/client/account'
 import { 
+  FluentProvider,
+  webLightTheme,
   Button,
   Input
-} from '@fluentui/react-components'
-
+} from '@fluentui/react-components' 
 export default function Home ({searchParams}: {
   searchParams: Record<string, string>
 }) {
@@ -22,7 +23,8 @@ export default function Home ({searchParams}: {
   const [errorMessage, setErrorMessage] = useState('')
   const router = useRouter()
 
-  return <div className={styles.loginContainer}>
+  return <div> 
+  <div className={styles.loginContainer}>
         <div className={styles.mainBox}>
             <div className={styles.boxTitle}>
                 登陆
@@ -61,7 +63,6 @@ export default function Home ({searchParams}: {
                 }}>邮箱验证码登陆
                 </Button>
                 <Button className="btn" onClick={async () => {
-
                   console.log('你点击了账号密码登陆')
                   const result = await signinByPasswordBegin(username)
                   console.log('register result', result)
@@ -77,5 +78,6 @@ export default function Home ({searchParams}: {
             </div>
         </div>
     </div>
+        </div>
 }
 

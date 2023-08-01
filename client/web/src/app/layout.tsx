@@ -1,6 +1,6 @@
 
-import './global.css' 
-import {UIProvider} from './partials/fluent'
+import './global.css'
+import { Providers } from './providers'
 
 // 隔几秒重新验证下数据
 export const revalidate = 10
@@ -29,11 +29,10 @@ export default async function RootLayout ({
         <link rel="icon" href="/favicon.ico" type="image/x-icon" />
         <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
       </head>
-      <body> 
-        <UIProvider>
-
-          {children} 
-        </UIProvider>
+      <body>
+        <Providers>
+          {children}
+          </Providers>
       </body>
     </html>
   )

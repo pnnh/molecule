@@ -32,11 +32,15 @@ type SessionModel struct {
 func PutSession(model *SessionModel) error {
 	sqlText := `insert into sessions(pk, content, create_time, update_time, "user", type, code,
 		client_id, response_type, redirect_uri, scope, state, nonce, id_token, jwt_id, access_token, open_id, company_id) 
-	values(:pk, :content, :create_time, :update_time, :user, :type, :code, '', '', '', '', '', '', '', '', '', '', '')`
+	values(:pk, :content, :create_time, :update_time, :user, :type, :code, :client_id, :response_type, :redirect_uri,
+		:scope, :state, :nonce, :id_token, :jwt_id, :access_token, :open_id, :company_id)`
 
 	sqlParams := map[string]interface{}{"pk": model.Pk, "content": model.Content, "create_time": model.CreateTime,
 		"update_time": model.UpdateTime, "user": model.User, "type": model.Type,
-		"code": model.Code}
+		"code": model.Code, "client_id": model.ClientId, "response_type": model.ResponseType,
+		"redirect_uri": model.RedirectUri, "scope": model.Scope, "state": model.State,
+		"nonce": model.Nonce, "id_token": model.IdToken, "jwt_id": model.JwtId,
+		"access_token": model.AccessToken, "open_id": model.OpenId, "company_id": model.CompanyId}
 
 	_, err := datastore.NamedExec(sqlText, sqlParams)
 	if err != nil {

@@ -6,7 +6,9 @@ const serverConfig = genServerConfig as {
     SERVER: string,
     RESOURCE_SERVER: string,
     AES_KEY: string,
-    AES_IV: string
+    AES_IV: string,
+    REDIS: string,
+    REDIS_PASSWORD: string,
 }
 
 export {serverConfig}

@@ -1,10 +1,9 @@
-
 .loginContainer {
   display: flex;
   flex-direction: row;
   justify-content: center;
   height: 28rem;
-  width: 40rem;   // 因为隐藏了授权选择部分，所以宽度可以缩小
+  width: 40rem; // 因为隐藏了授权选择部分，所以宽度可以缩小
   margin: 0 auto;
 
   .loginSection {
@@ -27,28 +26,33 @@
         justify-content: center;
         margin-top: 2rem;
       }
+
       .fieldsRow {
         margin-top: 2rem;
         display: flex;
         flex-direction: row;
         justify-content: center;
+
         .fieldsRowContent {
           display: flex;
           flex-direction: row;
           gap: 1rem;
         }
       }
+
       .captchaRow {
         margin-top: 2rem;
         display: flex;
         flex-direction: row;
         justify-content: center;
+
         .fieldsRowContent {
           display: flex;
           flex-direction: row;
           gap: 1rem;
         }
-        .captchaWrap{
+
+        .captchaWrap {
           position: absolute;
           top: 450px;
           left: 50%;
@@ -56,22 +60,25 @@
           width: 300px;
         }
 
-        .captchaBtn{
+        .captchaBtn {
           position: relative;
           width: 300px !important;
           margin: 0 auto !important;
         }
       }
+
       .submitRow {
         display: flex;
         margin-top: 2rem;
         flex-direction: row;
         justify-content: center;
+
         .buttons {
           display: flex;
           flex-direction: column;
         }
       }
+
       .errorRow {
         display: flex;
         flex-direction: row;
@@ -80,8 +87,8 @@
         color: red;
       }
     }
+
     .sectionRight {
-      display: none; // 暂时隐藏授权范围选择窗口，后续视功能需要打开
       flex-grow: 1;
       padding: 1rem 0 1rem 1rem;
       background: whitesmoke;

@@ -18,7 +18,8 @@ class CacheStore {
         return this.redisClient
       }
       const redisClient = createClient({
-        url: serverConfig.REDIS
+        url: serverConfig.REDIS,
+        password: serverConfig.REDIS_PASSWORD,
       })
 
       await redisClient.connect()

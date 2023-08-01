@@ -5,7 +5,7 @@ import React, {useEffect, useState} from 'react'
 import queryString from 'query-string'
 import styles from './form.module.scss'
 import Image from '~/next/image'
-import {message} from 'antd'
+import { Button } from '@fluentui/react-components'
 
 export function FormEdit (props: {params: ServerAuthParams, scopes: string[], server: string}) {
   const searchParams = props.params
@@ -50,11 +50,11 @@ export function FormEdit (props: {params: ServerAuthParams, scopes: string[], se
 
     if (checked.length < 1) {
       event.preventDefault()
-      message.warning('请选择授权范围').then(r => r)
+      setError('请选择授权范围') 
     }
     if (!searchParams.authed && (!username || !password)) {
       event.preventDefault()
-      message.warning('用户名或密码不可为空').then(r => r)
+      setError('用户名或密码不可为空') 
     }
   }}>
 
@@ -85,19 +85,7 @@ export function FormEdit (props: {params: ServerAuthParams, scopes: string[], se
         {error && <div className={styles.errorRow}>
           <div>{error}</div>
         </div>}
-
-
-
-                    {/*<div className={styles.submitRow}>*/}
-                    {/*  <div className={styles.buttons + ' w-80'}>*/}
-                    {/*    <div>*/}
-                    {/*      <Button className="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type={'primary'}>*/}
-                    {/*          登录*/}
-                    {/*      </Button>*/}
-                    {/*    </div>*/}
-                    {/*    <ErrorElement/>*/}
-                    {/*  </div>*/}
-                    {/*</div>*/}
+ 
       </div>
       <div className={styles.sectionRight}>
 
@@ -118,7 +106,7 @@ export function FormEdit (props: {params: ServerAuthParams, scopes: string[], se
                     }
                     setChecked(updatedList)
                     if (updatedList.length < 1) {
-                      message.warning('请选择授权范围').then(r => r)
+                      setError('请选择授权范围') 
                     }
                   }} />
                   <span>{item}</span>
@@ -130,6 +118,6 @@ export function FormEdit (props: {params: ServerAuthParams, scopes: string[], se
 
     </div>
     </div>
-
+      <Button className="btn" type={'submit'}>提交</Button>
     </form>
 }

@@ -9,8 +9,7 @@ import (
 	handlers "github.com/pnnh/multiverse-cloud-server/handlers"
 	"github.com/pnnh/multiverse-cloud-server/handlers/account"
 	"github.com/pnnh/multiverse-cloud-server/handlers/applications"
-	"github.com/pnnh/multiverse-cloud-server/handlers/auth/authorizationserver"
-	"github.com/pnnh/multiverse-cloud-server/handlers/captcha"
+	"github.com/pnnh/multiverse-cloud-server/handlers/auth/authorizationserver" 
 	"github.com/pnnh/multiverse-cloud-server/handlers/permissions"
 	"github.com/pnnh/multiverse-cloud-server/handlers/roles"
 	"github.com/pnnh/multiverse-cloud-server/handlers/users"
@@ -112,9 +111,6 @@ func (s *WebServer) Init() error {
 	})
 
 	s.router.GET("/.well-known/openid-configuration", authorizationserver.OpenIdConfigurationHandler)
-
-	s.router.GET("/api/go_captcha_data", captcha.GetCaptchaData)
-	s.router.POST("/api/go_captcha_check_data", captcha.CheckCaptcha)
 
 	return nil
 }

@@ -10,8 +10,7 @@
   "private": true,
   "dependencies": {
     "@fluentui/react-components": "^9.27.1",
-    "@simplewebauthn/browser": "^7.1.0",
-    "antd": "^5.7.2",
+    "@simplewebauthn/browser": "^7.1.0", 
     "await-lock": "^2.2.2",
     "axios": "^1.3.4",
     "base64url": "^3.0.1",
