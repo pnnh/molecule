@@ -1,0 +1,27 @@
+.indexPage {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #fff;
+
+  .navRow {
+    flex-shrink: 0;
+  }
+
+  .layoutChildren {
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
+
+    .mainImage { 
+      margin: 0 auto;
+    }
+  }
+
+  @media screen and (min-width: 1366px) {
+    .layoutChildren {
+      width: 1366px;
+      margin: 0 auto;
+    }
+  }
+}

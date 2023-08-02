@@ -1,8 +1,7 @@
 .navHeader {
     background: #FFFFFF;
     border-bottom: solid 1px #f1f1f1;
-    margin-bottom: 24px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 24px; 
     transition: opacity 0.3s ease-out 0s, transform 0.3s ease-out 0s;
     opacity: 1;
     transform: translateY(0px);
