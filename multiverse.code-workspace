@@ -12,5 +12,8 @@
     {
       "path": "server/resources"
     }
-  ]
+  ],
+  "settings": {
+    "dotnet.defaultSolution": "resources/Gliese.sln"
+  }
 }

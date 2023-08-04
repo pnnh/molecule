@@ -65,7 +65,7 @@ func MailSignupBeginHandler(gctx *gin.Context) {
 		Content:    "",
 		CreateTime: time.Now(),
 		UpdateTime: time.Now(),
-		User:       accountModel.Pk,
+		Username:       accountModel.Pk,
 		Type:       "signup",
 		Code:       helpers.RandNumberRunes(6),
 	}
@@ -154,7 +154,7 @@ func MailSigninBeginHandler(gctx *gin.Context) {
 		Content:    "",
 		CreateTime: time.Now(),
 		UpdateTime: time.Now(),
-		User:       accountModel.Pk,
+		Username:       accountModel.Pk,
 		Type:       "signin",
 		Code:       helpers.RandNumberRunes(6),
 	}
@@ -204,7 +204,7 @@ func MailSigninFinishHandler(gctx *gin.Context) {
 		return
 	}
 
-	user, err := models.GetAccount(sessionModel.User)
+	user, err := models.GetAccount(sessionModel.Username)
 
 	if err != nil || user == nil {
 		helpers2.ResponseMessageError(gctx, "获取用户信息出错", err)

@@ -52,7 +52,7 @@ func PasswordSignupBeginHandler(gctx *gin.Context) {
 		Content:    "",
 		CreateTime: time.Now(),
 		UpdateTime: time.Now(),
-		User:       accountModel.Pk,
+		Username:       accountModel.Pk,
 		Type:       "signup_password",
 		Code:       helpers.RandNumberRunes(6),
 	}
@@ -97,7 +97,7 @@ func PasswordSignupFinishHandler(gctx *gin.Context) {
 		return
 	}
 
-	if err := models.UpdateAccountPassword(sessionModel.User, encrypted); err != nil {
+	if err := models.UpdateAccountPassword(sessionModel.Username, encrypted); err != nil {
 		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("UpdateAccountPassword error"))
 		return
 	}
@@ -132,7 +132,7 @@ func PasswordSigninBeginHandler(gctx *gin.Context) {
 		Content:    "",
 		CreateTime: time.Now(),
 		UpdateTime: time.Now(),
-		User:       accountModel.Pk,
+		Username:       accountModel.Pk,
 		Type:       "signin_password",
 		Code:       helpers.RandNumberRunes(6),
 	}
@@ -168,7 +168,7 @@ func PasswordSigninFinishHandler(gctx *gin.Context) {
 		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("sessionModel不存在"))
 		return
 	}
-	account, err := models.GetAccount(sessionModel.User)
+	account, err := models.GetAccount(sessionModel.Username)
 	if err != nil {
 		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("GetAccount error"))
 		return

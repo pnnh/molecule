@@ -28,7 +28,7 @@ func TokenEndpoint(gctx *gin.Context) {
 		return
 	}
 
-	oauth2Session := newSession(session.User)
+	oauth2Session := newSession(session.Username)
 
 	accessRequest, err := oauth2.NewAccessRequest(ctx, req, oauth2Session)
 

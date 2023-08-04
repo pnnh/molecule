@@ -132,7 +132,7 @@ func AuthEndpointJson(gctx *gin.Context) {
 		Content:      "",
 		CreateTime:   time.Now(),
 		UpdateTime:   time.Now(),
-		User:         username,
+		Username:         username,
 		Type:         "code",
 		Code:         authCode,
 		ClientId:     clientId,

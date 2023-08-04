@@ -71,7 +71,7 @@ func UserEndpoint(gctx *gin.Context) {
 	}
 
 	gctx.JSON(http.StatusOK, gin.H{
-		"username":     session.User,
+		"username":     session.Username,
 		"id_token":     session.IdToken,
 		"access_token": session.AccessToken,
 	})

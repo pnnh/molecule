@@ -42,11 +42,11 @@ export async function GET (request: NextRequest) {
       headers: {
         'Content-Type': 'multipart/form-data'
       },
-      validateStatus: () => true,
+      //validateStatus: () => true,
     })
   const tokenResult = tokenResponse.data
 
-  if (!tokenResult || !tokenResult.id_token) {
+  if (!tokenResult || !tokenResult.id_token || !tokenResult.access_token) {
     return NextResponse.error()
   }
   let redirectPath = sourceUrl.pathname

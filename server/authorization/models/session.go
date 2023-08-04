@@ -13,7 +13,7 @@ type SessionModel struct {
 	Content      string    `json:"content"`
 	CreateTime   time.Time `json:"create_time" db:"create_time"`
 	UpdateTime   time.Time `json:"update_time" db:"update_time"`
-	User         string    `json:"user"`
+	Username     string    `json:"username"`
 	Type         string    `json:"type"`
 	Code         string    `json:"code"`
 	ClientId     string    `json:"client_id" db:"client_id"`
@@ -30,13 +30,13 @@ type SessionModel struct {
 }
 
 func PutSession(model *SessionModel) error {
-	sqlText := `insert into sessions(pk, content, create_time, update_time, "user", type, code,
+	sqlText := `insert into sessions(pk, content, create_time, update_time, username, type, code,
 		client_id, response_type, redirect_uri, scope, state, nonce, id_token, jwt_id, access_token, open_id, company_id) 
-	values(:pk, :content, :create_time, :update_time, :user, :type, :code, :client_id, :response_type, :redirect_uri,
+	values(:pk, :content, :create_time, :update_time, :username, :type, :code, :client_id, :response_type, :redirect_uri,
 		:scope, :state, :nonce, :id_token, :jwt_id, :access_token, :open_id, :company_id)`
 
 	sqlParams := map[string]interface{}{"pk": model.Pk, "content": model.Content, "create_time": model.CreateTime,
-		"update_time": model.UpdateTime, "user": model.User, "type": model.Type,
+		"update_time": model.UpdateTime, "username": model.Username, "type": model.Type,
 		"code": model.Code, "client_id": model.ClientId, "response_type": model.ResponseType,
 		"redirect_uri": model.RedirectUri, "scope": model.Scope, "state": model.State,
 		"nonce": model.Nonce, "id_token": model.IdToken, "jwt_id": model.JwtId,
@@ -72,11 +72,11 @@ func GetSession(pk string) (*SessionModel, error) {
 
 func FindSessionByJwtId(clientId, username, jwtId string) (*SessionModel, error) {
 
-	sqlText := `select * from sessions where client_id = :client_id and user = :user and jwt_id = :jwt_id;`
+	sqlText := `select * from sessions where client_id = :client_id and username = :username and jwt_id = :jwt_id;`
 
 	sqlParams := map[string]interface{}{
 		"client_id": clientId,
-		"user":      username,
+		"username":  username,
 		"jwt_id":    jwtId,
 	}
 	var sqlResults []*SessionModel

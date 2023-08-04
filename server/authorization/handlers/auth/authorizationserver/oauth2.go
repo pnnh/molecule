@@ -16,7 +16,7 @@ import (
 
 var (
 	fositeConfig = &fosite.Config{
-		AccessTokenLifespan: time.Hour * 48,
+		AccessTokenLifespan: time.Hour * 72,
 		GlobalSecret:        secret,
 	}
 
@@ -74,7 +74,7 @@ func newSession(user string) *openid.DefaultSession {
 			Issuer:      issure,
 			Subject:     user,
 			Audience:    []string{},
-			ExpiresAt:   time.Now().Add(time.Hour * 48),
+			ExpiresAt:   time.Now().Add(time.Hour * 72),
 			IssuedAt:    time.Now(),
 			RequestedAt: time.Now(),
 			AuthTime:    time.Now(),
