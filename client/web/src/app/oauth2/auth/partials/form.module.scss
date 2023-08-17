@@ -1,30 +1,49 @@
+.loginForm {
+  background-color: #f3f3f3;
+  min-height: 100vh;
+  display: flex;
+  justify-self: center;
+  align-items: center;
+}
+
 .loginContainer {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
-  height: 28rem;
-  width: 40rem; // 因为隐藏了授权选择部分，所以宽度可以缩小
+  width: 40rem;
   margin: 0 auto;
+  background: #FFFFFF;
+  border-radius: 8px;
+
+  .loginHeader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 2.5rem;
+    color: #5f6368;
+    border-bottom: solid 0.5px #ccc6;
+  }
 
   .loginSection {
     display: flex;
     flex-direction: row;
     gap: 1rem;
-    border: solid 0.5px #ccc6;
     border-radius: 8px;
-    background: #FFFFFF;
     padding: 0;
-    margin-top: 8rem;
+    height: 24rem;
 
     .sectionLeft {
       flex-grow: 1;
       padding: 1rem;
 
       .logoRow {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
         margin-top: 2rem;
+        height: 8rem;
+        width: 8rem;
+        position: relative;
+        margin-left: auto;
+        margin-right: auto;
       }
 
       .fieldsRow {
@@ -37,33 +56,11 @@
           display: flex;
           flex-direction: row;
           gap: 1rem;
-        }
-      }
 
-      .captchaRow {
-        margin-top: 2rem;
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-
-        .fieldsRowContent {
-          display: flex;
-          flex-direction: row;
-          gap: 1rem;
-        }
-
-        .captchaWrap {
-          position: absolute;
-          top: 450px;
-          left: 50%;
-          margin-left: -150px;
-          width: 300px;
-        }
-
-        .captchaBtn {
-          position: relative;
-          width: 300px !important;
-          margin: 0 auto !important;
+          .welcomeForm {
+            font-size: 1rem;
+            font-weight: 500;
+          }
         }
       }
 
@@ -88,10 +85,10 @@
       }
     }
 
-    .sectionRight {
+    .scopeRow {
+      display: none; // 暂时隐藏权限范围选择，因为短期内仅有OpenID字段可选
       flex-grow: 1;
       padding: 1rem 0 1rem 1rem;
-      background: whitesmoke;
 
       .scopeTitle {
         font-size: 1rem;

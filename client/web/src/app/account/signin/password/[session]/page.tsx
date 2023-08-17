@@ -1,7 +1,7 @@
 'use client'
 
 import React, {useState} from 'react'
-import styles from '@/app/account/signup/email/[session]/page.module.scss'
+import styles from './page.module.scss'
 import { clientConfig } from '@/services/client/config'
 import queryString from 'query-string'
 import { Button, Input } from '@fluentui/react-components'

@@ -40,13 +40,13 @@ export function FormEdit (props: {params: ServerAuthParams, scopes: string[], se
       </div>
     </div>
 
-  const welcomeForm = <div>
+  const welcomeForm = <div className={styles.welcomeForm}>
     <input type={'hidden'} name={'username'} value={searchParams.authed} />
-    您好，<span>{searchParams.authed}</span>
+    <span>{searchParams.authed}</span>
   </div>
 
 
-  return <form id={'loginForm'} method={'POST'} action={postUrl} onSubmit={(event) => {
+  return <form id={'loginForm'} className={styles.loginForm} method={'POST'} action={postUrl} onSubmit={(event) => {
 
     if (checked.length < 1) {
       event.preventDefault()
@@ -58,66 +58,68 @@ export function FormEdit (props: {params: ServerAuthParams, scopes: string[], se
     }
   }}>
 
-    <div className={styles.loginContainer + ' row'}>
-    <div className={styles.loginSection + ' h-100 gradient-form'}>
-      <div className={styles.sectionLeft}>
+    <div className={styles.loginContainer}>
+      <div className={styles.loginHeader}>
+        <div>使用哈宝账号登录</div>
+      </div>
+      <div className={styles.loginSection + ' h-100 gradient-form'}>
+        <div className={styles.sectionLeft}>
+                      <div className={styles.logoRow}>
+                        <Image
+                            src="/images/huable.png"
+                            alt="huable"
+                            fill={true}
+                            priority={true}
+                        />
+                      </div>
 
-                    <div className={styles.logoRow + ' text-center'}>
-                      <Image
-                          src="/images/star.jpeg"
-                          alt="Star"
-                          height={32}
-                          width={96}
-                          priority={true}
-                      />
-                    </div>
+                      <div className={styles.fieldsRow}>
+                          <div className={styles.fieldsRowContent}>
 
+                            <div className={styles.loginFields }>
+                              {searchParams.authed ? welcomeForm : loginForm }
+                            </div>
 
-                    <div className={styles.fieldsRow}>
-                        <div className={styles.fieldsRowContent}>
-
-                          <div className={styles.loginFields + ' w-80'}>
-                            {searchParams.authed ? welcomeForm : loginForm }
                           </div>
+                      </div> 
+          <div className={styles.scopeRow}>
 
-                        </div>
-                    </div> 
-        {error && <div className={styles.errorRow}>
-          <div>{error}</div>
-        </div>}
- 
-      </div>
-      <div className={styles.sectionRight}>
-
-        <div className={styles.scopeFields + ' w-64'}>
-          <div className={styles.scopeTitle}>
-              选择授权范围
-          </div>
-          {scopes.map((item, index) => (
-              <div key={index}>
-                {isDisable(item) ? <input type={'hidden'} name={'scopes'} value={item} /> : ''}
-                <label>
-                  <input value={item} type="checkbox" name={'scopes'} disabled={isDisable(item)} checked={isChecked(item)} onChange={(event) => {
-                    let updatedList = [...checked]
-                    if (event.target.checked) {
-                      updatedList = [...checked, event.target.value]
-                    } else {
-                      updatedList.splice(checked.indexOf(event.target.value), 1)
-                    }
-                    setChecked(updatedList)
-                    if (updatedList.length < 1) {
-                      setError('请选择授权范围') 
-                    }
-                  }} />
-                  <span>{item}</span>
-                </label>
+            <div className={styles.scopeFields}>
+              <div className={styles.scopeTitle}>
+                  选择授权范围
               </div>
-          ))}
+              {scopes.map((item, index) => (
+                  <div key={index}>
+                    {isDisable(item) ? <input type={'hidden'} name={'scopes'} value={item} /> : ''}
+                    <label>
+                      <input value={item} type="checkbox" name={'scopes'} disabled={isDisable(item)} checked={isChecked(item)} onChange={(event) => {
+                        let updatedList = [...checked]
+                        if (event.target.checked) {
+                          updatedList = [...checked, event.target.value]
+                        } else {
+                          updatedList.splice(checked.indexOf(event.target.value), 1)
+                        }
+                        setChecked(updatedList)
+                        if (updatedList.length < 1) {
+                          setError('请选择授权范围') 
+                        }
+                      }} />
+                      <span>{item}</span>
+                    </label>
+                  </div>
+              ))}
+            </div>
+          </div>
+          {error && <div className={styles.errorRow}>
+            <div>{error}</div>
+          </div>}
+          <div className={styles.submitRow}>
+            <Button className="btn" type={'submit'}>提交</Button>
+          </div>
+  
         </div>
-      </div>
 
+      </div>
     </div>
-    </div>
-      <Button className="btn" type={'submit'}>提交</Button>
     </form>
 }

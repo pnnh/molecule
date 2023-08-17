@@ -13,7 +13,7 @@ import (
 	"github.com/go-playground/validator/v10"
 	"github.com/pnnh/quantum-go/config"
 	"github.com/pnnh/quantum-go/server/helpers"
-	"github.com/pnnh/quantum-go/services/email"
+	//"github.com/pnnh/quantum-go/services/email"
 )
 
 func MailSignupBeginHandler(gctx *gin.Context) {
@@ -75,14 +75,15 @@ func MailSignupBeginHandler(gctx *gin.Context) {
 		return
 	}
 
-	subject := "注册验证码"
-	body := "您的验证码是: " + session.Code
 
-	err = email.SendMail(mailSender, subject, body, username)
-	if err != nil {
-		gctx.JSON(http.StatusOK, models.CodeError.ToResult())
-		return
-	}
+	// TODO: 为防止被刷，暂不发送邮件
+	// subject := "注册验证码"
+	// body := "您的验证码是: " + session.Code
+	// err = email.SendMail(mailSender, subject, body, username)
+	// if err != nil {
+	// 	gctx.JSON(http.StatusOK, models.CodeError.ToResult())
+	// 	return
+	// }
 
 	sessionData := map[string]interface{}{
 		"session": session.Pk,
@@ -164,14 +165,14 @@ func MailSigninBeginHandler(gctx *gin.Context) {
 		return
 	}
 
-	subject := "登陆验证码"
-	body := "您的验证码是: " + session.Code
-
-	err = email.SendMail(mailSender, subject, body, username)
-	if err != nil {
-		gctx.JSON(http.StatusOK, models.CodeError.ToResult())
-		return
-	}
+	// TODO: 为防止被刷，暂不发送邮件
+	// subject := "登陆验证码"
+	// body := "您的验证码是: " + session.Code
+	// err = email.SendMail(mailSender, subject, body, username)
+	// if err != nil {
+	// 	gctx.JSON(http.StatusOK, models.CodeError.ToResult())
+	// 	return
+	// }
 
 	sessionData := map[string]interface{}{
 		"session": session.Pk,
