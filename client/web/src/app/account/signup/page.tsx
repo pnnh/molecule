@@ -50,7 +50,7 @@ export default function Home () {
                           })
                         }}>Webauthn注册
                         </button>
-                        <button className="btn" onClick={async () => {
+                        {/* <button className="btn" onClick={async () => {
                           console.log('你点击了邮箱注册', username)
                           if (validator.isEmail(username)) {
                             const result = await signupByMailBegin(username, displayName)
@@ -62,7 +62,7 @@ export default function Home () {
                             setErrorMessage('请输入正确的邮箱地址')
                           }
                         }}>邮箱验证码注册
-                        </button>
+                        </button> */}
                         <button className="btn" onClick={async () => {
 
                           console.log('你点击了账号密码注册')

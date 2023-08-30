@@ -49,7 +49,7 @@ export default function Home ({searchParams}: {
                   })
                 }}>Webauthn登录
                 </Button>
-                <Button className="btn" onClick={async () => {
+                {/* <Button className="btn" onClick={async () => {
                   console.log('你点击了邮箱登陆', username)
                   if (validator.isEmail(username)) {
                     const result = await signinByMailBegin(username)
@@ -61,7 +61,7 @@ export default function Home ({searchParams}: {
                     setErrorMessage('请输入正确的邮箱地址')
                   }
                 }}>邮箱验证码登陆
-                </Button>
+                </Button> */}
                 <Button className="btn" onClick={async () => {
                   console.log('你点击了账号密码登陆')
                   const result = await signinByPasswordBegin(username)
