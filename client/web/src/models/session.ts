@@ -1,6 +1,6 @@
  
 import axios from 'axios'
-import {CommonReslut} from './common-result'
+import {CommonResult} from './common-result'
 import { serverConfig } from '@/services/server/config'
 
 export class SessionModel {
@@ -19,7 +19,7 @@ export function genBasicToken (username: string): string {
 
 export async function sessionIntrospect (token: string): Promise<SessionModel | null> {
   const url = serverConfig.SERVER + '/account/session/introspect'
-  const response = await axios.post<CommonReslut<SessionModel>>(url,
+  const response = await axios.post<CommonResult<SessionModel>>(url,
     {},
     {
       params: {},

@@ -33,9 +33,7 @@ export async function handleRegisterSubmit (username: string, displayName: strin
 
   const makeCredentialOptions = fetchResult.data.options
 
-  console.log('Credential Options Object', makeCredentialOptions)
-
-  console.log('Credential Options Formatted', makeCredentialOptions)
+  console.log('Credential Options Object', makeCredentialOptions) 
 
   console.log({
     title: 'Registering...',
@@ -97,8 +95,7 @@ export async function registerNewCredential (username: string, session: string, 
     timer: 2000
   })
 
-  // redirect to dashboard?
-  //window.location.href = "/dashboard/" + state.user.displayName;
+  window.location.href = '/account/signin'
 }
 
 export async function registerCredentialWithServer (username: string, formData: unknown) {

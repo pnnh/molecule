@@ -23,15 +23,19 @@ import (
 var webAuthn *webauthn.WebAuthn
 
 func InitWebauthn() {
+
+	RPID, _ := config.GetConfigurationString("RPID")
+	RPOrigins, _ := config.GetConfigurationString("RPOrigins")
+	if RPID == "" || RPOrigins == "" {
+		logrus.Fatalln("RPOrigins key error22!")
+	}
+
 	webauthnConfig := &webauthn.Config{
-		RPDisplayName: "Multiverse",                                // Display Name for your site
-		RPID:          "multiverse.direct",                         // Generally the FQDN for your site
-		RPOrigins:     []string{"https://debug.multiverse.direct"}, // The origin URL for WebAuthn requests
-		//RPIcon:        "https://multiverse.direct/static/images/logo.png", // Optional icon URL for your site
+		RPDisplayName: "Huable",
+		RPID:          RPID,
+		RPOrigins:     strings.Split(RPOrigins, ","),
 	}
 	if config.Debug() {
-		webauthnConfig.RPID = "debug.multiverse.direct"
-		webauthnConfig.RPOrigins = []string{"https://debug.multiverse.direct"}
 		webauthnConfig.Debug = true
 	}
 	var err error
@@ -84,9 +88,20 @@ func (s *WebauthnHandler) BeginRegistration(gctx *gin.Context) {
 	}
 	logrus.Infoln("sessionBytes: ", string(sessionBytes))
 	sessionText := base64.StdEncoding.EncodeToString(sessionBytes)
-	model.Session = sessionText
+	// accountModel := &models.AccountModel{
+	// 	Pk:          helpers.NewPostId(),
+	// 	Username:    username,
+	// 	Password:    "",
+	// 	CreateTime:  time.Now(),
+	// 	UpdateTime:  time.Now(),
+	// 	Nickname:    displayName,
+	// 	Mail:        username,
+	// 	Credentials: "",
+	// 	Session:     sessionText,
+	// }
+	webauthnModel.Session = sessionText
 	logrus.Infoln("sessionData: ", sessionData)
-	if err = models.PutAccount(model); err != nil {
+	if err = models.PutAccount(&webauthnModel.AccountModel); err != nil {
 		helpers2.ResponseMessageError(gctx, "PutAccount error", err)
 		return
 	}
@@ -152,7 +167,7 @@ func (s *WebauthnHandler) FinishRegistration(gctx *gin.Context) {
 	resp := make(map[string]interface{})
 	resp["code"] = 200
 	resp["data"] = "Registration Success"
-	jsonResponse(gctx.Writer, "Registration Success", http.StatusOK)
+	jsonResponse(gctx.Writer, resp, http.StatusOK)
 }
 
 func (s *WebauthnHandler) BeginLogin(gctx *gin.Context) {

@@ -7,6 +7,7 @@ const serverConfig = {
   AES_IV: 'cwVPn3yX3sp6Bbj0', 
   REDIS: 'redis://127.0.0.1:6379/4',
   REDIS_PASSWORD: 'AS7xQsqVzbHMMK5',
+  AUTH_SERVER: 'https://teleport.huable.xyz',
 }
     
 const clientConfig = {

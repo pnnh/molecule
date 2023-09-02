@@ -2,9 +2,10 @@ const path = require('path')
 
 const {generateConfig} = require('./compile/generate')
 
+console.log(`process.env.ENV: ${process.env.ENV}\n`)
+
 // 生成运行时配置信息
 generateConfig()
-
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -14,15 +15,12 @@ const nextConfig = {
     esmExternals: 'loose'
   }, 
   reactStrictMode: true,
-  webpack: function (config, options) {
+  webpack: function (config) {
     config.experiments = {
       asyncWebAssembly: true,
       layers: true,
       topLevelAwait: true,
     }
-    config.output.webassemblyModuleFilename =
-        options.isServer && !options.dev ? '../static/wasm/[id].wasm' : 'static/wasm/[id].wasm'
-    config.optimization.moduleIds = 'named'
     return config
   },
   compiler: {
@@ -31,27 +29,10 @@ const nextConfig = {
   sassOptions: {
     includePaths: [path.join(__dirname, 'styles')],
   },
-  async rewrites () {
-    return [
-      // {
-      //   source: '/server/:path*',
-      //   destination: serverUrl + '/server/:path*',
-      // },
-      // {
-      //   source: '/.well-known/:path*',
-      //   destination: configJson.SERVER + '/.well-known/:path*',
-      // },
-      // {
-      //   source: '/resource/:path*',
-      //   destination: resourceServerUrl + '/resource/:path*',
-      // },
-      // {
-      //   source: '/data/:path*',
-      //   destination: configJson.RESOURCE_SERVER + '/data/:path*',
-      // },
-    ]
-  },
 }
 
-module.exports = nextConfig
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+}) 
  
+module.exports = withBundleAnalyzer(nextConfig)

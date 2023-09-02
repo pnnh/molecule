@@ -1,10 +1,11 @@
  
 import axios from 'axios'
-import {CommonReslut} from './common-result'
+import {CommonResult} from './common-result'
+import { serverConfig } from '@/services/server/config'
 
 export async function makeCredentialOptions (username: string, formData: unknown) {
   const url = serverConfig.SERVER + '/account/signup/webauthn/begin/' + username
-  const response = await axios.post<CommonReslut<unknown>>(url,
+  const response = await axios.post<CommonResult<unknown>>(url,
     formData,
     {
       headers: {},
@@ -21,7 +22,7 @@ export async function makeCredentialOptions (username: string, formData: unknown
 
 export async function makeCredential (username: string, formData: unknown): Promise<unknown | null> {
   const url = serverConfig.SERVER + '/account/signup/webauthn/finish/' + username
-  const response = await axios.post<CommonReslut<unknown>>(url,
+  const response = await axios.post<CommonResult<unknown>>(url,
     formData,
     {
       headers: {
@@ -40,7 +41,7 @@ export async function makeCredential (username: string, formData: unknown): Prom
 
 export async function makeAssertionOptions (username: string, formData: unknown): Promise<unknown | null> {
   const url = serverConfig.SERVER + '/account/signin/webauthn/begin/' + username
-  const response = await axios.post<CommonReslut<unknown>>(url,
+  const response = await axios.post<CommonResult<unknown>>(url,
     formData,
     {
       headers: {},
@@ -59,9 +60,9 @@ export interface makeAssertionResult {
     authorization: string
 }
 
-export async function makeAssertion (username: string, formData: unknown): Promise<CommonReslut<makeAssertionResult> | null> {
+export async function makeAssertion (username: string, formData: unknown): Promise<CommonResult<makeAssertionResult> | null> {
   const url = serverConfig.SERVER + '/account/signin/webauthn/finish/' + username
-  const response = await axios.post<CommonReslut<makeAssertionResult>>(url,
+  const response = await axios.post<CommonResult<makeAssertionResult>>(url,
     formData,
     {
       headers: {

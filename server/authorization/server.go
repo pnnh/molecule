@@ -62,14 +62,14 @@ func (s *WebServer) Init() error {
 
 	authHandler := &handlers.WebauthnHandler{}
 	s.router.POST("/account/signup/webauthn/begin/:username", authHandler.BeginRegistration)
-	s.router.POST("account/signup/webauthn/finish:username", authHandler.FinishRegistration)
+	s.router.POST("/account/signup/webauthn/finish/:username", authHandler.FinishRegistration)
 	s.router.POST("/account/signin/webauthn/begin/:username", authHandler.BeginLogin)
 	s.router.POST("/account/signin/webauthn/finish/:username", authHandler.FinishLogin)
 
-	s.router.POST("/account/signup/email/begin", account.MailSignupBeginHandler)
-	s.router.POST("/account/signup/email/finish", account.MailSignupFinishHandler)
-	s.router.POST("/account/signin/email/begin", account.MailSigninBeginHandler)
-	s.router.POST("/account/signin/email/finish", account.MailSigninFinishHandler)
+	// s.router.POST("/account/signup/email/begin", account.MailSignupBeginHandler)
+	// s.router.POST("/account/signup/email/finish", account.MailSignupFinishHandler)
+	// s.router.POST("/account/signin/email/begin", account.MailSigninBeginHandler)
+	// s.router.POST("/account/signin/email/finish", account.MailSigninFinishHandler)
 
 	s.router.POST("/account/signup/password/begin", account.PasswordSignupBeginHandler)
 	s.router.POST("/account/signup/password/finish", account.PasswordSignupFinishHandler)

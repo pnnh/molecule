@@ -87,11 +87,11 @@ func GetAccountByUsername(username string) (*AccountModel, error) {
 }
 
 func PutAccount(model *AccountModel) error {
-	sqlText := `insert into accounts(pk, createat, updateat, account, password, nickname, status, session)
-	values(:pk, :createat, :updateat, :account, :password, :nickname, 1, :session)`
+	sqlText := `insert into accounts(pk, create_time, update_time, username, password, nickname, status, session)
+	values(:pk, :create_time, :update_time, :username, :password, :nickname, 1, :session)`
 
-	sqlParams := map[string]interface{}{"pk": model.Pk, "createat": model.CreateTime, "updateat": model.UpdateTime,
-		"account": model.Username, "password": "", "nickname": model.Nickname,
+	sqlParams := map[string]interface{}{"pk": model.Pk, "create_time": model.CreateTime, "update_time": model.UpdateTime,
+		"username": model.Username, "password": "", "nickname": model.Nickname,
 		"session": model.Session}
 
 	_, err := datastore.NamedExec(sqlText, sqlParams)

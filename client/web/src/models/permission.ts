@@ -1,6 +1,6 @@
  
 import axios from 'axios'
-import {CommonReslut} from './common-result'
+import {CommonResult} from './common-result'
 import { serverConfig } from '@/services/server/config'
 
 export interface PermissionModel {
@@ -22,7 +22,7 @@ export async function selectPermissions (page: number, size: number, token: stri
   if (offset < 0) {
     offset = 0
   }
-  const response = await axios.get<CommonReslut<selectResultModel>>(
+  const response = await axios.get<CommonResult<selectResultModel>>(
     serverConfig.SERVER + '/permissions/select',
     {
       params: {offset, limit: size},

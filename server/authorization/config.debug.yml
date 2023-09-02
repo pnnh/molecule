@@ -11,3 +11,5 @@ MAIL_PORT: 587
 MAIL_USER: support@multiverse.direct
 MAIL_PASSWORD: nXZn*SOW6avYB^Js
 MAIL_SENDER: support@multiverse.direct
+RPID: portal.huable.xyz
+RPOrigins: https://portal.huable.xyz

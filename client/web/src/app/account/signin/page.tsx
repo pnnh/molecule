@@ -4,13 +4,10 @@ import React, {useState} from 'react'
 import styles from './page.module.scss'
 import {handleSignInSubmit} from '@/services/client/webauthn'
 import Link from '~/next/link'
-import validator from 'validator'
 import queryString from 'query-string'
 import {useRouter} from 'next/navigation'
-import {signinByMailBegin, signinByPasswordBegin} from '@/services/client/account'
-import { 
-  FluentProvider,
-  webLightTheme,
+import {signinByPasswordBegin} from '@/services/client/account'
+import {
   Button,
   Input
 } from '@fluentui/react-components' 
@@ -20,7 +17,7 @@ export default function Home ({searchParams}: {
   const rawQuery = queryString.stringify(searchParams)
   console.debug('rawQuery', rawQuery)
   const [username, setUsername] = useState('xspanni@gmail.com')
-  const [errorMessage, setErrorMessage] = useState('')
+  const [errorMessage] = useState('')
   const router = useRouter()
 
   return <div> 
@@ -46,6 +43,7 @@ export default function Home ({searchParams}: {
                 <Button className="btn" onClick={() => {
                   handleSignInSubmit(username).then(() => {
                     console.log('登陆成功')
+                    window.location.href = '/'
                   })
                 }}>Webauthn登录
                 </Button>

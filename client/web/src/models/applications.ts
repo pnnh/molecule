@@ -1,6 +1,6 @@
 
 import axios from 'axios'
-import {CommonReslut} from './common-result'
+import {CommonResult} from './common-result'
 import { serverConfig } from '@/services/server/config'
 
 export interface ApplicationModel {
@@ -22,7 +22,7 @@ export async function selectPublicApplications (page: number, size: number): Pro
   if (offset < 0) {
     offset = 0
   }
-  const response = await axios.get<CommonReslut<selectResultModel>>(
+  const response = await axios.get<CommonResult<selectResultModel>>(
     serverConfig.SERVER + '/public/applications/select',
     {
       params: {offset, limit: size},
@@ -35,7 +35,7 @@ export async function selectApplications (page: number, size: number, token: str
   if (offset < 0) {
     offset = 0
   }
-  const response = await axios.get<CommonReslut<selectResultModel>>(
+  const response = await axios.get<CommonResult<selectResultModel>>(
     serverConfig.SERVER + '/applications/select',
     {
       params: {offset, limit: size},

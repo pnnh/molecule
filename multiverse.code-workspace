@@ -10,7 +10,12 @@
   "settings": {
     "dotnet.defaultSolution": "resources/Gliese.sln",
     "cSpell.words": [
+      "authorizationserver",
+      "gctx",
       "huable",
+      "Infoln",
+      "pnnh",
+      "RPID",
       "webp"
     ]
   }
