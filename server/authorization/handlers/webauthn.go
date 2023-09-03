@@ -221,37 +221,78 @@ func (s *WebauthnHandler) FinishLogin(gctx *gin.Context) {
 		helpers2.ResponseMessageError(gctx, "参数有误", nil)
 		return
 	}
+	verifyData := gctx.PostForm("verifyData")
+	if len(verifyData) < 1 {
+		helpers2.ResponseMessageError(gctx, "verifyData参数有误", nil)
+		return
+	}
+	source, _ := gctx.GetQuery("source")
+	if source == "" {
+		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("code或session为空"))
+		return
+	}
 
-	// get user
 	user, err := models.GetAccountByUsername(username)
 
-	// user doesn't exist
 	if err != nil {
 		helpers2.ResponseMessageError(gctx, "参数有误312", err)
 		return
 	}
 	sessionData, err := models.UnmarshalWebauthnSession(user.Session)
 	if err != nil {
-		helpers2.ResponseMessageError(gctx, "参数有误3122", err)
-		return
-	}
-	webauthnModel := models.CopyWebauthnAccount(user)
-	_, err = webAuthn.FinishLogin(webauthnModel, *sessionData, gctx.Request)
-	if err != nil {
-		helpers2.ResponseMessageError(gctx, "参数有误315", err)
-		return
-	}
-
-	jwtToken, err := helpers2.GenerateJwtTokenRs256(username, authorizationserver.PrivateKeyString)
-	if (jwtToken == "") || (err != nil) {
 		helpers2.ResponseMessageError(gctx, "参数有误316", err)
 		return
 	}
+	webauthnModel := models.CopyWebauthnAccount(user)
+	// _, err = webAuthn.FinishLogin(webauthnModel, *sessionData, gctx.Request)
+	// if err != nil {
+	// 	helpers2.ResponseMessageError(gctx, "参数有误315", err)
+	// 	return
+	// }
+	fmt.Println("verifyData: \n", verifyData)
+	assertionData, err := protocol.ParseCredentialRequestResponseBody(strings.NewReader(verifyData))
+	if err != nil {
+		helpers2.ResponseMessageError(gctx, "参数有误317", err)
+		return
+	}
+	credential, err := webAuthn.ValidateLogin(webauthnModel, *sessionData, assertionData)
+
+	if err != nil {
+		helpers2.ResponseMessageError(gctx, "参数有误318", err)
+		return
+	}
+	logrus.Debugln("credential: ", credential)
+	jwtToken, err := helpers2.GenerateJwtTokenRs256(username, authorizationserver.PrivateKeyString)
+	if (jwtToken == "") || (err != nil) {
+		helpers2.ResponseMessageError(gctx, "参数有误319", err)
+		return
+	}
+
+	sourceData, err := base64.URLEncoding.DecodeString(source)
+	if err != nil {
+		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("source解析失败"))
+		return
+	}
+	sourceUrl := string(sourceData)
+	logrus.Debugln("sourceUrl: ", sourceUrl)
+
+	// 登录成功后设置cookie
+	gctx.SetCookie("Authorization", jwtToken, 3600*48, "/", "", true, true)
 
 	resp := make(map[string]interface{})
 	resp["code"] = 200
-	resp["data"] = map[string]interface{}{"authorization": jwtToken}
-	jsonResponse(gctx.Writer, resp, http.StatusOK)
+	resp["data"] = map[string]interface{}{"authorization": jwtToken, "source": sourceUrl}
+	//jsonResponse(gctx.Writer, resp, http.StatusOK)
+
+	// dj, err := json.Marshal(resp)
+	// if err != nil {
+	// 	gctx.JSON(http.StatusOK, models.CodeError.WithMessage("source解析失败222"))
+	// 	return
+	// }
+	// gctx.JSON(http.StatusOK, resp)
+
+	gctx.Redirect(http.StatusFound, sourceUrl)
+
 }
 
 func jsonResponse(w http.ResponseWriter, d interface{}, c int) {

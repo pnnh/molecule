@@ -1,6 +1,5 @@
 import { makeAssertion } from '@/models/credential'
-import { NextRequest, NextResponse } from 'next/server' 
-import { encryptAes } from '@/utils/aes'
+import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST (request: NextRequest) { 
   const formData = await request.json()
@@ -27,14 +26,14 @@ export async function POST (request: NextRequest) {
   }  
 
   const response = NextResponse.json(result)
-  const token = encryptAes(result.data.authorization)
-  response.cookies.set('a', token, {
-    httpOnly: true,
-    secure: true,
-    sameSite: 'strict', 
-    maxAge: 60 * 60 * 24 * 30,
-    path: '/'
-  })
+  // const token = encryptAes(result.data.authorization)
+  // response.cookies.set('a', token, {
+  //   httpOnly: true,
+  //   secure: true,
+  //   sameSite: 'strict', 
+  //   maxAge: 60 * 60 * 24 * 30,
+  //   path: '/'
+  // })
 
   return response
 }

@@ -11,6 +11,7 @@
     "dotnet.defaultSolution": "resources/Gliese.sln",
     "cSpell.words": [
       "authorizationserver",
+      "Debugln",
       "gctx",
       "huable",
       "Infoln",

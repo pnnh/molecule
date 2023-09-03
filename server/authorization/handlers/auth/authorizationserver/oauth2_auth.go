@@ -25,7 +25,7 @@ func parseUsername(gctx *gin.Context) (string, error) {
 		logrus.Errorln("获取cookie失败", err)
 		return "", err
 	}
-	authedUser := ""
+	authUser := ""
 	if authCookie != nil && authCookie.Value != "" {
 		jwtToken := strings.TrimPrefix(authCookie.Value, "Bearer ")
 		parsedClaims, err := helpers.ParseJwtTokenRs256(jwtToken, PublicKeyString)
@@ -33,10 +33,10 @@ func parseUsername(gctx *gin.Context) (string, error) {
 			return "", err
 		}
 		if parsedClaims != nil {
-			authedUser = parsedClaims.Subject
+			authUser = parsedClaims.Subject
 		}
 	}
-	return authedUser, nil
+	return authUser, nil
 }
 
 func AuthEndpointHtml(gctx *gin.Context) {
@@ -57,20 +57,20 @@ func AuthEndpointHtml(gctx *gin.Context) {
 		return
 	}
 	// 检查是否已经登录
-	authedUser, err := parseUsername(gctx)
+	authUser, err := parseUsername(gctx)
 	if err != nil {
 		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("username为空3"))
 		return
 	}
-	if authedUser == "" {
+	if authUser == "" {
 		sourceUrl := fmt.Sprintf("%s%s?%s", selfUrl, gctx.Request.URL.Path, gctx.Request.URL.RawQuery)
 		sourceUrlQuery := base64.URLEncoding.EncodeToString([]byte(sourceUrl))
 		gctx.Redirect(http.StatusFound, fmt.Sprintf("%s%s?source=%s", webUrl, "/account/signin", sourceUrlQuery))
 		return
 	}
 	webAuthUrl := fmt.Sprintf("%s%s?%s", webUrl, gctx.Request.URL.Path, gctx.Request.URL.RawQuery)
-	if authedUser != "" {
-		webAuthUrl += fmt.Sprintf("&authed=%s", authedUser)
+	if authUser != "" {
+		webAuthUrl += fmt.Sprintf("&authed=%s", authUser)
 	}
 
 	gctx.Redirect(http.StatusFound, webAuthUrl)

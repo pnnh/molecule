@@ -1,5 +1,6 @@
 import {startAuthentication, startRegistration} from '~/@simplewebauthn/browser'
 import {AuthenticationResponseJSON} from '~/@simplewebauthn/typescript-types'
+import { clientConfig } from './config'
 
 export async function handleRegisterSubmit (username: string, displayName: string) {
   if (!username) {
@@ -117,7 +118,7 @@ export async function registerCredentialWithServer (username: string, formData: 
 export async function handleSignInSubmit (username: string) {
   const formData = new FormData()
   formData.append('username', username)
-
+  
   const res = await fetch('/account/signin/webauthn/begin', {
     method: 'POST', // or 'PUT'
     body: formData, // data can be `string` or {object}!
@@ -134,36 +135,41 @@ export async function handleSignInSubmit (username: string) {
 
   const makeAssertionOptions = fetchResult.data.options
 
-  console.log('Assertion Options Object', makeAssertionOptions)
+  console.log('Assertion Options Object', fetchResult.data)
 
-  console.log({
-    title: 'Logging In...',
-    text: 'Tap your security key to login.',
-    imageUrl: '/images/securitykey.min.svg',
-    showCancelButton: true,
-    showConfirmButton: false,
-    focusConfirm: false,
-    focusCancel: false
-  })
+  // console.log({
+  //   title: 'Logging In...',
+  //   text: 'Tap your security key to login.',
+  //   imageUrl: '/images/securitykey.min.svg',
+  //   showCancelButton: true,
+  //   showConfirmButton: false,
+  //   focusConfirm: false,
+  //   focusCancel: false
+  // })
 
   const attResp = await startAuthentication(makeAssertionOptions)
   console.log('attResp', attResp)
 
-  await verifyAssertionWithServer(fetchResult.data.session, attResp)
+  //await verifyAssertionWithServer(fetchResult.data.session, attResp, rawQuery)
+
+  return JSON.stringify(attResp)
 }
 
 
-export async function verifyAssertionWithServer (session: string, assertedCredential: AuthenticationResponseJSON) {
-  const formData = {
-    username: session,
-    credential: assertedCredential
-  }
-
+export async function verifyAssertionWithServer (session: string, 
+  assertedCredential: AuthenticationResponseJSON,
+  rawQuery: string) {
+  // const formData = {
+  //   username: session,
+  //   credential: assertedCredential
+  // }
+  const webauthnFormUrl = `${clientConfig.AUTH_SERVER}/account/signin/webauthn/finish/${session}?`+rawQuery
+    
   let response
   try {
-    const res = await fetch('/account/signin/webauthn/finish', {
+    const res = await fetch(webauthnFormUrl, {
       method: 'POST',
-      body: JSON.stringify(formData),
+      body: JSON.stringify(assertedCredential),
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json'
@@ -179,7 +185,7 @@ export async function verifyAssertionWithServer (session: string, assertedCreden
   console.log('Assertion Object', response)
 
   // show error
-  if (response.code !== 200) {
+  if (response.code !== 200 || !response.data) {
     console.log('Error doing assertion')
     console.log(response.errorMessage)
     console.error(response.errorMessage)
@@ -195,6 +201,6 @@ export async function verifyAssertionWithServer (session: string, assertedCreden
   })
 
   // redirect?
-  //window.location.href = "/dashboard/" + state.user.displayName;
+  window.location.href = response.data.source
 }
 
