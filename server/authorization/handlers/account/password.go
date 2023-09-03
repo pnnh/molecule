@@ -156,7 +156,7 @@ func PasswordSigninFinishHandler(gctx *gin.Context) {
 	session := gctx.PostForm("session")
 	password := gctx.PostForm("password")
 	if session == "" || password == "" || source == "" {
-		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("code或session为空"))
+		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("code或session为空2"))
 		return
 	}
 	sessionModel, err := models.GetSession(session)

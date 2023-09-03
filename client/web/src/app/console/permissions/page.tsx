@@ -55,8 +55,7 @@ export default async function Page () {
 }
 
 
-function TableRow (props: { model: PermissionModel }) {
-  const model = props.model
+function TableRow (props: { model: PermissionModel }) { 
   const imgEl = <Image width={20} height={20} src="/icons/file-fill.svg"
                          alt={'icon'}/>
 
