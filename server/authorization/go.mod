@@ -16,13 +16,9 @@ require (
 require (
 	github.com/bytedance/sonic v1.8.5 // indirect
 	github.com/chenzhuoyu/base64x v0.0.0-20221115062448-fe3a3abad311 // indirect
-	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.4 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
-	github.com/wenlng/go-captcha v1.2.5 // indirect
 	golang.org/x/arch v0.3.0 // indirect
-	golang.org/x/image v0.5.0 // indirect
-	golang.org/x/time v0.3.0 // indirect
 )
 
 require (
