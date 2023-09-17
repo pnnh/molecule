@@ -14,7 +14,7 @@ export
 function WebauthnForm ({rawQuery}: {rawQuery: string}) {
   const [username, setUsername] = useState('xspanni@gmail.com')
   const [errorMessage] = useState('')
-  const webauthnFormUrl = `${clientConfig.AUTH_SERVER}/account/signin/webauthn/finish/${username}?`+rawQuery
+  const webauthnFormUrl = `${clientConfig.AUTH_SERVER}/account/signin/webauthn/finish/${username}`+rawQuery
                     
   const [verifyData, setVerifyData] = useState('')
   const formRef = React.useRef<HTMLFormElement>(null)

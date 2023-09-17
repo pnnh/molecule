@@ -14,9 +14,7 @@ import { ArrowCircleRightRegular } from '@fluentui/react-icons'
 export function PasswordForm ({rawQuery}: {rawQuery: string}) {
   const [username, setUsername] = useState('xspanni@gmail.com')
   const [errorMessage] = useState('')
-  // todo 测试目的，验证是否release构建下，rawQuery参数丢失
-  rawQuery = rawQuery + '&aaaa=bbbb&cccc'
-  const passwordFormUrl = `${clientConfig.AUTH_SERVER}/account/signin/password/finish?`+rawQuery
+  const passwordFormUrl = `${clientConfig.AUTH_SERVER}/account/signin/password/finish`+rawQuery
                       
   const [password, setPassword] = useState('')
   const [verifyData, setVerifyData] = useState('')

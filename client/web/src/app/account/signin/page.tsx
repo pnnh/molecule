@@ -2,29 +2,16 @@
 
 import React, {useState} from 'react'
 import styles from './page.module.scss' 
-import Link from '~/next/link'
-import queryString from 'query-string'  
+import Link from '~/next/link' 
 import { WebauthnForm } from './webauthn/form'
 import { PasswordForm } from './password/form'
-export default function Home ({searchParams}: {
-  searchParams: Record<string, string>
-}) {
-  
-  if (!searchParams.source) {
-    searchParams.source = '/'
-  }
-  let rawQuery = queryString.stringify(searchParams)
-  console.debug('rawQuery', rawQuery)   
-  // todo 测试目的，验证是否release构建下，rawQuery参数丢失
-  rawQuery = rawQuery + '&xxxx=yyyy'
+
+export default function Home () {
+  const rawQuery = location.search
 
   const [loginMethod, setLoginMethod] = useState<'webauthn'|'password'>('password')
 
-  return <div>  
-    <div>
-      {'>>>'+JSON.stringify(searchParams)+'<<<|||||'}
-      {'||||>>>'+location.search+'<<<'}
-    </div>
+  return <div>
   <div className={styles.loginContainer}>
         <div className={styles.mainBox}>
             <div className={styles.boxTitle}>
