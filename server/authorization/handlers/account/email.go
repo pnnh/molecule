@@ -25,12 +25,12 @@ func MailSignupBeginHandler(gctx *gin.Context) {
 	}
 	validate := validator.New()
 	if err := validate.Var(username, "required,email"); err != nil {
-		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("account格式错误"))
+		gctx.JSON(http.StatusOK, models.ErrorResultMessage(err, "account格式错误"))
 		return
 	}
 	accountModel, err := models.GetAccountByUsername(username)
 	if err != nil {
-		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("account不存在"))
+		gctx.JSON(http.StatusOK, models.ErrorResultMessage(err, "account不存在"))
 		return
 	}
 	if accountModel == nil {
@@ -65,16 +65,15 @@ func MailSignupBeginHandler(gctx *gin.Context) {
 		Content:    "",
 		CreateTime: time.Now(),
 		UpdateTime: time.Now(),
-		Username:       accountModel.Pk,
+		Username:   accountModel.Pk,
 		Type:       "signup",
 		Code:       helpers.RandNumberRunes(6),
 	}
 
 	if err := models.PutSession(session); err != nil {
-		gctx.JSON(http.StatusOK, models.CodeError.ToResult())
+		gctx.JSON(http.StatusOK, models.CodeError.WithError(err))
 		return
 	}
-
 
 	// TODO: 为防止被刷，暂不发送邮件
 	// subject := "注册验证码"
@@ -103,7 +102,7 @@ func MailSignupFinishHandler(gctx *gin.Context) {
 	}
 	sessionModel, err := models.GetSession(session)
 	if err != nil {
-		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("GetSession error"))
+		gctx.JSON(http.StatusOK, models.ErrorResult(err))
 		return
 	}
 	if sessionModel == nil {
@@ -131,12 +130,12 @@ func MailSigninBeginHandler(gctx *gin.Context) {
 	}
 	validate := validator.New()
 	if err := validate.Var(username, "required,email"); err != nil {
-		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("account格式错误"))
+		gctx.JSON(http.StatusOK, models.ErrorResultMessage(err, "account格式错误"))
 		return
 	}
 	accountModel, err := models.GetAccountByUsername(username)
 	if err != nil {
-		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("account不存在"))
+		gctx.JSON(http.StatusOK, models.ErrorResultMessage(err, "account不存在"))
 		return
 	}
 	if accountModel == nil {
@@ -155,13 +154,13 @@ func MailSigninBeginHandler(gctx *gin.Context) {
 		Content:    "",
 		CreateTime: time.Now(),
 		UpdateTime: time.Now(),
-		Username:       accountModel.Pk,
+		Username:   accountModel.Pk,
 		Type:       "signin",
 		Code:       helpers.RandNumberRunes(6),
 	}
 
 	if err := models.PutSession(session); err != nil {
-		gctx.JSON(http.StatusOK, models.CodeError.ToResult())
+		gctx.JSON(http.StatusOK, models.ErrorResult(err))
 		return
 	}
 
@@ -192,7 +191,7 @@ func MailSigninFinishHandler(gctx *gin.Context) {
 	}
 	sessionModel, err := models.GetSession(session)
 	if err != nil {
-		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("GetSession error"))
+		gctx.JSON(http.StatusOK, models.ErrorResultMessage(err, "获取session出错"))
 		return
 	}
 	if sessionModel == nil {

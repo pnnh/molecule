@@ -59,7 +59,7 @@ func AuthEndpointHtml(gctx *gin.Context) {
 	// 检查是否已经登录
 	authUser, err := parseUsername(gctx)
 	if err != nil {
-		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("username为空3"))
+		gctx.JSON(http.StatusOK, models.ErrorResultMessage(err, "username为空"))
 		return
 	}
 	if authUser == "" {
@@ -92,7 +92,7 @@ func AuthEndpointJson(gctx *gin.Context) {
 
 	authedUser, err := parseUsername(gctx)
 	if err != nil {
-		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("username为空3"))
+		gctx.JSON(http.StatusOK, models.ErrorResultMessage(err, "username为空"))
 		return
 	}
 	// 若用户名不一致认为是重新登陆

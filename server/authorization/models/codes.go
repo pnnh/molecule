@@ -2,6 +2,7 @@ package models
 
 import (
 	"fmt"
+
 	"github.com/sirupsen/logrus"
 )
 
@@ -11,20 +12,24 @@ func (c MCode) String() string {
 	return fmt.Sprintf("%d", c)
 }
 
-func (c MCode) ToResult() *CommonResult {
-	return NewCommonResult(c, CodeMessage(c), nil)
-}
+// Deprecated: 使用SuccessResult或ErrorResult系列方法替代
+// func (c MCode) ToResult() *CommonResult {
+// 	return NewCommonResult(c, CodeMessage(c), nil)
+// }
 
+// Deprecated: 使用SuccessResult或ErrorResult系列方法替代
 func (c MCode) WithMessage(message string) *CommonResult {
 	return NewCommonResult(c, CodeMessage(c)+":"+message, nil)
 }
 
+// Deprecated: 使用SuccessResult或ErrorResult系列方法替代
 func (c MCode) WithData(data interface{}) *CommonResult {
 	return NewCommonResult(c, CodeMessage(c), data)
 }
 
+// Deprecated: 使用SuccessResult或ErrorResult系列方法替代
 func (c MCode) WithError(err error) *CommonResult {
-	logrus.Errorln("MCode.WithError [%d] %v", c, err)
+	logrus.Errorf("MCode.WithError [%d] %v", c, err)
 	return NewCommonResult(c, CodeMessage(c), nil)
 }
 

@@ -10,10 +10,12 @@ import (
 )
 
 func main() {
-
 	if config.Debug() {
 		gin.SetMode(gin.DebugMode)
 		logrus.SetLevel(logrus.DebugLevel)
+	} else {
+		gin.SetMode(gin.ReleaseMode)
+		logrus.SetLevel(logrus.InfoLevel)
 	}
 
 	handlers.InitWebauthn()

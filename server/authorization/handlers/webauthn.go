@@ -226,8 +226,8 @@ func (s *WebauthnHandler) FinishLogin(gctx *gin.Context) {
 		helpers2.ResponseMessageError(gctx, "verifyData参数有误", nil)
 		return
 	}
-	source, _ := gctx.GetQuery("source")
-	if source == "" {
+	source, ok := gctx.GetQuery("source")
+	if source == "" || !ok {
 		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("code或session为空"))
 		return
 	}
@@ -270,7 +270,7 @@ func (s *WebauthnHandler) FinishLogin(gctx *gin.Context) {
 
 	sourceData, err := base64.URLEncoding.DecodeString(source)
 	if err != nil {
-		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("source解析失败"))
+		gctx.JSON(http.StatusOK, models.ErrorResultMessage(err, "source解析失败"))
 		return
 	}
 	sourceUrl := string(sourceData)

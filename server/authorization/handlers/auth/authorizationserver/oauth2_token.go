@@ -56,7 +56,7 @@ func TokenEndpoint(gctx *gin.Context) {
 
 	parsedClaims, err := helpers.ParseJwtTokenRs256(idTokenExtra, PublicKeyString)
 	if err != nil {
-		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("idToken为空"))
+		gctx.JSON(http.StatusOK, models.ErrorResultMessage(err, "idToken为空"))
 		return
 	}
 

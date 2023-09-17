@@ -23,7 +23,7 @@ func PasswordSignupBeginHandler(gctx *gin.Context) {
 	}
 	accountModel, err := models.GetAccountByUsername(username)
 	if err != nil {
-		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("account不存在"))
+		gctx.JSON(http.StatusOK, models.ErrorResultMessage(err, "account不存在"))
 		return
 	}
 	if accountModel == nil {
@@ -58,7 +58,7 @@ func PasswordSignupBeginHandler(gctx *gin.Context) {
 	}
 
 	if err := models.PutSession(session); err != nil {
-		gctx.JSON(http.StatusOK, models.CodeError.ToResult())
+		gctx.JSON(http.StatusOK, models.CodeError.WithError(err))
 		return
 	}
 
@@ -80,7 +80,7 @@ func PasswordSignupFinishHandler(gctx *gin.Context) {
 	}
 	sessionModel, err := models.GetSession(session)
 	if err != nil {
-		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("GetSession error2"))
+		gctx.JSON(http.StatusOK, models.ErrorResultMessage(err, "GetSession error"))
 		return
 	}
 	if sessionModel == nil {
@@ -93,12 +93,12 @@ func PasswordSignupFinishHandler(gctx *gin.Context) {
 	}
 	encrypted, err := helpers.HashPassword(password)
 	if err != nil {
-		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("RsaEncryptString error"))
+		gctx.JSON(http.StatusOK, models.ErrorResultMessage(err, "HashPassword error"))
 		return
 	}
 
 	if err := models.UpdateAccountPassword(sessionModel.Username, encrypted); err != nil {
-		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("UpdateAccountPassword error"))
+		gctx.JSON(http.StatusOK, models.ErrorResultMessage(err, "UpdateAccountPassword error"))
 		return
 	}
 
@@ -119,7 +119,7 @@ func PasswordSigninBeginHandler(gctx *gin.Context) {
 	}
 	accountModel, err := models.GetAccountByUsername(username)
 	if err != nil {
-		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("account不存在"))
+		gctx.JSON(http.StatusOK, models.ErrorResultMessage(err, "account不存在"))
 		return
 	}
 	if accountModel == nil {
@@ -138,7 +138,7 @@ func PasswordSigninBeginHandler(gctx *gin.Context) {
 	}
 
 	if err := models.PutSession(session); err != nil {
-		gctx.JSON(http.StatusOK, models.CodeError.ToResult())
+		gctx.JSON(http.StatusOK, models.CodeError.WithError(err))
 		return
 	}
 
@@ -161,7 +161,7 @@ func PasswordSigninFinishHandler(gctx *gin.Context) {
 	}
 	sessionModel, err := models.GetSession(session)
 	if err != nil {
-		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("GetSession error3"))
+		gctx.JSON(http.StatusOK, models.ErrorResultMessage(err, "GetSession error"))
 		return
 	}
 	if sessionModel == nil {
@@ -170,7 +170,7 @@ func PasswordSigninFinishHandler(gctx *gin.Context) {
 	}
 	account, err := models.GetAccount(sessionModel.Username)
 	if err != nil {
-		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("GetAccount error"))
+		gctx.JSON(http.StatusOK, models.ErrorResultMessage(err, "GetAccount error"))
 		return
 	}
 
@@ -201,7 +201,7 @@ func PasswordSigninFinishHandler(gctx *gin.Context) {
 
     sourceData, err := base64.URLEncoding.DecodeString(source)
 	if err != nil {
-		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("source解析失败"))
+		gctx.JSON(http.StatusOK, models.ErrorResultMessage(err, "source解析失败"))
 		return
 	}
 	sourceUrl := string(sourceData)

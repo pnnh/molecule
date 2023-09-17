@@ -52,13 +52,13 @@ func IntrospectionEndpoint(gctx *gin.Context) {
 
 	clientId, err := url.QueryUnescape(id)
 	if err != nil {
-		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("idToken为空3"))
+		gctx.JSON(http.StatusOK, models.ErrorResultMessage(err, "idToken为空3"))
 		return
 	}
 
 	session, err := models.FindSessionByAccessToken(clientId, accessToken)
 	if err != nil || session == nil {
-		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("idToken为空22"))
+		gctx.JSON(http.StatusOK, models.ErrorResultMessage(err, "idToken为空4"))
 		return
 	}
 
