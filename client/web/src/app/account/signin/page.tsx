@@ -12,8 +12,10 @@ export default function Home ({searchParams}: {
   if (!searchParams.source) {
     searchParams.source = '/'
   }
-  const rawQuery = queryString.stringify(searchParams)
+  let rawQuery = queryString.stringify(searchParams)
   console.debug('rawQuery', rawQuery)   
+  // todo 测试目的，验证是否release构建下，rawQuery参数丢失
+  rawQuery = rawQuery + '&xxxx=yyyy'
 
   const [loginMethod, setLoginMethod] = useState<'webauthn'|'password'>('password')
 
