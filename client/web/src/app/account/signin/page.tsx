@@ -9,6 +9,7 @@ import { PasswordForm } from './password/form'
 export default function Home ({searchParams}: {
   searchParams: Record<string, string>
 }) {
+  
   if (!searchParams.source) {
     searchParams.source = '/'
   }
@@ -20,6 +21,10 @@ export default function Home ({searchParams}: {
   const [loginMethod, setLoginMethod] = useState<'webauthn'|'password'>('password')
 
   return <div>  
+    <div>
+      {'>>>'+JSON.stringify(searchParams)+'<<<|||||'}
+      {'||||>>>'+location.search+'<<<'}
+    </div>
   <div className={styles.loginContainer}>
         <div className={styles.mainBox}>
             <div className={styles.boxTitle}>
