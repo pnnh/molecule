@@ -24,7 +24,7 @@ export async function restartContainerPort (containerName, imageName, nodePort, 
 
 //=========================开始构建===================================//
 
-const containerName = 'venus-web'
+const containerName = 'multiverse-web'
 
 await buildDocker(containerName)
 
