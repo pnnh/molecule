@@ -8,8 +8,7 @@ import { Button, Input } from '@fluentui/react-components'
 
 export default function Home ({params, searchParams}: { params: { session: string }, 
   searchParams: Record<string, string> }) { 
-  const [password, setPassword] = useState('')
-  const [errorMessage, setErrorMessage] = useState('')
+  const [password, setPassword] = useState('') 
   
   if (!params.session) {
     return <div>无效会话</div>
@@ -28,12 +27,7 @@ export default function Home ({params, searchParams}: { params: { session: strin
                                value={password} onChange={(event) => {
                                  setPassword(event.target.value)
                                }}/>
-                    </div>
-                    {errorMessage &&
-                        <div className={styles.messageRow}>
-                            <span>{errorMessage}</span>
-                        </div>
-                    }
+                    </div> 
 
                     <div className={styles.actionRow}>
                         <Button className="btn" type='submit'>密码登陆</Button>

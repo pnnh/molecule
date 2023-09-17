@@ -3,12 +3,7 @@ import './global.css'
 import { Providers } from './providers'
 
 // 隔几秒重新验证下数据
-export const revalidate = 10
-
-export const metadata = {
-  title: 'Next.js, Fluent UI and Me',
-  description: 'My first website created with Next.js and Fluent UI',
-}
+export const revalidate = 5
 
 export default async function RootLayout ({
   children,

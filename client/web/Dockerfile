@@ -1,12 +1,40 @@
-FROM node
+FROM node:20-alpine AS base
+
+FROM base AS deps
+
+RUN apk add --no-cache libc6-compat
+WORKDIR /app
+
+COPY package.json package-lock.json ./
+RUN npm ci
+
+FROM base AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+
+RUN npm run build
+
+
+FROM base AS runner
+WORKDIR /app
+
+LABEL GIT_COMMIT="<GIT_COMMIT>"
 
 ENV NODE_ENV production
-ENV PORT 8100
 
-# 指定RUN工作目录
-WORKDIR /opt
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
 
-# 拷贝程序
-COPY . /opt
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/config.js ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-CMD ["npm", "run", "start"]
+USER nextjs
+
+EXPOSE 8101
+
+ENV PORT 8101
+
+CMD ["node", "server.js"]

@@ -1,17 +1,17 @@
 import Image from 'next/image'
 import {genBasicToken} from '@/models/session'
-import {getSession} from '@/services/auth'
+import {getIdentity} from '@/services/auth'
 import {formatRfc3339} from '@/utils/datetime'
 import {RoleModel, selectRoles} from '@/models/role'
 
 export default async function Page () {
-  const session = await getSession()
-  if (!session || !session.username) {
+  const session = await getIdentity()
+  if (!session) {
     return <div> 未登录
         </div>
   }
 
-  const basicToken = genBasicToken(session.username)
+  const basicToken = genBasicToken(session)
   if (!basicToken) {
     return <div> 未登录
         </div>
@@ -55,8 +55,7 @@ export default async function Page () {
 }
 
 
-function TableRow (props: { model: RoleModel }) {
-  const model = props.model
+function TableRow (props: { model: RoleModel }) { 
   const imgEl = <Image width={20} height={20} src="/icons/file-fill.svg"
                          alt={'icon'}/>
 

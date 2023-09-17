@@ -1,7 +1,7 @@
 'use client'
 
 import {ServerAuthParams} from '@/models/common/oauth2/auth'
-import React, {useEffect, useState} from 'react'
+import React, { useState} from 'react'
 import queryString from 'query-string'
 import styles from './form.module.scss'
 import Image from '~/next/image'

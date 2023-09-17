@@ -23,6 +23,10 @@ const nextConfig = {
     }
     return config
   },
+  images: {
+    domains: ['localhost', 'static.huable.com', 'static.huable.xyz']
+  },
+  compress: process.env.ENV === 'production',
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production'
   },

@@ -1,17 +1,15 @@
 'use client'
 
-import React, {useState} from 'react'
-import validator from 'validator'
+import React, {useState} from 'react' 
 import {handleRegisterSubmit} from '@/services/client/webauthn'
-import {signupByMailBegin, signupByPasswordBegin} from '@/services/client/account'
+import { signupByPasswordBegin} from '@/services/client/account'
 import {useRouter} from 'next/navigation'
 import Link from 'next/link'
 import styles from './page.module.scss'
 
 export default function Home () {
   const [username, setUsername] = useState('xspanni@gmail.com')
-  const [displayName, setDisplayName] = useState('')
-  const [errorMessage, setErrorMessage] = useState('')
+  const [displayName, setDisplayName] = useState('') 
   const router = useRouter()
   return <div className={styles.signupPage}>
         <div className={styles.navBar}>
@@ -35,13 +33,7 @@ export default function Home () {
                                value={displayName} onChange={(event) => {
                                  setDisplayName(event.target.value)
                                }}/>
-                    </div>
-
-                    {errorMessage &&
-                        <div className={styles.messageRow}>
-                            <span>{errorMessage}</span>
-                        </div>
-                    }
+                    </div> 
 
                     <div className={styles.actionRow}>
                         <button className="btn" onClick={() => {

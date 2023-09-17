@@ -2,6 +2,3 @@ Dockerfile
 .dockerignore
 README.md
 .git
-src
-tsconfig.json
-next-env.d.ts

@@ -1,17 +1,17 @@
 import Image from 'next/image'
-import {genBasicToken} from '@/models/session'
-import {getSession} from '@/services/auth'
+import {genBasicToken} from '@/models/session' 
 import {formatRfc3339} from '@/utils/datetime'
 import {PermissionModel, selectPermissions} from '@/models/permission'
+import { getIdentity } from '@/services/auth'
 
 export default async function Page () {
-  const session = await getSession()
-  if (!session || !session.username) {
+  const session = await getIdentity()
+  if (!session) {
     return <div> 未登录
         </div>
   }
 
-  const basicToken = genBasicToken(session.username)
+  const basicToken = genBasicToken(session)
   if (!basicToken) {
     return <div> 未登录
         </div>
