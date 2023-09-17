@@ -1,12 +1,14 @@
-import {$} from 'zx'
+#!/usr/bin/env -S deno run --allow-env --allow-run --allow-read --allow-sys
 
-// 构建并推送Docker镜像
-export async function buildDocker (imageName) {
+import 'npm:zx@7.1.1/globals'
+
+// 构建Docker镜像
+export async function buildDocker(imageName) {
   await $`pwd`
 
   const commitId = await $`git rev-parse HEAD`
 
-  let {stdout: dockerFile} = await $`cat Dockerfile`
+  let { stdout: dockerFile } = await $`cat Dockerfile`
   dockerFile = dockerFile.replace(/<GIT_COMMIT>/g, commitId.stdout.trim())
 
   // 构建镜像
@@ -17,18 +19,18 @@ export async function buildDocker (imageName) {
 }
 
 // 重启指定的容器
-export async function restartContainerPort (containerName, imageName, nodePort, containerPort) {
+export async function restartContainerPort(containerName, imageName, nodePort, containerPort) {
   await $`docker rm -f ${containerName}`
   await $`docker run -d --restart=always --name ${containerName} -p ${nodePort}:${containerPort} ${imageName}`
 }
 
 //=========================开始构建===================================//
 
-const containerName = 'multiverse-web'
+const containerName = 'multiverse-server'
 
 await buildDocker(containerName)
 
 // 在jenkins中执行时自动重启容器
-if (typeof process.env.BUILD_ID !== 'undefined') {
-  await restartContainerPort(containerName, containerName, 8000, 8000)
+if (Deno.env.get("BUILD_ID")) {
+  await restartContainerPort(containerName, containerName, 8001, 8001)
 }

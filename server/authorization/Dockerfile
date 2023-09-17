@@ -1,18 +1,20 @@
-FROM ubuntu:22.10
+FROM golang:1.20-alpine as build
 
-RUN apt-get update \
-		&& apt-get install -y ca-certificates \
-		&& apt-get install -y libc6 \
-		&& rm -rf /var/lib/apt/lists/* \
-		&& apt-get clean
+WORKDIR /build
 
-# 指定RUN工作目录
-WORKDIR /home
+ENV GOSUMDB off
 
-ENV LD_LIBRARY_PATH /opt/lib
+ADD . ./
 
-# 拷贝程序
-COPY bin /opt/bin
+RUN go mod tidy && \
+    go build -o app
 
-# 启动程序
-ENTRYPOINT ["/opt/bin/multiverse-cloud-server"]
+FROM alpine:3.16 as prod
+
+WORKDIR /
+
+COPY --from=build /build/config.yaml /config.yaml
+COPY --from=build /build/data /data
+COPY --from=build /build/app /
+
+CMD ["/app"]
