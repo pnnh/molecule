@@ -71,7 +71,12 @@ export default class GoCaptchaBtn extends Component<CaptchaButtonProps, CaptchaB
           <div className={(`wg-cap-btn__inner wg-cap-active__${captStatus}`)}>
             <Popover 
               open={popoverVisible} 
-              onOpenChange={this.handleVisibleChange} >
+              onOpenChange={(event, data) => {
+                this.setState({popoverVisible: data.open})
+                if (data.open) {
+                  this.props.refresh && this.props.refresh()
+                }
+              }} >
                 <PopoverTrigger>
                     <div>
 
@@ -210,14 +215,7 @@ export default class GoCaptchaBtn extends Component<CaptchaButtonProps, CaptchaB
 
     return (count ? res : null)
   }
- 
-
-  handleVisibleChange = (visible: boolean) => {
-    this.setState({popoverVisible: visible})
-    if (visible) {
-      this.props.refresh && this.props.refresh()
-    }
-  }
+  
 
   handleBtnEvent = () => {
     this.setState({
