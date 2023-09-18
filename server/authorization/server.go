@@ -9,7 +9,8 @@ import (
 	handlers "github.com/pnnh/multiverse-cloud-server/handlers"
 	"github.com/pnnh/multiverse-cloud-server/handlers/account"
 	"github.com/pnnh/multiverse-cloud-server/handlers/applications"
-	"github.com/pnnh/multiverse-cloud-server/handlers/auth/authorizationserver" 
+	"github.com/pnnh/multiverse-cloud-server/handlers/auth/authorizationserver"
+	"github.com/pnnh/multiverse-cloud-server/handlers/captcha"
 	"github.com/pnnh/multiverse-cloud-server/handlers/permissions"
 	"github.com/pnnh/multiverse-cloud-server/handlers/roles"
 	"github.com/pnnh/multiverse-cloud-server/handlers/users"
@@ -73,7 +74,7 @@ func (s *WebServer) Init() error {
 
 	s.router.POST("/account/signup/password/begin", account.PasswordSignupBeginHandler)
 	s.router.POST("/account/signup/password/finish", account.PasswordSignupFinishHandler)
-	s.router.POST("/account/signin/password/begin", account.PasswordSigninBeginHandler)
+	//s.router.POST("/account/signin/password/begin", account.PasswordSigninBeginHandler)
 	s.router.POST("/account/signin/password/finish", account.PasswordSigninFinishHandler)
 
 	s.router.GET("/users/select", users.UserSelectHandler)
@@ -105,12 +106,15 @@ func (s *WebServer) Init() error {
 	})
 	s.router.GET("/oauth2/jwks", func(gctx *gin.Context) {
 		authorizationserver.JwksEndpoint(gctx)
-	}) 
+	})
 	s.router.POST("/oauth2/user", func(gctx *gin.Context) {
 		authorizationserver.UserEndpoint(gctx)
 	})
 
 	s.router.GET("/.well-known/openid-configuration", authorizationserver.OpenIdConfigurationHandler)
+
+	s.router.GET("/api/go_captcha_data", captcha.GetCaptchaData)
+	s.router.POST("/api/go_captcha_check_data", captcha.CheckCaptcha)
 
 	return nil
 }

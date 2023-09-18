@@ -7,6 +7,7 @@ import (
 
 	"github.com/pnnh/multiverse-cloud-server/handlers/auth/authorizationserver"
 	helpers2 "github.com/pnnh/multiverse-cloud-server/helpers"
+	"github.com/sirupsen/logrus"
 
 	"github.com/pnnh/multiverse-cloud-server/models"
 
@@ -52,7 +53,7 @@ func PasswordSignupBeginHandler(gctx *gin.Context) {
 		Content:    "",
 		CreateTime: time.Now(),
 		UpdateTime: time.Now(),
-		Username:       accountModel.Pk,
+		Username:   accountModel.Pk,
 		Type:       "signup_password",
 		Code:       helpers.RandNumberRunes(6),
 	}
@@ -74,7 +75,7 @@ func PasswordSignupBeginHandler(gctx *gin.Context) {
 func PasswordSignupFinishHandler(gctx *gin.Context) {
 	session := gctx.PostForm("session")
 	password := gctx.PostForm("password")
-	if session == "" || password == "" {
+	if session == "" {
 		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("code或session为空"))
 		return
 	}
@@ -111,66 +112,46 @@ func PasswordSignupFinishHandler(gctx *gin.Context) {
 	gctx.JSON(http.StatusOK, result)
 }
 
-func PasswordSigninBeginHandler(gctx *gin.Context) {
-	username := gctx.PostForm("username")
-	if username == "" {
-		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("account为空"))
-		return
-	}
-	accountModel, err := models.GetAccountByUsername(username)
-	if err != nil {
-		gctx.JSON(http.StatusOK, models.ErrorResultMessage(err, "account不存在"))
-		return
-	}
-	if accountModel == nil {
-		gctx.JSON(http.StatusOK, models.CodeAccountNotExists.WithMessage("account不存在"))
-		return
-	}
-
-	session := &models.SessionModel{
-		Pk:         helpers.MustUuid(),
-		Content:    "",
-		CreateTime: time.Now(),
-		UpdateTime: time.Now(),
-		Username:       accountModel.Pk,
-		Type:       "signin_password",
-		Code:       helpers.RandNumberRunes(6),
-	}
-
-	if err := models.PutSession(session); err != nil {
-		gctx.JSON(http.StatusOK, models.CodeError.WithError(err))
-		return
-	}
-
-	sessionData := map[string]interface{}{
-		"session": session.Pk,
-	}
-
-	result := models.CodeOk.WithData(sessionData)
-
-	gctx.JSON(http.StatusOK, result)
-}
-
 func PasswordSigninFinishHandler(gctx *gin.Context) {
 	source, _ := gctx.GetQuery("source")
-	session := gctx.PostForm("session")
+	//session := gctx.PostForm("session")
+	username := gctx.PostForm("username")
 	password := gctx.PostForm("password")
-	if session == "" || password == "" || source == "" {
+	if username == "" || password == "" || source == "" {
 		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("code或session为空2"))
 		return
 	}
-	sessionModel, err := models.GetSession(session)
-	if err != nil {
-		gctx.JSON(http.StatusOK, models.ErrorResultMessage(err, "GetSession error"))
+
+	captchaKey := gctx.PostForm("captcha_key")
+	if captchaKey == "" {
+		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("captcha_key为空"))
 		return
 	}
-	if sessionModel == nil {
-		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("sessionModel不存在"))
+
+	captchaModel, err := models.FindCaptcha(captchaKey)
+	if captchaModel == nil || err != nil || captchaModel.Checked != 1 ||
+		time.Now().Sub(captchaModel.CreateTime).Minutes() > 5 {
+		logrus.Errorln("验证码错误", captchaKey, err)
+		gctx.JSON(http.StatusOK, models.ErrorResultMessage(err, "验证码错误"))
 		return
 	}
-	account, err := models.GetAccount(sessionModel.Username)
+
+	// sessionModel, err := models.GetSession(session)
+	// if err != nil {
+	// 	gctx.JSON(http.StatusOK, models.ErrorResultMessage(err, "GetSession error"))
+	// 	return
+	// }
+	// if sessionModel == nil {
+	// 	gctx.JSON(http.StatusOK, models.CodeError.WithMessage("sessionModel不存在"))
+	// 	return
+	// }
+	account, err := models.GetAccountByUsername(username)
 	if err != nil {
 		gctx.JSON(http.StatusOK, models.ErrorResultMessage(err, "GetAccount error"))
+		return
+	}
+	if account == nil {
+		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("account不存在"))
 		return
 	}
 
@@ -197,9 +178,9 @@ func PasswordSigninFinishHandler(gctx *gin.Context) {
 
 	// sessionData := map[string]interface{}{
 	// 	"authorization": jwtToken,
-	// } 
+	// }
 
-    sourceData, err := base64.URLEncoding.DecodeString(source)
+	sourceData, err := base64.URLEncoding.DecodeString(source)
 	if err != nil {
 		gctx.JSON(http.StatusOK, models.ErrorResultMessage(err, "source解析失败"))
 		return

@@ -17,6 +17,8 @@ require (
 	github.com/creasty/defaults v1.7.0 // indirect
 	github.com/fatih/structtag v1.2.0 // indirect
 	github.com/go-webauthn/x v0.1.4 // indirect
+	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0 // indirect
+	golang.org/x/image v0.5.0 // indirect
 )
 
 require (
@@ -81,6 +83,7 @@ require (
 	github.com/subosito/gotenv v1.6.0 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.11 // indirect
+	github.com/wenlng/go-captcha v1.2.5
 	github.com/x448/float16 v0.8.4 // indirect
 	golang.org/x/arch v0.5.0 // indirect
 	golang.org/x/crypto v0.13.0

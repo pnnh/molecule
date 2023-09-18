@@ -12,12 +12,21 @@
     "cSpell.words": [
       "authorizationserver",
       "Debugln",
+      "Errorln",
       "gctx",
       "huable",
       "Infoln",
+      "jmoiron",
+      "logrus",
       "pnnh",
       "RPID",
-      "webp"
+      "signin",
+      "Signin",
+      "sirupsen",
+      "sqlx",
+      "Webauthn",
+      "webp",
+      "wenlng"
     ]
   }
 }

@@ -178,10 +178,8 @@ func (s *WebauthnHandler) BeginLogin(gctx *gin.Context) {
 		return
 	}
 
-	// get user
 	user, err := models.GetAccountByUsername(username)
 
-	// user doesn't exist
 	if err != nil {
 		helpers2.ResponseMessageError(gctx, "参数有误316", err)
 		return
@@ -228,7 +226,7 @@ func (s *WebauthnHandler) FinishLogin(gctx *gin.Context) {
 	}
 	source, ok := gctx.GetQuery("source")
 	if source == "" || !ok {
-		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("code或session为空"))
+		gctx.JSON(http.StatusOK, models.CodeError.WithMessage("code或session为空a"))
 		return
 	}
 
