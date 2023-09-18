@@ -4,7 +4,6 @@ import React, {useState} from 'react'
 import styles from './form.module.scss' 
 import Lodash from 'lodash'
 import {
-  Button,
   Input
 } from '@fluentui/react-components' 
 import { clientConfig } from '@/services/client/config'
@@ -17,7 +16,7 @@ import Qs from 'qs'
 export function PasswordForm ({rawQuery}: {rawQuery: string}) {
   const [username, setUsername] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
-  const passwordFormUrl = `${clientConfig.AUTH_SERVER}/account/signin/password/finish?`+rawQuery                      
+  const passwordFormUrl = `${clientConfig.AUTH_SERVER}/account/signup/password/finish?`+rawQuery                      
   const [password, setPassword] = useState('')
   const [captBase64, setCaptBase64] = useState('')
   const [captThumbBase64, setCaptThumbBase64] = useState('')
@@ -137,8 +136,8 @@ export function PasswordForm ({rawQuery}: {rawQuery: string}) {
                           value={captStatus}
                           width="100%"
                           height="50px"
+                          title="验证并注册"
                           imageBase64={captBase64}
-                          title='验证并登录'
                           thumbBase64={captThumbBase64}
                           changeValue={(val: string) => setCaptStatus(val)}
                           confirm={handleConfirm}

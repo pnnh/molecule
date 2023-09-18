@@ -1,74 +1,49 @@
 'use client'
 
-import React, {useState} from 'react' 
-import {handleRegisterSubmit} from '@/services/client/webauthn'
-import { signupByPasswordBegin} from '@/services/client/account'
-import {useRouter} from 'next/navigation'
-import Link from 'next/link'
-import styles from './page.module.scss'
+import React, {useState} from 'react'
+import styles from './page.module.scss' 
+import Link from '~/next/link' 
+import { WebauthnForm } from './webauthn/form'
+import { PasswordForm } from './password/form'
+import queryString from 'query-string'
+import { clientConfig } from '@/services/client/config'
+import { encodeBase64String } from '@/utils/base64'
 
 export default function Home () {
-  const [username, setUsername] = useState('xspanni@gmail.com')
-  const [displayName, setDisplayName] = useState('') 
-  const router = useRouter()
-  return <div className={styles.signupPage}>
-        <div className={styles.navBar}>
-            <div className={styles.navLeft}>Multiverse</div>
-            <div className={styles.navRight}>是否已有账号?
-                <Link href={'/account/signin'}>登陆</Link>
-            </div>
-        </div>
-        <div className={styles.mainContainer}>
-            <div className={styles.mainBox}>
-                <h1 className={styles.signupTitle}>立即注册，免费使用</h1>
-                <div className={styles.formBox}>
-                    <div className={styles.fieldRow}>
-                        <input className="input input-bordered w-full" type="text" placeholder="用户名"
-                               value={username} onChange={(event) => {
-                                 setUsername(event.target.value)
-                               }}/>
-                    </div>
-                    <div className={styles.fieldRow}>
-                        <input className="input input-bordered w-full" type="text" placeholder="昵称"
-                               value={displayName} onChange={(event) => {
-                                 setDisplayName(event.target.value)
-                               }}/>
-                    </div> 
+  let rawQuery = location.search
+  const queryParams = queryString.parse(rawQuery)
+  if (!queryParams.source) {
+    queryParams.source = encodeBase64String(clientConfig.SELF_URL + '/account/signin')
+  }
+  rawQuery = queryString.stringify(queryParams)
 
-                    <div className={styles.actionRow}>
-                        <button className="btn" onClick={() => {
-                          handleRegisterSubmit(username, displayName).then(() => {
-                            console.debug('注册成功')
-                          })
-                        }}>Webauthn注册
-                        </button>
-                        {/* <button className="btn" onClick={async () => {
-                          console.log('你点击了邮箱注册', username)
-                          if (validator.isEmail(username)) {
-                            const result = await signupByMailBegin(username, displayName)
-                            console.log('register result', result)
-                            if (result && result.code === 200) {
-                              router.replace('/account/signup/email/' + result.data.session)
-                            }
-                          } else {
-                            setErrorMessage('请输入正确的邮箱地址')
-                          }
-                        }}>邮箱验证码注册
-                        </button> */}
-                        <button className="btn" onClick={async () => {
+  const [loginMethod, setLoginMethod] = useState<'webauthn'|'password'>('password')
 
-                          console.log('你点击了账号密码注册')
-                          const result = await signupByPasswordBegin(username, displayName)
-                          console.log('register result', result)
-                          if (result && result.code === 200) {
-                            router.replace('/account/signup/password/' + result.data.session)
-                          }
-                        }}>账号密码注册
-                        </button>
-                    </div>
+  return <div>
+  <div className={styles.loginContainer}>
+        <div className={styles.mainBox}>
+            <div className={styles.boxTitle}>
+                <div className={styles.titleLeft}>
+                  注册
+                </div>
+                <div className={styles.titleRight}>
+                  <Link href={''} className={loginMethod === 'password'?'active':''} onClick={()=> {
+                    setLoginMethod('password') 
+                  }}>账号密码</Link>
+                  <div>|</div>
+                  <Link href={''} className={loginMethod === 'webauthn'?'active':''} onClick={() => {
+                    setLoginMethod('webauthn') 
+                  }}>Webauthn</Link>
                 </div>
             </div>
-
+            {loginMethod === 'webauthn' 
+              ? <WebauthnForm rawQuery={rawQuery} /> 
+              : <PasswordForm rawQuery={rawQuery}/>}
+            <div className={styles.tipRow}>
+                已有账号?
+                <Link href={'/account/signin?'+rawQuery}>立即登录</Link>
+            </div>
         </div>
-    </div>
+    </div> 
+        </div>
 }

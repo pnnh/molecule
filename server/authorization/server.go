@@ -72,7 +72,7 @@ func (s *WebServer) Init() error {
 	// s.router.POST("/account/signin/email/begin", account.MailSigninBeginHandler)
 	// s.router.POST("/account/signin/email/finish", account.MailSigninFinishHandler)
 
-	s.router.POST("/account/signup/password/begin", account.PasswordSignupBeginHandler)
+	//s.router.POST("/account/signup/password/begin", account.PasswordSignupBeginHandler)
 	s.router.POST("/account/signup/password/finish", account.PasswordSignupFinishHandler)
 	//s.router.POST("/account/signin/password/begin", account.PasswordSigninBeginHandler)
 	s.router.POST("/account/signin/password/finish", account.PasswordSigninFinishHandler)

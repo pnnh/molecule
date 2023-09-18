@@ -1,13 +1,37 @@
 'use client'
 
-import React, {Component} from 'react'
+import React, {Component } from 'react'
 import PropTypes from 'prop-types'
 import './captcha_button.css'
 import GoCaptcha from './captcha'
-import { Popover } from 'antd'
+import { Popover, PopoverTrigger, PopoverSurface } from '@fluentui/react-components'
 import Image from '~/next/image'
 
-export default class GoCaptchaBtn extends Component {
+export interface CaptchaButtonProps {
+  value: string,
+  title: string,
+  //popoverVisible: boolean,
+  //captStatus: string,
+  imageBase64: string,
+  thumbBase64: string,
+  height: string,
+  width: string,
+  class: string,
+  maxDot: number, 
+  changeValue: (value: string) => void,
+  refresh: () => void,
+  confirm: (dots: {x:number, y:number}[]) => void
+}
+
+export interface CaptchaButtonState {
+  popoverVisible: boolean,
+  captStatus: string,
+  imageBase64: string,
+  thumbBase64: string
+  title: string
+}
+
+export default class GoCaptchaBtn extends Component<CaptchaButtonProps, CaptchaButtonState> {
   static defaultProps = {
     value: PropTypes.oneOf(['default', 'check', 'error', 'over', 'overing', 'success']),
     width: '300px',
@@ -17,13 +41,14 @@ export default class GoCaptchaBtn extends Component {
     thumbBase64: PropTypes.string
   }
 
-  constructor (props) {
+  constructor (props: CaptchaButtonProps) {
     super(props)
     this.state = {
       popoverVisible: false,
       captStatus: 'default',
       imageBase64: '',
-      thumbBase64: ''
+      thumbBase64: '',
+      title: props.title,
     }
   }
 
@@ -44,29 +69,24 @@ export default class GoCaptchaBtn extends Component {
       height
     }}>
           <div className={(`wg-cap-btn__inner wg-cap-active__${captStatus}`)}>
-            <Popover
-                content={<GoCaptcha
-                    value={popoverVisible}
-                    width="300px"
-                    height="240px"
-                    maxDot={5}
-                    calcPosType="screen"
-                    imageBase64={imageBase64}
-                    thumbBase64={thumbBase64}
-                    close={this.handleCloseEvent}
-                    refresh={this.handleRefreshEvent}
-                    confirm={this.handleConfirmEvent}
-                />}
-              open={popoverVisible}
-                placement="top"
-              onOpenChange={this.handleVisibleChange}
-              trigger="click">
-              <div onClick={this.handleBtnEvent} className="wg-cap-state__default">
+            <Popover 
+              open={popoverVisible} 
+              onOpenChange={this.handleVisibleChange} >
+                <PopoverTrigger>
+                    <div>
+
+                <div onClick={this.handleBtnEvent} className="wg-cap-state__default">
                 <div className="wg-cap-state__inner">
-                  <span className="wg-cap-btn__text">验证并登录</span>
+                  <span className="wg-cap-btn__text">{this.state.title}</span>
                 </div>
               </div>
-              <div onClick={this.handleCancelEvent} className="wg-cap-state__check">
+              <div onClick={(e) => {
+                // 阻止合成事件的冒泡
+                e.stopPropagation()
+                // 阻止与原生事件的冒泡
+                e.nativeEvent.stopImmediatePropagation()
+                return false
+              }} className="wg-cap-state__check">
                 <div className="wg-cap-state__inner">
                   <div className="wg-cap-btn__ico">
                     <Image
@@ -101,8 +121,14 @@ export default class GoCaptchaBtn extends Component {
                   </div>
                   <span>点击次数过多 <em>点击重试</em></span>
                 </div>
-              </div>
-              <div onClick={this.handleCancelEvent} className="wg-cap-state__success">
+              </div> 
+              <div onClick={(e) => {
+                // 阻止合成事件的冒泡
+                e.stopPropagation()
+                // 阻止与原生事件的冒泡
+                e.nativeEvent.stopImmediatePropagation()
+                return false
+              }} className="wg-cap-state__success">
                 <div className="wg-cap-state__inner">
                   <div className="wg-cap-btn__ico">
                     <Image
@@ -114,13 +140,30 @@ export default class GoCaptchaBtn extends Component {
                   <span>人机验证已通过</span>
                 </div>
               </div>
+                    </div>
+                </PopoverTrigger>
+
+                <PopoverSurface>
+                <GoCaptcha
+                    value={popoverVisible}
+                    width="300px"
+                    height="240px"
+                    maxDot={5}
+                    calcPosType="screen"
+                    imageBase64={imageBase64}
+                    thumbBase64={thumbBase64}
+                    close={this.handleCloseEvent}
+                    refresh={this.handleRefreshEvent}
+                    confirm={this.handleConfirmEvent}
+                />
+                </PopoverSurface>
             </Popover>
           </div>
         </div>
   }
 
-  static getDerivedStateFromProps (nextProps, prevState) {
-    const res = {}
+  static getDerivedStateFromProps (nextProps: CaptchaButtonProps, prevState: CaptchaButtonState) {
+    const res = {} as CaptchaButtonState
     let count = 0
 
     if (prevState.popoverVisible) {
@@ -155,9 +198,9 @@ export default class GoCaptchaBtn extends Component {
         res.popoverVisible = false
         res.captStatus = 'over'
         count++
-        if (nextProps.value !== 'over') {
-          nextProps.changeValue && nextProps.changeValue('over')
-        }
+        //if (nextProps.value !== 'over') {
+        nextProps.changeValue && nextProps.changeValue('over')
+        //}
       } else if (nextProps.value === 'success') {
         res.popoverVisible = false
         res.captStatus = 'success'
@@ -167,17 +210,9 @@ export default class GoCaptchaBtn extends Component {
 
     return (count ? res : null)
   }
+ 
 
-  // ================= Methods ================
-  handleCancelEvent = (e) => {
-    // 阻止合成事件的冒泡
-    e.stopPropagation()
-    // 阻止与原生事件的冒泡
-    e.nativeEvent.stopImmediatePropagation()
-    return false
-  }
-
-  handleVisibleChange = (visible) => {
+  handleVisibleChange = (visible: boolean) => {
     this.setState({popoverVisible: visible})
     if (visible) {
       this.props.refresh && this.props.refresh()
@@ -197,7 +232,7 @@ export default class GoCaptchaBtn extends Component {
     this.props.refresh && this.props.refresh()
   }
 
-  handleConfirmEvent = (data) => {
+  handleConfirmEvent = (data: {x: number, y: number}[]) => {
     this.props.confirm && this.props.confirm(data)
   }
 

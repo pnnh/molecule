@@ -2,10 +2,32 @@
 
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
-import './captcha.css'
-import {Button} from 'antd'
+import './captcha.css' 
+import {
+  Button, 
+} from '@fluentui/react-components' 
 
-export default class GoCaptcha extends Component {
+
+export interface GoCaptchaProps {
+  value: boolean
+  width?: string
+  height?: string
+  calcPosType?: 'dom' | 'screen'
+  maxDot?: number
+  imageBase64?: string
+  thumbBase64?: string
+  close?: () => void
+  refresh?: () => void
+  confirm?: (dots: {x:number, y:number}[]) => void
+}
+
+export interface GoCaptchaState {
+  imageBase64Code: string
+  thumbBase64Code: string
+  dots: {x:number, y:number, index:number}[]
+}
+
+export default class GoCaptcha extends Component<GoCaptchaProps, GoCaptchaState> {
   static defaultProps = {
     value: PropTypes.bool.isRequired,
     width: '300px',
@@ -16,7 +38,7 @@ export default class GoCaptcha extends Component {
     thumbBase64: PropTypes.string
   }
 
-  constructor (props) {
+  constructor (props: GoCaptchaProps) {
     super(props)
     this.state = {
       imageBase64Code: '',
@@ -78,7 +100,7 @@ export default class GoCaptcha extends Component {
             </div>
   }
 
-  static getDerivedStateFromProps (nextProps, prevState) {
+  static getDerivedStateFromProps (nextProps: GoCaptchaProps, prevState: GoCaptchaState) {
     const res = {}
     let count = 0
     if (!nextProps.value) {

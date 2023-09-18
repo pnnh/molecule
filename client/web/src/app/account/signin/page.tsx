@@ -5,9 +5,17 @@ import styles from './page.module.scss'
 import Link from '~/next/link' 
 import { WebauthnForm } from './webauthn/form'
 import { PasswordForm } from './password/form'
+import queryString from 'query-string'
+import { clientConfig } from '@/services/client/config'
+import { encodeBase64String } from '@/utils/base64'
 
 export default function Home () {
-  const rawQuery = location.search
+  let rawQuery = location.search
+  const queryParams = queryString.parse(rawQuery)
+  if (!queryParams.source) {
+    queryParams.source = encodeBase64String(clientConfig.SELF_URL)
+  }
+  rawQuery = queryString.stringify(queryParams)
 
   const [loginMethod, setLoginMethod] = useState<'webauthn'|'password'>('password')
 
@@ -33,7 +41,7 @@ export default function Home () {
               : <PasswordForm rawQuery={rawQuery}/>}
             <div className={styles.tipRow}>
                 还没有账号?
-                <Link href={'/account/signup'}>立即注册</Link>
+                <Link href={'/account/signup?'+rawQuery}>立即注册</Link>
             </div>
         </div>
     </div> 

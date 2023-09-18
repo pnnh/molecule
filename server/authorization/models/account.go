@@ -91,7 +91,7 @@ func PutAccount(model *AccountModel) error {
 	values(:pk, :create_time, :update_time, :username, :password, :nickname, 1, :session)`
 
 	sqlParams := map[string]interface{}{"pk": model.Pk, "create_time": model.CreateTime, "update_time": model.UpdateTime,
-		"username": model.Username, "password": "", "nickname": model.Nickname,
+		"username": model.Username, "password": model.Password, "nickname": model.Nickname,
 		"session": model.Session}
 
 	_, err := datastore.NamedExec(sqlText, sqlParams)
