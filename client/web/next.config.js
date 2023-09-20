@@ -10,10 +10,9 @@ generateConfig()
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'standalone',
-  experimental: {
-    appDir: true,
-    esmExternals: 'loose'
-  }, 
+  // experimental: {
+  //   esmExternals: 'loose'
+  // }, 
   reactStrictMode: true,
   webpack: function (config) {
     config.experiments = {
