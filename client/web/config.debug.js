@@ -14,6 +14,17 @@ const clientConfig = {
   SERVER: 'https://teleport.huable.xyz',
   SELF_URL: 'https://portal.huable.xyz',
   AUTH_SERVER: 'https://teleport.huable.xyz',
+  SIGN: {
+    PASSWORD: {
+      ENABLE: true,
+    },
+    WEBAUTHN: {
+      ENABLE: true,
+    },
+    EMAIL: {
+      ENABLE: true,
+    },
+  }
 }
     
 module.exports = {

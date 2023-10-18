@@ -38,6 +38,12 @@
           text-decoration: none;
         }
 
+        a:not(:last-child)::after {
+          content: '|';
+          padding-left: 8px;
+          color: #6b6b6b;
+        }
+
         :global(.active) {
           color: #0688eb;
         }

@@ -19,21 +19,31 @@
       display: flex;
       flex-direction: row;
       justify-content: space-between;
+
       .titleLeft {
         font-size: 24px;
         font-weight: 500;
         margin-bottom: 32px;
       }
+
       .titleRight {
         font-size: 14px;
         cursor: pointer;
         display: flex;
         flex-direction: row;
         gap: 8px;
+
         a {
           color: #6b6b6b;
           text-decoration: none;
         }
+
+        a:not(:last-child)::after {
+          content: '|';
+          padding-left: 8px;
+          color: #6b6b6b;
+        }
+
         :global(.active) {
           color: #0688eb;
         }
@@ -65,4 +75,3 @@
     }
   }
 }
- 

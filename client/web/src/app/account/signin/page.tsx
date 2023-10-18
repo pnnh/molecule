@@ -17,7 +17,25 @@ export default function Home () {
   }
   rawQuery = queryString.stringify(queryParams)
 
-  const [loginMethod, setLoginMethod] = useState<'webauthn'|'password'>('password')
+  function getSignMethods () {
+    const signMethods: {key: string, title: string, form: React.ReactElement}[] = []
+  
+    if (clientConfig.SIGN.PASSWORD.ENABLE) {
+      signMethods.push({key: 'password', title: '账号密码', form: <PasswordForm rawQuery={rawQuery}/>})
+    }
+    if (clientConfig.SIGN.WEBAUTHN.ENABLE) {
+      signMethods.push({key: 'webauthn', title: 'Webauthn', form: <WebauthnForm rawQuery={rawQuery} /> })
+    }
+    if (signMethods.length === 0) {
+      throw new Error('no sign method enabled')
+    }
+    return signMethods
+  }
+
+  const signMethods=getSignMethods()
+  const defaultSignMethod = signMethods[0]
+  const [loginMethod, setLoginMethod] = useState<string>(defaultSignMethod.key)
+
 
   return <div>
   <div className={styles.loginContainer}>
@@ -27,18 +45,24 @@ export default function Home () {
                   登录
                 </div>
                 <div className={styles.titleRight}>
-                  <Link href={''} className={loginMethod === 'password'?'active':''} onClick={()=> {
-                    setLoginMethod('password') 
-                  }}>账号密码</Link>
-                  <div>|</div>
-                  <Link href={''} className={loginMethod === 'webauthn'?'active':''} onClick={() => {
-                    setLoginMethod('webauthn') 
-                  }}>Webauthn</Link>
+                  {
+                    signMethods.map((method) => {
+                      return <React.Fragment key={method.key}>
+                        <Link href={''} className={loginMethod === method.key?'active':''} onClick={()=> {
+                          setLoginMethod(method.key)
+                        }}>{method.title}</Link>
+                      </React.Fragment>
+                    })
+                  }
                 </div>
-            </div>
-            {loginMethod === 'webauthn' 
-              ? <WebauthnForm rawQuery={rawQuery} /> 
-              : <PasswordForm rawQuery={rawQuery}/>}
+            </div> 
+              {
+                signMethods.map((method) => {
+                  return <React.Fragment key={method.key}>
+                    {loginMethod === method.key && method.form}
+                  </React.Fragment>
+                })
+              }
             <div className={styles.tipRow}>
                 还没有账号?
                 <Link href={'/account/signup?'+rawQuery}>立即注册</Link>

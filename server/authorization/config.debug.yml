@@ -13,3 +13,11 @@ MAIL_PASSWORD: nXZn*SOW6avYB^Js
 MAIL_SENDER: support@multiverse.direct
 RPID: portal.huable.xyz
 RPOrigins: https://portal.huable.xyz
+
+sign:
+  webauthn: 
+    enable: true
+  main:
+    enable: true
+  password: 
+    enable: true

@@ -6,5 +6,4 @@ target/assets/
 go.work
 go.work.sum
 target/bin/
-.vscode/
 debug/
