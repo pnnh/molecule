@@ -2,10 +2,15 @@ package authorizationserver
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
-	"github.com/pnnh/multiverse-cloud-server/models"
+	"log"
+	"reflect"
 	"sync"
 	"time"
+
+	"github.com/pnnh/multiverse-cloud-server/models"
+	quantum_helpers "github.com/pnnh/quantum-go/server/helpers"
 
 	"gopkg.in/square/go-jose.v2"
 
@@ -33,10 +38,10 @@ type PublicKeyScopes struct {
 }
 
 type DatabaseStore struct {
-	Clients         map[string]fosite.Client
-	AuthorizeCodes  map[string]StoreAuthorizeCode
-	IDSessions      map[string]fosite.Requester
-	AccessTokens    map[string]fosite.Requester
+	//Clients         map[string]fosite.Client
+	//AuthorizeCodes map[string]StoreAuthorizeCode
+	//IDSessions     map[string]fosite.Requester
+	//AccessTokens    map[string]fosite.Requester
 	RefreshTokens   map[string]StoreRefreshToken
 	PKCES           map[string]fosite.Requester
 	Users           map[string]DatabaseUserRelation
@@ -62,10 +67,10 @@ type DatabaseStore struct {
 
 func NewDatabaseStore() *DatabaseStore {
 	return &DatabaseStore{
-		Clients:                make(map[string]fosite.Client),
-		AuthorizeCodes:         make(map[string]StoreAuthorizeCode),
-		IDSessions:             make(map[string]fosite.Requester),
-		AccessTokens:           make(map[string]fosite.Requester),
+		//Clients:                make(map[string]fosite.Client),
+		//AuthorizeCodes: make(map[string]StoreAuthorizeCode),
+		//IDSessions:     make(map[string]fosite.Requester),
+		//AccessTokens:           make(map[string]fosite.Requester),
 		RefreshTokens:          make(map[string]StoreRefreshToken),
 		PKCES:                  make(map[string]fosite.Requester),
 		Users:                  make(map[string]DatabaseUserRelation),
@@ -76,13 +81,13 @@ func NewDatabaseStore() *DatabaseStore {
 	}
 }
 
-type StoreAuthorizeCode struct {
-	active bool
-	fosite.Requester
-}
+// type StoreAuthorizeCode struct {
+// 	Active           bool `json:"active"`
+// 	fosite.Requester
+// }
 
 type StoreRefreshToken struct {
-	active bool
+	Active bool `json:"active"`
 	fosite.Requester
 }
 
@@ -90,7 +95,26 @@ func (s *DatabaseStore) CreateOpenIDConnectSession(_ context.Context, authorizeC
 	s.idSessionsMutex.Lock()
 	defer s.idSessionsMutex.Unlock()
 
-	s.IDSessions[authorizeCode] = requester
+	//s.IDSessions[authorizeCode] = requeste
+
+	log.Println("requester:", reflect.TypeOf(requester))
+
+	data, err := json.Marshal(requester)
+	if err != nil {
+		return fmt.Errorf("marshal requester error: %w", err)
+	}
+	model := &models.OpenidSessionModel{
+		Pk:         quantum_helpers.NewPostId(),
+		CreateTime: time.Now(),
+		UpdateTime: time.Now(),
+		Code:       authorizeCode,
+		Content:    string(data),
+	}
+	err = models.PutOpenidSession(model)
+	if err != nil {
+		return fmt.Errorf("put openid session error: %w", err)
+	}
+
 	return nil
 }
 
@@ -98,11 +122,25 @@ func (s *DatabaseStore) GetOpenIDConnectSession(_ context.Context, authorizeCode
 	s.idSessionsMutex.RLock()
 	defer s.idSessionsMutex.RUnlock()
 
-	cl, ok := s.IDSessions[authorizeCode]
-	if !ok {
+	// cl, ok := s.IDSessions[authorizeCode]
+	// if !ok {
+	// 	return nil, fosite.ErrNotFound
+	// }
+
+	model, err := models.GetOpenidSession(authorizeCode)
+	if err != nil {
+		return nil, fmt.Errorf("get openid session error: %w", err)
+	}
+	if model == nil {
 		return nil, fosite.ErrNotFound
 	}
-	return cl, nil
+	err = json.Unmarshal([]byte(model.Content), requester)
+	if err != nil {
+		return nil, fmt.Errorf("unmarshal openid session error: %w", err)
+	}
+
+	//return cl, nil
+	return requester, nil
 }
 
 // DeleteOpenIDConnectSession is not really called from anywhere and it is deprecated.
@@ -110,7 +148,11 @@ func (s *DatabaseStore) DeleteOpenIDConnectSession(_ context.Context, authorizeC
 	s.idSessionsMutex.Lock()
 	defer s.idSessionsMutex.Unlock()
 
-	delete(s.IDSessions, authorizeCode)
+	//delete(s.IDSessions, authorizeCode)
+	err := models.DeleteOpenidSession(authorizeCode)
+	if err != nil {
+		return fmt.Errorf("delete openid session error: %w", err)
+	}
 	return nil
 }
 
@@ -169,35 +211,79 @@ func (s *DatabaseStore) CreateAuthorizeCodeSession(_ context.Context, code strin
 	s.authorizeCodesMutex.Lock()
 	defer s.authorizeCodesMutex.Unlock()
 
-	s.AuthorizeCodes[code] = StoreAuthorizeCode{active: true, Requester: req}
+	//s.AuthorizeCodes[code] = StoreAuthorizeCode{active: true, Requester: req}
+	data, err := json.Marshal(req)
+	if err != nil {
+		return fmt.Errorf("marshal auth code error: %w", err)
+	}
+	model := &models.AccessCodeModel{
+		Pk:         quantum_helpers.NewPostId(),
+		CreateTime: time.Now(),
+		UpdateTime: time.Now(),
+		Code:       code,
+		Content:    string(data),
+		Active:     1,
+	}
+	err = models.PutAccessCode(model)
+	if err != nil {
+		return fmt.Errorf("put access code error: %w", err)
+	}
+
 	return nil
 }
 
-func (s *DatabaseStore) GetAuthorizeCodeSession(_ context.Context, code string, _ fosite.Session) (fosite.Requester, error) {
+func (s *DatabaseStore) GetAuthorizeCodeSession(_ context.Context, code string, session fosite.Session) (fosite.Requester, error) {
 	s.authorizeCodesMutex.RLock()
 	defer s.authorizeCodesMutex.RUnlock()
 
-	rel, ok := s.AuthorizeCodes[code]
-	if !ok {
+	// rel, ok := s.AuthorizeCodes[code]
+	// if !ok {
+	// 	return nil, fosite.ErrNotFound
+	// }
+	// if !rel.active {
+	// 	return rel, fosite.ErrInvalidatedAuthorizeCode
+	// }
+
+	model, err := models.GetAccessCode(code)
+	if err != nil {
+		return nil, fmt.Errorf("get access code error: %w", err)
+	}
+	if model == nil {
 		return nil, fosite.ErrNotFound
 	}
-	if !rel.active {
-		return rel, fosite.ErrInvalidatedAuthorizeCode
+
+	requster := fosite.NewRequest()
+	requster.Session = session
+
+	//authCode := StoreAuthorizeCode{Active: false, Requester: requster}
+	err = json.Unmarshal([]byte(model.Content), requster)
+	if err != nil {
+		return nil, fmt.Errorf("unmarshal auth code error: %w", err)
+	}
+	if model.Active != 1 {
+		return requster, fosite.ErrInvalidatedAuthorizeCode
 	}
 
-	return rel.Requester, nil
+	//return rel.Requester, nil
+	return requster, nil
 }
 
 func (s *DatabaseStore) InvalidateAuthorizeCodeSession(ctx context.Context, code string) error {
 	s.authorizeCodesMutex.Lock()
 	defer s.authorizeCodesMutex.Unlock()
 
-	rel, ok := s.AuthorizeCodes[code]
-	if !ok {
-		return fosite.ErrNotFound
+	// rel, ok := s.AuthorizeCodes[code]
+	// if !ok {
+	// 	return fosite.ErrNotFound
+	// }
+	// rel.active = false
+	// s.AuthorizeCodes[code] = rel
+
+	err := models.UpdateAccessCodeStatus(code, 0)
+	if err != nil {
+		return fmt.Errorf("update access code status error: %w", err)
 	}
-	rel.active = false
-	s.AuthorizeCodes[code] = rel
+
 	return nil
 }
 
@@ -236,27 +322,61 @@ func (s *DatabaseStore) CreateAccessTokenSession(_ context.Context, signature st
 	s.accessTokensMutex.Lock()
 	defer s.accessTokensMutex.Unlock()
 
-	s.AccessTokens[signature] = req
+	text, err := json.Marshal(req)
+
+	if err != nil {
+		return fmt.Errorf("marshal req error: %w", err)
+	}
+
+	err = models.PutAccessToken(&models.AccessTokenModel{
+		Pk:         quantum_helpers.NewPostId(),
+		CreateTime: time.Now(),
+		UpdateTime: time.Now(),
+		Signature:  signature,
+		Content:    string(text),
+	})
+	if err != nil {
+		return fmt.Errorf("put access token error: %w", err)
+	}
+
+	//s.AccessTokens[signature] = req
 	s.AccessTokenRequestIDs[req.GetID()] = signature
 	return nil
 }
 
-func (s *DatabaseStore) GetAccessTokenSession(_ context.Context, signature string, _ fosite.Session) (fosite.Requester, error) {
+func (s *DatabaseStore) GetAccessTokenSession(_ context.Context, signature string, session fosite.Session) (fosite.Requester, error) {
 	s.accessTokensMutex.RLock()
 	defer s.accessTokensMutex.RUnlock()
 
-	rel, ok := s.AccessTokens[signature]
-	if !ok {
-		return nil, fosite.ErrNotFound
+	// rel, ok := s.AccessTokens[signature]
+	// if !ok {
+	// 	return nil, fosite.ErrNotFound
+	// }
+
+	model, err := models.GetAccessToken(signature)
+	if err != nil {
+		return nil, fmt.Errorf("get access token error: %w", err)
 	}
-	return rel, nil
+
+	request := fosite.NewAccessRequest(session)
+
+	err = json.Unmarshal([]byte(model.Content), request)
+	if err != nil {
+		return nil, fmt.Errorf("unmarshal access token error: %w", err)
+	}
+
+	return request, nil
 }
 
 func (s *DatabaseStore) DeleteAccessTokenSession(_ context.Context, signature string) error {
 	s.accessTokensMutex.Lock()
 	defer s.accessTokensMutex.Unlock()
 
-	delete(s.AccessTokens, signature)
+	//delete(s.AccessTokens, signature)
+	err := models.DeleteAccessToken(signature)
+	if err != nil {
+		return fmt.Errorf("delete access token error: %w", err)
+	}
 	return nil
 }
 
@@ -268,7 +388,7 @@ func (s *DatabaseStore) CreateRefreshTokenSession(_ context.Context, signature s
 	s.refreshTokensMutex.Lock()
 	defer s.refreshTokensMutex.Unlock()
 
-	s.RefreshTokens[signature] = StoreRefreshToken{active: true, Requester: req}
+	s.RefreshTokens[signature] = StoreRefreshToken{Active: true, Requester: req}
 	s.RefreshTokenRequestIDs[req.GetID()] = signature
 	return nil
 }
@@ -281,7 +401,7 @@ func (s *DatabaseStore) GetRefreshTokenSession(_ context.Context, signature stri
 	if !ok {
 		return nil, fosite.ErrNotFound
 	}
-	if !rel.active {
+	if !rel.Active {
 		return rel, fosite.ErrInactiveToken
 	}
 	return rel, nil
@@ -318,7 +438,7 @@ func (s *DatabaseStore) RevokeRefreshToken(ctx context.Context, requestID string
 		if !ok {
 			return fosite.ErrNotFound
 		}
-		rel.active = false
+		rel.Active = false
 		s.RefreshTokens[signature] = rel
 	}
 	return nil
