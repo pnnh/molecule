@@ -24,7 +24,7 @@ export async function loadHeaderNav () {
             <div className={styles.headerMenu}>
                 <div className={styles.headerLeft}>
                     <Link className={styles.navLink} href='/'>首页</Link>&nbsp;
-                    <Link className={styles.navLink} href='/'>用户</Link>
+                    <Link className={styles.navLink} href='/account'>用户</Link>
                 </div>
                 <div className={styles.headerRight}>
                     {helloElement}

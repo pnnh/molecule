@@ -17,7 +17,8 @@ export default async function Home () {
         </div>
         <div className={styles.mainText}>
           <div className={styles.mainTextTitle}>哈宝在线</div>
-          <div className={styles.mainTextSubTitle}>一个人的演武场</div>
+          {/* <div className={styles.mainTextSubTitle}>一个人的演武场</div> */}
+  
         </div> 
         <div className={styles.productRow}>
           <div className={styles.productCard}>

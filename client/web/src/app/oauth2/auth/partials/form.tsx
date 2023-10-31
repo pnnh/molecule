@@ -4,8 +4,8 @@ import {ServerAuthParams} from '@/models/common/oauth2/auth'
 import React, { useState} from 'react'
 import queryString from 'query-string'
 import styles from './form.module.scss'
-import Image from '~/next/image'
-import { Button } from '@fluentui/react-components'
+import Image from '~/next/image' 
+import { Button } from '@mui/material'
 
 export function FormEdit (props: {params: ServerAuthParams, scopes: string[], server: string}) {
   const searchParams = props.params

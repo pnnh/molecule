@@ -1,6 +1,4 @@
-
-import './global.css'
-import { Providers } from './providers'
+import './global.css' 
 
 // 隔几秒重新验证下数据
 export const revalidate = 5
@@ -24,10 +22,8 @@ export default async function RootLayout ({
         <link rel="icon" href="/favicon.ico" type="image/x-icon" />
         <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
       </head>
-      <body>
-        <Providers>
-          {children}
-        </Providers>
+      <body> 
+        {children}
       </body>
     </html>
   )

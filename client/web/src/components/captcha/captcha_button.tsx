@@ -1,10 +1,10 @@
 'use client'
 
-import React, {Component } from 'react'
+import React, {Component, ReactEventHandler } from 'react'
 import PropTypes from 'prop-types'
 import './captcha_button.css'
 import GoCaptcha from './captcha'
-import { Popover, PopoverTrigger, PopoverSurface } from '@fluentui/react-components'
+import Popover from '@mui/material/Popover'
 import Image from '~/next/image'
 
 export interface CaptchaButtonProps {
@@ -28,7 +28,8 @@ export interface CaptchaButtonState {
   captStatus: string,
   imageBase64: string,
   thumbBase64: string
-  title: string
+  title: string,
+  anchorEl: null | HTMLElement
 }
 
 export default class GoCaptchaBtn extends Component<CaptchaButtonProps, CaptchaButtonState> {
@@ -49,6 +50,7 @@ export default class GoCaptchaBtn extends Component<CaptchaButtonProps, CaptchaB
       imageBase64: '',
       thumbBase64: '',
       title: props.title,
+      anchorEl: null
     }
   }
 
@@ -63,24 +65,24 @@ export default class GoCaptchaBtn extends Component<CaptchaButtonProps, CaptchaB
       width,
       height
     } = this.props
+ 
+    const id = this.state.popoverVisible ? 'simple-popover' : undefined
 
     return <div className="wg-cap-btn" style={{
       width,
       height
     }}>
           <div className={(`wg-cap-btn__inner wg-cap-active__${captStatus}`)}>
-            <Popover 
-              open={popoverVisible} 
-              onOpenChange={(event, data) => {
-                this.setState({popoverVisible: data.open})
-                if (data.open) {
-                  this.props.refresh && this.props.refresh()
-                }
-              }} >
-                <PopoverTrigger>
+            
                     <div>
 
-                <div onClick={this.handleBtnEvent} className="wg-cap-state__default">
+                <div onClick={(event) => {
+                  this.setState({ 
+                    anchorEl: event.currentTarget,
+                    popoverVisible: true
+                  })
+                  this.props.refresh && this.props.refresh()
+                } } className="wg-cap-state__default">
                 <div className="wg-cap-state__inner">
                   <span className="wg-cap-btn__text">{this.state.title}</span>
                 </div>
@@ -103,7 +105,13 @@ export default class GoCaptchaBtn extends Component<CaptchaButtonProps, CaptchaB
                   <span className="wg-cap-btn__text">正在进行人机验证...</span>
                 </div>
               </div>
-              <div onClick={this.handleBtnEvent} className="wg-cap-state__error">
+              <div onClick={(event) => {
+                this.setState({ 
+                  anchorEl: event.currentTarget,
+                  popoverVisible: true
+                })
+                this.props.refresh && this.props.refresh()
+              } } className="wg-cap-state__error">
                 <div className="wg-cap-state__inner">
                   <div className="wg-cap-btn__ico">
                     <Image
@@ -115,7 +123,13 @@ export default class GoCaptchaBtn extends Component<CaptchaButtonProps, CaptchaB
                   <span>人机验证失败 <em>点击重试</em></span>
                 </div>
               </div>
-              <div onClick={this.handleBtnEvent} className="wg-cap-state__over">
+              <div onClick={(event) => {
+                this.setState({ 
+                  anchorEl: event.currentTarget,
+                  popoverVisible: true
+                })
+                this.props.refresh && this.props.refresh()
+              } } className="wg-cap-state__over">
                 <div className="wg-cap-state__inner">
                   <div className="wg-cap-btn__ico">
                     <Image
@@ -145,10 +159,35 @@ export default class GoCaptchaBtn extends Component<CaptchaButtonProps, CaptchaB
                   <span>人机验证已通过</span>
                 </div>
               </div>
-                    </div>
-                </PopoverTrigger>
+                    </div> 
 
-                <PopoverSurface>
+                <Popover
+                
+        id={id}
+        open={this.state.popoverVisible}
+        anchorEl={this.state.anchorEl}
+        onClose={() => this.setState({
+          anchorEl: null, 
+          popoverVisible: false
+        })
+      
+        }
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+              
+              // onOpenChange={(event, data) => {
+              //   this.setState({popoverVisible: data.open})
+              //   if (data.open) {
+              //     this.props.refresh && this.props.refresh()
+              //   }
+              // }} 
+                >
                 <GoCaptcha
                     value={popoverVisible}
                     width="300px"
@@ -161,8 +200,7 @@ export default class GoCaptchaBtn extends Component<CaptchaButtonProps, CaptchaB
                     refresh={this.handleRefreshEvent}
                     confirm={this.handleConfirmEvent}
                 />
-                </PopoverSurface>
-            </Popover>
+                </Popover> 
           </div>
         </div>
   }
@@ -214,13 +252,6 @@ export default class GoCaptchaBtn extends Component<CaptchaButtonProps, CaptchaB
     }
 
     return (count ? res : null)
-  }
-  
-
-  handleBtnEvent = () => {
-    this.setState({
-      popoverVisible: true
-    })
   }
 
   handleRefreshEvent = () => {

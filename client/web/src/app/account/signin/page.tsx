@@ -1,21 +1,26 @@
 'use client'
 
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import styles from './page.module.scss' 
 import Link from '~/next/link' 
 import { WebauthnForm } from './webauthn/form'
 import { PasswordForm } from './password/form'
 import queryString from 'query-string'
 import { clientConfig } from '@/services/client/config'
-import { encodeBase64String } from '@/utils/base64'
+import { encodeBase64String } from '@/utils/base64'  
+
+import Button from '@mui/material/Button'
 
 export default function Home () {
-  let rawQuery = location.search
-  const queryParams = queryString.parse(rawQuery)
+  const [rawSearch, setRawSearch] = useState<string>('')
+  useEffect(() => {
+    setRawSearch(location.search)
+  }, [])
+  const queryParams = queryString.parse(rawSearch)
   if (!queryParams.source) {
     queryParams.source = encodeBase64String(clientConfig.SELF_URL)
   }
-  rawQuery = queryString.stringify(queryParams)
+  const rawQuery = queryString.stringify(queryParams)
 
   function getSignMethods () {
     const signMethods: {key: string, title: string, form: React.ReactElement}[] = []
@@ -37,7 +42,7 @@ export default function Home () {
   const [loginMethod, setLoginMethod] = useState<string>(defaultSignMethod.key)
 
 
-  return <div>
+  return <div> 
   <div className={styles.loginContainer}>
         <div className={styles.mainBox}>
             <div className={styles.boxTitle}>
@@ -66,6 +71,7 @@ export default function Home () {
             <div className={styles.tipRow}>
                 还没有账号?
                 <Link href={'/account/signup?'+rawQuery}>立即注册</Link>
+                <Button variant="contained">Hello world</Button>
             </div>
         </div>
     </div> 

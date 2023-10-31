@@ -3,11 +3,8 @@
 import React, {useState} from 'react'
 import styles from './form.module.scss' 
 import Lodash from 'lodash'
-import {
-  Input
-} from '@fluentui/react-components' 
+
 import { clientConfig } from '@/services/client/config'
-import { ArrowCircleRightRegular } from '@fluentui/react-icons'
 import GoCaptchaBtn from '@/components/captcha/captcha_button'
 import Axios from 'axios'
 import Qs from 'qs'
@@ -112,20 +109,20 @@ export function PasswordForm ({rawQuery}: {rawQuery: string}) {
   }} ref={formRef}>
   <input type={'hidden'} name={'captcha_key'} value={captKey}/>
           <div className={styles.fieldRow}>
-          <Input name='username' className="input input-bordered w-full" type="text" placeholder="输入用户名"
+          <input name='username' className="input input-bordered w-full" type="text" placeholder="输入用户名"
                   value={username} onChange={(event) => {
                     setUsername(event.target.value)
                   }}/> 
-                      <ArrowCircleRightRegular className={styles.verifyButton} width={64} onClick={async () => {
+                      <span className={styles.verifyButton} onClick={async () => {
                         console.log('你点击了账号密码登陆')
                         // const result = await signinByPasswordBegin(username)
                         // if (result && result.code === 200) {
                         //   setVerifyData(result.data.session)
                         // } 
-                      }}/> 
+                      }}>-</span>
           </div>
             <div className={styles.actionRow}>
-              <Input name='password' className="input input-bordered w-full" type="password" placeholder="输入密码"
+              <input name='password' className="input input-bordered w-full" type="password" placeholder="输入密码"
                               value={password} onChange={(event) => {
                                 setPassword(event.target.value)
                               }}/>
