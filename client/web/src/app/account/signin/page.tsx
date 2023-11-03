@@ -71,7 +71,6 @@ export default function Home () {
             <div className={styles.tipRow}>
                 还没有账号?
                 <Link href={'/account/signup?'+rawQuery}>立即注册</Link>
-                <Button variant="contained">Hello world</Button>
             </div>
         </div>
     </div> 

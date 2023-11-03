@@ -16,8 +16,6 @@ function WebauthnForm ({rawQuery}: {rawQuery: string}) {
   const [verifyData, setVerifyData] = useState('')
   const formRef = React.useRef<HTMLFormElement>(null)
   return <form method={'POST'} action={webauthnFormUrl} ref={formRef}>
-  
-  
   <input type="hidden" name="verifyData" value={verifyData} />
   <div className={styles.fieldRow}>
                 <Input className="input input-bordered w-full" type="text" placeholder="输入用户名"
@@ -25,10 +23,8 @@ function WebauthnForm ({rawQuery}: {rawQuery: string}) {
                          setUsername(event.target.value)
                        }}/>
                        <span className={styles.verifyButton} title='认证秘钥' onClick={async () => {
-                        
                          setVerifyData('')
                          handleSignInSubmit(username).then((verifyData:string|undefined) => {
-                    
                            if (!verifyData) {
                              console.log('登陆失败')
                              return
@@ -40,8 +36,6 @@ function WebauthnForm ({rawQuery}: {rawQuery: string}) {
                          })
                        }}><ArrowForwardIcon/></span>
             </div>
-
- 
             {
               verifyData && <div className={styles.actionRow}>
               <Button type={'submit'}>认证成功确认登录</Button>

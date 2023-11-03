@@ -3,12 +3,9 @@
 import React, {useState} from 'react'
 import styles from './form.module.scss'
 import {handleSignInSubmit} from '@/services/client/webauthn' 
-// import {
-//   Button,
-//   Input
-// } from '@fluentui/react-components' 
 import { clientConfig } from '@/services/client/config'
-// import { ArrowCircleRightRegular } from '@fluentui/react-icons'
+import { Button, Input } from '@mui/material'
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 
 export 
 function WebauthnForm ({rawQuery}: {rawQuery: string}) {
@@ -23,7 +20,7 @@ function WebauthnForm ({rawQuery}: {rawQuery: string}) {
   
   <input type="hidden" name="verifyData" value={verifyData} />
   <div className={styles.fieldRow}>
-                <input className="input input-bordered w-full" type="text" placeholder="输入用户名"
+                <Input className="input input-bordered w-full" type="text" placeholder="输入用户名"
                        value={username} onChange={(event) => {
                          setUsername(event.target.value)
                        }}/>
@@ -41,13 +38,13 @@ function WebauthnForm ({rawQuery}: {rawQuery: string}) {
                            setVerifyData(verifyData)
                            // formRef.current?.submit()
                          })
-                       }}>-</span> 
+                       }}><ArrowForwardIcon/></span> 
             </div>
 
  
             {
               verifyData && <div className={styles.actionRow}>
-              <button type={'submit'}>认证成功确认登录</button>
+              <Button type={'submit'}>认证成功确认登录</Button>
           </div>
             }
             

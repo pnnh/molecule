@@ -7,6 +7,8 @@ import { clientConfig } from '@/services/client/config'
 import GoCaptchaBtn from '@/components/captcha/captcha_button'
 import Axios from 'axios'
 import Qs from 'qs'
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
+import { Input } from '@mui/material'
 
 
 export function PasswordForm ({rawQuery}: {rawQuery: string}) {
@@ -108,7 +110,7 @@ export function PasswordForm ({rawQuery}: {rawQuery: string}) {
   }} ref={formRef}>
   <input type={'hidden'} name={'captcha_key'} value={captKey}/>
           <div className={styles.fieldRow}>
-          <input name='username' className="input input-bordered w-full" type="text" placeholder="输入用户名"
+          <Input name='username' className={styles.inputField} type="text" placeholder="输入用户名"
                   value={username} onChange={(event) => {
                     setUsername(event.target.value)
                   }}/> 
@@ -118,10 +120,10 @@ export function PasswordForm ({rawQuery}: {rawQuery: string}) {
                         // if (result && result.code === 200) {
                         //   setVerifyData(result.data.session)
                         // } 
-                      }}>-</span>
+                      }}><ArrowForwardIcon/></span>
           </div>
-            <div className={styles.actionRow}>
-              <input name='password' className="input input-bordered w-full" type="password" placeholder="输入密码"
+            <div className={styles.fieldRow}>
+              <Input name='password' className={styles.inputField} type="password" placeholder="输入密码"
                               value={password} onChange={(event) => {
                                 setPassword(event.target.value)
                               }}/>

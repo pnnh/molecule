@@ -70,7 +70,6 @@ export default function Home () {
             <div className={styles.tipRow}>
                 已有账号?
                 <Link href={'/account/signin?'+rawQuery}>立即登录</Link>
-                <Button variant="contained">Hello world2222</Button>
             </div>
         </div>
     </div> 

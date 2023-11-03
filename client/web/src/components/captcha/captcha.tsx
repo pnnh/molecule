@@ -3,10 +3,8 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import './captcha.css' 
-// import {
-//   Button, 
-// } from '@fluentui/react-components' 
 import Image from 'next/image'
+import { Button } from '@mui/material'
 
 export interface GoCaptchaProps {
   value: boolean
@@ -99,7 +97,7 @@ export default class GoCaptcha extends Component<GoCaptchaProps, GoCaptchaState>
                              height={32} width={32}/>
                     </div>
                     <div>
-                      <button onClick={this.handleConfirmEvent}>登录</button>
+                      <Button onClick={this.handleConfirmEvent}>登录</Button>
                     </div>
                 </div>
             </div>
