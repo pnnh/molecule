@@ -4,7 +4,7 @@ OAUTH2_PRIVATE_KEY: file://data/rs256-private.pem
 OAUTH2_PUBLIC_KEY: file://data/rs256-public.pem
 OAUTH2_JWK: file://data/rs256-jwk.json
 WEB_URL: https://portal.huable.xyz
-SELF_URL: https://teleport.huable.xyz
+SELF_URL: https://portal.huable.xyz
 RESOURCE_URL: https://fields.huable.xyz
 MAIL_HOST: smtp.zoho.com
 MAIL_PORT: 587

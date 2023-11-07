@@ -55,14 +55,14 @@ export async function GET (request: NextRequest) {
   }
   const redirectUrl = `${serverConfig.SELF_URL}${redirectPath}${sourceUrl.search}`
   const response = NextResponse.redirect(redirectUrl)
-  const token = tokenResult.id_token
-  response.cookies.set('Authorization', token, {
-    httpOnly: true,
-    secure: true,
-    sameSite: 'strict',
-    maxAge: 60 * 60 * 24 * 30,
-    path: '/'
-  })
+  // const token = tokenResult.id_token
+  // response.cookies.set('Authorization', token, {
+  //   httpOnly: true,
+  //   secure: true,
+  //   sameSite: 'strict',
+  //   maxAge: 60 * 60 * 24 * 30,
+  //   path: '/'
+  // })
 
   return response
 }

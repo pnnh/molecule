@@ -68,7 +68,14 @@ func AuthEndpointHtml(gctx *gin.Context) {
 		gctx.Redirect(http.StatusFound, fmt.Sprintf("%s%s?source=%s", webUrl, "/account/signin", sourceUrlQuery))
 		return
 	}
-	webAuthUrl := fmt.Sprintf("%s%s?%s", webUrl, gctx.Request.URL.Path, gctx.Request.URL.RawQuery)
+	// webui和授权服务默认在同一个域名下，跳转时需处理跳转路径
+	// index := strings.Index(gctx.Request.URL.Path, helpers.BaseUrl)
+	// if index == -1 {
+	// 	index = 0
+	// }
+
+	webPath := strings.Replace(gctx.Request.URL.Path, helpers.BaseUrl, "", 1)
+	webAuthUrl := fmt.Sprintf("%s%s?%s", webUrl, webPath, gctx.Request.URL.RawQuery)
 	if authUser != "" {
 		webAuthUrl += fmt.Sprintf("&authed=%s", authUser)
 	}
@@ -132,7 +139,7 @@ func AuthEndpointJson(gctx *gin.Context) {
 		Content:      "",
 		CreateTime:   time.Now(),
 		UpdateTime:   time.Now(),
-		Username:         username,
+		Username:     username,
 		Type:         "code",
 		Code:         authCode,
 		ClientId:     clientId,

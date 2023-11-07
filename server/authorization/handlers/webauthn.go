@@ -6,13 +6,16 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
+	"time"
 
+	"github.com/google/uuid"
 	"github.com/pnnh/multiverse-cloud-server/handlers/auth/authorizationserver"
 	helpers2 "github.com/pnnh/multiverse-cloud-server/helpers"
 
 	"github.com/pnnh/multiverse-cloud-server/models"
 
 	"github.com/pnnh/quantum-go/config"
+	"github.com/pnnh/quantum-go/server/helpers"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-webauthn/webauthn/protocol"
@@ -260,7 +263,33 @@ func (s *WebauthnHandler) FinishLogin(gctx *gin.Context) {
 		return
 	}
 	logrus.Debugln("credential: ", credential)
-	jwtToken, err := helpers2.GenerateJwtTokenRs256(username, authorizationserver.PrivateKeyString)
+
+	session := &models.SessionModel{
+		Pk:           helpers.NewPostId(),
+		Content:      "",
+		CreateTime:   time.Now(),
+		UpdateTime:   time.Now(),
+		Username:     username,
+		Type:         "webauthn",
+		Code:         "",
+		ClientId:     "",
+		ResponseType: "",
+		RedirectUri:  "",
+		Scope:        "",
+		State:        "",
+		Nonce:        "",
+		IdToken:      "",
+		AccessToken:  "",
+		JwtId:        uuid.New().String(),
+	}
+	err = models.PutSession(session)
+	if err != nil {
+		logrus.Printf("Error occurred in NewAccessResponse2222: %+v", err)
+		return
+	}
+	jwtToken, err := helpers2.GenerateJwtTokenRs256(username,
+		authorizationserver.PrivateKeyString,
+		session.JwtId)
 	if (jwtToken == "") || (err != nil) {
 		helpers2.ResponseMessageError(gctx, "参数有误319", err)
 		return

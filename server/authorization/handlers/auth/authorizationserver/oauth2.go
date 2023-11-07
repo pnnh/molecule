@@ -10,6 +10,7 @@ import (
 	"github.com/ory/fosite/compose"
 	"github.com/ory/fosite/handler/openid"
 	"github.com/ory/fosite/token/jwt"
+	"github.com/pnnh/multiverse-cloud-server/helpers"
 	"github.com/pnnh/quantum-go/config"
 	"github.com/sirupsen/logrus"
 )
@@ -57,10 +58,6 @@ func InitOAuth2() {
 
 var oauth2 fosite.OAuth2Provider
 
-func getIssure() string {
-	issure := config.MustGetConfigurationString("SELF_URL")
-	return issure
-}
 
 func getUserServer() string {
 	issure := config.MustGetConfigurationString("RESOURCE_URL")
@@ -68,7 +65,7 @@ func getUserServer() string {
 }
 
 func newSession(user string) *openid.DefaultSession {
-	issure := getIssure()
+	issure := helpers.GetIssure()
 	return &openid.DefaultSession{
 		Claims: &jwt.IDTokenClaims{
 			Issuer:      issure,

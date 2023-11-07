@@ -5,17 +5,23 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/pnnh/quantum-go/config"
 )
 
-func GenerateJwtTokenRs256(username string, privKeyString string) (string, error) {
+func GetIssure() string {
+	issure := config.MustGetConfigurationString("SELF_URL") + BaseUrl
+	return issure
+}
+
+func GenerateJwtTokenRs256(username string, privKeyString string, tokenId string) (string, error) {
 	claims := jwt.MapClaims{
 		//"username": username,
-		"exp":      time.Now().Add(time.Hour * 24 * 30).Unix(),
+		"exp":      time.Now().Add(time.Hour * 24 * 3).Unix(),
 		"iat":      time.Now().Unix(),
 		"sub":      username,
-		//"iss":      "multiverse.cloud",
+		"iss":      GetIssure(),
 		//"aud":      []string{"multiverse.cloud"},
-		//"jti":      "123456789",
+		"jti":      tokenId,
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodRS256, claims)

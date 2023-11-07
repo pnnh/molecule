@@ -3,9 +3,9 @@ package account
 import (
 	"net/http"
 	"time"
-
+ 
 	"github.com/pnnh/multiverse-cloud-server/handlers/auth/authorizationserver"
-	helpers2 "github.com/pnnh/multiverse-cloud-server/helpers"
+	helpers2 "github.com/pnnh/multiverse-cloud-server/helpers" 
 
 	"github.com/pnnh/multiverse-cloud-server/models"
 
@@ -209,9 +209,11 @@ func MailSigninFinishHandler(gctx *gin.Context) {
 	if err != nil || user == nil {
 		helpers2.ResponseMessageError(gctx, "获取用户信息出错", err)
 		return
-	}
+	} 
 
-	jwtToken, err := helpers2.GenerateJwtTokenRs256(user.Username, authorizationserver.PrivateKeyString)
+	jwtToken, err := helpers2.GenerateJwtTokenRs256(user.Username,
+		 authorizationserver.PrivateKeyString,
+		sessionModel.JwtId)
 	if (jwtToken == "") || (err != nil) {
 		helpers2.ResponseMessageError(gctx, "参数有误316", err)
 		return

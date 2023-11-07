@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/google/uuid"
 	"github.com/pnnh/multiverse-cloud-server/handlers/auth/authorizationserver"
 	helpers2 "github.com/pnnh/multiverse-cloud-server/helpers"
 	"github.com/sirupsen/logrus"
@@ -16,60 +17,60 @@ import (
 )
 
 //func PasswordSignupBeginHandler(gctx *gin.Context) {
-	// username := gctx.PostForm("username")
-	// nickname := gctx.PostForm("nickname")
-	// if username == "" {
-	// 	gctx.JSON(http.StatusOK, models.CodeError.WithMessage("account为空"))
-	// 	return
-	// }
-	// accountModel, err := models.GetAccountByUsername(username)
-	// if err != nil {
-	// 	gctx.JSON(http.StatusOK, models.ErrorResultMessage(err, "account不存在"))
-	// 	return
-	// }
-	// if accountModel == nil {
-	// 	accountModel = &models.AccountModel{
-	// 		Pk:          helpers.NewPostId(),
-	// 		Username:    username,
-	// 		Password:    "",
-	// 		CreateTime:  time.Now(),
-	// 		UpdateTime:  time.Now(),
-	// 		Nickname:    nickname,
-	// 		Mail:        username,
-	// 		Credentials: "",
-	// 		Session:     "",
-	// 	}
-	// 	if err := models.PutAccount(accountModel); err != nil {
-	// 		gctx.JSON(http.StatusOK, models.CodeError.WithError(err))
-	// 		return
-	// 	}
-	// } else {
-	// 	gctx.JSON(http.StatusOK, models.CodeAccountExists.WithMessage("账号已存在"))
-	// 	return
-	// }
+// username := gctx.PostForm("username")
+// nickname := gctx.PostForm("nickname")
+// if username == "" {
+// 	gctx.JSON(http.StatusOK, models.CodeError.WithMessage("account为空"))
+// 	return
+// }
+// accountModel, err := models.GetAccountByUsername(username)
+// if err != nil {
+// 	gctx.JSON(http.StatusOK, models.ErrorResultMessage(err, "account不存在"))
+// 	return
+// }
+// if accountModel == nil {
+// 	accountModel = &models.AccountModel{
+// 		Pk:          helpers.NewPostId(),
+// 		Username:    username,
+// 		Password:    "",
+// 		CreateTime:  time.Now(),
+// 		UpdateTime:  time.Now(),
+// 		Nickname:    nickname,
+// 		Mail:        username,
+// 		Credentials: "",
+// 		Session:     "",
+// 	}
+// 	if err := models.PutAccount(accountModel); err != nil {
+// 		gctx.JSON(http.StatusOK, models.CodeError.WithError(err))
+// 		return
+// 	}
+// } else {
+// 	gctx.JSON(http.StatusOK, models.CodeAccountExists.WithMessage("账号已存在"))
+// 	return
+// }
 
-	// session := &models.SessionModel{
-	// 	Pk:         helpers.MustUuid(),
-	// 	Content:    "",
-	// 	CreateTime: time.Now(),
-	// 	UpdateTime: time.Now(),
-	// 	Username:   accountModel.Pk,
-	// 	Type:       "signup_password",
-	// 	Code:       helpers.RandNumberRunes(6),
-	// }
+// session := &models.SessionModel{
+// 	Pk:         helpers.MustUuid(),
+// 	Content:    "",
+// 	CreateTime: time.Now(),
+// 	UpdateTime: time.Now(),
+// 	Username:   accountModel.Pk,
+// 	Type:       "signup_password",
+// 	Code:       helpers.RandNumberRunes(6),
+// }
 
-	// if err := models.PutSession(session); err != nil {
-	// 	gctx.JSON(http.StatusOK, models.CodeError.WithError(err))
-	// 	return
-	// }
+// if err := models.PutSession(session); err != nil {
+// 	gctx.JSON(http.StatusOK, models.CodeError.WithError(err))
+// 	return
+// }
 
-	// sessionData := map[string]interface{}{
-	// 	"session": session.Pk,
-	// }
+// sessionData := map[string]interface{}{
+// 	"session": session.Pk,
+// }
 
-	// result := models.CodeOk.WithData(sessionData)
+// result := models.CodeOk.WithData(sessionData)
 
-	// gctx.JSON(http.StatusOK, result)
+// gctx.JSON(http.StatusOK, result)
 //}
 
 func PasswordSignupFinishHandler(gctx *gin.Context) {
@@ -166,16 +167,7 @@ func PasswordSigninFinishHandler(gctx *gin.Context) {
 		gctx.JSON(http.StatusOK, models.ErrorResultMessage(err, "验证码错误"))
 		return
 	}
-
-	// sessionModel, err := models.GetSession(session)
-	// if err != nil {
-	// 	gctx.JSON(http.StatusOK, models.ErrorResultMessage(err, "GetSession error"))
-	// 	return
-	// }
-	// if sessionModel == nil {
-	// 	gctx.JSON(http.StatusOK, models.CodeError.WithMessage("sessionModel不存在"))
-	// 	return
-	// }
+ 
 	account, err := models.GetAccountByUsername(username)
 	if err != nil {
 		gctx.JSON(http.StatusOK, models.ErrorResultMessage(err, "GetAccount error"))
@@ -193,17 +185,39 @@ func PasswordSigninFinishHandler(gctx *gin.Context) {
 		return
 	}
 
-	jwtToken, err := helpers2.GenerateJwtTokenRs256(account.Username, authorizationserver.PrivateKeyString)
+
+	session := &models.SessionModel{
+		Pk:           helpers.NewPostId(),
+		Content:      "",
+		CreateTime:   time.Now(),
+		UpdateTime:   time.Now(),
+		Username:     username,
+		Type:         "password",
+		Code:         "",
+		ClientId:     "",
+		ResponseType: "",
+		RedirectUri:  "",
+		Scope:        "",
+		State:        "",
+		Nonce:        "",
+		IdToken:      "",
+		AccessToken:  "",
+		JwtId:		uuid.New().String(),
+	}
+	err = models.PutSession(session)
+	if err != nil {
+		logrus.Printf("Error occurred in NewAccessResponse2222: %+v", err)
+		return
+	}
+
+	jwtToken, err := helpers2.GenerateJwtTokenRs256(account.Username, 
+		authorizationserver.PrivateKeyString,
+		session.JwtId)
 	if (jwtToken == "") || (err != nil) {
 		helpers2.ResponseMessageError(gctx, "参数有误316", err)
 		return
 	}
 
-	// selfUrl, _ := config.GetConfigurationString("SELF_URL")
-	// if selfUrl == "" {
-	// 	gctx.JSON(http.StatusOK, models.CodeError.WithMessage("SELF_URL未配置"))
-	// 	return
-	// }
 	// 登录成功后设置cookie
 	gctx.SetCookie("Authorization", jwtToken, 3600*48, "/", "", true, true)
 

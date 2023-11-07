@@ -52,7 +52,7 @@ async function fetchJwksUri (issuer: string) {
 async function verify (token: string) {
   const decodeOut = jwt.decode(token)
   if (typeof (decodeOut as jwt.JwtPayload).iss === 'string') {
-    const {iss: issuer} = (decodeOut as jwt.JwtPayload)
+    const {iss: issuer, jti} = (decodeOut as jwt.JwtPayload)
     if (!issuer) {
       throw new Error('issure为空')
     }
@@ -62,7 +62,7 @@ async function verify (token: string) {
       jwksUri
     })
 
-    const kid = 'af37ec74-039b-4872-ab29-ef3d64fc7cd4'
+    const kid = jti //'af37ec74-039b-4872-ab29-ef3d64fc7cd4'
     const signingKey = await client.getSigningKey(kid)
     const publicKey = signingKey.getPublicKey()
 
