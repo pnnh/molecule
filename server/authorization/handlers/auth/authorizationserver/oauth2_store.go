@@ -9,7 +9,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/pnnh/multiverse-cloud-server/models"
+	"multiverse-server/models"
+
 	quantum_helpers "github.com/pnnh/quantum-go/server/helpers"
 
 	"gopkg.in/square/go-jose.v2"

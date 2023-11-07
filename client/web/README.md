@@ -23,14 +23,14 @@ npm install # 安装依赖包
 ## 构建docker镜像
 
 ```bash
-sudo docker build -t multiverse-cloud .
+sudo docker build -t multiverse-web .
 
 # 本地测试运行容器
-sudo docker run --env-file debug/.env -p 8100:8100 multiverse-cloud
+sudo docker run --env-file debug/.env -p 8100:8100 multiverse-web
 
 # 镜像打标签
-sudo docker tag multiverse-cloud:latest elarry/multiverse-cloud:v0.1.0
+sudo docker tag multiverse-web:latest elarry/multiverse-web:v0.1.0
 
 # 推送镜像（需要先登录）
-sudo docker push elarry/multiverse-cloud:v0.1.0
+sudo docker push elarry/multiverse-web:v0.1.0
 ```

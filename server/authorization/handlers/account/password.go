@@ -5,12 +5,13 @@ import (
 	"net/http"
 	"time"
 
+	"multiverse-server/handlers/auth/authorizationserver"
+	helpers2 "multiverse-server/helpers"
+
 	"github.com/google/uuid"
-	"github.com/pnnh/multiverse-cloud-server/handlers/auth/authorizationserver"
-	helpers2 "github.com/pnnh/multiverse-cloud-server/helpers"
 	"github.com/sirupsen/logrus"
 
-	"github.com/pnnh/multiverse-cloud-server/models"
+	"multiverse-server/models"
 
 	"github.com/gin-gonic/gin"
 	"github.com/pnnh/quantum-go/server/helpers"
@@ -167,7 +168,7 @@ func PasswordSigninFinishHandler(gctx *gin.Context) {
 		gctx.JSON(http.StatusOK, models.ErrorResultMessage(err, "验证码错误"))
 		return
 	}
- 
+
 	account, err := models.GetAccountByUsername(username)
 	if err != nil {
 		gctx.JSON(http.StatusOK, models.ErrorResultMessage(err, "GetAccount error"))
@@ -185,7 +186,6 @@ func PasswordSigninFinishHandler(gctx *gin.Context) {
 		return
 	}
 
-
 	session := &models.SessionModel{
 		Pk:           helpers.NewPostId(),
 		Content:      "",
@@ -202,7 +202,7 @@ func PasswordSigninFinishHandler(gctx *gin.Context) {
 		Nonce:        "",
 		IdToken:      "",
 		AccessToken:  "",
-		JwtId:		uuid.New().String(),
+		JwtId:        uuid.New().String(),
 	}
 	err = models.PutSession(session)
 	if err != nil {
@@ -210,7 +210,7 @@ func PasswordSigninFinishHandler(gctx *gin.Context) {
 		return
 	}
 
-	jwtToken, err := helpers2.GenerateJwtTokenRs256(account.Username, 
+	jwtToken, err := helpers2.GenerateJwtTokenRs256(account.Username,
 		authorizationserver.PrivateKeyString,
 		session.JwtId)
 	if (jwtToken == "") || (err != nil) {

@@ -1,9 +1,10 @@
 package main
 
 import (
+	"multiverse-server/handlers"
+	"multiverse-server/handlers/auth/authorizationserver"
+
 	"github.com/gin-gonic/gin"
-	"github.com/pnnh/multiverse-cloud-server/handlers"
-	"github.com/pnnh/multiverse-cloud-server/handlers/auth/authorizationserver"
 	"github.com/pnnh/quantum-go/config"
 	"github.com/pnnh/quantum-go/services/datastore"
 	"github.com/sirupsen/logrus"

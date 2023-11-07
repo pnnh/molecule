@@ -6,11 +6,12 @@ import (
 	"encoding/pem"
 	"time"
 
+	"multiverse-server/helpers"
+
 	"github.com/ory/fosite"
 	"github.com/ory/fosite/compose"
 	"github.com/ory/fosite/handler/openid"
 	"github.com/ory/fosite/token/jwt"
-	"github.com/pnnh/multiverse-cloud-server/helpers"
 	"github.com/pnnh/quantum-go/config"
 	"github.com/sirupsen/logrus"
 )
@@ -57,7 +58,6 @@ func InitOAuth2() {
 }
 
 var oauth2 fosite.OAuth2Provider
-
 
 func getUserServer() string {
 	issure := config.MustGetConfigurationString("RESOURCE_URL")

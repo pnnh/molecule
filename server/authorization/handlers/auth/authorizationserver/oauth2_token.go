@@ -3,9 +3,10 @@ package authorizationserver
 import (
 	"net/http"
 
+	"multiverse-server/helpers"
+	"multiverse-server/models"
+
 	"github.com/gin-gonic/gin"
-	"github.com/pnnh/multiverse-cloud-server/helpers"
-	"github.com/pnnh/multiverse-cloud-server/models"
 	"github.com/sirupsen/logrus"
 )
 

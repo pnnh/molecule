@@ -9,10 +9,11 @@ import (
 	"net/http"
 	"net/url"
 
+	"multiverse-server/models"
+
 	"github.com/gin-gonic/gin"
-	"github.com/pnnh/multiverse-cloud-server/models"
 	// "github.com/ory/fosite/handler/openid"
-	// "github.com/pnnh/multiverse-cloud-server/server/models"
+	// "multiverse-server/server/models"
 )
 
 func IntrospectionEndpoint(gctx *gin.Context) {

@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/pnnh/multiverse-cloud-server/handlers/auth/authorizationserver"
-	helpers2 "github.com/pnnh/multiverse-cloud-server/helpers"
+	"multiverse-server/handlers/auth/authorizationserver"
+	helpers2 "multiverse-server/helpers"
 
 	"github.com/gin-gonic/gin"
 )
@@ -17,7 +17,7 @@ func (s *SessionHandler) Introspect(gctx *gin.Context) {
 	authHeader := gctx.Request.Header.Get("Authorization")
 
 	jwtToken := strings.TrimPrefix(authHeader, "Bearer ")
- 
+
 	username, err := helpers2.ParseJwtTokenRs256(jwtToken, authorizationserver.PublicKeyString)
 	if err != nil {
 		helpers2.ResponseCodeMessageError(gctx, 401, "token解析失败", err)

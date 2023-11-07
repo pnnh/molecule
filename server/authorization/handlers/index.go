@@ -12,7 +12,7 @@ type indexHandler struct {
 }
 
 func (s *indexHandler) Query(gctx *gin.Context) {
-	gctx.JSON(http.StatusOK, gin.H{"message": "multiverse-cloud-server"})
+	gctx.JSON(http.StatusOK, gin.H{"message": "multiverse-server"})
 }
 
 func NewIndexHandler() *indexHandler {

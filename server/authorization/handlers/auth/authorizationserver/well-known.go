@@ -3,8 +3,9 @@ package authorizationserver
 import (
 	"fmt"
 
+	"multiverse-server/helpers"
+
 	"github.com/gin-gonic/gin"
-	"github.com/pnnh/multiverse-cloud-server/helpers"
 )
 
 func OpenIdConfigurationHandler(gctx *gin.Context) {
@@ -72,6 +73,6 @@ func OpenIdConfigurationHandler(gctx *gin.Context) {
 	`
 
 	responseText := fmt.Sprintf(responseTemplate, issuer, issuer, issuer, issuer,
-		resourcesServer + helpers.BaseUrl, issuer, issuer, issuer)
+		resourcesServer+helpers.BaseUrl, issuer, issuer, issuer)
 	gctx.Data(200, "application/json", []byte(responseText))
 }

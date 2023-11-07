@@ -8,9 +8,10 @@ import (
 	"strings"
 	"time"
 
+	"multiverse-server/models"
+
 	"github.com/gin-gonic/gin"
 	"github.com/wenlng/go-captcha/captcha"
-	"github.com/pnnh/multiverse-cloud-server/models"
 )
 
 func GetCaptchaData(ctx *gin.Context) {

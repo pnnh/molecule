@@ -6,15 +6,15 @@ import (
 	"os"
 	"time"
 
-	handlers "github.com/pnnh/multiverse-cloud-server/handlers"
-	"github.com/pnnh/multiverse-cloud-server/handlers/account"
-	"github.com/pnnh/multiverse-cloud-server/handlers/applications"
-	"github.com/pnnh/multiverse-cloud-server/handlers/auth/authorizationserver"
-	"github.com/pnnh/multiverse-cloud-server/handlers/captcha"
-	"github.com/pnnh/multiverse-cloud-server/handlers/permissions"
-	"github.com/pnnh/multiverse-cloud-server/handlers/roles"
-	"github.com/pnnh/multiverse-cloud-server/handlers/users"
-	"github.com/pnnh/multiverse-cloud-server/helpers"
+	handlers "multiverse-server/handlers"
+	"multiverse-server/handlers/account"
+	"multiverse-server/handlers/applications"
+	"multiverse-server/handlers/auth/authorizationserver"
+	"multiverse-server/handlers/captcha"
+	"multiverse-server/handlers/permissions"
+	"multiverse-server/handlers/roles"
+	"multiverse-server/handlers/users"
+	"multiverse-server/helpers"
 
 	"github.com/gin-contrib/cors"
 	"github.com/pnnh/quantum-go/config"
@@ -60,13 +60,13 @@ func NewWebServer() (*WebServer, error) {
 
 func (s *WebServer) Init() error {
 	indexHandler := handlers.NewIndexHandler()
-	s.router.GET(helpers.BaseUrl + "/", indexHandler.Query)
+	s.router.GET(helpers.BaseUrl+"/", indexHandler.Query)
 
 	authHandler := &handlers.WebauthnHandler{}
-	s.router.POST(helpers.BaseUrl + "/account/signup/webauthn/begin/:username", authHandler.BeginRegistration)
-	s.router.POST(helpers.BaseUrl + "/account/signup/webauthn/finish/:username", authHandler.FinishRegistration)
-	s.router.POST(helpers.BaseUrl + "/account/signin/webauthn/begin/:username", authHandler.BeginLogin)
-	s.router.POST(helpers.BaseUrl + "/account/signin/webauthn/finish/:username", authHandler.FinishLogin)
+	s.router.POST(helpers.BaseUrl+"/account/signup/webauthn/begin/:username", authHandler.BeginRegistration)
+	s.router.POST(helpers.BaseUrl+"/account/signup/webauthn/finish/:username", authHandler.FinishRegistration)
+	s.router.POST(helpers.BaseUrl+"/account/signin/webauthn/begin/:username", authHandler.BeginLogin)
+	s.router.POST(helpers.BaseUrl+"/account/signin/webauthn/finish/:username", authHandler.FinishLogin)
 
 	// s.router.POST("/account/signup/email/begin", account.MailSignupBeginHandler)
 	// s.router.POST("/account/signup/email/finish", account.MailSignupFinishHandler)
@@ -74,48 +74,48 @@ func (s *WebServer) Init() error {
 	// s.router.POST("/account/signin/email/finish", account.MailSigninFinishHandler)
 
 	//s.router.POST("/account/signup/password/begin", account.PasswordSignupBeginHandler)
-	s.router.POST(helpers.BaseUrl + "/account/signup/password/finish", account.PasswordSignupFinishHandler)
+	s.router.POST(helpers.BaseUrl+"/account/signup/password/finish", account.PasswordSignupFinishHandler)
 	//s.router.POST("/account/signin/password/begin", account.PasswordSigninBeginHandler)
-	s.router.POST(helpers.BaseUrl + "/account/signin/password/finish", account.PasswordSigninFinishHandler)
+	s.router.POST(helpers.BaseUrl+"/account/signin/password/finish", account.PasswordSigninFinishHandler)
 
-	s.router.GET(helpers.BaseUrl + "/users/select", users.UserSelectHandler)
-	s.router.GET(helpers.BaseUrl + "/users/get", users.UserGetHandler)
+	s.router.GET(helpers.BaseUrl+"/users/select", users.UserSelectHandler)
+	s.router.GET(helpers.BaseUrl+"/users/get", users.UserGetHandler)
 
-	s.router.GET(helpers.BaseUrl + "/applications/select", applications.ApplicationSelectHandler)
+	s.router.GET(helpers.BaseUrl+"/applications/select", applications.ApplicationSelectHandler)
 
-	s.router.GET(helpers.BaseUrl + "/roles/select", roles.RoleSelectHandler)
-	s.router.GET(helpers.BaseUrl + "/roles/get", roles.RoleGetHandler)
+	s.router.GET(helpers.BaseUrl+"/roles/select", roles.RoleSelectHandler)
+	s.router.GET(helpers.BaseUrl+"/roles/get", roles.RoleGetHandler)
 
-	s.router.GET(helpers.BaseUrl + "/permissions/select", permissions.PermissionSelectHandler)
+	s.router.GET(helpers.BaseUrl+"/permissions/select", permissions.PermissionSelectHandler)
 
 	// sessionHandler := &handlers.SessionHandler{}
 	// s.router.POST("/account/session/introspect", sessionHandler.Introspect)
 
-	s.router.GET(helpers.BaseUrl + "/oauth2/auth", func(gctx *gin.Context) {
+	s.router.GET(helpers.BaseUrl+"/oauth2/auth", func(gctx *gin.Context) {
 		authorizationserver.AuthEndpointHtml(gctx)
 	})
-	s.router.POST(helpers.BaseUrl + "/oauth2/auth", func(gctx *gin.Context) {
+	s.router.POST(helpers.BaseUrl+"/oauth2/auth", func(gctx *gin.Context) {
 		authorizationserver.AuthEndpointJson(gctx)
 	})
 
-	s.router.POST(helpers.BaseUrl + "/oauth2/token", authorizationserver.TokenEndpoint)
-	s.router.POST(helpers.BaseUrl + "/oauth2/revoke", func(gctx *gin.Context) {
+	s.router.POST(helpers.BaseUrl+"/oauth2/token", authorizationserver.TokenEndpoint)
+	s.router.POST(helpers.BaseUrl+"/oauth2/revoke", func(gctx *gin.Context) {
 		authorizationserver.RevokeEndpoint(gctx)
 	})
-	s.router.POST(helpers.BaseUrl + "/oauth2/introspect", func(gctx *gin.Context) {
+	s.router.POST(helpers.BaseUrl+"/oauth2/introspect", func(gctx *gin.Context) {
 		authorizationserver.IntrospectionEndpoint(gctx)
 	})
-	s.router.GET(helpers.BaseUrl + "/oauth2/jwks", func(gctx *gin.Context) {
+	s.router.GET(helpers.BaseUrl+"/oauth2/jwks", func(gctx *gin.Context) {
 		authorizationserver.JwksEndpoint(gctx)
 	})
-	s.router.POST(helpers.BaseUrl + "/oauth2/user", func(gctx *gin.Context) {
+	s.router.POST(helpers.BaseUrl+"/oauth2/user", func(gctx *gin.Context) {
 		authorizationserver.UserEndpoint(gctx)
 	})
 
-	s.router.GET(helpers.BaseUrl + "/.well-known/openid-configuration", authorizationserver.OpenIdConfigurationHandler)
+	s.router.GET(helpers.BaseUrl+"/.well-known/openid-configuration", authorizationserver.OpenIdConfigurationHandler)
 
-	s.router.GET(helpers.BaseUrl + "/api/go_captcha_data", captcha.GetCaptchaData)
-	s.router.POST(helpers.BaseUrl + "/api/go_captcha_check_data", captcha.CheckCaptcha)
+	s.router.GET(helpers.BaseUrl+"/api/go_captcha_data", captcha.GetCaptchaData)
+	s.router.POST(helpers.BaseUrl+"/api/go_captcha_check_data", captcha.CheckCaptcha)
 
 	return nil
 }

@@ -1,7 +1,7 @@
 package helpers
 
 import (
-	"github.com/pnnh/multiverse-cloud-server/models"
+	"multiverse-server/models"
 	"net/http"
 
 	"github.com/gin-gonic/gin"

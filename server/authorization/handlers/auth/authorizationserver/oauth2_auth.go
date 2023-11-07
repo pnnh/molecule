@@ -8,10 +8,11 @@ import (
 	"strings"
 	"time"
 
+	"multiverse-server/helpers"
+	"multiverse-server/models"
+
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
-	"github.com/pnnh/multiverse-cloud-server/helpers"
-	"github.com/pnnh/multiverse-cloud-server/models"
 	"github.com/pnnh/quantum-go/config"
 
 	"github.com/sirupsen/logrus"

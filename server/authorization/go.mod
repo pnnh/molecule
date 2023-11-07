@@ -1,4 +1,4 @@
-module github.com/pnnh/multiverse-cloud-server
+module multiverse-server
 
 go 1.19
 

@@ -8,11 +8,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/google/uuid"
-	"github.com/pnnh/multiverse-cloud-server/handlers/auth/authorizationserver"
-	helpers2 "github.com/pnnh/multiverse-cloud-server/helpers"
+	"multiverse-server/handlers/auth/authorizationserver"
+	helpers2 "multiverse-server/helpers"
 
-	"github.com/pnnh/multiverse-cloud-server/models"
+	"github.com/google/uuid"
+
+	"multiverse-server/models"
 
 	"github.com/pnnh/quantum-go/config"
 	"github.com/pnnh/quantum-go/server/helpers"

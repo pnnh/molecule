@@ -6,11 +6,12 @@ import (
 	// "log"
 
 	"fmt"
+
 	"github.com/gin-gonic/gin"
 	"github.com/pnnh/quantum-go/config"
 	"github.com/sirupsen/logrus"
 	// "github.com/ory/fosite/handler/openid"
-	// "github.com/pnnh/multiverse-cloud-server/server/models"
+	// "multiverse-server/server/models"
 )
 
 func JwksEndpoint(gctx *gin.Context) {

@@ -1,10 +1,11 @@
 package permissions
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/pnnh/multiverse-cloud-server/models"
-	"github.com/sirupsen/logrus"
+	"multiverse-server/models"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 )
 
 func PermissionSelectHandler(gctx *gin.Context) {

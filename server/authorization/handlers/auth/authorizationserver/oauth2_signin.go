@@ -2,9 +2,9 @@ package authorizationserver
 
 import (
 	// "encoding/base64"
-	 "github.com/gin-gonic/gin"
-	// "github.com/pnnh/multiverse-cloud-server/helpers"
-	// "github.com/pnnh/multiverse-cloud-server/models"
+	"github.com/gin-gonic/gin"
+	// "multiverse-server/helpers"
+	// "multiverse-server/models"
 	// "github.com/pnnh/quantum-go/config"
 	// "github.com/sirupsen/logrus"
 	// "net/http"
@@ -19,7 +19,6 @@ func OAuth2SigninEndpoint(gctx *gin.Context) {
 	// }
 	// authInfo := gctx.Query("authinfo")
 
-	 
 	// jwtToken, err := helpers.GenerateJwtTokenRs256(username, PrivateKeyString)
 	// if err != nil {
 	// 	gctx.JSON(http.StatusOK, models.CodeError.WithMessage("生成token失败"))

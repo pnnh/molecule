@@ -9,10 +9,11 @@ import (
 	"net/http"
 	"net/url"
 
+	"multiverse-server/helpers"
+	"multiverse-server/models"
+
 	"github.com/gin-gonic/gin"
 	"github.com/ory/fosite"
-	"github.com/pnnh/multiverse-cloud-server/helpers"
-	"github.com/pnnh/multiverse-cloud-server/models"
 	"github.com/sirupsen/logrus"
 )
 
