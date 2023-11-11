@@ -1,6 +1,7 @@
 package helpers
 
 import (
+	"encoding/json"
 	"fmt"
 	"time"
 
@@ -99,4 +100,33 @@ func ParseJwtTokenRs256(tokenString string, pubKeyString string) (*jwt.Registere
 		}
 	}
 	return parsedClaims, nil
+}
+
+func GetJwk() (string, error) {
+	jwkString, ok := config.GetConfigurationString("OAUTH2_JWK")
+	if !ok {
+		return "", fmt.Errorf("OAUTH2_JWK is not set")
+	}
+	return jwkString, nil
+}
+
+type JwkModel struct {
+	Kty string `json:"kty"`
+	Kid string `json:"kid"`
+	Use string `json:"use"`
+	N   string `json:"n"`
+	E   string `json:"e"`
+}
+
+func GetJwkModel() (*JwkModel, error) {
+	jwkString, err := GetJwk()
+	if err != nil {
+		return nil, err
+	}
+	jwk := &JwkModel{}
+	err = json.Unmarshal([]byte(jwkString), jwk)
+	if err != nil {
+		return nil, err
+	}
+	return jwk, nil
 }

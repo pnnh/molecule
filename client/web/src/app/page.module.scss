@@ -45,6 +45,7 @@
       font-weight: 600;
       color: #000;
       letter-spacing: 0.08em;
+      display: none; // 暂时隐藏
     }
 
     .mainTextSubTitle {
@@ -82,6 +83,7 @@
         height: 160px;
         position: relative;
         margin-bottom: 1rem;
+        flex-shrink: 0;
 
         img {
           border-top-left-radius: 8px;

@@ -8,7 +8,6 @@ import (
 	"multiverse-server/handlers/auth/authorizationserver"
 	helpers2 "multiverse-server/helpers"
 
-	"github.com/google/uuid"
 	"github.com/sirupsen/logrus"
 
 	"multiverse-server/models"
@@ -186,6 +185,12 @@ func PasswordSigninFinishHandler(gctx *gin.Context) {
 		return
 	}
 
+	jwkModel, err := helpers2.GetJwkModel()
+	if err != nil || jwkModel == nil {
+		gctx.JSON(http.StatusOK, models.ErrorResultMessage(err, "GetJwkModel error"))
+		return
+	}
+
 	session := &models.SessionModel{
 		Pk:           helpers.NewPostId(),
 		Content:      "",
@@ -202,7 +207,7 @@ func PasswordSigninFinishHandler(gctx *gin.Context) {
 		Nonce:        "",
 		IdToken:      "",
 		AccessToken:  "",
-		JwtId:        uuid.New().String(),
+		JwtId:        jwkModel.Kid,
 	}
 	err = models.PutSession(session)
 	if err != nil {

@@ -11,8 +11,6 @@ import (
 	"multiverse-server/handlers/auth/authorizationserver"
 	helpers2 "multiverse-server/helpers"
 
-	"github.com/google/uuid"
-
 	"multiverse-server/models"
 
 	"github.com/pnnh/quantum-go/config"
@@ -265,6 +263,11 @@ func (s *WebauthnHandler) FinishLogin(gctx *gin.Context) {
 	}
 	logrus.Debugln("credential: ", credential)
 
+	jwkModel, err := helpers2.GetJwkModel()
+	if err != nil || jwkModel == nil {
+		gctx.JSON(http.StatusOK, models.ErrorResultMessage(err, "GetJwkModel error"))
+		return
+	}
 	session := &models.SessionModel{
 		Pk:           helpers.NewPostId(),
 		Content:      "",
@@ -281,7 +284,7 @@ func (s *WebauthnHandler) FinishLogin(gctx *gin.Context) {
 		Nonce:        "",
 		IdToken:      "",
 		AccessToken:  "",
-		JwtId:        uuid.New().String(),
+		JwtId:        jwkModel.Kid,
 	}
 	err = models.PutSession(session)
 	if err != nil {
