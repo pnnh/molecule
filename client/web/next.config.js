@@ -1,6 +1,6 @@
-const path = require('path') 
+const path = require('path')
 
-const {generateConfig} = require('./compile/generate')
+const { generateConfig } = require('./compile/generate')
 
 console.log(`process.env.ENV: ${process.env.ENV}\n`)
 
@@ -10,9 +10,10 @@ generateConfig()
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'standalone',
-  // experimental: {
-  //   esmExternals: 'loose'
-  // }, 
+  experimental: {
+    esmExternals: 'loose',
+    webpackBuildWorker: true
+  }, 
   reactStrictMode: true,
   webpack: function (config) {
     config.experiments = {
@@ -23,11 +24,24 @@ const nextConfig = {
     return config
   },
   images: {
-    domains: ['localhost', 'static.huable.com', 'static.huable.xyz']
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'localhost'
+      },
+      {
+        protocol: 'https',
+        hostname: 'static.huable.com'
+      },
+      {
+        protocol: 'https',
+        hostname: 'static.huable.xyz'
+      }
+    ]
   },
   compress: process.env.ENV === 'production',
   compiler: {
-    removeConsole: process.env.NODE_ENV === 'production'
+    removeConsole: process.env.ENV === 'production'
   },
   sassOptions: {
     includePaths: [path.join(__dirname, 'styles')],
@@ -36,6 +50,6 @@ const nextConfig = {
 
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
-}) 
+})
  
 module.exports = withBundleAnalyzer(nextConfig)

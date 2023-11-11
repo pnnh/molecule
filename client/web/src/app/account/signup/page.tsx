@@ -9,7 +9,6 @@ import queryString from 'query-string'
 import { clientConfig } from '@/services/client/config'
 import { encodeBase64String } from '@/utils/base64' 
  
-import Button from '@mui/material/Button'
 export default function Home () {
   const [rawSearch, setRawSearch] = useState<string>('')
   useEffect(() => {

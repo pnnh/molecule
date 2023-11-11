@@ -1,6 +1,6 @@
 'use client'
 
-import React, {Component, ReactEventHandler } from 'react'
+import React, {Component } from 'react'
 import PropTypes from 'prop-types'
 import './captcha_button.css'
 import GoCaptcha from './captcha'
