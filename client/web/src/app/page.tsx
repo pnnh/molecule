@@ -2,9 +2,12 @@ import { loadHeaderNav } from '@/components/nav'
 import React from 'react'
 import styles from './page.module.scss' 
 import Image from 'next/image'
+import Link from 'next/link'
+import { serverConfig } from 'gen/config.server'
 
 export default async function Home () {
   const headerNav = await loadHeaderNav()
+  const products = serverConfig.products
   return <div className={styles.indexPage}>
         <div className={styles.navRow}>
           {headerNav}
@@ -26,7 +29,9 @@ export default async function Home () {
               <Image src="/images/star/polaris.jpg" alt="banner" fill={true}/>
             </div>
             <div className={styles.productName}>
-              北极星
+              
+          <Link href={products.polaris.url} target={'_blank'}>北极星
+          </Link>
             </div>
             <div className={styles.productDesc}>
               时间静静地流淌，北斗星越来越高，它那巨大的勺把高高翘起，开始偏向南天。其他星星也都随着北斗星起舞，是的，它们都在旋转。
@@ -37,7 +42,9 @@ export default async function Home () {
               <Image src="/images/star/venus.webp" alt="banner" fill={true}/>
             </div>
             <div className={styles.productName}>
-              启明星
+              
+          <Link href={products.venus.url} target={'_blank'}>启明星
+          </Link>
             </div>
             <div className={styles.productDesc}>
               启明星虽然观测耀目，但并非总是代表着吉祥。它时而在东方高悬，时而在西方闪耀，让人捉摸不透，恐惧也就因此而生。

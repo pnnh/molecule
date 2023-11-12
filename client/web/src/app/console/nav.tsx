@@ -11,7 +11,7 @@ export function ConsoleTopNav (props: { username: string }) {
                     <Link className={styles.navLink} href='/'>首页</Link>
                 </div>
                 <div className={styles.headerRight}>
-                    {'欢迎：' + props.username}
+                    {props.username}
                 </div>
             </div>
         </div>

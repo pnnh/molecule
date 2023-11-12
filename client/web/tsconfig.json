@@ -54,6 +54,8 @@
   ],
   "exclude": [
     "node_modules",
-    "packages"
+    "packages",
+    "config",
+    "compile"
   ]
 }

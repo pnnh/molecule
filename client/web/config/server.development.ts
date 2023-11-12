@@ -10,5 +10,15 @@ export const serverConfig = {
   REDIS: 'redis://10.1.0.4:6379/0',
   REDIS_PASSWORD: 'AS7xQsqVzbHMMK5',
   AUTH_SERVER: 'https://portal.huable.xyz/authorize',
+  products: {
+    polaris: {
+      title: '北极星',
+      url: 'https://polaris.huable.xyz',
+    },
+    venus: {
+      title: '启明星',
+      url: 'https://venus.huable.xyz',
+    }
+  }
 }
 

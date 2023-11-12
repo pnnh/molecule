@@ -63,7 +63,7 @@
 
     .productCard {
       width: 360px;
-      height: 320px;
+      height: 360px;
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
@@ -71,7 +71,6 @@
       border-radius: 8px;
       box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.08);
       background-color: #fff;
-      cursor: pointer;
       transition: all 0.2s ease-in-out;
 
       &:hover {
@@ -96,6 +95,12 @@
         font-weight: 600;
         color: #000;
         letter-spacing: 0.08em;
+
+        a {
+          color: #353535;
+          cursor: pointer;
+          text-decoration: none;
+        }
       }
 
       .productDesc {

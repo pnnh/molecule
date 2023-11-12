@@ -36,7 +36,5 @@ export async function loadHeaderNav () {
 
 function NavConsole (props: { session: string }) {
   return <div>
-        <Link href={'/console'}>控制台</Link>
-        欢迎：
-        <Link href={'/account'}>{props.session}</Link></div>
+        <Link href={'/console'}>{props.session}</Link></div>
 }
