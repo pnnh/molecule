@@ -39,7 +39,7 @@ export async function selectApplications (page: number, size: number, token: str
     offset = 0
   }
   const response = await axios.get<CommonResult<selectResultModel>>(
-    serverConfig.SERVER + '/applications/select',
+    serverConfig.SERVER + '/admin/applications',
     {
       params: {offset, limit: size},
       headers: {Authorization: token},

@@ -1,4 +1,4 @@
-package applications
+package admin
 
 import (
 	"multiverse-server/models"

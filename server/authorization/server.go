@@ -8,10 +8,11 @@ import (
 
 	handlers "multiverse-server/handlers"
 	"multiverse-server/handlers/account"
-	"multiverse-server/handlers/console/applications"
+	"multiverse-server/handlers/admin"
 	"multiverse-server/handlers/auth/authorizationserver"
 	"multiverse-server/handlers/captcha"
 	"multiverse-server/handlers/permissions"
+	"multiverse-server/handlers/public"
 	"multiverse-server/handlers/roles"
 	"multiverse-server/handlers/users"
 	"multiverse-server/helpers"
@@ -81,7 +82,8 @@ func (s *WebServer) Init() error {
 	s.router.GET(helpers.BaseUrl+"/users/select", users.UserSelectHandler)
 	s.router.GET(helpers.BaseUrl+"/users/get", users.UserGetHandler)
 
-	s.router.GET(helpers.BaseUrl+"/applications/select", applications.ApplicationSelectHandler)
+	s.router.GET(helpers.BaseUrl+"/admin/applications", admin.ApplicationSelectHandler)
+	s.router.GET(helpers.BaseUrl+"/public/applications", public.PublicApplicationSelectHandler)
 
 	s.router.GET(helpers.BaseUrl+"/roles/select", roles.RoleSelectHandler)
 	s.router.GET(helpers.BaseUrl+"/roles/get", roles.RoleGetHandler)

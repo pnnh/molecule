@@ -29,6 +29,7 @@ type ApplicationModel struct {
 	SiteUrl        string    `json:"site_url" db:"site_url"`
 	Status         int       `json:"status"`
 	Image          string    `json:"image"`
+	Rank           int       `json:"rank"`
 }
 
 func NewApplicationModel(title string) *ApplicationModel {
@@ -75,6 +76,23 @@ func SelectApplications(offset int, limit int) ([]*ApplicationModel, error) {
 	}
 	if err = sqlx.StructScan(rows, &sqlResults); err != nil {
 		return nil, fmt.Errorf("StructScan: %w", err)
+	}
+
+	return sqlResults, nil
+}
+
+func SelectApplicationsByStatus(status int) ([]*ApplicationModel, error) {
+	sqlText := `select * from Applications where status = :status and rank > 0 order by rank;`
+
+	sqlParams := map[string]interface{}{"status": status}
+	var sqlResults []*ApplicationModel
+
+	rows, err := datastore.NamedQuery(sqlText, sqlParams)
+	if err != nil {
+		return nil, fmt.Errorf("SelectApplicationsByStatus: %w", err)
+	}
+	if err = sqlx.StructScan(rows, &sqlResults); err != nil {
+		return nil, fmt.Errorf("SelectApplicationsByStatus: %w", err)
 	}
 
 	return sqlResults, nil
