@@ -8,7 +8,7 @@ import (
 
 	handlers "multiverse-server/handlers"
 	"multiverse-server/handlers/account"
-	"multiverse-server/handlers/applications"
+	"multiverse-server/handlers/console/applications"
 	"multiverse-server/handlers/auth/authorizationserver"
 	"multiverse-server/handlers/captcha"
 	"multiverse-server/handlers/permissions"

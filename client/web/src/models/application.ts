@@ -10,6 +10,9 @@ export interface ApplicationModel {
     update_time: Date
     description: string
     title: string
+    site_url: string
+    status: number
+    image: string
 }
 
 interface selectResultModel {

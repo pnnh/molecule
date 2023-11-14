@@ -26,6 +26,9 @@ type ApplicationModel struct {
 	UpdateTime     time.Time `json:"update_time" db:"update_time"`
 	Description    string    `json:"description"`
 	Public         int       `json:"public"`
+	SiteUrl        string    `json:"site_url" db:"site_url"`
+	Status         int       `json:"status"`
+	Image          string    `json:"image"`
 }
 
 func NewApplicationModel(title string) *ApplicationModel {

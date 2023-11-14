@@ -1,15 +1,24 @@
+.fullPage {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    min-width: 100vw;
+}
 
+.leftNav {
+    width: 240px;
+    background-color: #FFFFFF;
+    flex-shrink: 0;
+    border-right: solid 1px #f1f1f1;
+}
 
 .pageContainer {
     display: flex;
     flex-direction: row;
+    flex-grow: 1;
 }
 
-.leftNav {
-    width: 240px; 
-}
-
-.rightBody {
-    flex: 1;
-    padding: 16px;
-}
+// .rightBody {
+//     flex: 1;
+//     padding: 16px;
+// }
