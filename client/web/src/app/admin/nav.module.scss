@@ -40,16 +40,19 @@
 .navTitle {
   font-weight: 600;
   font-size: 1rem;
-  height: 40px;
+  height: 48px;
   line-height: 40px;
   padding: 0 16px;
   border-bottom: solid 1px #f1f1f1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-items: center;
 }
 
-.navMenu { 
+.navMenu {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
 }
 
 .navItem {
@@ -59,6 +62,8 @@
   align-items: center;
   justify-items: center;
   padding: 0 16px;
+  border-bottom: solid 1px #f1f1f1;
+
   &:hover {
     background-color: #f1f1f1;
   }

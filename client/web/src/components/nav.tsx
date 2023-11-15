@@ -36,5 +36,5 @@ export async function loadHeaderNav () {
 
 function NavConsole (props: { session: string }) {
   return <div>
-        <Link href={'/console'}>{props.session}</Link></div>
+        <Link href={'/admin'}>{props.session}</Link></div>
 }

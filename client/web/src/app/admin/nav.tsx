@@ -24,19 +24,19 @@ export function ConsoleLeftNav () {
         <div className={styles.navTitle}>控制台左侧导航</div>
         <div className={styles.navMenu}>
             <div className={styles.navItem}>
-                <PSSTextLink href='/console/applications'>应用管理</PSSTextLink>
+                <PSSTextLink href='/admin/applications'>应用管理</PSSTextLink>
             </div>
             <div className={styles.navItem}>
-                <PSSTextLink href='/console/users'>用户管理</PSSTextLink>
+                <PSSTextLink href='/admin/accounts'>账号管理</PSSTextLink>
             </div>
             <div className={styles.navItem}>
-                <PSSTextLink href='/console/roles'>角色管理</PSSTextLink>
+                <PSSTextLink href='/admin/roles'>角色管理</PSSTextLink>
             </div>
             <div className={styles.navItem}>
-                <PSSTextLink href='/console/permissions'>权限管理</PSSTextLink>
+                <PSSTextLink href='/admin/permissions'>权限管理</PSSTextLink>
             </div>
             <div className={styles.navItem}>
-                <PSSTextLink href='/console/tags'>标签管理</PSSTextLink>
+                <PSSTextLink href='/admin/tags'>标签管理</PSSTextLink>
             </div>
         </div>
     </div>

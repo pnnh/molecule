@@ -13,8 +13,7 @@ import (
 	"multiverse-server/handlers/captcha"
 	"multiverse-server/handlers/permissions"
 	"multiverse-server/handlers/public"
-	"multiverse-server/handlers/roles"
-	"multiverse-server/handlers/users"
+	"multiverse-server/handlers/roles" 
 	"multiverse-server/helpers"
 
 	"github.com/gin-contrib/cors"
@@ -79,16 +78,16 @@ func (s *WebServer) Init() error {
 	//s.router.POST("/account/signin/password/begin", account.PasswordSigninBeginHandler)
 	s.router.POST(helpers.BaseUrl+"/account/signin/password/finish", account.PasswordSigninFinishHandler)
 
-	s.router.GET(helpers.BaseUrl+"/users/select", users.UserSelectHandler)
-	s.router.GET(helpers.BaseUrl+"/users/get", users.UserGetHandler)
+	s.router.GET(helpers.BaseUrl+"/admin/accounts", admin.AdminSelectAccounts)
+	s.router.GET(helpers.BaseUrl+"/admin/accounts/:pk", admin.AdminSelectAccounts)
 
 	s.router.GET(helpers.BaseUrl+"/admin/applications", admin.ApplicationSelectHandler)
 	s.router.GET(helpers.BaseUrl+"/public/applications", public.PublicApplicationSelectHandler)
 
-	s.router.GET(helpers.BaseUrl+"/roles/select", roles.RoleSelectHandler)
-	s.router.GET(helpers.BaseUrl+"/roles/get", roles.RoleGetHandler)
+	s.router.GET(helpers.BaseUrl+"/admin/roles", roles.RoleSelectHandler)
+	s.router.GET(helpers.BaseUrl+"/admin/roles/:pk", roles.RoleGetHandler)
 
-	s.router.GET(helpers.BaseUrl+"/permissions/select", permissions.PermissionSelectHandler)
+	s.router.GET(helpers.BaseUrl+"/admin/permissions", permissions.PermissionSelectHandler)
 
 	// sessionHandler := &handlers.SessionHandler{}
 	// s.router.POST("/account/session/introspect", sessionHandler.Introspect)

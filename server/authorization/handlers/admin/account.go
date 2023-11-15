@@ -1,4 +1,4 @@
-package users
+package admin
 
 import (
 	"multiverse-server/models"
@@ -8,7 +8,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-func UserGetHandler(ctx *gin.Context) {
+func AdminGetAccount(ctx *gin.Context) {
 	pk := ctx.Query("pk")
 	username := ctx.Query("username")
 	if pk == "" && username == "" {
@@ -34,7 +34,7 @@ func UserGetHandler(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, result)
 }
 
-func UserSelectHandler(ctx *gin.Context) {
+func AdminSelectAccounts(ctx *gin.Context) {
 	offset := ctx.PostForm("offset")
 	limit := ctx.PostForm("limit")
 	logrus.Debugln("offset", offset, "limit", limit)
@@ -54,7 +54,7 @@ func UserSelectHandler(ctx *gin.Context) {
 		"count": count,
 	}
 
-	result := models.CodeOk.WithData(sessionData)
+	// result := models.CodeOk.WithData(sessionData)
 
-	ctx.JSON(http.StatusOK, result)
+	ctx.JSON(http.StatusOK, sessionData)
 }

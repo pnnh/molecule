@@ -5,13 +5,21 @@ import FormData from '~/form-data'
 import { serverConfig } from '@/services/server/config'
 
 
-export class AccountModel {
-  pk = ''
-  account = ''
-  photo = ''
-  description = ''
-  mail = ''
-  nickname = ''
+export interface AccountModel {
+  // pk = ''
+  // account = ''
+  // photo = ''
+  // description = ''
+  // mail = ''
+  // nickname = ''
+  pk: string
+  username: string
+  create_time: Date
+  update_time: Date
+  description: string 
+  photo: string
+  nickname: string
+  mail: string
 }
 
 export async function getAccountModel (token: string): Promise<AccountModel | null> {

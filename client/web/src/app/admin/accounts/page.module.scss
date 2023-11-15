@@ -1,0 +1,76 @@
+.userList {
+    width: 100%;
+    //background-color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+
+    .toolbar {
+        height: 48px;
+        border-bottom: solid 1px #f1f1f1;
+        background-color: #FFFFFF;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 16px;
+    }
+
+    .userGrid {
+        flex-grow: 1;
+        padding: 16px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+
+        .userCard {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            padding: 8px;
+            gap: 16px;
+            background-color: #FFFFFF;
+            border-radius: 4px;
+
+            .photoArea {
+                border-radius: 50%;
+                background-color: #f1f1f1;
+                box-sizing: border-box;
+                position: relative;
+                padding: 8px;
+                width: 96px;
+                height: 94px;
+            }
+
+            .detailArea {
+                flex-grow: 1;
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+
+                .username {
+                    font-size: 16px;
+                    font-weight: 500;
+                    color: #000000;
+                }
+
+                .mail {
+                    font-size: 14px;
+                    font-weight: 400;
+                    color: #000000;
+                }
+
+                .description {
+                    font-size: 14px;
+                    font-weight: 400;
+                    color: #000000;
+                }
+
+                .updateTime {
+                    font-size: 12px;
+                    font-weight: 400;
+                    color: #000000;
+                }
+            }
+        }
+    }
+}

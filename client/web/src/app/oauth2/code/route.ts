@@ -51,7 +51,7 @@ export async function GET (request: NextRequest) {
   }
   let redirectPath = sourceUrl.pathname
   if (redirectPath === '/') {
-    redirectPath = '/console'
+    redirectPath = '/admin'
   }
   const redirectUrl = `${serverConfig.SELF_URL}${redirectPath}${sourceUrl.search}`
   const response = NextResponse.redirect(redirectUrl)
