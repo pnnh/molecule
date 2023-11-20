@@ -3,7 +3,7 @@ const path = require('path')
 
 function writeClientConfig (filePath) {
   
-  let configPath = process.env.ENV ? `./config/client.${process.env.ENV}.ts` : './config/client.ts'
+  let configPath = process.env.ENV ? `./runtime/client.${process.env.ENV}.ts` : './runtime/client.ts'
   
   if (!path.isAbsolute(configPath)) {
     configPath = path.join(process.cwd(), configPath)
@@ -19,7 +19,7 @@ function writeClientConfig (filePath) {
 
 function writeServerConfig (filePath) {
 
-  let configPath = process.env.ENV ? `./config/server.${process.env.ENV}.ts` : './config/server.ts'
+  let configPath = process.env.ENV ? `./runtime/server.${process.env.ENV}.ts` : './runtime/server.ts'
   
   if (!path.isAbsolute(configPath)) {
     configPath = path.join(process.cwd(), configPath)
