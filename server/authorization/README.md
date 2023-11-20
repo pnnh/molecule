@@ -36,6 +36,4 @@ cd target
 sudo docker build -f Dockerfile -t multiverse-web-server:latest .
 # 测试执行构建的镜像
 sudo docker run -p 8080:8080 multiverse-web-server
-# 仅在本地测试时使用，将aws凭证文件挂载到docker容器
-sudo docker run -p 8080:8080 -v $HOME/.aws/credentials:/root/.aws/credentials:ro multiverse-web-server
 ```

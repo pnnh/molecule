@@ -1,2 +1,2 @@
 
-export {serverConfig} from 'gen/config.server'
+export { runtimeServerConfig as serverConfig } from 'gen/config.server'

@@ -1,4 +1,4 @@
-import { clientConfig } from 'gen/config.client'
+import { clientConfig } from '@/services/client/config'
 
 export function imageUrl (url: string) {
   const defaultUrl = clientConfig.SELF_URL + '/images/default.png'

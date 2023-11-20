@@ -18,8 +18,8 @@ async function fetchUserinfo (idToken: string) {
 
   const url = `${serverConfig.SERVER}/oauth2/user`
 
-  const clientId = 'portal'
-  const clientSecret = 'foobar'
+  const clientId = serverConfig.ClientId
+  const clientSecret = serverConfig.ClientSecret
   const enc = new TextEncoder()
   const data = enc.encode(`${clientId}:${clientSecret}`)
   const basicToken = 'Basic ' + base64.stringify(data)

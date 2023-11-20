@@ -32,8 +32,8 @@ export async function GET (request: NextRequest) {
   const tokenResponse = await axios.post<OAuth2Token>(
     tokenUrl,
     {
-      client_id: 'portal',
-      client_secret: 'foobar',
+      client_id: serverConfig.ClientId,
+      client_secret: serverConfig.ClientSecret,
       grant_type: 'authorization_code',
       redirect_uri: `${serverConfig.SELF_URL}/oauth2/code`,
       code,

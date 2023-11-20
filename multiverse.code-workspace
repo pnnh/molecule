@@ -28,6 +28,7 @@
       "Webauthn",
       "webp",
       "wenlng"
-    ]
+    ],
+    "deno.enable": false
   }
 }
