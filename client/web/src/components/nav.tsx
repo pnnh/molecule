@@ -2,20 +2,17 @@ import Link from 'next/link'
 import React from 'react' 
 import styles from './nav.module.css' 
 import { fullAuthUrl } from '@/services/common/const'
-import { clientConfig } from '@/services/client/config'
-import { getIdentity } from '@/services/auth' 
 import { encodeBase64String } from '@/utils/base64'
 
-export async function loadHeaderNav () {
-  const session = await getIdentity()
-  console.log('auth:', session)
+export function HeaderNav (props: {session: string|undefined,
+  selfUrl: string, serverUrl: string}) {
   let helloElement: JSX.Element
-  if (session) {
-    helloElement = <NavConsole session={session}/>
+  if (props.session) {
+    helloElement = <NavConsole session={props.session}/>
   } else { 
-    const state = encodeBase64String(`${clientConfig.SELF_URL}/`)
+    const state = encodeBase64String(`${props.selfUrl}/`)
   
-    const clientAuthUrl = fullAuthUrl(clientConfig.SERVER, clientConfig.SELF_URL, state)
+    const clientAuthUrl = fullAuthUrl(props.serverUrl, props.selfUrl, state)
     helloElement = <Link
       href={clientAuthUrl} className={styles.loginLink}>登录</Link>
   }

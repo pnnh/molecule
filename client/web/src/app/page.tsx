@@ -1,4 +1,4 @@
-import { loadHeaderNav } from '@/components/nav'
+import { HeaderNav } from '@/components/nav'
 import React from 'react'
 import styles from './page.module.scss' 
 import Image from 'next/image'
@@ -6,15 +6,18 @@ import Link from 'next/link'
 import { serverSelectPublicApplications } from '@/services/server/application'
 import { ApplicationModel } from '@/models/application'
 import { imageUrl } from '@/utils/image'
+import { getIdentity } from '@/services/auth'
+import { serverConfig } from '@/services/server/config'
 
 export default async function Home () {
-  const headerNav = await loadHeaderNav()
+  const session = await getIdentity()
 
   const applications = await serverSelectPublicApplications()
-  //const products = serverConfig.products
+  
   return <div className={styles.indexPage}>
         <div className={styles.navRow}>
-          {headerNav}
+          <HeaderNav session={session} selfUrl={serverConfig.SELF_URL}
+            serverUrl={serverConfig.SERVER} />
         </div>
         <div className={styles.layoutChildren}>
           <div className={styles.logoPng}>

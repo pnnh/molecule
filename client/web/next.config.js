@@ -1,12 +1,5 @@
 const path = require('path')
 
-const { generateConfig } = require('./compile/generate')
-
-console.log(`process.env.ENV: ${process.env.ENV}\n`)
-
-// 生成运行时配置信息
-generateConfig()
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'standalone',

@@ -3,18 +3,16 @@
 import React, {useState} from 'react'
 import styles from './form.module.scss' 
 import Lodash from 'lodash'
-import { clientConfig } from '@/services/client/config'
 import GoCaptchaBtn from '@/components/captcha/captcha_button'
 import Axios from 'axios'
 import Qs from 'qs'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import { Input } from '@mui/material'
 
-
-export function PasswordForm ({rawQuery}: {rawQuery: string}) {
+export function PasswordForm ({serverUrl, authServer, rawQuery}: {serverUrl: string, authServer: string, rawQuery: string}) {
   const [username, setUsername] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
-  const passwordFormUrl = `${clientConfig.AUTH_SERVER}/account/signin/password/finish?`+rawQuery                      
+  const passwordFormUrl = `${authServer}/account/signin/password/finish?`+rawQuery                      
   const [password, setPassword] = useState('')
   const [captBase64, setCaptBase64] = useState('')
   const [captThumbBase64, setCaptThumbBase64] = useState('')
@@ -30,7 +28,7 @@ export function PasswordForm ({rawQuery}: {rawQuery: string}) {
 
     Axios({
       method: 'get',
-      url: `${clientConfig.SERVER}/api/go_captcha_data`,
+      url: `${serverUrl}/api/go_captcha_data`,
     }).then((response)=>{
       const {data = {}} = response
       if ((data.code || 0) === 0) {
@@ -62,7 +60,7 @@ export function PasswordForm ({rawQuery}: {rawQuery: string}) {
         'Content-Type': 'application/x-www-form-urlencoded'
       },
       method: 'post',
-      url: `${clientConfig.SERVER}/api/go_captcha_check_data`,
+      url: `${serverUrl}/api/go_captcha_check_data`,
       data: Qs.stringify({
         dots: dotArr.join(','),
         key: captKey || ''

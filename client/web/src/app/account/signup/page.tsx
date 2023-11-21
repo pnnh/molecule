@@ -6,38 +6,63 @@ import Link from '~/next/link'
 import { WebauthnForm } from './webauthn/form'
 import { PasswordForm } from './password/form'
 import queryString from 'query-string'
-import { clientConfig } from '@/services/client/config'
-import { encodeBase64String } from '@/utils/base64' 
- 
-export default function Home () {
-  const [rawSearch, setRawSearch] = useState<string>('')
-  useEffect(() => {
-    setRawSearch(location.search)
-  }, [])
-  const queryParams = queryString.parse(rawSearch)
-  if (!queryParams.source) {
-    queryParams.source = encodeBase64String(clientConfig.SELF_URL + '/account/signin')
-  }
-  const rawQuery = queryString.stringify(queryParams)
-  
-  function getSignMethods () {
-    const signMethods: {key: string, title: string, form: React.ReactElement}[] = []
-  
-    if (clientConfig.SIGN.PASSWORD.ENABLE) {
-      signMethods.push({key: 'password', title: '账号密码', form: <PasswordForm rawQuery={rawQuery}/>})
-    }
-    if (clientConfig.SIGN.WEBAUTHN.ENABLE) {
-      signMethods.push({key: 'webauthn', title: 'Webauthn', form: <WebauthnForm rawQuery={rawQuery} /> })
-    }
-    if (signMethods.length === 0) {
-      throw new Error('no sign method enabled')
-    }
-    return signMethods
-  }
+import { encodeBase64String } from '@/utils/base64'  
+import { IClientConfig, fetchConfig } from '@/services/client/config'
 
-  const signMethods=getSignMethods()
-  const defaultSignMethod = signMethods[0]
-  const [loginMethod, setLoginMethod] = useState<string>(defaultSignMethod.key)
+
+interface ISignMethod {
+  key: string, title: string, form: React.ReactElement
+}
+
+export default function Home () {
+  const [rawQuery, setRawQuery] = useState<string>('')
+  const [clientConfig, setClientConfig] = useState<IClientConfig>() 
+  const [loginMethod, setLoginMethod] = useState<string>()
+  const [signMethods, setSignMethods] = useState<ISignMethod[]>([])
+  useEffect(() => { 
+    fetchConfig().then((config) => {
+      setClientConfig(config)
+      const queryParams = queryString.parse(location.search)
+      if (!queryParams.source) {
+        queryParams.source = encodeBase64String(config.SELF_URL + '/account/signin')
+      }
+      const rawQuery = queryString.stringify(queryParams)
+      setRawQuery(rawQuery)
+      function getSignMethods () {
+        const signMethods: {key: string, title: string, form: React.ReactElement}[] = []
+      
+        if (config.SIGN.PASSWORD.ENABLE) {
+          signMethods.push({
+            key: 'password',
+            title: '账号密码',
+            form: 
+          <PasswordForm serverUrl={config.SERVER} authServer={config.AUTH_SERVER} rawQuery={rawQuery}/>
+          })
+        }
+        if (config.SIGN.WEBAUTHN.ENABLE) {
+          signMethods.push({
+            key: 'webauthn',
+            title: 'Webauthn',
+            form: 
+          <WebauthnForm authServer={config.AUTH_SERVER} rawQuery={rawQuery} /> 
+          })
+        }
+        if (signMethods.length === 0) {
+          throw new Error('no sign method enabled')
+        }
+        return signMethods
+      }
+    
+      const signMethods=getSignMethods()
+      const defaultSignMethod = signMethods[0]
+      setLoginMethod(defaultSignMethod.key)
+      setSignMethods(signMethods)
+
+    })
+  }, [])
+  if (!clientConfig) {
+    return <div>Loading...</div>
+  }
  
 
   return <div>

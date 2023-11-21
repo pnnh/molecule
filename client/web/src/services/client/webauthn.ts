@@ -1,6 +1,5 @@
 import {startAuthentication, startRegistration} from '~/@simplewebauthn/browser'
 import {AuthenticationResponseJSON} from '~/@simplewebauthn/typescript-types'
-import { clientConfig } from './config'
 
 export async function handleRegisterSubmit (username: string, displayName: string) {
   if (!username) {
@@ -115,7 +114,7 @@ export async function registerCredentialWithServer (username: string, formData: 
 }
 
 
-export async function handleSignInSubmit (username: string) {
+export async function handleSignInSubmit (authServer: string, username: string) {
   const formData = new FormData()
   formData.append('username', username)
   
@@ -150,20 +149,21 @@ export async function handleSignInSubmit (username: string) {
   const attResp = await startAuthentication(makeAssertionOptions)
   console.log('attResp', attResp)
 
-  //await verifyAssertionWithServer(fetchResult.data.session, attResp, rawQuery)
+  // TODO: 不太清楚这里为什么被注释了，需要检查一下
+  //await verifyAssertionWithServer(authServer, fetchResult.data.session, attResp, rawQuery)
 
   return JSON.stringify(attResp)
 }
 
 
-export async function verifyAssertionWithServer (session: string, 
+export async function verifyAssertionWithServer (authServer: string, session: string, 
   assertedCredential: AuthenticationResponseJSON,
   rawQuery: string) {
   // const formData = {
   //   username: session,
   //   credential: assertedCredential
   // }
-  const webauthnFormUrl = `${clientConfig.AUTH_SERVER}/account/signin/webauthn/finish/${session}?`+rawQuery
+  const webauthnFormUrl = `${authServer}/account/signin/webauthn/finish/${session}?`+rawQuery
     
   let response
   try {
