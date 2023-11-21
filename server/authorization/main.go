@@ -1,8 +1,8 @@
 package main
 
 import (
-	"multiverse-server/handlers"
-	"multiverse-server/handlers/auth/authorizationserver"
+	"multiverse-authorization/handlers"
+	"multiverse-authorization/handlers/auth/authorizationserver"
 
 	"github.com/gin-gonic/gin"
 	"github.com/pnnh/quantum-go/config"

@@ -1,7 +1,7 @@
 package permissions
 
 import (
-	"multiverse-server/models"
+	"multiverse-authorization/models"
 	"net/http"
 
 	"github.com/gin-gonic/gin"

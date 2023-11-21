@@ -8,8 +8,8 @@ import (
 	"strings"
 	"time"
 
-	"multiverse-server/helpers"
-	"multiverse-server/models"
+	"multiverse-authorization/helpers"
+	"multiverse-authorization/models"
 
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"

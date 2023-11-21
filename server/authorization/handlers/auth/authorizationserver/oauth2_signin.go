@@ -3,8 +3,8 @@ package authorizationserver
 import (
 	// "encoding/base64"
 	"github.com/gin-gonic/gin"
-	// "multiverse-server/helpers"
-	// "multiverse-server/models"
+	// "multiverse-authorization/helpers"
+	// "multiverse-authorization/models"
 	// "github.com/pnnh/quantum-go/config"
 	// "github.com/sirupsen/logrus"
 	// "net/http"

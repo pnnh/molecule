@@ -1,4 +1,4 @@
-module multiverse-server
+module multiverse-authorization
 
 go 1.19
 

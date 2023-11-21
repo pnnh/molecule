@@ -6,7 +6,7 @@ import (
 	"encoding/pem"
 	"time"
 
-	"multiverse-server/helpers"
+	"multiverse-authorization/helpers"
 
 	"github.com/ory/fosite"
 	"github.com/ory/fosite/compose"

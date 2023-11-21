@@ -3,7 +3,7 @@ package authorizationserver
 import (
 	"fmt"
 
-	"multiverse-server/helpers"
+	"multiverse-authorization/helpers"
 
 	"github.com/gin-gonic/gin"
 )

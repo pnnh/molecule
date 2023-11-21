@@ -5,12 +5,12 @@ import (
 	"net/http"
 	"time"
 
-	"multiverse-server/handlers/auth/authorizationserver"
-	helpers2 "multiverse-server/helpers"
+	"multiverse-authorization/handlers/auth/authorizationserver"
+	helpers2 "multiverse-authorization/helpers"
 
 	"github.com/sirupsen/logrus"
 
-	"multiverse-server/models"
+	"multiverse-authorization/models"
 
 	"github.com/gin-gonic/gin"
 	"github.com/pnnh/quantum-go/server/helpers"

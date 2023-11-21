@@ -9,7 +9,7 @@ import (
 	"sync"
 	"time"
 
-	"multiverse-server/models"
+	"multiverse-authorization/models"
 
 	quantum_helpers "github.com/pnnh/quantum-go/server/helpers"
 

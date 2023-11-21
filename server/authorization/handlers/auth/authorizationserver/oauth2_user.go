@@ -9,8 +9,8 @@ import (
 	"net/http"
 	"net/url"
 
-	"multiverse-server/helpers"
-	"multiverse-server/models"
+	"multiverse-authorization/helpers"
+	"multiverse-authorization/models"
 
 	"github.com/gin-gonic/gin"
 	"github.com/ory/fosite"

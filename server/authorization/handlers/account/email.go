@@ -4,10 +4,10 @@ import (
 	"net/http"
 	"time"
 
-	"multiverse-server/handlers/auth/authorizationserver"
-	helpers2 "multiverse-server/helpers"
+	"multiverse-authorization/handlers/auth/authorizationserver"
+	helpers2 "multiverse-authorization/helpers"
 
-	"multiverse-server/models"
+	"multiverse-authorization/models"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"

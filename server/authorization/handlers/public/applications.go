@@ -1,10 +1,10 @@
 package public
 
 import (
-	"multiverse-server/models"
+	"multiverse-authorization/models"
 	"net/http"
 
-	"github.com/gin-gonic/gin" 
+	"github.com/gin-gonic/gin"
 )
 
 func PublicApplicationSelectHandler(gctx *gin.Context) {
@@ -14,7 +14,7 @@ func PublicApplicationSelectHandler(gctx *gin.Context) {
 		return
 	}
 	sessionData := map[string]interface{}{
-		"list":  accounts,
+		"list": accounts,
 	}
 
 	result := models.CodeOk.WithData(sessionData)

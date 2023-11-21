@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"strings"
 
-	"multiverse-server/handlers/auth/authorizationserver"
-	helpers2 "multiverse-server/helpers"
+	"multiverse-authorization/handlers/auth/authorizationserver"
+	helpers2 "multiverse-authorization/helpers"
 
 	"github.com/gin-gonic/gin"
 )
