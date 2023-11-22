@@ -3,6 +3,8 @@ FROM golang:1.21
 
 EXPOSE 8001
 
-COPY build/multiverse-authorization /home
+WORKDIR /data
 
-CMD ["/home/multiverse-authorization", "-config", "runtime/config.yml"]
+COPY build/multiverse-authorization ./
+
+CMD ["./multiverse-authorization", "-config", "runtime/config.yml"]

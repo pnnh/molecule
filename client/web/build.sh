@@ -18,6 +18,6 @@ if [ ${BUILD_ID} ]; then
     docker run -d --restart=always \
         --name multiverse-web \
         -p 8000:8000 \
-        -v /opt/services/multiverse/web/runtime:/runtime \
+        -v /opt/services/multiverse/web/runtime:/data/runtime \
         multiverse-web
 fi

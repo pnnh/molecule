@@ -19,6 +19,6 @@ if [ ${BUILD_ID} ]; then
     docker run -d --restart=always \
         --name multiverse-authorization \
         -p 8001:8001 \
-        -v /opt/services/multiverse/authorization/runtime:/runtime \
+        -v /opt/services/multiverse/authorization/runtime:/data/runtime \
         multiverse-authorization
 fi
