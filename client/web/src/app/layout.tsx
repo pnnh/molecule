@@ -2,6 +2,7 @@ import './global.css'
 
 // 隔几秒重新验证下数据
 export const revalidate = 5
+export const dynamic = 'force-dynamic'
 
 export default async function RootLayout ({
   children,

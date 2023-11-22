@@ -27,19 +27,19 @@ interface IServerConfig {
     }
 }
 
-function loadServerConfig () {
+let serverConfig: IServerConfig | undefined
+ 
+export async function loadServerConfig (): Promise<IServerConfig> {
   let configPath = process.env.ENV ? `./runtime/server.${process.env.ENV}.json` : './runtime/server.json'
     
   if (!path.isAbsolute(configPath)) {
     configPath = path.join(process.cwd(), configPath)
   }
-
-  const fileContent = fs.readFileSync(configPath, 'utf8')
   
-  return JSON.parse(fileContent) as IServerConfig
+  const fileContent = fs.readFileSync(configPath, 'utf8')
+    
+  serverConfig = JSON.parse(fileContent) as IServerConfig
+
+  return serverConfig
 }
 
-const serverConfig = loadServerConfig()
-
-export {serverConfig}
-  

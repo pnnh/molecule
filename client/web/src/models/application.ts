@@ -1,7 +1,8 @@
 
 import axios from 'axios'
-import {CommonResult} from './common-result'
-import { serverConfig } from '@/services/server/config'
+import {CommonResult} from './common-result' 
+import { loadServerConfig } from '@/services/server/config'
+
 
 export interface ApplicationModel {
     pk: string
@@ -25,6 +26,7 @@ export async function selectPublicApplications (page: number, size: number): Pro
   if (offset < 0) {
     offset = 0
   }
+  const serverConfig = await loadServerConfig()
   const response = await axios.get<CommonResult<selectResultModel>>(
     serverConfig.SERVER + '/public/applications/select',
     {
@@ -38,6 +40,7 @@ export async function selectApplications (page: number, size: number, token: str
   if (offset < 0) {
     offset = 0
   }
+  const serverConfig = await loadServerConfig()
   const response = await axios.get<CommonResult<selectResultModel>>(
     serverConfig.SERVER + '/admin/applications',
     {

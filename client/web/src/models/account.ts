@@ -2,8 +2,7 @@
 import axios from 'axios'
 import {CommonResult} from './common-result'
 import FormData from '~/form-data'
-import { serverConfig } from '@/services/server/config'
-
+import { loadServerConfig } from '@/services/server/config'
 
 export interface AccountModel {
   // pk = ''
@@ -23,6 +22,7 @@ export interface AccountModel {
 }
 
 export async function getAccountModel (token: string): Promise<AccountModel | null> {
+  const serverConfig = await loadServerConfig()
   const response = await axios.post<CommonResult<AccountModel>>(serverConfig.SERVER + '/account/userinfo',
     {},
     {
@@ -45,6 +45,7 @@ export async function serverSignupByMailBegin (username: string, nickname: strin
   const requestForm = new FormData()
   requestForm.append('username', username)
   requestForm.append('nickname', nickname)
+  const serverConfig = await loadServerConfig()
   const url = serverConfig.SERVER + '/account/signup/email/begin'
   const response = await axios.post<CommonResult<{ session: string }>>(url,
     requestForm,
@@ -69,6 +70,7 @@ export async function serverSignupByMailFinish (session: string, code: string) {
   const requestForm = new FormData()
   requestForm.append('session', session)
   requestForm.append('code', code)
+  const serverConfig = await loadServerConfig()
   const url = serverConfig.SERVER + '/account/signup/email/finish'
   const response = await axios.post<CommonResult<string>>(url,
     requestForm,
@@ -92,6 +94,7 @@ export async function serverSignupByMailFinish (session: string, code: string) {
 export async function serverSigninByMailBegin (username: string) {
   const requestForm = new FormData()
   requestForm.append('username', username)
+  const serverConfig = await loadServerConfig()
   const url = serverConfig.SERVER + '/account/signin/email/begin'
   const response = await axios.post<CommonResult<{ session: string }>>(url,
     requestForm,
@@ -116,6 +119,7 @@ export async function serverSigninByMailFinish (session: string, code: string) {
   const requestForm = new FormData()
   requestForm.append('session', session)
   requestForm.append('code', code)
+  const serverConfig = await loadServerConfig()
   const url = serverConfig.SERVER + '/account/signin/email/finish'
   const response = await axios.post<CommonResult<{ authorization: string }>>(url,
     requestForm,
@@ -140,6 +144,7 @@ export async function serverSignupByPasswordBegin (username: string, nickname: s
   const requestForm = new FormData()
   requestForm.append('username', username)
   requestForm.append('nickname', nickname)
+  const serverConfig = await loadServerConfig()
   const url = serverConfig.SERVER + '/account/signup/password/begin'
   const response = await axios.post<CommonResult<{ session: string }>>(url,
     requestForm,
@@ -164,6 +169,7 @@ export async function serverSignupByPasswordFinish (session: string, password: s
   const requestForm = new FormData()
   requestForm.append('session', session)
   requestForm.append('password', password)
+  const serverConfig = await loadServerConfig()
   const url = serverConfig.SERVER + '/account/signup/password/finish'
   const response = await axios.post<CommonResult<string>>(url,
     requestForm,
@@ -187,6 +193,7 @@ export async function serverSignupByPasswordFinish (session: string, password: s
 export async function serverSigninByPasswordBegin (username: string) {
   const requestForm = new FormData()
   requestForm.append('username', username)
+  const serverConfig = await loadServerConfig()
   const url = serverConfig.SERVER + '/account/signin/password/begin'
   const response = await axios.post<CommonResult<{ session: string }>>(url,
     requestForm,
@@ -211,6 +218,7 @@ export async function serverSigninByPasswordFinish (session: string, password: s
   const requestForm = new FormData()
   requestForm.append('session', session)
   requestForm.append('password', password)
+  const serverConfig = await loadServerConfig()
   const url = serverConfig.SERVER + '/account/signin/password/finish'
   const response = await axios.post<CommonResult<{ authorization: string }>>(url,
     requestForm,

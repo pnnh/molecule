@@ -4,8 +4,8 @@ import jwksClient from 'jwks-rsa'
 import {logger} from '@/services/logger'
 import {appCache} from '@/services/cache'
 import axios from '~/axios'
-import {base64} from '~/rfc4648'
-import {serverConfig} from '@/services/server/config'
+import {base64} from '~/rfc4648' 
+import { loadServerConfig } from './server/config'
 
 
 interface Oauth2Userinfo {
@@ -16,6 +16,7 @@ interface Oauth2Userinfo {
 
 async function fetchUserinfo (idToken: string) {
 
+  const serverConfig = await loadServerConfig()
   const url = `${serverConfig.SERVER}/oauth2/user`
 
   const clientId = serverConfig.ClientId

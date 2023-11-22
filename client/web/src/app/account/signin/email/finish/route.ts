@@ -1,6 +1,5 @@
 import {NextRequest, NextResponse} from 'next/server'
 import {serverSigninByMailFinish} from '@/models/account'
-import {encryptAes} from '@/utils/aes'
 
 export async function POST (request: NextRequest) {
   const requestData = await request.json()
@@ -22,14 +21,14 @@ export async function POST (request: NextRequest) {
     return
   }
   const response = NextResponse.json(result)
-  const token = encryptAes(result.data.authorization)
-  response.cookies.set('a', token, {
-    httpOnly: true,
-    secure: true,
-    sameSite: 'strict',
-    maxAge: 60 * 60 * 24 * 30,
-    path: '/'
-  })
+  // const token = encryptAes(result.data.authorization)
+  // response.cookies.set('a', token, {
+  //   httpOnly: true,
+  //   secure: true,
+  //   sameSite: 'strict',
+  //   maxAge: 60 * 60 * 24 * 30,
+  //   path: '/'
+  // })
 
   return response
 }

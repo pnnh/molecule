@@ -1,7 +1,9 @@
 import {NextRequest, NextResponse} from 'next/server'
 import axios from '~/axios'
-import {serverConfig} from '@/services/server/config' 
 import { decodeBase64String } from '@/utils/base64'
+import { loadServerConfig } from '@/services/server/config'
+
+export const dynamic = 'force-dynamic'
 
 interface OAuth2Token {
   access_token: string
@@ -22,6 +24,7 @@ export async function GET (request: NextRequest) {
     return NextResponse.error()
   }
    
+  const serverConfig = await loadServerConfig()
   const stateDecode = decodeBase64String(state)
   console.log('sourceUrl', stateDecode)
   const sourceUrl = new URL(stateDecode)

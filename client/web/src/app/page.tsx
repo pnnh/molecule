@@ -6,13 +6,15 @@ import Link from 'next/link'
 import { serverSelectPublicApplications } from '@/services/server/application'
 import { ApplicationModel } from '@/models/application'
 import { imageUrl } from '@/utils/image'
-import { getIdentity } from '@/services/auth'
-import { serverConfig } from '@/services/server/config'
+import { getIdentity } from '@/services/auth' 
+import { loadServerConfig } from '@/services/server/config'
 
+export const dynamic = 'force-dynamic'
 export default async function Home () {
   const session = await getIdentity()
 
   const applications = await serverSelectPublicApplications()
+  const serverConfig = await loadServerConfig()
   
   return <div className={styles.indexPage}>
         <div className={styles.navRow}>

@@ -1,8 +1,12 @@
 
-import { serverConfig } from '@/services/server/config'
+ 
+import { loadServerConfig } from '@/services/server/config'
 import { NextResponse } from 'next/server'
 
+export const dynamic = 'force-dynamic'
+
 export async function GET () {
+  const serverConfig = await loadServerConfig()
   const result = {
     SERVER: serverConfig.SERVER,
     SELF_URL: serverConfig.SELF_URL,
