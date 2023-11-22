@@ -1,5 +1,5 @@
 
-FROM ubuntu:23.10
+FROM golang:1.21
 
 COPY build/multiverse-authorization /home
 

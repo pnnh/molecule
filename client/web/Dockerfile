@@ -1,4 +1,4 @@
-FROM ubuntu:23.10
+FROM node:21
 
 ENV NODE_ENV production
 
