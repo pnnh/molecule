@@ -5,3 +5,4 @@ README.md
 src/
 docs/
 compile/
+node_modules/
