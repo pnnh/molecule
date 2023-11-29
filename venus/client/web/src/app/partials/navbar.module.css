@@ -1,0 +1,19 @@
+ 
+.headerRow {
+  width: 1024px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 56px;
+  justify-content: space-between;
+
+}
+
+.navLink {
+  color: #000;
+  font-size: 18px;
+  font-weight: 400;
+  text-decoration: none;
+  margin-right: 4px;
+}

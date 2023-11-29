@@ -1,0 +1,43 @@
+.articleTable {
+  margin-top: 16px;
+  table-layout: fixed;
+
+  .articleRow {
+    .articleTitle {
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      a {
+        color: #000;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 1.4;
+      }
+    }
+  }
+
+  .columnCheck {
+    width: 48px;
+  }
+
+  .columnTime {
+    width: 160px;
+  }
+
+  .columnOperator {
+    width: 120px;
+  }
+
+  .actionCol {
+    :global(.fui-MenuButton__menuIcon) {
+      display: contents;
+    }
+  }
+}
+
+
+.articleTitle {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

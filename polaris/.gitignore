@@ -1,0 +1,15 @@
+bin/
+obj/
+/packages/
+riderModule.iml
+/_ReSharper.Caches/
+.idea/
+.vs/
+Polaris/wwwroot/assets/
+Browser/debug/
+Docker/bin
+.vscode/
+build/
+debug/
+*.DotSettings.user
+build-*/

@@ -1,0 +1,16 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        // {
+        //     "name": "venus-ios",
+        //     "request": "launch",
+        //     "type": "dart",
+        //     "flutterMode": "debug",
+        //     "program": "lib/main.dart",
+        //     "args": [
+        //         "-d",
+        //         "iPhone 11 Pro Max"
+        //     ]
+        // }, 
+    ]
+}

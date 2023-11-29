@@ -1,0 +1,27 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 22,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "macOS",
+      "displayName": "macOS Config",
+      "description": "macOS build using Xcode generator",
+      "generator": "Xcode",
+      "cacheVariables": {
+        "CMAKE_OSX_DEPLOYMENT_TARGET": {
+          "type": "STRING",
+          "value": "10.15"
+        },
+        "CMAKE_PREFIX_PATH": {
+          "type": "STRING",
+          "value": "~/Qt/6.5.1/macos/lib/cmake"
+        }
+      },
+      "environment": {}
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+    "folders": [
+      {
+        "path": "golang/neutron"
+      }
+    ],
+    "settings": {
+      "files.autoSave": "afterDelay",
+      "remote.autoForwardPorts": false
+    }
+  }

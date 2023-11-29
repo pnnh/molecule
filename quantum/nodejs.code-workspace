@@ -1,0 +1,11 @@
+{
+    "folders": [
+      {
+        "path": "nodejs/stele"
+      }
+    ],
+    "settings": {
+      "files.autoSave": "afterDelay",
+      "remote.autoForwardPorts": false
+    }
+  }

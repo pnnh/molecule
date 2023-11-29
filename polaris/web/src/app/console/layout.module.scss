@@ -1,0 +1,32 @@
+.childrenContainer {
+  min-height: 100vh;
+  background: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+
+  .navbar {
+    height: 40px;
+    border-bottom: #d5d5d5 solid 0.5px;
+    display: flex;
+    flex-direction: row;
+    padding: 4px 8px;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .mainContainer {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+  }
+}
+
+.leftNav {
+  width: 200px;
+}
+
+
+.rightBody {
+  flex: 1;
+  background: #FFFFFF;
+}

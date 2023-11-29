@@ -1,0 +1,35 @@
+@import "src/styles/utils";
+
+
+.childrenContainer {
+  min-height: 100vh;
+  background: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+
+  .navbar {
+    height: toRem(48);
+    border-bottom: #d5d5d5 solid toRem(0.5);
+    display: flex;
+    flex-direction: row;
+    padding: toRem(8) toRem(8);
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .mainContainer {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+  }
+}
+
+.leftNav {
+  width: 240px;
+}
+
+
+.rightBody {
+  flex: 1; 
+  background: #FFFFFF;
+}

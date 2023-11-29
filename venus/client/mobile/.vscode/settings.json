@@ -1,0 +1,19 @@
+{
+    "window.autoDetectColorScheme": true,
+    "workbench.colorTheme": "Default Light Modern",
+    "workbench.iconTheme": "material-icon-theme",
+    "workbench.preferredDarkColorTheme": "Default Light+",
+    "cmake.configureOnOpen": false,
+    "cmake.sourceDirectory": "${workspaceFolder}",
+    "cmake.autoSelectActiveFolder": false,
+    "cmake.configureOnEdit": false,
+    "cSpell.words": [
+        "autofocus",
+        "esbuild",
+        "RGBO",
+        "riverpod"
+    ],
+    "editor.codeActionsOnSave": {
+        "source.fixAll": true
+    },
+}

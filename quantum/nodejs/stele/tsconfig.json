@@ -1,0 +1,42 @@
+{
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "module": "ESNext",
+    "target": "ESNext",
+    "moduleResolution": "Node",
+    "noImplicitAny": true,
+    "sourceMap": true,
+    "allowJs": true,
+    "jsx": "react-jsx",
+    "esModuleInterop": true,
+    "strict": true,
+    "allowSyntheticDefaultImports": true,
+    "rootDir": "src",
+    "baseUrl": ".",
+    "outDir": "esm",
+    "declaration": true,
+    "declarationDir": "esm",
+    "emitDeclarationOnly": false,
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ],
+      "~/*": [
+        "./node_modules/*"
+      ]
+    },
+    "plugins": []
+  },
+  "include": [
+    "src/**/*",
+    "src/index.tsx"
+  ],
+  "exclude": [
+    "dist",
+    "esm",
+    "node_modules",
+    "packages",
+    "examples",
+    "rollup.config.mjs"
+  ]
+}

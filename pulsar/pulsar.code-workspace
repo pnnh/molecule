@@ -1,0 +1,25 @@
+{
+    "folders": [
+        {
+            "path": "client/web"
+        },
+        {
+            "name": "business",
+            "path": "server/business"
+        },
+        {
+            "name": "messaging",
+            "path": "server/messaging"
+        }
+    ],
+    "settings": {
+        "cmake.autoSelectActiveFolder": false,
+        "cmake.allowCommentsInPresetsFile": true,
+        "cmake.buildTask": false,
+        "cmake.ignoreCMakeListsMissing": true,
+        "cmake.statusbar.visibility": "icon",
+        "cmake.useProjectStatusView": true,
+        "cmake.options.statusBarVisibility": "icon",
+        "editor.fontFamily": "Maple, Menlo, Monaco, 'Courier New', monospace"
+    }
+}

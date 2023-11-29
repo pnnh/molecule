@@ -1,0 +1,25 @@
+.articleTable {
+  margin-top: 16px;
+  table-layout: fixed;
+
+  .columnCheck {
+    width: 48px;
+  }
+
+  .columnTime {
+    width: 160px;
+  }
+
+  .columnOperator {
+    width: 120px;
+  }
+}
+
+.articleRow {
+
+}
+
+.articleTitle {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

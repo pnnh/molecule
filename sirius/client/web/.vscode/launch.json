@@ -1,0 +1,14 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "sirius-web",
+            "type": "node-terminal",
+            "request": "launch",
+            "command": "npm run dev",
+            "env": {
+                "ENV": "development"
+            }
+        },
+    ]
+}

@@ -1,0 +1,63 @@
+{
+  "name": "@pnnh/stele",
+  "version": "0.1.12",
+  "description": "个人项目公共组件",
+  "keywords": [
+    "editor"
+  ],
+  "license": "AGPL-3.0",
+  "scripts": {
+    "build": "tsc",
+    "rollup": "rollup --config",
+    "publish": "npm run build && npm publish"
+  },
+  "type": "module",
+  "dependencies": {
+    "@rollup/plugin-alias": "^4.0.3",
+    "@rollup/plugin-strip": "^3.0.2",
+    "is-hotkey": "^0.2.0",
+    "marked": "^4.2.12",
+    "prismjs": "^1.29.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "remixicon": "^3.0.0",
+    "slate": "^0.91.4",
+    "slate-history": "^0.86.0",
+    "slate-react": "^0.92.0"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^24.0.1",
+    "@rollup/plugin-json": "^6.0.1",
+    "@rollup/plugin-node-resolve": "^15.0.1",
+    "@rollup/plugin-typescript": "^11.0.0",
+    "@rollup/plugin-url": "^8.0.1",
+    "@types/estree": "^1.0.0",
+    "@types/marked": "^4.0.8",
+    "@types/node": "^18.15.11",
+    "@types/prismjs": "^1.16.6",
+    "@types/react": "^18.0.32",
+    "@types/react-dom": "^18.0.11",
+    "@types/react-router-dom": "^5.3.2",
+    "@typescript-eslint/eslint-plugin": "^5.6.0",
+    "@typescript-eslint/parser": "^5.6.0",
+    "@vitejs/plugin-react": "^3.1.0",
+    "esbuild": "^0.17.15",
+    "eslint": "^8.35.0",
+    "eslint-config-next": "^13.2.1",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^6.0.0",
+    "eslint-plugin-react": "^7.30.0",
+    "rfc4648": "^1.5.2",
+    "rollup": "^3.20.2",
+    "rollup-plugin-copy": "^3.4.0",
+    "rollup-plugin-delete": "^2.0.0",
+    "rollup-plugin-dts": "^5.3.0",
+    "rollup-plugin-postcss": "^4.0.2",
+    "rollup-plugin-scss": "^4.0.0",
+    "rollup-plugin-visualizer": "^5.5.0",
+    "sass": "^1.45.0",
+    "typescript": "^5.0.3"
+  }
+}

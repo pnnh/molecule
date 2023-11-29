@@ -1,0 +1,132 @@
+.table {
+  display: flex;
+  flex-direction: column;
+
+  .tableRow {
+    border-bottom: 1px solid #E5E5E5;
+    display: flex;
+    flex-direction: column;
+    padding: 8px;
+    font-size: 14px;
+
+    .dataRow {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      gap: 0.8rem;
+
+      .rowOpen {
+        transform: rotate(90deg);
+      }
+
+      .rowStart {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding-top: 1rem;
+
+        .rowStartContent {
+          display: flex;
+          flex-direction: row;
+          gap: 4px;
+
+        }
+      }
+
+      .rowContent {
+        flex-grow: 1;
+      }
+
+
+      .dataCell {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+      }
+
+      .fieldItem {
+        display: flex;
+        flex-direction: column;
+
+        label {
+          color: #cbcbcb;
+          font-size: 0.7rem;
+          visibility: hidden;
+        }
+
+        .content {
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
+
+      .progressCell {
+        .progress {
+          width: 104px;
+          margin-bottom: 0;
+          margin-right: 0;
+        }
+      }
+    }
+
+    .metaRow {
+      margin-top: 8px;
+      padding-left: 64px;
+      font-size: 10px;
+    }
+
+    .detailsTable {
+      display: flex;
+      flex-direction: column;
+      //border: #f7f7f7 solid 0.2px;
+      margin-top: 8px;
+
+      .detailsRow {
+        display: flex;
+        flex-direction: row;
+        border-bottom: #f7f7f7 solid 0.2px;
+        font-size: 13px;
+        align-items: center;
+        color: #6e6e6e;
+
+        .detailsCellStart {
+          min-width: 128px;
+          max-width: 128px;
+          padding-left: 24px;
+        }
+
+        .detailsCellEnd {
+          flex-grow: 1;
+          padding: 4px;
+          white-space: break-spaces;
+        }
+      }
+
+      .detailsRow:last-child {
+        border: none;
+      }
+    }
+  }
+
+  .tableRow:hover {
+    background-color: #fafafa;
+
+    .fieldItem label {
+      visibility: visible;
+    }
+  }
+
+  .tableRow:first-child {
+    .fieldItem label {
+      visibility: visible;
+    }
+  }
+}
+
+.pagination {
+  margin-top: 20px;
+}

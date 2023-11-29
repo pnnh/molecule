@@ -1,0 +1,20 @@
+{
+    "folders": [
+      {
+        "path": "client/web"
+      },
+      // {
+      //   "path": "client/mobile"
+      // },
+      // {
+      //   "path": "client/desktop"
+      // },
+      {
+        "path": "server/tokio"
+      }
+    ],
+    "settings": {
+      "files.autoSave": "afterDelay",
+      "remote.autoForwardPorts": false
+    }
+  }

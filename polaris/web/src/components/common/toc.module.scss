@@ -1,0 +1,36 @@
+.tocCard {
+    background-color: #FFF;
+    border-radius: 4px;
+
+    .tocHeader {
+        padding: 1rem;
+        border-bottom: solid 1px #e1e1e280;
+    }
+
+    .tocBody {
+        padding: 1rem;
+
+        .tocItem {
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+            padding-right: 0.5rem;
+            font-size: 14px;
+
+            $class-prefix: header-;
+
+            @for $n from 0 through 6 {
+                :global(.#{$class-prefix}#{$n}) {
+                    padding-left: $n * 0.5rem;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+
+                    a {
+                        color: #000;
+                        text-decoration: none;
+                    }
+                }
+            }
+        }
+    }
+}
