@@ -11,6 +11,9 @@
         "path": "galaxy/sidecar"
       },
       {
+        "path": "protal/server/authorization"
+      },
+      {
         "path": "quantum/golang/neutron"
       }
     ],
