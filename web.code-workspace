@@ -1,0 +1,23 @@
+{
+    "folders": [
+      {
+        "path": "polaris/web"
+      },
+      {
+        "path": "portal/web"
+      },
+      {
+        "path": "galaxy/web"
+      },
+      {
+        "path": "venus/web"
+      },
+      {
+        "path": "quantum/nodejs/stele"
+      }
+    ],
+    "settings": {
+      "files.autoSave": "afterDelay",
+      "remote.autoForwardPorts": false
+    }
+  }
