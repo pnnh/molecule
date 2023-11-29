@@ -1,0 +1,20 @@
+{
+    "folders": [
+        {
+            "path": "polaris/server"
+        },
+        {
+            "path": "quantum/dotnet/molecule"
+        }
+    ],
+    "settings": {
+        "dotnet.defaultSolution": "polaris/server/Polaris.sln",
+        "cSpell.words": [
+            "pnnh",
+            "reduxjs",
+            "roboto",
+            "springframework",
+            "tailwindcss"
+        ]
+    }
+}

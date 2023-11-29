@@ -1,0 +1,21 @@
+{
+    "folders": [
+
+      {
+        "path": "galaxy/agent"
+      },
+      {
+        "path": "galaxy/operator"
+      },
+      {
+        "path": "galaxy/sidecar"
+      },
+      {
+        "path": "quantum/golang/neutron"
+      }
+    ],
+    "settings": {
+      "files.autoSave": "afterDelay",
+      "remote.autoForwardPorts": false
+    }
+  }

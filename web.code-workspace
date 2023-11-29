@@ -1,19 +1,31 @@
 {
     "folders": [
       {
+        "path": "galaxy/web"
+      },
+      {
         "path": "polaris/web"
       },
       {
         "path": "portal/web"
       },
       {
-        "path": "galaxy/web"
+        "path": "proxima/web"
       },
       {
-        "path": "venus/web"
+        "path": "pulsar/web"
       },
       {
         "path": "quantum/nodejs/stele"
+      },
+      {
+        "path": "quantum/website"
+      },
+      {
+        "path": "sirius/web"
+      },
+      {
+        "path": "venus/web"
       }
     ],
     "settings": {
