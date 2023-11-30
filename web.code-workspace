@@ -1,49 +1,51 @@
 {
-    "folders": [
-      {
-        "name": "galaxy",
-        "path": "galaxy/web"
-      },
-      {
-        "name": "polaris",
-        "path": "polaris/web"
-      },
-      {
-        "name": "portal",
-        "path": "portal/web"
-      },
-      {
-        "name": "proxima",
-        "path": "proxima/web"
-      },
-      {
-        "name": "pulsar",
-        "path": "pulsar/web"
-      },
-      {
-        "name": "quantum.stele",
-        "path": "quantum/nodejs/stele"
-      },
-      {
-        "name": "quantum.website",
-        "path": "quantum/website"
-      },
-      {
-        "name": "sirius",
-        "path": "sirius/web"
-      },
-      {
-        "name": "venus",
-        "path": "venus/web"
-      }
-    ],
-    "settings": {
-      "files.autoSave": "afterDelay",
-      "remote.autoForwardPorts": false
+  "folders": [
+    {
+      "name": "galaxy",
+      "path": "galaxy/web"
     },
-    "extensions": {
-      "recommendations": [
-        "github.copilot"
-      ]
+    {
+      "name": "polaris",
+      "path": "polaris/web"
+    },
+    {
+      "name": "portal",
+      "path": "portal/web"
+    },
+    {
+      "name": "proxima",
+      "path": "proxima/web"
+    },
+    {
+      "name": "pulsar",
+      "path": "pulsar/web"
+    },
+    {
+      "name": "quantum.stele",
+      "path": "quantum/nodejs/stele"
+    },
+    {
+      "name": "quantum.website",
+      "path": "quantum/website"
+    },
+    {
+      "name": "sirius",
+      "path": "sirius/web"
+    },
+    {
+      "name": "venus",
+      "path": "venus/web"
     }
+  ],
+  "settings": {
+    "files.autoSave": "afterDelay",
+    "remote.autoForwardPorts": false,
+    "editor.fontFamily": "Menlo, Monaco, 'Courier New', monospace",
+    "editor.fontSize": 12
+  },
+  "extensions": {
+    "recommendations": [
+      "github.copilot"
+    ]
   }
+}
