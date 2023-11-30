@@ -8,7 +8,6 @@ riderModule.iml
 Polaris/wwwroot/assets/
 Browser/debug/
 Docker/bin
-.vscode/
 build/
 debug/
 *.DotSettings.user
