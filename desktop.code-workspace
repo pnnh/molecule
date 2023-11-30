@@ -1,0 +1,12 @@
+{
+    "folders": [
+
+      {
+        "path": "polaris/desktop"
+      }
+    ],
+    "settings": {
+      "files.autoSave": "afterDelay",
+      "remote.autoForwardPorts": false
+    }
+  }

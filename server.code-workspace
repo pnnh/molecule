@@ -1,0 +1,57 @@
+{
+    "folders": [
+      {
+        "name": "galaxy.agent",
+        "path": "galaxy/agent"
+      },
+      {
+        "name": "galaxy.operator",
+        "path": "galaxy/operator"
+      },
+      {
+        "name": "galaxy.sidecar",
+        "path": "galaxy/sidecar"
+      },
+      {
+        "name": "portal.authorization",
+        "path": "portal/server/authorization"
+      },
+      {
+        "name": "quantum.neutron",
+        "path": "quantum/golang/neutron"
+      },
+      {
+          "name": "polaris.server",
+          "path": "polaris/server"
+      },
+      {
+        "name": "quantum.molecule",
+        "path": "quantum/dotnet/molecule"
+      },
+      {
+        "name": "pulsar.business",
+        "path": "pulsar/server/business"
+      },
+      {
+        "name": "pulsar.common",
+        "path": "pulsar/server/common"
+      },
+      {
+        "name": "pulsar.messaging",
+        "path": "pulsar/server/messaging"
+      }
+    ],
+    "settings": {
+      "dotnet.defaultSolution": "polaris/server/Polaris.sln",
+      "files.autoSave": "afterDelay",
+      "remote.autoForwardPorts": false,
+      "cmake.options.statusBarVisibility": "icon"
+    },
+    "extensions": {
+      "recommendations": [
+        "golang.go",
+        "twxs.cmake",
+        "rust-lang.rust-analyzer"
+      ]
+    }
+  }

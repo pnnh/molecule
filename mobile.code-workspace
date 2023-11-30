@@ -9,6 +9,7 @@
         "path": "venus/mobile"
       },
       {
+        "name": "quantum",
         "path": "quantum/flutter/quantum"
       }
     ],
