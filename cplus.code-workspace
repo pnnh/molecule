@@ -1,0 +1,18 @@
+{
+    "folders": [
+
+      {
+        "path": "pulsar/server/business"
+      },
+      {
+        "path": "pulsar/server/common"
+      },
+      {
+        "path": "pulsar/server/messaging"
+      }
+    ],
+    "settings": {
+      "files.autoSave": "afterDelay",
+      "remote.autoForwardPorts": false
+    }
+  }

@@ -1,0 +1,19 @@
+{
+    "folders": [
+      {
+        "name": "polaris",
+        "path": "polaris/mobile"
+      },
+      {
+        "name": "venus",
+        "path": "venus/mobile"
+      },
+      {
+        "path": "quantum/flutter/quantum"
+      }
+    ],
+    "settings": {
+      "files.autoSave": "afterDelay",
+      "remote.autoForwardPorts": false
+    }
+  }
