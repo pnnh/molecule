@@ -21,12 +21,32 @@
       },
       "vendor": {
       }
+    },
+    {
+      "name": "Windows",
+      "displayName": "Windows Config",
+      "description": "Windows build using Visual Studio generator",
+      "generator": "Visual Studio 17 2022",
+      "binaryDir": "${sourceDir}\\build\\windows",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_PREFIX_PATH": "F:\\Qt\\6.6.0\\msvc2019_64\\lib\\cmake",
+        "CMAKE_INSTALL_PREFIX": "${sourceDir}\\install"
+      },
+      "environment": {
+      },
+      "vendor": {
+      }
     }
   ],
   "buildPresets": [
     {
       "name": "macOS",
       "configurePreset": "macOS"
+    },
+    {
+      "name": "Windows",
+      "configurePreset": "Windows"
     }
   ],
   "testPresets": [],

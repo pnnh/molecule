@@ -10,6 +10,16 @@
                 "--preset",
                 "macOS"
             ]
+        },
+        {
+            "label": "build-windows",
+            "command": "cmake",
+            "type": "process",
+            "args": [
+                "--build",
+                "--preset",
+                "Windows"
+            ]
         }
     ]
 }
