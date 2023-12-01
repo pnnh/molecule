@@ -3,6 +3,10 @@
       {
         "name": "polaris",
         "path": "polaris/desktop"
+      },
+      {
+        "name": "venus",
+        "path": "venus/desktop"
       }
     ],
     "settings": {

@@ -7,14 +7,15 @@
   },
   "configurePresets": [
     {
-      "name": "default",
-      "displayName": "Default Config",
-      "description": "Default build using Ninja generator",
-      "generator": "Ninja",
-      "binaryDir": "${sourceDir}/build/${presetName}",
+      "name": "macOS",
+      "displayName": "macOS Config",
+      "description": "macOS build using Xcode generator",
+      "generator": "Xcode",
+      "binaryDir": "${sourceDir}/build/macos",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
-        "CMAKE_PREFIX_PATH": "~/Qt/6.5.1/macos/lib/cmake"
+        "CMAKE_PREFIX_PATH": "~/Qt/6.6.1/macos/lib/cmake",
+        "CMAKE_INSTALL_PREFIX": "${sourceDir}/install"
       },
       "environment": {
       },
@@ -24,8 +25,8 @@
   ],
   "buildPresets": [
     {
-      "name": "default",
-      "configurePreset": "default"
+      "name": "macOS",
+      "configurePreset": "macOS"
     }
   ],
   "testPresets": [],

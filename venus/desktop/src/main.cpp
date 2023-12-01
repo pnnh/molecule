@@ -21,7 +21,7 @@ int main(int argc, char *argv[]) {
 
   QQmlApplicationEngine engine;
   //const QUrl url(QStringLiteral("qrc:/quick/module/views/Main.qml"));
-  const QUrl url(QStringLiteral(u"qrc:/qt/qml/quick/module/views/Main.qml"));
+  const QUrl url(QStringLiteral(u"qrc:/qt/qml/quick/src/module/views/Main.qml"));
 
   //:/qt/qml/
 
