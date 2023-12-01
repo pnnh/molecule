@@ -15,14 +15,14 @@ set(PROJECT_SOURCES
         models/sqliteModel.cc
         models/sqliteModel.h)
 
-qt6_add_executable(polaris
+qt6_add_executable(polaris-desktop
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES})
 
-target_link_libraries(polaris
+target_link_libraries(polaris-desktop
         PRIVATE Qt6::Core Qt6::Gui Qt6::Quick Qt6::QuickControls2 Qt6::Sql)
 
-qt6_add_qml_module(polaris
+qt6_add_qml_module(polaris-desktop 
         URI quick
         VERSION 1.0
         SOURCES

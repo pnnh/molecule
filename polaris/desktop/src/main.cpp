@@ -10,7 +10,7 @@ int main(int argc, char *argv[]) {
   qmlRegisterType<VideoListModel>("an.qt.CModel", 1, 0, "VideoListModel");
 
   QQmlApplicationEngine engine;
-  const QUrl url(QStringLiteral(u"qrc:/qt/qml/quick/module/Main.qml"));
+  const QUrl url(QStringLiteral(u"qrc:/qt/qml/quick/src/module/Main.qml"));
 
   engine.rootContext()->setContextProperty("sqlite", new sqliteModel());
 
