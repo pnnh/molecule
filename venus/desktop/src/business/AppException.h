@@ -18,6 +18,7 @@ class AppException : public std::exception {
 
 public:
   AppException(QString message) : message(message) {}
+  AppException(QString message, QString extraMessage) : message(message + extraMessage) {}
 
 
 private:

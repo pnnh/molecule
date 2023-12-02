@@ -9,15 +9,11 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 include_directories(src)
 include_directories(src/module)
 
-add_subdirectory(third_party/sqlite3)
-
-
 find_package(Qt6 COMPONENTS Core Qml QmlModels Quick Gui QuickLayouts QuickControls2 Sql REQUIRED)
 
 qt_standard_project_setup(REQUIRES 6.5)
 
-qt6_add_executable(venus-desktop
-        MANUAL_FINALIZATION
+set(SOURCES
         src/main.cpp
         src/delegates/FolderDelegate.cpp 
         src/delegates/FolderDelegate.h
@@ -28,12 +24,15 @@ qt6_add_executable(venus-desktop
         src/providers/PictureProvider.cpp 
         src/providers/PictureProvider.h
         src/services/SqliteService.cpp 
-        src/services/SqliteService.h
-        src/macos/objc_code.mm 
-        src/macos/objc_code.h)
+        src/services/SqliteService.h)
 
-# FILE(GLOB RESOURCES assets/images/icons/**.*)
-# message(STATUS "RESOURCES: " ${RESOURCES})
+if(APPLE)
+    list(APPEND SOURCES src/macos/objc_code.mm)
+endif()
+
+qt6_add_executable(venus-desktop
+        MANUAL_FINALIZATION
+        ${SOURCES})
 
 qt6_add_qml_module(venus-desktop
         URI quick
@@ -54,8 +53,5 @@ qt6_add_qml_module(venus-desktop
         src/module/PictureGridModel.cpp
         src/module/PictureGridModel.h)
 
-
-add_dependencies(venus-desktop sqlite3)
-
 target_link_libraries(venus-desktop
-        PRIVATE Qt6::Core Qt6::Gui Qt6::Qml Qt6::QmlModels Qt6::Quick Qt6::QuickControls2 Qt6::Sql sqlite3)
+        PRIVATE Qt6::Core Qt6::Gui Qt6::Qml Qt6::QmlModels Qt6::Quick Qt6::QuickControls2 Qt6::Sql Qt6::Sql)

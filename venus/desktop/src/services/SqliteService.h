@@ -7,20 +7,20 @@
 
 #include <QDateTime>
 #include <QString>
-#include "sqlite3.h"
+#include <QSqlDatabase>
 
 namespace services {
-void initSqlite();
-
-
   class Sqlite3Service {
-
   public:
     Sqlite3Service(QString fullPath);
     ~Sqlite3Service();
 
+  QString sqlite3Version();
+  std::shared_ptr<QSqlQuery> query(QString sqlText);
+
   private:
-    sqlite3* sqldb;
+    QString dbPath;
+    QSqlDatabase sqldb;
   };
 }
 

@@ -25,18 +25,17 @@
             "name": "venus-windows",
             "type": "cppvsdbg",
             "request": "launch",
-            "program": "${workspaceFolder}\\build\\windows\\Debug\\venus-desktop",
-            "symbolSearchPath": "C:\\Symbols;C:\\SymbolDir2",
+            "program": "${workspaceFolder}\\build\\windows\\Debug\\venus-desktop.exe",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
-            "externalConsole": false,
+            "console": "internalConsole",
             "preLaunchTask": "build-windows",
             "logging": {
                 "moduleLoad": false,
                 "trace": true
             }
-        },
+        }
     ]
 }

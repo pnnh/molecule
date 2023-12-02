@@ -31,7 +31,8 @@
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
         "CMAKE_PREFIX_PATH": "F:\\Qt\\6.6.0\\msvc2019_64\\lib\\cmake",
-        "CMAKE_INSTALL_PREFIX": "${sourceDir}\\install"
+        "CMAKE_INSTALL_PREFIX": "${sourceDir}\\install",
+        "CMAKE_TOOLCHAIN_FILE": "D:\\Applications\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake"
       },
       "environment": {
       },

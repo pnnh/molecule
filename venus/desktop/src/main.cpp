@@ -5,10 +5,10 @@
 #include <QQmlDebuggingEnabler>
 #include <QQuickWindow>
 #include <iostream>
-#include "sqlite3.h"
-#include "macos/objc_code.h"
+#if TARGET_OS_MAC
+  #include "macos/objc_code.h"
+#endif
 #include "services/SqliteService.h"
-
 
 int main(int argc, char *argv[]) {
   QQmlDebuggingEnabler::enableDebugging(true);
@@ -17,13 +17,8 @@ int main(int argc, char *argv[]) {
   app.setApplicationDisplayName(
       QStringLiteral("This example is powered by qmltc!"));
 
-  services::initSqlite();
-
   QQmlApplicationEngine engine;
-  //const QUrl url(QStringLiteral("qrc:/quick/module/views/Main.qml"));
   const QUrl url(QStringLiteral(u"qrc:/qt/qml/quick/src/module/views/Main.qml"));
-
-  //:/qt/qml/
 
   QObject::connect(&engine, &QQmlApplicationEngine::objectCreationFailed,
       &app, []() { QCoreApplication::exit(-1); },
@@ -31,15 +26,18 @@ int main(int argc, char *argv[]) {
 
   engine.load(url);
 
-  std::cout << "sqlite3 version: " << sqlite3_libversion() << std::endl;
-
   auto dbName = QGuiApplication::applicationDirPath() + "/venus22.sqlite";
 
-  auto svc = new services::Sqlite3Service(dbName);
-
-
-  std::cout << "macos call: " << localizedHostName().toStdString() << std::endl;
-
+  auto svc = std::make_shared<services::Sqlite3Service>(dbName);
+  std::cout << "macos call: " << svc -> sqlite3Version().toStdString() << std::endl;
 
   return app.exec();
+}
+
+
+void sayHello() {
+  std::cout << "Hello, World!" << std::endl;
+  #if TARGET_OS_MAC
+    std::cout << "macos call: " << localizedHostName().toStdString() << std::endl;
+  #endif
 }

@@ -16,18 +16,19 @@ QVector<providers::FolderInfo> providers::SelectFolders() {
   // 查询数据
   auto querySql = QString(sqlText);
 
-  QSqlQuery query; // 执行操作类对象
-  query.prepare(querySql);
+  // QSqlQuery query; // 执行操作类对象
+  // query.prepare(querySql);
 
-  if (!query.exec(querySql)) {
-    throw business::AppException("SelectFolders出错: " +
-                                 query.lastError().text());
-  }
+  // if (!query.exec(querySql)) {
+  //   throw business::AppException("SelectFolders出错: " +
+  //                                query.lastError().text());
+  // }
 
   //  QSqlRecord recode =
   //      query.record(); // recode保存查询到一些内容信息，如表头、列数等等
   //  int column = recode.count(); // 获取读取结果的列数
 
+  auto sqlSvc = std::make_shared<services::Sqlite3Service>("venus22.sqlite");
   QVector<providers::FolderInfo>
       infoVect; // testInfo向量，用于存储数据库查询到的数据
   while (query.next()) {
