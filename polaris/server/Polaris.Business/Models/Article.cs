@@ -14,18 +14,22 @@ namespace Polaris.Business.Models
 
     [Table("articles")]
     [PrimaryKey(nameof(Pk))]
-    public class ArticleModel
+    public class ArticleModel// : BaseModel
     {
         [Column("pk", TypeName = "varchar(64)")]
+        [JsonPropertyName("pk")]
         public string Pk { get; set; } = "";
 
         [Column("title", TypeName = "varchar(128)")]
+        [JsonPropertyName("title")]
         public string Title { get; set; } = "";
 
         [Column("header", TypeName = "varchar(64)")]
+        [JsonPropertyName("header")]
         public string Header { get; set; } = "";
 
         [Column("body", TypeName = "text")]
+        [JsonPropertyName("body")]
         public string Body { get; set; } = "";
 
         [Column("create_time", TypeName = "timestamptz")]
@@ -37,18 +41,23 @@ namespace Polaris.Business.Models
         public DateTimeOffset UpdateTime { get; set; } = new(2023, 1, 1, 0, 0, 0, TimeSpan.Zero);
 
         [Column("creator", TypeName = "varchar(64)")]
+        [JsonPropertyName("creator")]
         public string Creator { get; set; } = "";
 
         [Column("keywords", TypeName = "varchar(128)")]
+        [JsonPropertyName("keywords")]
         public string Keywords { get; set; } = "";
 
         [Column("description", TypeName = "varchar(512)")]
+        [JsonPropertyName("description")]
         public string Description { get; set; } = "";
 
         [Column("status", TypeName = "int")]
+        [JsonPropertyName("status")]
         public int Status { get; set; } = 0;
 
         [Column("cover", TypeName = "varchar(256)")]
+        [JsonPropertyName("cover")]
         public string Cover { get; set; } = "";
 
         [NotMapped]

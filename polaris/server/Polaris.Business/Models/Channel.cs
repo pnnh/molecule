@@ -9,7 +9,7 @@ using AutoMapper;
 
 [Table("channels")]
 [PrimaryKey(nameof(Pk))]
-public class ChannelModel
+public class ChannelModel// : BaseModel
 {
     [Column("pk", TypeName = "varchar(64)")]
     [JsonPropertyName("pk")]

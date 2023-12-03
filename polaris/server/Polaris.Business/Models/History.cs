@@ -14,7 +14,7 @@ namespace Polaris.Business.Models
 
     [Table("history")]
     [PrimaryKey(nameof(Pk))]
-    public class HistoryModel
+    public class HistoryModel// : BaseModel
     {
         [Column("pk", TypeName = "varchar(64)")]
         [JsonPropertyName("pk")]

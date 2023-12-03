@@ -3,8 +3,8 @@ import { PLSelectResult } from '@/models/common-result'
 import { ArticleModel } from '@/models/article'
 import { ModelService } from './service'
 
-export function articleContentViewUrl (channel: string, pk: string) {
-  return `/content/channel/${channel}/article/` + pk
+export function articleContentViewUrl (profile: string, channel: string, pk: string) {
+  return `/user/${profile}/channel/${channel}/article/` + pk
 }
 
 export class ArticleService extends ModelService {

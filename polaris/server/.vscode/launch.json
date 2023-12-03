@@ -10,7 +10,6 @@
             "args": [],
             "cwd": "${workspaceFolder}/Polaris",
             "stopAtEntry": false,
-            //"targetArchitecture": "x86_64",
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development"
             },

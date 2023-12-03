@@ -8,7 +8,7 @@ using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using Polaris.Business.Models; 
+using Polaris.Business.Models;
 
 
 namespace Polaris.Services;
@@ -58,6 +58,29 @@ public class OAuth2AuthenticationHandler : AuthenticationHandler<AuthenticationS
         _configuration = configuration;
     }
 
+    AuthenticateResult debugAuth(string? basicToken)
+    {
+        if (basicToken == null)
+            return AuthenticateResult.Fail("Invalid Authorization Header");
+        var decodedToken = Encoding.UTF8.GetString(Convert.FromBase64String(basicToken));
+        var username = decodedToken.Split(":")[0];
+        username = $"debug-{username??"anonymous"}";
+        var client = new OAuth2AuthenticationClient()
+        {
+            AuthenticationType = OAuth2AuthenticationDefaults.AuthenticationScheme,
+            IsAuthenticated = true,
+            Name = username
+        };
+        var claims = new List<Claim>
+                {
+                    new(ClaimTypes.Name, username)
+                };
+        var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(client, claims));
+
+        return AuthenticateResult.Success(new AuthenticationTicket(claimsPrincipal, Scheme.Name));
+
+    }
+
     protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
     {
         if (!Request.Headers.ContainsKey("Authorization"))
@@ -65,6 +88,14 @@ public class OAuth2AuthenticationHandler : AuthenticationHandler<AuthenticationS
             return AuthenticateResult.Fail("Missing Authorization Header");
         }
         var authorizationHeader = Request.Headers["Authorization"].ToString();
+
+#if DEBUG 
+        if (authorizationHeader.StartsWith("Basic", StringComparison.OrdinalIgnoreCase))
+        {
+            var basicToken = authorizationHeader.Substring("Basic ".Length).Trim();
+            return debugAuth(basicToken);
+        }
+#endif
 
         if (!authorizationHeader.StartsWith("Bearer", StringComparison.OrdinalIgnoreCase))
             return AuthenticateResult.Fail("Invalid Authorization Header");

@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Polaris.Business.Models;
 
 public class PLBizException : Exception
@@ -76,12 +78,37 @@ public class PLGetResult<T>
     public T? Model { get; init; }
 }
 
+
 public class PLSelectResult<T>
 {
+    [JsonPropertyName("page")]
     public int Page { get; set; }
+
+    [JsonPropertyName("size")]
     public int Size { get; set; }
+
+    [JsonPropertyName("count")]
     public int Count { get; init; } = 0;
+
+    [JsonPropertyName("range")]
     public List<T> Range { get; init; } = new();
+
+    public static PLSelectResult<T> New(int page, int size, int count, List<T> range)
+    {
+        return new()
+        {
+            Page = page,
+            Size = size,
+            Count = count,
+            Range = range
+        };
+    }
+
+    public PLSelectResult<T> AddRange(params T[] range)
+    {
+        this.Range.AddRange(range);
+        return this;
+    }
 }
 
 public class PLInsertResult

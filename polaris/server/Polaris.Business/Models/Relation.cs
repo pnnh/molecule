@@ -56,7 +56,8 @@ public class RelationModel
             .ForMember(a => a.UpdateTime, opt => opt.MapFrom(src => src["update_time"]));
     }
 }
-public class CustomResolver<S, T, M> : IValueResolver<IDataReader, RelationFullModel<S, T>, M?>
+
+public class CustomResolver<S, T, M> : IValueResolver<IDataReader, RelationFullModel<S, T>, M?>// where S : BaseModel where T : BaseModel
 {
     private string _columnName = "";
     public CustomResolver(string columnName)
@@ -73,19 +74,26 @@ public class CustomResolver<S, T, M> : IValueResolver<IDataReader, RelationFullM
     }
 }
 
-public class RelationFullModel<S, T> : RelationModel
+// public interface IRelationFullModel<out S, out T> where S : BaseModel where T : BaseModel
+// {
+
+// }
+
+public class RelationFullModel<S, T> : RelationModel//, IRelationFullModel<S, T> where S : BaseModel where T : BaseModel
 {
-    [JsonPropertyName("source_model")]
     [Column("source_model")]
+    [JsonPropertyName("source_model")]
     public S? SourceModel { get; set; }
 
-    [JsonPropertyName("target_model")]
     [Column("target_model")]
+    [JsonPropertyName("target_model")]
     public T? TargetModel { get; set; }
 
     public static new void MapperConfig(IMapperConfigurationExpression cfg)
     {
         cfg.CreateMap<IDataReader, RelationFullModel<S, T>>()
+            .ForMember(a => a.CreateTime, opt => opt.MapFrom(src => src["create_time"]))
+            .ForMember(a => a.UpdateTime, opt => opt.MapFrom(src => src["update_time"]))
             .ForMember(a => a.SourceModel, opt => opt.MapFrom(new CustomResolver<S, T, S>("source_model")))
             .ForMember(a => a.TargetModel, opt => opt.MapFrom(new CustomResolver<S, T, T>("target_model")));
     }

@@ -17,6 +17,7 @@ public class MapperHelper
             RelationModel.MapperConfig(cfg);
             HistoryModel.MapperConfig(cfg);
             RelationFullModel<ChannelModel, HistoryModel>.MapperConfig(cfg);
+            RelationFullModel<ChannelModel, ArticleModel>.MapperConfig(cfg);
         });
 #if DEBUG
         configuration.AssertConfigurationIsValid();

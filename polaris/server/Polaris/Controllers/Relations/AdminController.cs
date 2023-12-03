@@ -80,15 +80,6 @@ select count(1) from ({sqlBuilder}) as temp;";
             }
         };
 
-
-
-
-
-
-
-
-
-
         // return new CommonResult<object>
         // {
         //     Code = Codes.Ok,
