@@ -14,7 +14,7 @@ export function HeaderNav (props: {session: string|undefined,
   
     const clientAuthUrl = fullAuthUrl(props.serverUrl, props.selfUrl, state)
     helloElement = <Link
-      href={clientAuthUrl} className={styles.loginLink}>登录</Link>
+      href={clientAuthUrl} rel="nofollow" className={styles.loginLink}>登录</Link>
   }
   return <nav className={styles.navHeader}>
         <div className={styles.headerRow}>
