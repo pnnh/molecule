@@ -1,0 +1,21 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "polaris-server",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/Polaris/bin/Debug/net8.0/Polaris.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/Polaris",
+            "stopAtEntry": false,
+            //"targetArchitecture": "x86_64",
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "console": "integratedTerminal",
+            "justMyCode": false
+        }
+    ]
+}
