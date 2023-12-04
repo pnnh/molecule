@@ -6,8 +6,8 @@ export function PublicNavbar (props: {authServer:string, selfUrl: string, accoun
   return <div className={styles.navHeader}>
     <div className={styles.leftNav}>
       <Link className={styles.brandLink} href={'/'}>首页</Link>
-      <Link className={styles.brandLink} href={'/user'}>用户</Link>
       <Link className={styles.brandLink} href={'/channel'}>频道</Link>
+      <Link className={styles.brandLink} href={'/article'}>文章</Link>
     </div>
     <div className={styles.rightNav}>
       <UserAction authServer={props.authServer} selfUrl={props.selfUrl} account={props.account} />

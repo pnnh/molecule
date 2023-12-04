@@ -8,6 +8,7 @@ export interface RelationModel {
     direction: string
     discover: number
     status: number
+    profile: string
 }
 
 export interface RelationFullModel<S, T> extends RelationModel {

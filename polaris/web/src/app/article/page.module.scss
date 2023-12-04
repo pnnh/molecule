@@ -15,10 +15,67 @@
     justify-content: space-between;
     width: 100%;
     gap: 1rem;
-    width: 960px;
+    width: 1200px;
     margin: 0 auto;
     margin-top: 1rem;
     margin-bottom: 1rem;
+
+    .conRight {
+      display: block;
+      width: 16rem;
+      flex-shrink: 0;
+
+      .rankCard {
+        background-color: #FFF;
+        border-radius: 4px;
+
+        .rankHeader {
+          padding: 0.5rem 1rem;
+          border-bottom: solid 1px #e1e1e280;
+        }
+
+        .rankBody {
+          padding: 1rem;
+
+          .rankItem {
+            display: flex;
+            flex-direction: row;
+            gap: 0.5rem;
+            align-items: center;
+            padding: 4px 0;
+
+            &:hover {
+              background-color: #f1f2f7;
+            }
+
+            .rankIndex {
+              text-align: center;
+              width: 1.5rem;
+              flex-shrink: 0;
+              font-family: Archivo;
+              font-weight: 700;
+            }
+
+            .rankTitle {
+              flex-grow: 1;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              font-size: 14px;
+
+              a {
+                color: #252933;
+                text-decoration: none;
+              }
+            }
+
+            .rankTop {
+              color: red;
+            }
+          }
+        }
+      }
+    }
 
     .conMiddle {
       display: flex;

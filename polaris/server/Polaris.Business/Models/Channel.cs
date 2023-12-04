@@ -43,10 +43,19 @@ public class ChannelModel// : BaseModel
     [JsonPropertyName("image")]
     public string Image { get; set; } = "";
 
+    [Column("profile", TypeName = "varchar(96)")]
+    [JsonPropertyName("profile")]
+    public string Profile { get; set; } = "";
+
+    [Column("profile_name", TypeName = "varchar(96)")]
+    [JsonPropertyName("profile_name")]
+    public string ProfileName { get; set; } = "";
+
     public static void MapperConfig(IMapperConfigurationExpression cfg)
     {
         cfg.CreateMap<IDataReader, ChannelModel>()
             .ForMember(a => a.CreateTime, opt => opt.MapFrom(src => src["create_time"]))
-            .ForMember(a => a.UpdateTime, opt => opt.MapFrom(src => src["update_time"]));
+            .ForMember(a => a.UpdateTime, opt => opt.MapFrom(src => src["update_time"]))
+            .ForMember(a => a.ProfileName, opt => opt.MapFrom(src => src["profile_name"]));
     }
 }

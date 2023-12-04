@@ -12,6 +12,8 @@ export class ArticleModel {
   relation = ''
   discover = 0
   channel = ''
+  profile = ''
+  name = ''
 }
 
 // Deprecated

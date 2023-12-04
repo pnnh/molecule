@@ -71,14 +71,13 @@ where a.pk = @article
         var parameters = new Dictionary<string, object>();
 
         sqlBuilder.Append(@"
-select a.*, r.pk as relation, r.discover, r.source as channel
-from relations as r
-    left join articles as a on r.target = a.pk
-where r.direction = 'cta' and a.pk is not null
+select a.*
+from articles as a
+where a.pk is not null
 ");
         if (!string.IsNullOrEmpty(channel))
         {
-            sqlBuilder.Append(@" and r.source = @channel");
+            sqlBuilder.Append(@" and a.channel = @channel");
             parameters.Add("@channel", channel);
         }
 
@@ -90,12 +89,12 @@ where r.direction = 'cta' and a.pk is not null
 
         if (filter == "month")
         {
-            sqlBuilder.Append(@" and r.update_time > @update_time");
+            sqlBuilder.Append(@" and a.update_time > @update_time");
             parameters.Add("@update_time", DateTime.UtcNow.AddMonths(-1));
         }
         else if (filter == "year")
         {
-            sqlBuilder.Append(@" and r.update_time > @update_time");
+            sqlBuilder.Append(@" and a.update_time > @update_time");
             parameters.Add("@update_time", DateTime.UtcNow.AddYears(-1));
         }
 
@@ -106,7 +105,7 @@ select count(1) from ({sqlBuilder}) as temp;";
 
         if (sort == "read")
         {
-            sqlBuilder.Append(@" order by r.discover desc");
+            sqlBuilder.Append(@" order by a.discover desc");
         }
         else
         {

@@ -1,6 +1,6 @@
 import axios from '~/axios/index'
 import { PLSelectResult } from '@/models/common-result'
-import { RelationModel } from '@/models/relation'
+import { RelationFullModel, RelationModel } from '@/models/relation'
 import { ModelService } from './service'
 
 export class RelationService extends ModelService {
@@ -12,8 +12,8 @@ export class RelationService extends ModelService {
     return new RelationService(baseUrl)
   }
 
-  async selectRelations (queryString: string) {
-    const response = await axios.get<PLSelectResult<RelationModel>>(
+  async selectRelations<S, T> (queryString: string) {
+    const response = await axios.get<PLSelectResult<RelationFullModel<S, T>>>(
       this.baseUrl + '/restful/relation?' + queryString)
     return response.data
   }

@@ -85,7 +85,7 @@ public class OAuth2AuthenticationHandler : AuthenticationHandler<AuthenticationS
     {
         if (!Request.Headers.ContainsKey("Authorization"))
         {
-            return AuthenticateResult.Fail("Missing Authorization Header");
+            return AuthenticateResult.NoResult();
         }
         var authorizationHeader = Request.Headers["Authorization"].ToString();
 

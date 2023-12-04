@@ -6,4 +6,6 @@ export class ChannelModel {
   creator = ''
   description = ''
   image = ''
+  profile = ''
+  name = ''
 }

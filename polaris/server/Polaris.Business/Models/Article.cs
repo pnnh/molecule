@@ -66,11 +66,23 @@ namespace Polaris.Business.Models
 
         [NotMapped]
         [JsonPropertyName("discover")]
-        public long Discover { get; set; } = 0;
+        public int Discover { get; set; } = 0;
 
         [NotMapped]
         [JsonPropertyName("channel")]
         public string Channel { get; set; } = "";
+
+        [Column("name", TypeName = "varchar(64)")]
+        [JsonPropertyName("name")]
+        public string Name { get; set; } = "";
+
+        [Column("profile", TypeName = "varchar(96)")]
+        [JsonPropertyName("profile")]
+        public string Profile { get; set; } = "";
+
+        [Column("profile_name", TypeName = "varchar(96)")]
+        [JsonPropertyName("profile_name")]
+        public string ProfileName { get; set; } = "";
 
         public static void MapperConfig(IMapperConfigurationExpression cfg)
         {

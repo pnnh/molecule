@@ -6,11 +6,11 @@ import (
 	"os"
 	"time"
 
-	"multiverse-authorization/handlers/account"
-	"multiverse-authorization/handlers/console"
 	"multiverse-authorization/handlers"
+	"multiverse-authorization/handlers/account"
 	"multiverse-authorization/handlers/auth/authorizationserver"
 	"multiverse-authorization/handlers/captcha"
+	"multiverse-authorization/handlers/console"
 	"multiverse-authorization/handlers/permissions"
 	"multiverse-authorization/handlers/public"
 	"multiverse-authorization/handlers/roles"
@@ -78,10 +78,10 @@ func (s *WebServer) Init() error {
 	//s.router.POST("/account/signin/password/begin", account.PasswordSigninBeginHandler)
 	s.router.POST(helpers.BaseUrl+"/account/signin/password/finish", account.PasswordSigninFinishHandler)
 
-	s.router.GET(helpers.BaseUrl+"/console/accounts", admin.AdminSelectAccounts)
-	s.router.GET(helpers.BaseUrl+"/console/accounts/:pk", admin.AdminSelectAccounts)
+	s.router.GET(helpers.BaseUrl+"/console/accounts", console.AdminSelectAccounts)
+	s.router.GET(helpers.BaseUrl+"/console/accounts/:pk", console.AdminSelectAccounts)
 
-	s.router.GET(helpers.BaseUrl+"/console/applications", admin.ApplicationSelectHandler)
+	s.router.GET(helpers.BaseUrl+"/console/applications", console.ApplicationSelectHandler)
 	s.router.GET(helpers.BaseUrl+"/public/applications", public.PublicApplicationSelectHandler)
 
 	s.router.GET(helpers.BaseUrl+"/console/roles", roles.RoleSelectHandler)

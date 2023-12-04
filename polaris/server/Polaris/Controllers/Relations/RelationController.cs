@@ -32,8 +32,8 @@ public class RelationContentController : ControllerBase
     {
         var queryHelper = new PLQueryHelper(Request.Query);
         var profile = queryHelper.GetString("source.profile");
-        var channel = queryHelper.GetString("channel");
-        var direction = queryHelper.GetString("direction");
+        var channel = queryHelper.GetString("source");
+        var direction = queryHelper.GetString("direction") ?? "cta";
 
         var sort = queryHelper.GetString("sort") ?? "latest";
         var filter = queryHelper.GetString("filter") ?? "all";
@@ -52,16 +52,17 @@ public class RelationContentController : ControllerBase
         var parameters = new Dictionary<string, object>();
 
         sqlBuilder.Append(@"
-select r.*, row_to_json(s.*) as source_model, row_to_json(t.*) as target_model
+select r.*, p.username as profile_name, row_to_json(s.*) as source_model, row_to_json(t.*) as target_model
 from relations as r
+    join profiles as p on p.pk = r.profile
     join channels as s on s.pk = r.source
-    join articles as t on r.target = t.pk
+    join articles as t on t.pk = r.target
 where r.direction = @direction and s.pk is not null and t.pk is not null
 ");
         parameters.Add("@direction", direction);
         if (!string.IsNullOrEmpty(profile))
         {
-            sqlBuilder.Append(@" and s.profile = @profile");
+            sqlBuilder.Append(@" and r.profile = @profile");
             parameters.Add("@profile", profile);
         }
         if (!string.IsNullOrEmpty(channel))

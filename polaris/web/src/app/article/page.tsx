@@ -1,5 +1,4 @@
 import React from 'react'
-import { PublicNavbar } from './partials/navbar'
 import styles from './page.module.scss'
 import Link from 'next/link'
 import { calcPagination } from '~/@pnnh/stele/esm/utils/helpers'
@@ -9,13 +8,13 @@ import queryString from 'query-string'
 import { ArticleModel } from '@/models/article'
 import { NoData } from '@/components/common/empty'
 import { PSImage } from '@/components/client/image'
-import { getIdentity } from '@/services/auth'
 import { formatRfc3339 } from '@/utils/datetime'
 import { subString } from '~/@pnnh/stele/esm/utils/string'
 import { loadServerConfig } from '@/services/server/config'
 import { ArticleService, articleContentViewUrl } from '@/services/article'
+import { PLSelectResult } from '@/models/common-result'
 
-export default async function Home ({ searchParams }: {
+export default async function Page ({ searchParams }: {
   searchParams: Record<string, string>
 }) {
   let page = Number(searchParams.page)
@@ -24,11 +23,20 @@ export default async function Home ({ searchParams }: {
   }
   const pageSize = 10
   const serverConfig = await loadServerConfig()
-  const rawQuery = queryString.stringify(searchParams)
-  const articleService = ArticleService.Instance(serverConfig.SERVER)
-  const articles = await articleService.selectArticles(rawQuery)
+  const channelPk = searchParams.channel
 
-  const pagination = calcPagination(page, articles.count, pageSize)
+  const selectQuery = {
+    sort: searchParams.sort,
+    filter: searchParams.filter,
+    page,
+    size: pageSize,
+    channel: channelPk
+  }
+  const rawQuery = queryString.stringify(selectQuery)
+  const articleService = ArticleService.Instance(serverConfig.SERVER)
+  const selectResult = await articleService.selectArticles(rawQuery)
+
+  const pagination = calcPagination(page, selectResult.count, pageSize)
   const sortClass = (sort: string) => {
     const querySort = (searchParams.sort ?? 'latest')
     return ' ' + (querySort === sort ? styles.activeLink : '')
@@ -38,11 +46,15 @@ export default async function Home ({ searchParams }: {
     return ' ' + (queryFilter === filter ? styles.activeLink : '')
   }
 
-  const identity = await getIdentity()
+  const rankQuery = queryString.stringify({
+    sort: 'read',
+    filter: 'year',
+    page: '1',
+    direction: 'cta',
+    size: 10
+  })
+  const rankSelectResult = await articleService.selectArticles(rankQuery)
   return <div className={styles.indexPage}>
-    <div>
-      <PublicNavbar authServer={serverConfig.AUTH_SERVER} selfUrl={serverConfig.SELF_URL} account={identity}/>
-    </div>
     <div className={styles.container}>
       <div className={styles.conMiddle}>
         <div className={styles.middleTop}>
@@ -62,25 +74,48 @@ export default async function Home ({ searchParams }: {
           </div>
         </div>
         <div className={styles.middleBody}>
-          <MiddleBody articles={articles} />
+          <MiddleBody selectResult={selectResult} />
         </div>
         <div className={styles.middlePagination}>
           <PaginationPartial pagination={pagination} calcUrl={(page) => replaceSearchParams(searchParams, 'page', page.toString())} />
+        </div>
+      </div>
+      <div className={styles.conRight}>
+        {/* <ChannelInfo model={channelInfo} /> */}
+        <div className={styles.rankCard}>
+          <div className={styles.rankHeader}>
+            年度阅读排行
+          </div>
+          <div className={styles.rankBody}>
+            {
+              rankSelectResult.range && rankSelectResult.range.length > 0
+                ? rankSelectResult.range.map((model, index) => {
+                  return <div key={model.pk} className={styles.rankItem}>
+                    <div className={styles.rankIndex + (index <= 2 ? ' ' + styles.rankTop : '')}>{index + 1}</div>
+                    <div className={styles.rankTitle}>
+                      <Link href={articleContentViewUrl(model.profile, model.channel, model.pk)}
+                      title={model.title}>{model.title}</Link>
+                    </div>
+                  </div>
+                })
+                : '暂无'
+            }
+          </div>
         </div>
       </div>
     </div>
   </div>
 }
 
-function MiddleBody (props: { articles: { range: ArticleModel[], count: number } }) {
-  if (!props.articles || !props.articles.range || props.articles.range.length === 0) {
+function MiddleBody ({ selectResult }: { selectResult: PLSelectResult<ArticleModel> }) {
+  if (!selectResult || !selectResult.range || selectResult.range.length === 0) {
     return <NoData size='large' />
   }
-  return props.articles.range.map((model) => {
-    return <div className={styles.middleItem} key={model.relation}>
+  return selectResult.range.map((model) => {
+    return <div className={styles.middleItem} key={model.pk}>
       <div className={styles.itemDetail}>
         <div className={styles.title}>
-          <Link href={articleContentViewUrl(model.channel, model.pk)}>{model.title}</Link></div>
+          <Link href={articleContentViewUrl(model.profile, model.channel, model.name)}>{model.title}</Link></div>
         <div className={styles.description} title={model.description}>
           {subString(model.description, 100)}
         </div>

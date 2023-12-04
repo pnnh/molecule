@@ -1,4 +1,4 @@
-package admin
+package console
 
 import (
 	"multiverse-authorization/models"
