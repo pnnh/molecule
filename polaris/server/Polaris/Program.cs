@@ -6,9 +6,9 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.IdentityModel.Tokens;
 using Polaris.Business.Models;
-using Polaris.Services;
 using StackExchange.Redis;
 using Npgsql;
+using Polaris.Business.Services;
 
 namespace Polaris
 {

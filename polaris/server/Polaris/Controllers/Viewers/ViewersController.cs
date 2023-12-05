@@ -1,13 +1,7 @@
-﻿using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc; 
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Mvc; 
 using Microsoft.AspNetCore.Authorization;
-using Polaris.Utils;
-using System.Text;
-using Molecule.Models;
 using Polaris.Business.Models;
 using Molecule.Helpers;
-using System.Data.Entity;
 
 namespace Polaris.Controllers.Viewers;
 

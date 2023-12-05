@@ -5,15 +5,19 @@ using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
-[Table("groups")]
+[Table("partitions")]
 [PrimaryKey(nameof(Pk))]
-public class GroupModel
+public class PartitionModel
 {
     [Column("pk", TypeName = "varchar(64)")]
     public string Pk { get; set; } = "";
 
     [Column("title", TypeName = "varchar(128)")]
     public string Title { get; set; } = "";
+
+    [Column("name", TypeName = "varchar(96)")]
+    [JsonPropertyName("name")]
+    public string Name { get; set; } = "";
 
     [Column("create_time", TypeName = "timestamptz")]
     [JsonPropertyName("create_time")]
@@ -28,4 +32,8 @@ public class GroupModel
 
     [Column("description", TypeName = "varchar(256)")]
     public string Description { get; set; } = "";
+
+    [Column("channel", TypeName = "varchar(96)")]
+    [JsonPropertyName("channel")]
+    public string Channel { get; set; } = "";
 }

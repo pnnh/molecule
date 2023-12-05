@@ -3,8 +3,8 @@ import { PLSelectResult } from '@/models/common-result'
 import { ArticleModel } from '@/models/article'
 import { ModelService } from './service'
 
-export function articleContentViewUrl (profile: string, channel: string, article: string) {
-  return `/profile/${profile}/channel/${channel}/article/` + article
+export function articleContentViewUrl (profile: string, channel: string, partition: string, page: string) {
+  return `/profile/${profile}/channel/${channel}/partition/${partition}/page/` + page
 }
 
 export class ArticleService extends ModelService {
@@ -22,8 +22,8 @@ export class ArticleService extends ModelService {
     return response.data
   }
 
-  async getArticle (pk: string) {
-    const url = this.baseUrl + '/restful/article/' + pk
+  async getArticle (pk: string, queryString: string = '') {
+    const url = this.baseUrl + '/restful/article/' + pk + '?' + queryString
     const response = await axios.get<ArticleModel>(url)
     return response.data
   }

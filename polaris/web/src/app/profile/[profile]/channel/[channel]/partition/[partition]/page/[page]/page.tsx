@@ -10,11 +10,20 @@ import { formatRfc3339 } from '@/utils/datetime'
 import { loadServerConfig } from '@/services/server/config'
 import { ViewerService } from '@/services/viewer'
 import { ArticleService } from '@/services/article'
+import queryString from 'query-string'
 
-export default async function Home ({ params }: { params: { channel: string, pk: string } }) {
+interface PageProps {
+  profile: string
+  channel: string
+  partition: string
+  page: string
+}
+
+export default async function Home ({ params }: { params: PageProps }) {
   const serverConfig = await loadServerConfig()
   const service = ArticleService.Instance(serverConfig.SERVER)
-  const articleModel = await service.getArticle(params.pk)
+  const getQuery = queryString.stringify(params)
+  const articleModel = await service.getArticle('+', getQuery)
   if (articleModel == null) {
     return <div>遇到错误</div>
   }
@@ -27,8 +36,9 @@ export default async function Home ({ params }: { params: { channel: string, pk:
   }
   const headersList = headers()
   const clientIp = headersList.get('ps-ip') || 'unknown'
+  console.log('clientIp', clientIp)
   // 更新文章阅读次数
-  await ViewerService.Instance(serverConfig.SERVER).newArticleViewer(params.channel, params.pk, clientIp)
+  // await ViewerService.Instance(serverConfig.SERVER).newArticleViewer(params.channel, params.name, clientIp)
   return <div className={styles.articleContainer}>
     <div className={styles.leftArea}>
       <div className={styles.articleInfo}>
@@ -44,7 +54,7 @@ export default async function Home ({ params }: { params: { channel: string, pk:
     </div>
     <div className={styles.rightArea}>
         {/* <ChannelInfo model={channelInfo.data}/> */}
-        <TocInfo channel={params.channel} pk={params.pk} model={tocList} />
+        <TocInfo channel={params.channel} pk={params.name} model={tocList} />
     </div>
   </div>
 }

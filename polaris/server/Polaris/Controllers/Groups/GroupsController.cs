@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc; 
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Molecule.Models;
@@ -22,9 +22,9 @@ public class GroupsController : ControllerBase
 
     [Route("/groups/{pk}")]
     [HttpGet]
-    public CommonResult<object> Read([FromRoute]string pk)
+    public CommonResult<object> Read([FromRoute] string pk)
     {
-        var model = _dataContext.Groups.FirstOrDefault(m => m.Pk == pk);
+        var model = _dataContext.Partitions.FirstOrDefault(m => m.Pk == pk);
         if (model == null)
         {
             return new CommonResult<object> { Code = Codes.NotFound, Message = "文章不存在" };
@@ -32,30 +32,34 @@ public class GroupsController : ControllerBase
 
         return new CommonResult<object> { Code = Codes.Ok, Data = model };
     }
-    
+
     [Route("/groups/{pk}")]
     [HttpDelete]
-    public CommonResult<object> Delete([FromRoute]string pk)
+    public CommonResult<object> Delete([FromRoute] string pk)
     {
-        var model = _dataContext.Groups.FirstOrDefault(m => m.Pk == pk);
+        var model = _dataContext.Partitions.FirstOrDefault(m => m.Pk == pk);
         if (model == null)
         {
             return new CommonResult<object> { Code = Codes.NotFound, Message = "文章不存在" };
         }
-        _dataContext.Groups.Remove(model);
+        _dataContext.Partitions.Remove(model);
         _dataContext.SaveChanges();
 
-        return new CommonResult<object> { Code = Codes.Ok, Data = new
+        return new CommonResult<object>
         {
-            Pk = model.Pk
-        } };
+            Code = Codes.Ok,
+            Data = new
+            {
+                Pk = model.Pk
+            }
+        };
     }
 
     [Route("/groups/select")]
     public CommonResult<object> Select(int offset = 0, int limit = 10)
     {
-        var models = _dataContext.Groups.Skip(offset).Take(limit).ToList();
-        var totalCount = _dataContext.Groups.Count();
+        var models = _dataContext.Partitions.Skip(offset).Take(limit).ToList();
+        var totalCount = _dataContext.Partitions.Count();
 
         return new CommonResult<object>
         {
@@ -67,14 +71,14 @@ public class GroupsController : ControllerBase
             }
         };
     }
-    
-    
+
+
     [Route("/groups/select/public")]
     [AllowAnonymous]
     public CommonResult<object> SelectPublic(int offset = 0, int limit = 10)
     {
-        var models = _dataContext.Groups.Skip(offset).Take(limit).ToList();
-        var totalCount = _dataContext.Groups.Count();
+        var models = _dataContext.Partitions.Skip(offset).Take(limit).ToList();
+        var totalCount = _dataContext.Partitions.Count();
 
         return new CommonResult<object>
         {
@@ -89,7 +93,7 @@ public class GroupsController : ControllerBase
 
     [Route("/groups/create")]
     [HttpPut]
-    public CommonResult<WriteResponse> Create([FromBody]WriteRequest request)
+    public CommonResult<WriteResponse> Create([FromBody] WriteRequest request)
     {
         var user = HttpContext.User;
         if (user.Identity == null || string.IsNullOrEmpty(user.Identity.Name))
@@ -100,15 +104,15 @@ public class GroupsController : ControllerBase
                 Message = "用户未登录"
             };
         }
-        var model = new GroupModel()
+        var model = new PartitionModel()
         {
             Pk = Guid.NewGuid().ToString(),
-            Title = request.Title, 
+            Title = request.Title,
             CreateTime = DateTime.UtcNow,
             UpdateTime = DateTime.UtcNow,
             Creator = user.Identity.Name,
         };
-        _dataContext.Groups.Add(model);
+        _dataContext.Partitions.Add(model);
         _dataContext.SaveChanges();
 
         return new CommonResult<WriteResponse> { Code = Codes.Ok, Data = new WriteResponse { Pk = model.Pk } };
@@ -116,9 +120,9 @@ public class GroupsController : ControllerBase
 
     [Route("/groups/update")]
     [HttpPost]
-    public CommonResult<WriteResponse> Update([FromBody]WriteRequest request)
+    public CommonResult<WriteResponse> Update([FromBody] WriteRequest request)
     {
-        var model = _dataContext.Groups.FirstOrDefault(m => m.Pk == request.Pk);
+        var model = _dataContext.Partitions.FirstOrDefault(m => m.Pk == request.Pk);
         if (model == null)
         {
             return new CommonResult<WriteResponse>
@@ -127,7 +131,7 @@ public class GroupsController : ControllerBase
             };
         }
 
-        model.Title = request.Title; 
+        model.Title = request.Title;
         _dataContext.SaveChanges();
 
         return new CommonResult<WriteResponse> { Code = Codes.Ok, Data = new WriteResponse { Pk = model.Pk } };
@@ -139,7 +143,7 @@ public class GroupsController : ControllerBase
         public string Title { get; set; } = "";
         public string Body { get; set; } = "";
     }
-    
+
     public class WriteResponse
     {
         public string Pk { get; set; } = "";

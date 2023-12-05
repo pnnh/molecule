@@ -134,6 +134,10 @@
             }
           }
         }
+
+        .middleItem:last-child {
+          border-bottom: none;
+        }
       }
 
       .middlePagination {

@@ -1,13 +1,10 @@
-﻿using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using Polaris.Utils;
 using System.Text;
-using Molecule.Models;
 using Polaris.Business.Models;
 using Polaris.Business.Helpers;
 using Molecule.Helpers;
+using Polaris.Business.Services.Article;
 
 namespace Polaris.Controllers.Article;
 
@@ -26,21 +23,35 @@ public class ArticleContentController : ControllerBase
     [Route("/server/article/{pk}")]
     [HttpGet]
     [AllowAnonymous]
-    public ArticleModel Get([FromRoute] string pk)
+    public PageModel Get([FromRoute] string pk)
     {
+        var queryHelper = new PLQueryHelper(Request.Query);
+
+        var pageService = new PageService(new Business.Services.ServiceContext(_dataContext));
+        
+        if (pk == "+")
+        {
+            var getResult = pageService.GetByQuery(queryHelper);
+            if (getResult == null)
+            {
+                throw new PLBizException("文章不存在");
+            }
+            return getResult;
+        }
+
         var sqlBuilder = new StringBuilder();
         var parameters = new Dictionary<string, object>();
 
         sqlBuilder.Append(@"
 select a.*
-from articles as a
+from pages as a
 where a.pk = @article
 ");
         parameters.Add("@article", pk);
 
         var querySqlText = sqlBuilder.ToString();
 
-        var modelsQuery = DatabaseContextHelper.RawSqlQuery<ArticleModel>(_dataContext, querySqlText, parameters);
+        var modelsQuery = DatabaseContextHelper.RawSqlQuery<PageModel>(_dataContext, querySqlText, parameters);
 
         var model = modelsQuery.FirstOrDefault();
 
@@ -55,7 +66,7 @@ where a.pk = @article
 
     [Route("/server/article")]
     [AllowAnonymous]
-    public PLSelectResult<ArticleModel> Select()
+    public PLSelectResult<PageModel> Select()
     {
         var queryHelper = new PLQueryHelper(Request.Query);
         var channel = queryHelper.GetString("channel");
@@ -71,8 +82,11 @@ where a.pk = @article
         var parameters = new Dictionary<string, object>();
 
         sqlBuilder.Append(@"
-select a.*
-from articles as a
+select a.*, p.username as profile_name, c.name as channel_name, t.name as partition_name
+from pages as a
+     join profiles as p on p.pk = a.profile
+     join channels as c on c.pk = a.channel
+     join partitions as t on t.pk = a.partition
 where a.pk is not null
 ");
         if (!string.IsNullOrEmpty(channel))
@@ -118,11 +132,11 @@ select count(1) from ({sqlBuilder}) as temp;";
 
         var querySqlText = sqlBuilder.ToString();
 
-        var modelsQuery = DatabaseContextHelper.RawSqlQuery<ArticleModel>(_dataContext, querySqlText, parameters);
+        var modelsQuery = DatabaseContextHelper.RawSqlQuery<PageModel>(_dataContext, querySqlText, parameters);
 
         var models = modelsQuery.ToList();
 
-        return new PLSelectResult<ArticleModel>
+        return new PLSelectResult<PageModel>
         {
             Range = models,
             Count = totalCount ?? 0,
@@ -133,12 +147,12 @@ select count(1) from ({sqlBuilder}) as temp;";
     [HttpDelete]
     public PLDeleteResult Delete([FromRoute] string pk)
     {
-        var model = _dataContext.Articles.FirstOrDefault(m => m.Pk == pk);
+        var model = _dataContext.Pages.FirstOrDefault(m => m.Pk == pk);
         if (model == null)
         {
             throw new PLBizException("文章不存在");
         }
-        _dataContext.Articles.Remove(model);
+        _dataContext.Pages.Remove(model);
         var changes = _dataContext.SaveChanges();
 
         return new PLDeleteResult
@@ -160,7 +174,7 @@ select count(1) from ({sqlBuilder}) as temp;";
         {
             throw new PLBizException("用户未登录");
         }
-        var model = new ArticleModel()
+        var model = new PageModel()
         {
             Pk = Guid.NewGuid().ToString(),
             Title = title,
@@ -170,7 +184,7 @@ select count(1) from ({sqlBuilder}) as temp;";
             UpdateTime = DateTime.UtcNow,
             Creator = user.Identity.Name,
         };
-        _dataContext.Articles.Add(model);
+        _dataContext.Pages.Add(model);
         _dataContext.SaveChanges();
 
         return new PLInsertResult { Pk = model.Pk };
@@ -178,15 +192,15 @@ select count(1) from ({sqlBuilder}) as temp;";
 
     [Route("/server/article/{pk}")]
     [HttpPut]
-    public async Task<PLUpdateResult> Update([FromRoute]string pk)
+    public async Task<PLUpdateResult> Update([FromRoute] string pk)
     {
         var jsonHelper = await JsonHelper.NewAsync(Request.Body);
         var title = jsonHelper.GetString("title") ?? throw new PLBizException("title is required");
         var body = jsonHelper.GetString("body") ?? throw new PLBizException("body is required");
 
-        var model = _dataContext.Articles.FirstOrDefault(m => m.Pk == pk);
+        var model = _dataContext.Pages.FirstOrDefault(m => m.Pk == pk);
         if (model == null)
-        { 
+        {
             throw new PLBizException("文章不存在");
         }
 

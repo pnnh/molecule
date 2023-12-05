@@ -9,11 +9,14 @@ export class ArticleModel {
   keywords = ''
   description = ''
   cover = ''
-  relation = ''
-  discover = 0
-  channel = ''
-  profile = ''
   name = ''
+  discover = 0
+  profile = ''
+  profile_name = ''
+  channel = ''
+  channel_name = ''
+  partition = ''
+  partition_name = ''
 }
 
 // Deprecated

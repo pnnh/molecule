@@ -12,9 +12,9 @@ using System.Data;
 namespace Polaris.Business.Models
 {
 
-    [Table("articles")]
+    [Table("pages")]
     [PrimaryKey(nameof(Pk))]
-    public class ArticleModel// : BaseModel
+    public class PageModel// : BaseModel
     {
         [Column("pk", TypeName = "varchar(64)")]
         [JsonPropertyName("pk")]
@@ -60,19 +60,19 @@ namespace Polaris.Business.Models
         [JsonPropertyName("cover")]
         public string Cover { get; set; } = "";
 
-        [NotMapped]
-        [JsonPropertyName("relation")]
-        public string Relation { get; set; } = "";
-
-        [NotMapped]
+        [Column("discover", TypeName = "integer")]
         [JsonPropertyName("discover")]
         public int Discover { get; set; } = 0;
 
-        [NotMapped]
+        [Column("channel", TypeName = "varchar(96)")]
         [JsonPropertyName("channel")]
         public string Channel { get; set; } = "";
 
-        [Column("name", TypeName = "varchar(64)")]
+        [NotMapped]
+        [JsonPropertyName("channel_name")]
+        public string ChannelName { get; set; } = "";
+
+        [Column("name", TypeName = "varchar(96)")]
         [JsonPropertyName("name")]
         public string Name { get; set; } = "";
 
@@ -80,15 +80,26 @@ namespace Polaris.Business.Models
         [JsonPropertyName("profile")]
         public string Profile { get; set; } = "";
 
-        [Column("profile_name", TypeName = "varchar(96)")]
+        [NotMapped]
         [JsonPropertyName("profile_name")]
         public string ProfileName { get; set; } = "";
 
+        [Column("partition", TypeName = "varchar(96)")]
+        [JsonPropertyName("partition")]
+        public string Partition { get; set; } = "";
+
+        [NotMapped]
+        [JsonPropertyName("partition_name")]
+        public string PartitionName { get; set; } = "";
+
         public static void MapperConfig(IMapperConfigurationExpression cfg)
         {
-            cfg.CreateMap<IDataReader, ArticleModel>()
+            cfg.CreateMap<IDataReader, PageModel>()
                 .ForMember(a => a.CreateTime, opt => opt.MapFrom(src => src["create_time"]))
-                .ForMember(a => a.UpdateTime, opt => opt.MapFrom(src => src["update_time"]));
+                .ForMember(a => a.UpdateTime, opt => opt.MapFrom(src => src["update_time"]))
+                .ForMember(a => a.ChannelName, opt => opt.MapFrom(src => src["channel_name"]))
+                .ForMember(a => a.ProfileName, opt => opt.MapFrom(src => src["profile_name"]))
+                .ForMember(a => a.PartitionName, opt => opt.MapFrom(src => src["partition_name"]));
         }
     }
 }

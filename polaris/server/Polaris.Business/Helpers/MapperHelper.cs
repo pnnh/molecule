@@ -2,7 +2,7 @@ using AutoMapper;
 using AutoMapper.Data;
 using Polaris.Business.Models;
 
-namespace Polaris.Utils;
+namespace Polaris.Business.Helpers;
 
 public class MapperHelper
 {
@@ -12,12 +12,12 @@ public class MapperHelper
         {
             cfg.AddDataReaderMapping();
             cfg.AddDataRecordMember();
-            ArticleModel.MapperConfig(cfg);
+            PageModel.MapperConfig(cfg);
             ChannelModel.MapperConfig(cfg);
             RelationModel.MapperConfig(cfg);
             HistoryModel.MapperConfig(cfg);
             RelationFullModel<ChannelModel, HistoryModel>.MapperConfig(cfg);
-            RelationFullModel<ChannelModel, ArticleModel>.MapperConfig(cfg);
+            RelationFullModel<ChannelModel, PageModel>.MapperConfig(cfg);
         });
 #if DEBUG
         configuration.AssertConfigurationIsValid();

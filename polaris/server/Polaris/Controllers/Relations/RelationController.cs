@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Polaris.Utils;
 using System.Text;
 using Molecule.Models;
 using Polaris.Business.Models;
@@ -56,7 +55,7 @@ select r.*, p.username as profile_name, row_to_json(s.*) as source_model, row_to
 from relations as r
     join profiles as p on p.pk = r.profile
     join channels as s on s.pk = r.source
-    join articles as t on t.pk = r.target
+    join pages as t on t.pk = r.target
 where r.direction = @direction and s.pk is not null and t.pk is not null
 ");
         parameters.Add("@direction", direction);
@@ -102,11 +101,11 @@ select count(1) from ({sqlBuilder}) as temp;";
 
         var querySqlText = sqlBuilder.ToString();
 
-        var modelsQuery = DatabaseContextHelper.RawSqlQuery<RelationFullModel<ChannelModel, ArticleModel>>(_dataContext, querySqlText, parameters);
+        var modelsQuery = DatabaseContextHelper.RawSqlQuery<RelationFullModel<ChannelModel, PageModel>>(_dataContext, querySqlText, parameters);
 
         var models = modelsQuery.ToList();
 
-        var result = new PLSelectResult<RelationFullModel<ChannelModel, ArticleModel>>
+        var result = new PLSelectResult<RelationFullModel<ChannelModel, PageModel>>
         {
             Page = page,
             Size = size,
