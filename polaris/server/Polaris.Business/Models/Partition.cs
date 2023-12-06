@@ -66,6 +66,10 @@ public class PartitionQueryModel
     [JsonPropertyName("root_level")]
     public int RootLevel { get; set; } = 0;
 
+    [Column("path", TypeName = "varchar(8192)")]
+    [JsonPropertyName("path")]
+    public string Path { get; set; } = "";
+
     [Column("parent", TypeName = "varchar(96)")]
     [JsonPropertyName("parent")]
     public string Parent { get; set; } = "";

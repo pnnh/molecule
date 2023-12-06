@@ -54,7 +54,7 @@ public class PageService
         var parameters = new Dictionary<string, object>();
 
         sqlBuilder.Append(@"
-select a.*, p.username as profile_name, c.name as channel_name, @partition_name as partition_name
+select a.*, p.username as profile_name, c.name as channel_name, @path as path
 from pages as a
      join profiles as p on p.pk = a.profile
      join channels as c on c.pk = a.channel
@@ -62,7 +62,7 @@ where a.pk is not null and a.name = @page and p.username = @profile and c.name =
 ");
         parameters.Add("@profile", profile);
         parameters.Add("@channel", channel);
-        parameters.Add("@partition_name", partitionQueryModel.LeafName);
+        parameters.Add("@path", partitionQueryModel.Path);
         parameters.Add("@page", pageName);
 
         var querySqlText = sqlBuilder.ToString();

@@ -93,7 +93,7 @@ export default async function Page ({ searchParams }: {
                   return <div key={model.pk} className={styles.rankItem}>
                     <div className={styles.rankIndex + (index <= 2 ? ' ' + styles.rankTop : '')}>{index + 1}</div>
                     <div className={styles.rankTitle}>
-                      <Link href={articleContentViewUrl(model.profile_name, model.channel_name, model.partition_name, model.name)}
+                      <Link href={articleContentViewUrl(model.profile_name, model.channel_name, model.path, model.name)}
                       title={model.title}>{model.title}</Link>
                     </div>
                   </div>
@@ -115,7 +115,7 @@ function MiddleBody ({ selectResult }: { selectResult: PLSelectResult<ArticleMod
     return <div className={styles.middleItem} key={model.pk}>
       <div className={styles.itemDetail}>
         <div className={styles.title}>
-          <Link href={articleContentViewUrl(model.profile_name, model.channel_name, model.partition_name, model.name)}>{model.title}</Link></div>
+          <Link href={articleContentViewUrl(model.profile_name, model.channel_name, model.path, model.name)}>{model.title}</Link></div>
         <div className={styles.description} title={model.description}>
           {subString(model.description, 100)}
         </div>

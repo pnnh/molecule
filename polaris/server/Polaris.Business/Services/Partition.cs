@@ -30,14 +30,15 @@ public class PartitionService
 
 
         sqlBuilder.Append(@"
-with recursive result(root_pk, root_name, leaf_pk, leaf_name, root_level, parent) as (
-    select pk, name, p.pk, p.name, level, parent
+with recursive result(root_pk, root_name, leaf_pk, leaf_name, root_level, path, parent) as (
+    select pk, name, p.pk, p.name, level, name::varchar(8192), parent
     from partitions p where name = @leaf and level = @leafLevel
     union
-    select p2.pk, p2.name, self.leaf_pk, self.leaf_name, p2.level, p2.parent
+    select p2.pk, p2.name, self.leaf_pk, self.leaf_name, p2.level, (p2.name || '/' || self.path)::varchar(8192), p2.parent
     from result self join partitions p2 on p2.pk = self.parent
 )
-select * from result r where r.root_name = @root and r.root_level = 1;
+select r.root_pk, r.root_name, r.leaf_pk, r.leaf_name, r.root_level, '/' || r.path as path, r.parent
+from result r where r.root_name = @root and r.root_level = 1;
 ");
         parameters.Add("@leaf", leafName);
         parameters.Add("@leafLevel", leafLevel);

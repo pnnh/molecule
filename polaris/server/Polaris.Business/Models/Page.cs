@@ -89,10 +89,6 @@ namespace Polaris.Business.Models
         public string Partition { get; set; } = "";
 
         [NotMapped]
-        [JsonPropertyName("partition_name")]
-        public string PartitionName { get; set; } = "";
-
-        [Column("path", TypeName = "varchar(4096)")]
         [JsonPropertyName("path")]
         public string Path { get; set; } = "";
 
@@ -103,7 +99,7 @@ namespace Polaris.Business.Models
                 .ForMember(a => a.UpdateTime, opt => opt.MapFrom(src => src["update_time"]))
                 .ForMember(a => a.ChannelName, opt => opt.MapFrom(src => src["channel_name"]))
                 .ForMember(a => a.ProfileName, opt => opt.MapFrom(src => src["profile_name"]))
-                .ForMember(a => a.PartitionName, opt => opt.MapFrom(src => src["partition_name"]));
+                .ForMember(a => a.Path, opt => opt.MapFrom(src => src["path"]));
         }
     }
 }
