@@ -36,4 +36,8 @@ public class PartitionModel
     [Column("channel", TypeName = "varchar(96)")]
     [JsonPropertyName("channel")]
     public string Channel { get; set; } = "";
+
+    [Column("parent", TypeName = "varchar(96)")]
+    [JsonPropertyName("parent")]
+    public string Parent { get; set; } = "";
 }

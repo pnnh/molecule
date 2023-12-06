@@ -8,7 +8,6 @@ import { generatorRandomString } from '~/@pnnh/stele/esm/utils/string'
 import { headers } from 'next/headers'
 import { formatRfc3339 } from '@/utils/datetime'
 import { loadServerConfig } from '@/services/server/config'
-import { ViewerService } from '@/services/viewer'
 import { ArticleService } from '@/services/article'
 import queryString from 'query-string'
 
@@ -16,13 +15,13 @@ interface PageProps {
   profile: string
   channel: string
   partition: string
-  page: string
+  path: string[]
 }
 
 export default async function Home ({ params }: { params: PageProps }) {
   const serverConfig = await loadServerConfig()
   const service = ArticleService.Instance(serverConfig.SERVER)
-  const getQuery = queryString.stringify(params)
+  const getQuery = queryString.stringify(params, { arrayFormat: 'bracket' })
   const articleModel = await service.getArticle('+', getQuery)
   if (articleModel == null) {
     return <div>遇到错误</div>
@@ -53,8 +52,7 @@ export default async function Home ({ params }: { params: PageProps }) {
       </div>
     </div>
     <div className={styles.rightArea}>
-        {/* <ChannelInfo model={channelInfo.data}/> */}
-        <TocInfo channel={params.channel} pk={params.name} model={tocList} />
+        <TocInfo channel={params.channel} pk={params.page} model={tocList} />
     </div>
   </div>
 }

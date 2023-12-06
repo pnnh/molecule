@@ -62,6 +62,19 @@ public class PLQueryHelper
         return null;
     }
 
+    public string[]? GetStringArray(string name)
+    {
+        if (_query.TryGetValue(name, out var value))
+        {
+            return value.Split(',');
+        }
+        if (_query.TryGetValue(name + "[]", out var value2))
+        {
+            return value2.Split(',');
+        }
+
+        return null;
+    }
 
     public DateTimeOffset? GetDateTimeOffset(string name)
     {

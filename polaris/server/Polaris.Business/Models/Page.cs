@@ -92,6 +92,10 @@ namespace Polaris.Business.Models
         [JsonPropertyName("partition_name")]
         public string PartitionName { get; set; } = "";
 
+        [Column("path", TypeName = "varchar(4096)")]
+        [JsonPropertyName("path")]
+        public string Path { get; set; } = "";
+
         public static void MapperConfig(IMapperConfigurationExpression cfg)
         {
             cfg.CreateMap<IDataReader, PageModel>()
