@@ -4,7 +4,7 @@ using System.Text;
 using Polaris.Business.Models;
 using Polaris.Business.Helpers;
 using Molecule.Helpers;
-using Polaris.Business.Services.Article;
+using Polaris.Business.Services;
 
 namespace Polaris.Controllers.Article;
 

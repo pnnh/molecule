@@ -18,6 +18,7 @@ public class MapperHelper
             HistoryModel.MapperConfig(cfg);
             RelationFullModel<ChannelModel, HistoryModel>.MapperConfig(cfg);
             RelationFullModel<ChannelModel, PageModel>.MapperConfig(cfg);
+            PartitionQueryModel.MapperConfig(cfg);
         });
 #if DEBUG
         configuration.AssertConfigurationIsValid();

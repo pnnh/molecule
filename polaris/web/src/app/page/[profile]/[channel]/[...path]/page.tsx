@@ -14,14 +14,13 @@ import queryString from 'query-string'
 interface PageProps {
   profile: string
   channel: string
-  partition: string
-  path: string[]
+  partition: string[]
 }
 
 export default async function Home ({ params }: { params: PageProps }) {
   const serverConfig = await loadServerConfig()
   const service = ArticleService.Instance(serverConfig.SERVER)
-  const getQuery = queryString.stringify(params, { arrayFormat: 'bracket' })
+  const getQuery = queryString.stringify(params, { arrayFormat: 'comma' })
   const articleModel = await service.getArticle('+', getQuery)
   if (articleModel == null) {
     return <div>遇到错误</div>
