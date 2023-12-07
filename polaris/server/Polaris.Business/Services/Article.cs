@@ -43,26 +43,22 @@ public class PageService
         {
             return null;
         }
-        var partitionArray = pathArray.Take(pathArray.Length - 1).ToArray();
-        var partitionQueryModel = new PartitionService(this.serviceContext).QueryByPath(partitionArray);
-        if (partitionQueryModel == null)
-        {
-            return null;
-        }
+
         var pageName = pathArray[^1];
         var sqlBuilder = new StringBuilder();
         var parameters = new Dictionary<string, object>();
 
         sqlBuilder.Append(@"
-select a.*, p.username as profile_name, c.name as channel_name, @path as path
-from pages as a
-     join profiles as p on p.pk = a.profile
-     join channels as c on c.pk = a.channel
-where a.pk is not null and a.name = @page and p.username = @profile and c.name = @channel 
+select a.*, p.username as profile_name, c.name as channel_name, 
+    '/' || replace(pa.path::varchar, '.', '/') as path 
+from pages a 
+    join partitions pa on pa.pk = a.partition
+    join profiles as p on p.pk = a.profile
+    join channels as c on c.pk = a.channel
+where a.pk is not null and a.name = @page and p.username = @profile and c.name = @channel
 ");
         parameters.Add("@profile", profile);
         parameters.Add("@channel", channel);
-        parameters.Add("@path", partitionQueryModel.Path);
         parameters.Add("@page", pageName);
 
         var querySqlText = sqlBuilder.ToString();

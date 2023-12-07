@@ -66,18 +66,14 @@ public enum PLCodes
     InvalidArgument = 601,
 }
 
-public class PLErrorDescription
+public class PLExceptionResult
 {
+    [JsonPropertyName("code")]
     public int Code { get; set; }
+
+    [JsonPropertyName("message")]
     public string Message { get; set; } = "";
-
 }
-
-public class PLGetResult<T>
-{
-    public T? Model { get; init; }
-}
-
 
 public class PLSelectResult<T>
 {

@@ -34,7 +34,7 @@ public class ArticleContentController : ControllerBase
             var getResult = pageService.GetByQuery(queryHelper);
             if (getResult == null)
             {
-                throw new PLBizException("文章不存在");
+                throw PLBizException.BadRequest("文章不存在");
             }
             return getResult;
         }
@@ -83,14 +83,9 @@ where a.pk = @article
 
         sqlBuilder.Append(@"
 select a.*, p.username as profile_name, c.name as channel_name,
-    '/' || (with recursive result(root_level, path, parent) as (
-            select p.level, p.name::varchar(8192), p.parent
-            from partitions p where p.pk = a.partition
-            union
-            select p2.level, (p2.name || '/' || self.path)::varchar(8192), p2.parent
-            from result self join partitions p2 on p2.pk = self.parent
-            ) select path from result r where r.root_level = 1) as path
+        '/' || replace(pa.path::varchar, '.', '/') as path
 from pages as a
+     join partitions pa on pa.pk = a.partition
      join profiles as p on p.pk = a.profile
      join channels as c on c.pk = a.channel
 where a.pk is not null
