@@ -20,6 +20,23 @@
       color: #4e4e4e;
       text-decoration: none;
       font-size: 1rem;
+      display: inline-block;
+      position: relative;
+      height: 40px;
+      width: 40px;
+      margin-right: 8px;
+
+      img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+      }
+    }
+
+    .navLink {
+      color: #4e4e4e;
+      text-decoration: none;
+      font-size: 1rem;
     }
   }
 

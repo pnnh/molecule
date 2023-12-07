@@ -23,7 +23,7 @@ public class ChannelsController : ControllerBase
         this._dataContext = configuration;
     }
 
-    [Route("/server/channel/{pk}")]
+    [Route("/server/channels/{pk}")]
     [HttpGet]
     [AllowAnonymous]
     public ChannelModel Get([FromRoute] string pk)
@@ -52,7 +52,7 @@ public class ChannelsController : ControllerBase
         return new PLDeleteResult { Changes = changes };
     }
 
-    [Route("/server/channel")]
+    [Route("/server/channels")]
     [HttpGet]
     [AllowAnonymous]
     public PLSelectResult<ChannelModel> Select()

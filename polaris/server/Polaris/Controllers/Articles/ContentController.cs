@@ -20,7 +20,7 @@ public class ArticleContentController : ControllerBase
         this._dataContext = configuration;
     }
 
-    [Route("/server/article/{pk}")]
+    [Route("/server/posts/{pk}")]
     [HttpGet]
     [AllowAnonymous]
     public PageModel Get([FromRoute] string pk)
@@ -44,7 +44,7 @@ public class ArticleContentController : ControllerBase
 
         sqlBuilder.Append(@"
 select a.*
-from pages as a
+from posts as a
 where a.pk = @article
 ");
         parameters.Add("@article", pk);
@@ -64,7 +64,7 @@ where a.pk = @article
     }
 
 
-    [Route("/server/article")]
+    [Route("/server/posts")]
     [AllowAnonymous]
     public PLSelectResult<PageModel> Select()
     {
@@ -84,7 +84,7 @@ where a.pk = @article
         sqlBuilder.Append(@"
 select a.*, p.username as profile_name, c.name as channel_name,
         '/' || replace(pa.path::varchar, '.', '/') as path
-from pages as a
+from posts as a
      join partitions pa on pa.pk = a.partition
      join profiles as p on p.pk = a.profile
      join channels as c on c.pk = a.channel
@@ -144,7 +144,7 @@ select count(1) from ({sqlBuilder}) as temp;";
         };
     }
 
-    [Route("/server/article/{pk}")]
+    [Route("/server/page/{pk}")]
     [HttpDelete]
     public PLDeleteResult Delete([FromRoute] string pk)
     {
@@ -162,7 +162,7 @@ select count(1) from ({sqlBuilder}) as temp;";
         };
     }
 
-    [Route("/server/article")]
+    [Route("/server/page")]
     [HttpPost]
     public async Task<PLInsertResult> Insert()
     {
@@ -191,7 +191,7 @@ select count(1) from ({sqlBuilder}) as temp;";
         return new PLInsertResult { Pk = model.Pk };
     }
 
-    [Route("/server/article/{pk}")]
+    [Route("/server/page/{pk}")]
     [HttpPut]
     public async Task<PLUpdateResult> Update([FromRoute] string pk)
     {
@@ -212,7 +212,7 @@ select count(1) from ({sqlBuilder}) as temp;";
         return new PLUpdateResult { Changes = changes };
     }
 
-    [Route("/server/article/share")]
+    [Route("/server/page/share")]
     [HttpPost]
     public async Task<PLUpdateResult> Share()
     {

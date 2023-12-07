@@ -51,7 +51,7 @@ function ArticleList (props: {channel: string, result: PLSelectResult<ArticleMod
   return <>
     <div className={styles.articleList}>
       {result.range.map((model) => {
-        return <ArticleItem key={model.pk} channel={props.channel} model={model}/>
+        return <ArticleItem key={model.pk} model={model}/>
       })
       }
     </div>
@@ -61,17 +61,17 @@ function ArticleList (props: {channel: string, result: PLSelectResult<ArticleMod
   </>
 }
 
-function ArticleItem (props: { channel: string, model: ArticleModel }) {
+function ArticleItem ({ model }: { model: ArticleModel }) {
   return <div className={styles.articleItem}>
     <article className={styles.articleContent}>
       <div className={styles.articleTitle}>
-        <Link className={styles.articleLink} href={articleContentViewUrl(props.channel, props.model.pk)}>{props.model.title}</Link>
+        <Link className={styles.articleLink} href={articleContentViewUrl(model.profile_name, model.channel_name, model.path, model.name)}>{model.title}</Link>
       </div>
       <div className={styles.articleDescription}>
-        {props.model.description}
+        {model.description}
       </div>
       <div>
-        <Link className='btn btn-outline-secondary btn-sm' href={articleContentViewUrl(props.channel, props.model.pk)}>阅读更多</Link>
+        <Link className='btn btn-outline-secondary btn-sm' href={articleContentViewUrl(model.profile_name, model.channel_name, model.path, model.name)}>阅读更多</Link>
       </div>
     </article>
   </div>

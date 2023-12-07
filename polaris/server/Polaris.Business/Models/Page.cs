@@ -12,7 +12,7 @@ using System.Data;
 namespace Polaris.Business.Models
 {
 
-    [Table("pages")]
+    [Table("posts")]
     [PrimaryKey(nameof(Pk))]
     public class PageModel// : BaseModel
     {

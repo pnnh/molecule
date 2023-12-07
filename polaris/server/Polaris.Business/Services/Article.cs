@@ -38,7 +38,7 @@ public class PageService
         var channel = queryHelper.GetString("channel");
         var pathArray = queryHelper.GetStringArray("path");
 
-        if (string.IsNullOrEmpty(profile) || string.IsNullOrEmpty(channel) 
+        if (string.IsNullOrEmpty(profile) || string.IsNullOrEmpty(channel)
             || pathArray == null || pathArray.Length < 2)
         {
             return null;
@@ -51,7 +51,7 @@ public class PageService
         sqlBuilder.Append(@"
 select a.*, p.username as profile_name, c.name as channel_name, 
     '/' || replace(pa.path::varchar, '.', '/') as path 
-from pages a 
+from posts a 
     join partitions pa on pa.pk = a.partition
     join profiles as p on p.pk = a.profile
     join channels as c on c.pk = a.channel

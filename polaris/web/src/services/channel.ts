@@ -4,7 +4,7 @@ import { ChannelModel } from '@/models/channel'
 import { ModelService } from './service'
 
 export function channelPageUrl (pk: string) {
-  return '/content/channel/' + pk
+  return '/channels/' + pk
 }
 
 export class ChannelService extends ModelService {
@@ -17,13 +17,13 @@ export class ChannelService extends ModelService {
   }
 
   async selectChannels (queryString: string) {
-    const url = this.baseUrl + '/restful/channel?' + queryString
+    const url = this.baseUrl + '/restful/channels?' + queryString
     const response = await axios.get<PLSelectResult<ChannelModel>>(url)
     return response.data
   }
 
   async getChannel (pk: string) {
-    const url = this.baseUrl + '/restful/channel/' + pk
+    const url = this.baseUrl + '/restful/channels/' + pk
     const response = await axios.get<ChannelModel>(url)
     return response.data
   }

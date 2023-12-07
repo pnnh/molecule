@@ -47,7 +47,7 @@ public class ChannelModel// : BaseModel
     [JsonPropertyName("profile")]
     public string Profile { get; set; } = "";
 
-    [Column("profile_name", TypeName = "varchar(96)")]
+    [NotMapped]
     [JsonPropertyName("profile_name")]
     public string ProfileName { get; set; } = "";
 
