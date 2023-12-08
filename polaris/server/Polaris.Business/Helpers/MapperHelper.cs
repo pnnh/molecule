@@ -1,6 +1,7 @@
 using AutoMapper;
 using AutoMapper.Data;
 using Polaris.Business.Models;
+using Polaris.Business.Models.Personal;
 
 namespace Polaris.Business.Helpers;
 
@@ -19,6 +20,7 @@ public class MapperHelper
             RelationFullModel<ChannelModel, HistoryModel>.MapperConfig(cfg);
             RelationFullModel<ChannelModel, PageModel>.MapperConfig(cfg);
             PartitionQueryModel.MapperConfig(cfg);
+            NoteModel.MapperConfig(cfg);
         });
 #if DEBUG
         configuration.AssertConfigurationIsValid();

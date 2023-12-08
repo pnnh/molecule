@@ -14,7 +14,7 @@ export function ConsoleSidebar () {
     </div>
     <div className={styles.sidebarItem}>
       <Link
-        href="/console/article"
+        href="/console/notes"
       >
                         文章管理
       </Link>

@@ -2,12 +2,17 @@ import './global.scss'
 import 'tw-elements/dist/css/tw-elements.min.css'
 import { GoogleAnalytics } from './partials/analytics'
 import { Roboto } from 'next/font/google'
+import { Metadata } from 'next'
 
 const roboto = Roboto({ weight: '400', subsets: ['latin'] })
 
 // 隔几秒重新验证下数据
 export const revalidate = 5
 export const dynamic = 'force-dynamic'
+
+export const metadata: Metadata = {
+  title: '北极星笔记'
+}
 
 export default async function RootLayout ({
   children

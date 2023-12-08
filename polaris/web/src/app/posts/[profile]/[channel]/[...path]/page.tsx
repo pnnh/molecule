@@ -8,13 +8,18 @@ import { generatorRandomString } from '~/@pnnh/stele/esm/utils/string'
 import { headers } from 'next/headers'
 import { formatRfc3339 } from '@/utils/datetime'
 import { loadServerConfig } from '@/services/server/config'
-import { ArticleService } from '@/services/article'
+import { ArticleService, articleContentViewUrl } from '@/services/article'
 import queryString from 'query-string'
+import { Metadata } from 'next'
 
 interface PageProps {
   profile: string
   channel: string
   partition: string[]
+}
+
+export const metadata: Metadata = {
+  title: '北极星笔记'
 }
 
 export default async function Home ({ params }: { params: PageProps }) {
@@ -25,6 +30,7 @@ export default async function Home ({ params }: { params: PageProps }) {
   if (articleModel == null) {
     return <div>遇到错误</div>
   }
+  metadata.title = articleModel.title + ' - 北极星笔记'
   const article = articleModel
   const tocList: TocItem[] = []
   const titleId = generatorRandomString(8)
@@ -37,6 +43,7 @@ export default async function Home ({ params }: { params: PageProps }) {
   console.log('clientIp', clientIp)
   // 更新文章阅读次数
   // await ViewerService.Instance(serverConfig.SERVER).newArticleViewer(params.channel, params.name, clientIp)
+  const readUrl = articleContentViewUrl(articleModel.profile_name, articleModel.channel_name, articleModel.path, articleModel.name)
   return <div className={styles.articleContainer}>
     <div className={styles.leftArea}>
       <div className={styles.articleInfo}>
@@ -51,7 +58,7 @@ export default async function Home ({ params }: { params: PageProps }) {
       </div>
     </div>
     <div className={styles.rightArea}>
-        <TocInfo channel={params.channel} pk={params.page} model={tocList} />
+        <TocInfo channel={params.channel} readurl={readUrl} model={tocList} />
     </div>
   </div>
 }

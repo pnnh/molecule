@@ -8,10 +8,6 @@ namespace Polaris.Business.Models;
 [PrimaryKey(nameof(Pk))]
 public class AccountModel
 {
-    [Column("id", TypeName = "bigint")]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public long Id { get; set; } = 0;
-
     [Column("pk", TypeName = "varchar(64)")]
     public string Pk { get; set; } = "";
 
