@@ -22,6 +22,8 @@ namespace services {
     QString dbPath;
     QSqlDatabase sqldb;
   };
+
+  std::shared_ptr<Sqlite3Service> getSqlite3Service(QString dbPath = "");
 }
 
 #endif // QT_EDITOR_SQLITE_H

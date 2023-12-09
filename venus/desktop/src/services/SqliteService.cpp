@@ -15,17 +15,16 @@
 #include <QTextStream>
 
 const QString TableFolders = "folders";
+
  
 services::Sqlite3Service::Sqlite3Service(QString fullPath) {
-
+  this->dbPath = fullPath;
   QSqlDatabase database;
   if (QSqlDatabase::contains(this->dbPath)) {
     database = QSqlDatabase::database(this->dbPath);
   } else {
     database = QSqlDatabase::addDatabase("QSQLITE", this -> dbPath);
-    auto dbFullPath = QApplication::applicationDirPath() + this->dbPath;
-    qDebug() << "数据库目录：" << dbFullPath << Qt::endl;
-    database.setDatabaseName(dbFullPath);
+    database.setDatabaseName(this->dbPath);
     database.setUserName("venus");
     database.setPassword("123456");
   }
@@ -78,8 +77,19 @@ std::shared_ptr<QSqlQuery> services::Sqlite3Service::query(QString sqlText) {
   auto query = std::make_shared<QSqlQuery>(this->sqldb);
   query->prepare(sqlText);
   if (!query->exec(sqlText)) {
-    throw business::AppException("Sqlite3Service::query出错: " +
-                                 query->lastError().text());
+    throw business::AppException("Sqlite3Service::query出错: " + query->lastError().text());
   }
   return query;
+}
+
+std::shared_ptr<services::Sqlite3Service> services::getSqlite3Service(QString dbPath) {
+  auto dbFullPath = dbPath;
+  if (dbPath == "") {
+    dbFullPath = QApplication::applicationDirPath() + "/venus.sqlite";
+  } else if (!dbPath.startsWith("/")) {
+    dbFullPath = QApplication::applicationDirPath() + "/" + dbPath;
+  }
+  qDebug() << "数据库目录：" << dbFullPath << Qt::endl;
+  
+  return std::make_shared<Sqlite3Service>(dbFullPath);
 }
