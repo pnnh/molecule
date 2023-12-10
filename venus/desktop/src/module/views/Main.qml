@@ -3,11 +3,11 @@ import QtQml.Models 2.15
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 
-Window {
+ApplicationWindow {
     id: mainWindow
     width: 1200
     height: 800
-    flags: Qt.Window | Qt.CustomizeWindowHint //Qt.FramelessWindowHint
+    flags: Qt.Window// | Qt.CustomizeWindowHint //Qt.FramelessWindowHint
 
     visible: true
     title: "Emotion Design"

@@ -33,15 +33,15 @@ services::Sqlite3Service::Sqlite3Service(QString fullPath) {
     throw business::AppException("Error: Failed to connect database.", database.lastError().databaseText());
   }
  
-  QSqlQuery query;
+  auto query = std::make_shared<QSqlQuery>(database);
   // 判断表是否已经存在
   QString sql = QString("select * from sqlite_master where name='%1'").arg(TableFolders);
-  if (!query.exec(sql)) {
+  if (!query -> exec(sql)) {
     throw business::AppException("检查表是否存在出错");
   }
   QString columnName;
-  if (query.next()) {
-    columnName = query.value("name").toString();
+  if (query -> next()) {
+    columnName = query -> value("name").toString();
   }
   if (columnName != TableFolders) {
     auto createSql = QString("CREATE TABLE %1("
@@ -50,7 +50,7 @@ services::Sqlite3Service::Sqlite3Service(QString fullPath) {
                              "count integer NOT NULL,"
                              "bookmark VARCHAR)")
                          .arg(TableFolders);
-    if (!query.exec(createSql)) {
+    if (!query -> exec(createSql)) {
       throw business::AppException("创建表出错");
     }
   }
