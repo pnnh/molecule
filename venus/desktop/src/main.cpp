@@ -20,9 +20,9 @@ int main(int argc, char *argv[]) {
   QQmlApplicationEngine engine;
   const QUrl url(QStringLiteral(u"qrc:/qt/qml/quick/src/module/views/Main.qml"));
 
-  QObject::connect(&engine, &QQmlApplicationEngine::objectCreationFailed,
-      &app, []() { QCoreApplication::exit(-1); },
-      Qt::QueuedConnection);
+  // QObject::connect(&engine, &QQmlApplicationEngine::objectCreationFailed,
+  //     &app, []() { QCoreApplication::exit(-1); },
+  //     Qt::QueuedConnection);
 
   engine.load(url);
 
