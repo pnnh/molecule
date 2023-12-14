@@ -6,6 +6,7 @@ import { ConsoleSidebar } from '@/app/console/partials/sidebar'
 import { ConsoleNavbar } from './partials/navbar'
 import { FluentProviders } from '@/components/client/providers'
 import { ConsoleReduxProvider } from './state/provider'
+import { ConsoleFeature } from './partials/feature'
 
 export default function ConsoleLayout ({
   children
@@ -20,7 +21,10 @@ export default function ConsoleLayout ({
           <ConsoleNavbar></ConsoleNavbar>
         </div>
         <div className={styles.mainContainer}>
-          <div className={styles.leftNav}><ConsoleSidebar></ConsoleSidebar></div>
+          <ConsoleFeature/>
+          <div className={styles.leftNav}>
+            <ConsoleSidebar></ConsoleSidebar>
+          </div>
           <div className={styles.rightBody}>
             {children}
           </div>

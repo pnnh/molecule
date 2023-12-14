@@ -4,6 +4,7 @@ import styles from './navbar.module.scss'
 import Link from 'next/link'
 import { getLoginSession } from '@/services/client/account'
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
 
 export function ConsoleNavbar () {
   const [account, setAccount] = useState<string | undefined>(undefined)
@@ -21,7 +22,10 @@ export function ConsoleNavbar () {
 
   return <div className={styles.navHeader}>
     <div className={styles.leftNav}>
-      <Link className={styles.brandLink} href='/'>POLARIS</Link>
+      <Link className={styles.brandLink} href={'/'}>
+        <Image src='/images/logo.png' alt='logo' fill={true} sizes={'32px,32px'} />
+        <span>北极星笔记</span>
+      </Link>
     </div>
     <div className={styles.rightNav}>
       <UserAction account={account}/>
