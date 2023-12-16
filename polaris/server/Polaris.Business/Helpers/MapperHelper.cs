@@ -21,6 +21,7 @@ public class MapperHelper
             RelationFullModel<ChannelModel, PageModel>.MapperConfig(cfg);
             PartitionQueryModel.MapperConfig(cfg);
             NoteModel.MapperConfig(cfg);
+            DirectoryModel.MapperConfig(cfg);
         });
 #if DEBUG
         configuration.AssertConfigurationIsValid();

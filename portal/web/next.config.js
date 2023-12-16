@@ -12,19 +12,19 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'portal.huable.com'
+        hostname: 'portal.calieo.xyz'
       },
       {
         protocol: 'https',
-        hostname: 'portal.huable.xyz'
-      },
-      {
-        protocol: 'https',
-        hostname: 'static.huable.com'
+        hostname: 'portal.calieo.dev'
       },
       {
         protocol: 'https',
         hostname: 'static.huable.xyz'
+      },
+      {
+        protocol: 'https',
+        hostname: 'static.huable.dev'
       }
     ]
   },

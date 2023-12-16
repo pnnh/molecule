@@ -23,7 +23,7 @@ export function ConsoleNavbar () {
   return <div className={styles.navHeader}>
     <div className={styles.leftNav}>
       <Link className={styles.brandLink} href={'/'}>
-        <Image src='/images/logo.png' alt='logo' fill={true} sizes={'32px,32px'} />
+        <Image src='/images/logo.png' alt='logo' fill={false} width={28} height={28} sizes={'32px,32px'} />
         <span>北极星笔记</span>
       </Link>
     </div>

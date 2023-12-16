@@ -20,18 +20,12 @@ namespace Polaris
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            builder.Logging.ClearProviders().AddSimpleConsole(options =>
-            {
-                options.SingleLine = false;
-                options.IncludeScopes = true;
-                options.UseUtcTimestamp = true;
-            });
 
             var services = builder.Services;
 
             builder.Logging.ClearProviders().AddSimpleConsole(options =>
             {
-                options.SingleLine = true;
+                options.SingleLine = false;
                 options.IncludeScopes = true;
                 options.UseUtcTimestamp = true;
             });

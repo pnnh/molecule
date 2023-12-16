@@ -40,12 +40,12 @@ func NewWebServer() (*WebServer, error) {
 		router:    router,
 		resources: make(map[string]IResource)}
 
-	corsDomain := []string{"https://portal.huable.com"}
-
-	if config.Debug() {
-		corsDomain = append(corsDomain, "https://portal.huable.xyz")
+	selfUrl, _ := config.GetConfigurationString("SELF_URL")
+	if selfUrl == "" { 
+		return nil, fmt.Errorf("SELF_URL未配置")
 	}
-
+	corsDomain := []string{selfUrl}
+ 
 	router.Use(cors.New(cors.Config{
 		AllowOrigins:     corsDomain,
 		AllowMethods:     []string{"PUT", "PATCH", "POST", "GET"},
