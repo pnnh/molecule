@@ -1,12 +1,13 @@
 'use client'
 
-import Link from 'next/link'
 import styles from './sidebar.module.scss'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { DirectoryService } from '@/services/personal/directories'
 import { DirectoryModel } from '@/models/personal/directory'
 import { PLSelectResult } from '@/models/common-result'
+import { nameAtom } from '../providers/theme'
+import { useSetRecoilState } from 'recoil'
 
 export function ConsoleSidebar () {
   const [directories, setDirectories] = useState<PLSelectResult<DirectoryModel>>()
@@ -39,68 +40,27 @@ export function ConsoleSidebar () {
       })
     }
     </div>
-{/*
-    <div className={styles.sidebarItem}>
-      <Link
-        href="/console/notes"
-      >
-                        文章管理
-      </Link>
-    </div>
-    <div className={styles.sidebarItem}>
-      <Link
-        href="/console/categories"
-      >
-                        分类管理
-      </Link>
-    </div>
-    <div className={styles.sidebarItem}>
-      <Link
-        href="/console/groups"
-      >
-                        分组管理
-      </Link>
-    </div>
-    <div className={styles.sidebarItem}>
-      <Link
-        href="/console/channel"
-      >
-                        频道管理
-      </Link>
-    </div>
-    <div className={styles.sidebarItem}>
-      <Link
-        href="/console/comments"
-      >
-                        评论管理
-      </Link>
-    </div>
-    <div className={styles.sidebarItem}>
-      <Link
-        href="/console/tags">
-                        标签管理
-      </Link>
-    </div> */}
   </div>
 }
 
 function DirectoryCard ({ item }: {item: DirectoryModel}) {
   const [isExpanded, setIsExpanded] = useState<boolean>(false)
   const hasChildren = item.children && item.children.length > 0
-  // const isExpanded = true
-  // const setIsExpanded = (value: boolean) => {}
-  return <div className={styles.directoryCard} style={{ marginLeft: item.level * 4 + 'px' }}>
+  const setNotebook = useSetRecoilState(nameAtom)
+  return <div className={styles.directoryCard}>
     <div className={styles.directorySelf}>
+      <div style={{ width: item.level * 8 + 'px' }}></div>
       <div className={styles.directoryOpen} onClick={() => setIsExpanded(!isExpanded)}>
         {
           hasChildren &&
           <Image src={isExpanded ? '/icons/console/triangle-down-fill.png' : '/icons/console/triangle-right-fill.png'} alt='目录' width={16} height={16}></Image>
         }
-
       </div>
-      <Link
-        href="/console"
-      >{item.name}</Link>
+      <div className={styles.directoryName} onClick={() => {
+        console.debug('setNotebook', item.name)
+        setNotebook(item.name)
+      }}>
+        {item.name}</div>
     </div>
     <div className={styles.directoryChildren} style={{ display: isExpanded ? 'block' : 'none' }}>
       {

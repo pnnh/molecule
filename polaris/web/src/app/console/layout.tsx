@@ -7,7 +7,9 @@ import { ConsoleNavbar } from './partials/navbar'
 import { FluentProviders } from '@/components/client/providers'
 import { ConsoleReduxProvider } from './state/provider'
 import { ConsoleFeature } from './partials/feature'
+import { ConsoleNotebar } from './partials/notebar'
 
+import { RecoilRoot } from 'recoil'
 export default function ConsoleLayout ({
   children
 }: {
@@ -16,6 +18,7 @@ export default function ConsoleLayout ({
   return (
     <ConsoleReduxProvider>
       <FluentProviders>
+        <RecoilRoot>
       <div className={styles.childrenContainer}>
         <div className={styles.navbar}>
           <ConsoleNavbar></ConsoleNavbar>
@@ -25,11 +28,15 @@ export default function ConsoleLayout ({
           <div className={styles.leftNav}>
             <ConsoleSidebar></ConsoleSidebar>
           </div>
+          <div className={styles.notebarContainer}>
+            <ConsoleNotebar></ConsoleNotebar>
+          </div>
           <div className={styles.rightBody}>
             {children}
           </div>
         </div>
       </div>
+      </RecoilRoot>
       </FluentProviders>
     </ConsoleReduxProvider>
   )

@@ -24,7 +24,7 @@ function UserAction (props: {authServer:string, selfUrl: string, account?: strin
   if (!props.account) {
     const clientAuthUrl = fullAuthUrl(props.authServer, props.selfUrl, '/')
     return <Link
-      href={clientAuthUrl} className={styles.loginLink}>登录</Link>
+      href={clientAuthUrl} rel='nofollow' className={styles.loginLink}>登录</Link>
   }
   return <div>
     <Link className={styles.loginLink} href={'/console'}>{props.account}</Link>
