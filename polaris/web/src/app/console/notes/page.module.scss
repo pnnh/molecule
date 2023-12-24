@@ -1,25 +1,23 @@
-.pageList {
-  padding: 1rem;
-}
+.notesPage {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  height: 100%;
 
-.articleTable {
-  margin-top: 16px;
-  table-layout: fixed;
-
-  .columnCheck {
-    width: 48px;
+  .directoryBar {
+    width: 15rem;
+    flex-shrink: 0;
   }
 
-  .columnTime {
-    width: 160px;
+  .notebarContainer {
+    width: 15rem;
+    flex-shrink: 0;
   }
 
-  .columnOperator {
-    width: 120px;
+  .noteViewer {
+    width: 0; // 防止flex宽度被撑开
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
   }
-}
- 
-.articleTitle {
-  overflow: hidden;
-  text-overflow: ellipsis;
 }

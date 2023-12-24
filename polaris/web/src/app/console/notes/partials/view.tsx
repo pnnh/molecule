@@ -25,8 +25,6 @@ export function MarkdownViewer () {
     return <div>Loading</div>
   }
 
-  // return <div>顶顶顶顶{note}</div>
-
   const createMarkup = () => {
     return {
       __html: markdown.render(model.body)
@@ -34,7 +32,7 @@ export function MarkdownViewer () {
   }
 
   return <div className={styles.editorForm}>
-      <div>
+      <div className={styles.noteTitle}>
         {model.title}
       </div>
       <div className={styles.editorRow}>
