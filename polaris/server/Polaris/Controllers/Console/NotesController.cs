@@ -29,6 +29,7 @@ public class NoteContentController : ControllerBase
     {
         var queryHelper = new PLQueryHelper(Request.Query);
         var notebook = queryHelper.GetString("notebook");
+        var directory = queryHelper.GetString("directory");
         var keyword = queryHelper.GetString("keyword");
         var sort = queryHelper.GetString("sort") ?? "latest";
         var filter = queryHelper.GetString("filter") ?? "all";
@@ -53,6 +54,11 @@ where a.pk is not null
         {
             sqlBuilder.Append(@" and a.notebook = @notebook");
             parameters.Add("@notebook", notebook);
+        }
+        if (!string.IsNullOrEmpty(directory))
+        {
+            sqlBuilder.Append(@" and a.directory = @directory");
+            parameters.Add("@directory", directory);
         }
 
         if (keyword != null && !string.IsNullOrEmpty(keyword))
@@ -101,5 +107,37 @@ select count(1) from ({sqlBuilder}) as temp;";
             Range = models,
             Count = totalCount ?? 0,
         };
+    }
+
+
+    [Route("/server/console/notes/{pk}")]
+    [HttpGet]
+    [AllowAnonymous]
+    public NoteModel Get([FromRoute] string pk)
+    {
+        var sqlBuilder = new StringBuilder();
+        var parameters = new Dictionary<string, object>();
+
+        sqlBuilder.Append(@"
+select a.*, p.username as profile_name, c.name as notebook_name,
+        '/' || replace(pa.path::varchar, '.', '/') as path
+from personal.notes as a
+     join personal.directories pa on pa.pk = a.directory
+     join personal.profiles as p on p.pk = a.profile
+     join personal.notebooks as c on c.pk = a.notebook
+where a.pk = @pk
+");
+        parameters.Add("@pk", pk);
+        var querySqlText = sqlBuilder.ToString();
+
+        var modelsQuery = DatabaseContextHelper.RawSqlQuery<NoteModel>(_dataContext, querySqlText, parameters);
+
+        var model = modelsQuery.FirstOrDefault();
+        if (model == null)
+        {
+            throw new PLBizException("Data not found.");
+        }
+
+        return model;
     }
 }

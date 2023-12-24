@@ -1,13 +1,31 @@
 'use client'
 
-import React from 'react'
-import { ArticleModel } from '@/models/article'
+import React, { useEffect, useState } from 'react'
 import styles from './view.module.scss'
 import MarkdownIt from 'markdown-it'
+import { useRecoilValue } from 'recoil'
+import { noteAtom } from '../../providers/notebook'
+import { getNoteByKey } from '@/services/personal/notes_server'
+import { NoteModel } from '@/models/personal/note'
 
-export function MarkdownViewer (props: {model:ArticleModel}) {
-  const model = props.model
+export function MarkdownViewer () {
+  const note = useRecoilValue(noteAtom)
   const markdown = new MarkdownIt()
+  const [model, setModel] = useState<NoteModel>()
+
+  useEffect(() => {
+    const loadResources = async () => {
+      const response = await getNoteByKey(note)
+      setModel(response)
+    }
+    loadResources()
+  }, [note])
+
+  if (!model || !model.body) {
+    return <div>Loading</div>
+  }
+
+  // return <div>顶顶顶顶{note}</div>
 
   const createMarkup = () => {
     return {

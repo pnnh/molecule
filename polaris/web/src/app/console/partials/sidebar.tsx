@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react'
 import { DirectoryService } from '@/services/personal/directories'
 import { DirectoryModel } from '@/models/personal/directory'
 import { PLSelectResult } from '@/models/common-result'
-import { nameAtom } from '../providers/theme'
+import { directoryAtom } from '../providers/notebook'
 import { useSetRecoilState } from 'recoil'
 
 export function ConsoleSidebar () {
@@ -46,7 +46,7 @@ export function ConsoleSidebar () {
 function DirectoryCard ({ item }: {item: DirectoryModel}) {
   const [isExpanded, setIsExpanded] = useState<boolean>(false)
   const hasChildren = item.children && item.children.length > 0
-  const setNotebook = useSetRecoilState(nameAtom)
+  const setDirectory = useSetRecoilState(directoryAtom)
   return <div className={styles.directoryCard}>
     <div className={styles.directorySelf}>
       <div style={{ width: item.level * 8 + 'px' }}></div>
@@ -58,7 +58,7 @@ function DirectoryCard ({ item }: {item: DirectoryModel}) {
       </div>
       <div className={styles.directoryName} onClick={() => {
         console.debug('setNotebook', item.name)
-        setNotebook(item.name)
+        setDirectory(item.pk)
       }}>
         {item.name}</div>
     </div>

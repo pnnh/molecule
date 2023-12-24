@@ -22,10 +22,12 @@
 
     .leftNav {
       width: 200px;
+      flex-shrink: 0;
     }
 
     .notebarContainer {
-      width: 200px; 
+      width: 200px;
+      flex-shrink: 0;
     }
   }
 }

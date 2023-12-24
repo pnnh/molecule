@@ -3,20 +3,11 @@ const path = require('path')
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'standalone',
-  // experimental: {
-  //   esmExternals: 'loose',
-  //   webpackBuildWorker: true
-  // },
+  experimental: {
+    esmExternals: 'loose',
+    webpackBuildWorker: true, 
+  },
   reactStrictMode: true,
-  // webpack: function (config) {
-  //   config.experiments = {
-  //     //asyncWebAssembly: true,
-  //     layers: true,
-  //     topLevelAwait: true
-  //   }
-  //   return config
-  // },
-  
   images: {
     remotePatterns: [
       {
