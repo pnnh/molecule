@@ -60,7 +60,7 @@ function DirectoryCard ({ item }: {item: DirectoryModel}) {
         console.debug('setNotebook', item.name)
         setDirectory(item.pk)
       }}>
-        {item.name}</div>
+        {item.title}</div>
     </div>
     <div className={styles.directoryChildren} style={{ display: isExpanded ? 'block' : 'none' }}>
       {

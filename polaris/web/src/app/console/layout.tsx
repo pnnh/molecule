@@ -1,5 +1,6 @@
 'use client'
 
+import './layout.scss'
 import React from 'react'
 import styles from './layout.module.scss'
 import { ConsoleNavbar } from './partials/navbar'
@@ -13,7 +14,7 @@ export default function ConsoleLayout ({
 }) {
   return (
         <RecoilRoot>
-      <div className={styles.childrenContainer}>
+      <div className={styles.consolePage}>
         <div className={styles.navbar}>
           <ConsoleNavbar></ConsoleNavbar>
         </div>

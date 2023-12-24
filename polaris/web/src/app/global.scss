@@ -29,3 +29,8 @@ body {
     font-size: 1.1em;
   }
 }
+
+// 隐藏开发时nextjs调试工具
+nextjs-portal {
+  display: none;
+}
