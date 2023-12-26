@@ -199,4 +199,14 @@
       }
     }
   }
+
+  @media screen and (max-width: 48rem) {
+    .container {
+      padding: 0.5rem;
+      width: 100%;
+      .conRight {
+        display: none;
+      }
+    }
+  }
 }

@@ -12,7 +12,7 @@ export function PublicNavbar (props: {authServer:string, selfUrl: string, accoun
         </Link>
       </div>
       <Link className={styles.navLink} href={'/channels'}>频道</Link>
-      <Link className={styles.navLink} href={'/posts'}>页面</Link>
+      <Link className={styles.navLink} href={'/posts'}>文章</Link>
     </div>
     <div className={styles.rightNav}>
       <UserAction authServer={props.authServer} selfUrl={props.selfUrl} account={props.account} />

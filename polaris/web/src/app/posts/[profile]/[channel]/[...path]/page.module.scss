@@ -41,6 +41,26 @@
     }
 }
 
+@media screen and (max-width: 48rem) {
+    .articleContainer {
+        flex-direction: column;
+        width: 100%;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        gap: 1rem;
+        padding: 0 1rem 0 1rem;
+
+        .leftArea {
+            width: 100%;
+        }
+
+        .rightArea {
+            display: none;
+        }
+    }
+
+}
+
 .articleInfo {
     display: block;
     background-color: #FFFFFF;

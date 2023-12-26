@@ -5,7 +5,7 @@ const nextConfig = {
   output: 'standalone',
   experimental: {
     esmExternals: 'loose',
-    webpackBuildWorker: true, 
+    webpackBuildWorker: true,
   },
   reactStrictMode: true,
   images: {
@@ -24,17 +24,29 @@ const nextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'polaris.huable.com'
+      },
+      {
+        protocol: 'https',
+        hostname: 'polaris.huable.xyz'
+      },
+      {
+        protocol: 'https',
         hostname: 'static.huable.dev'
       },
       {
         protocol: 'https',
         hostname: 'static.huable.xyz'
+      },
+      {
+        protocol: 'https',
+        hostname: 'static.huable.com'
       }
     ]
   },
   compress: process.env.ENV === 'production',
   compiler: {
-    //removeConsole: process.env.ENV === 'production'
+    removeConsole: process.env.ENV === 'production'
   },
   sassOptions: {
     includePaths: [path.join(__dirname, 'styles')]

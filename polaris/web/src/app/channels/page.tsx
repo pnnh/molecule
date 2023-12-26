@@ -20,9 +20,9 @@ function Item (props: { model: ChannelModel }) {
       <div className={styles.description}>
         {props.model.description}
       </div>
-      <div className={styles.actions}>
+      {/* <div className={styles.actions}>
         <Link href={readUrl} className={styles.readButton}>查看文章</Link>
-      </div>
+      </div> */}
     </div>
   </PSCard>
 }
@@ -32,8 +32,8 @@ export default async function Home () {
   const serverConfig = await loadServerConfig()
   const service = ChannelService.Instance(serverConfig.SERVER)
   const result = await service.selectChannels(`page=1&size=${pageSize}`)
-  return <div className={styles.indexPage}>
-    <div className={styles.container}>
+  return <div className={styles.container}>
+    <div className={styles.body}>
       <div className={styles.list}>
         {result.range.map((model) => {
           return <Item key={model.pk} model={model}/>

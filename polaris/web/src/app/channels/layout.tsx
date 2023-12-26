@@ -12,11 +12,11 @@ export default async function ArticleLayout ({
   const identity = await getIdentity()
   const serverConfig = await loadServerConfig()
 
-  return <div className={styles.indexPage}>
+  return <div className={styles.container}>
     <div>
       <PublicNavbar authServer={serverConfig.AUTH_SERVER} selfUrl={serverConfig.SELF_URL} account={identity}/>
     </div>
-    <div className={styles.container}>
+    <div className={styles.body}>
       {children}
     </div>
   </div>

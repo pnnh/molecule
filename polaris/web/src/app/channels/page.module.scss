@@ -1,13 +1,19 @@
 @import "src/styles/utils";
 
-.indexPage {
-    width: 100%;
+.container {
     width: 1200px;
     margin: 0 auto;
 }
 
-.container {
-    margin-top: 2rem;
+@media screen and (max-width: 48rem) {
+    .container {
+        padding: 0.5rem;
+        width: 100%;
+    }
+}
+
+.body {
+    margin-top: 1rem;
 }
 
 .list {
@@ -19,7 +25,13 @@
     display: grid;
     grid-gap: 1rem;
     grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
-} 
+}
+
+@media screen and (max-width: 48rem) {
+    .list {
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    }
+}
 
 .item {
     border-bottom: 1px solid #e5e6eb;
@@ -40,6 +52,13 @@
             height: 10rem;
             border-radius: 2px;
             object-fit: cover;
+        }
+
+        @media screen and (max-width: 48rem) {
+            img {
+                width: 8rem;
+                height: 8rem;
+            }
         }
     }
 
