@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import styles from './view.module.scss'
 import MarkdownIt from 'markdown-it'
 import { useRecoilValue } from 'recoil'
-import { noteAtom } from '../../providers/notebook'
+import { noteAtom } from '@/app/console/providers/notebook'
 import { getNoteByKey } from '@/services/personal/notes_server'
 import { NoteModel } from '@/models/personal/note'
 

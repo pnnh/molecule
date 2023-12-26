@@ -7,7 +7,7 @@ import React from 'react'
 import { PLSelectResult } from '@/models/common-result'
 import { psSubString } from '@/utils/string'
 import { useSetRecoilState } from 'recoil'
-import { noteAtom } from '../../providers/notebook'
+import { noteAtom } from '@/app/console/providers/notebook'
 
 export function PSNotesList (props: { result: PLSelectResult<NoteModel> }) {
 

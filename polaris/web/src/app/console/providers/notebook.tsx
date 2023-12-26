@@ -10,4 +10,9 @@ const noteAtom = atom({
   default: ''
 })
 
-export { noteAtom, directoryAtom }
+const notebookAtom = atom({
+  key: 'notebook',
+  default: ''
+})
+
+export { noteAtom, directoryAtom, notebookAtom }

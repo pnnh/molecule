@@ -3,13 +3,15 @@
 import styles from './page.module.scss'
 import React from 'react'
 import { MarkdownViewer } from './partials/view'
-import { ConsoleSidebar } from './sidebar'
+import { DirectoryBar } from './sidebar'
 import { ConsoleNotebar } from './notebar'
 
-export default function Page () {
+export default function Page ({ params }: {
+  params: {profile: string}
+}) {
   return <div className={styles.notesPage}>
     <div className={styles.directoryBar}>
-      <ConsoleSidebar></ConsoleSidebar>
+      <DirectoryBar profile={params.profile}></DirectoryBar>
     </div>
     <div className={styles.notebarContainer}>
       <ConsoleNotebar></ConsoleNotebar>

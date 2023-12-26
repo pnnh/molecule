@@ -18,6 +18,7 @@ public class DatabaseContext : DbContext
     public DbSet<RelationModel> Relations => Set<RelationModel>();
     public DbSet<ChannelModel> Channels => Set<ChannelModel>();
     public DbSet<ViewerModel> Viewers => Set<ViewerModel>();
+    public DbSet<ProfileModel> Profiles => Set<ProfileModel>();
 
     public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
     {

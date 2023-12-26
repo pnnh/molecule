@@ -22,6 +22,7 @@ public class MapperHelper
             PartitionQueryModel.MapperConfig(cfg);
             NoteModel.MapperConfig(cfg);
             DirectoryModel.MapperConfig(cfg);
+            NotebookModel.MapperConfig(cfg);
         });
 #if DEBUG
         configuration.AssertConfigurationIsValid();
