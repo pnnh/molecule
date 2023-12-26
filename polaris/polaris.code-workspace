@@ -7,6 +7,10 @@
     {
       "name": "server",
       "path": "server"
+    },
+    {
+      "name": "polaris",
+      "path": "."
     }
   ],
   "settings": {
@@ -17,7 +21,6 @@
     "editor.fontSize": 12
   },
   "extensions": {
-    "recommendations": [
-    ]
+    "recommendations": []
   }
 }

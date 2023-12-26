@@ -16,7 +16,7 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'polaris.huable.com'
+        hostname: 'polaris.huable.dev'
       },
       {
         protocol: 'https',
@@ -24,7 +24,7 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'static.huable.com'
+        hostname: 'static.huable.dev'
       },
       {
         protocol: 'https',

@@ -13,8 +13,8 @@
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development"
             },
-            "console": "integratedTerminal",
-            "justMyCode": false
+            "console": "internalConsole",
+            "justMyCode": true
         }
     ]
 }

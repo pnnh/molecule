@@ -3,9 +3,15 @@
     "configurations": [
         {
             "name": "polaris-web",
-            "type": "node-terminal",
+            "type": "node",
             "request": "launch",
-            "command": "npm run dev",
+            "cwd": "${workspaceFolder}",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "run-script",
+                "dev"
+            ],
+            "console": "internalConsole",
             "env": {
                 "ENV": "development",
                 "config": "./config.debug.js"

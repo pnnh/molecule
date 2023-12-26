@@ -7,6 +7,10 @@
     {
       "name": "authorization",
       "path": "server/authorization"
+    },
+    {
+      "name": "portal",
+      "path": "."
     }
   ],
   "settings": {
@@ -16,7 +20,6 @@
     "editor.fontSize": 12
   },
   "extensions": {
-    "recommendations": [
-    ]
+    "recommendations": []
   }
 }
