@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'header.dart';
 
 class ArticleCreatePage extends StatefulWidget {
-  const ArticleCreatePage({Key? key}) : super(key: key);
+  const ArticleCreatePage({super.key});
 
   @override
   State<ArticleCreatePage> createState() => _ArticleCreatePageState();

@@ -4,7 +4,7 @@ import './list.dart';
 
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class HomePage extends StatelessWidget {
 }
 
 class _HomeBody extends StatelessWidget {
-  const _HomeBody({Key? key}) : super(key: key);
+  const _HomeBody();
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class _HomeBody extends StatelessWidget {
 }
 
 class _DesktopHomeBodyWidgetState extends StatelessWidget {
-  const _DesktopHomeBodyWidgetState({Key? key}) : super(key: key);
+  const _DesktopHomeBodyWidgetState();
 
   @override
   Widget build(BuildContext context) {

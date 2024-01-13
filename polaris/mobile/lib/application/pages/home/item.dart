@@ -5,8 +5,7 @@ import 'package:flutter/material.dart';
 class TodoItemWidget extends StatefulWidget {
   final ArticleModel article;
 
-  const TodoItemWidget({Key? key, required this.article })
-      : super(key: key);
+  const TodoItemWidget({super.key, required this.article });
 
   @override
   State<TodoItemWidget> createState() => _TodoItemWidget();

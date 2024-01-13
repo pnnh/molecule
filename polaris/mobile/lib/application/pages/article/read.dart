@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_highlight/flutter_highlight.dart';
 import 'package:flutter_highlight/themes/github.dart';
 import 'package:markdown_widget/markdown_widget.dart';
-import 'header.dart';
 import '../partial/not_found.dart';
 import '../partial/page_loading.dart';
 
@@ -17,7 +16,7 @@ class TocItem {
 
 class ArticleReadPage extends StatefulWidget {
   final Map<String, String> queryParameters;
-  const ArticleReadPage(this.queryParameters, {Key? key}) : super(key: key);
+  const ArticleReadPage(this.queryParameters, {super.key});
 
   @override
   State<ArticleReadPage> createState() => _ArticleReadPageState();

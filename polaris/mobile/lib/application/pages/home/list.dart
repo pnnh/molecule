@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:split_view/split_view.dart';
 
 class TodoListWidget extends StatefulWidget {
-  const TodoListWidget({Key? key}) : super(key: key);
+  const TodoListWidget({super.key});
 
   @override
   State<TodoListWidget> createState() => _TodoListWidget();

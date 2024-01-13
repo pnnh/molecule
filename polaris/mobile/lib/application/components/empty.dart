@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class EmptyWidget extends StatefulWidget {
   final String message;
 
-  const EmptyWidget({Key? key, this.message = ""}) : super(key: key);
+  const EmptyWidget({super.key, this.message = ""});
 
   @override
   State<EmptyWidget> createState() => _EmptyWidget();

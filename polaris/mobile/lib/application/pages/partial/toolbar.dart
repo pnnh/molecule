@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class ToolbarWidget extends StatelessWidget {
-  const ToolbarWidget({Key? key}) : super(key: key);
+  const ToolbarWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

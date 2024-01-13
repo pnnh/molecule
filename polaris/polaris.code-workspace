@@ -1,16 +1,16 @@
 {
   "folders": [
     {
-      "name": "web",
       "path": "web"
     },
     {
-      "name": "server",
       "path": "server"
     },
     {
-      "name": "polaris",
-      "path": "."
+      "path": "mobile"
+    },
+    {
+      "path": "desktop"
     }
   ],
   "settings": {

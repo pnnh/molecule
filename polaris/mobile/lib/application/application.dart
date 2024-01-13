@@ -2,7 +2,7 @@ import 'package:polaris/application/route.dart';
 import 'package:flutter/material.dart';
 
 class MobileApplication extends StatefulWidget {
-  const MobileApplication({Key? key}) : super(key: key);
+  const MobileApplication({super.key});
 
   @override
   State<MobileApplication> createState() => _MobileApplicationState();

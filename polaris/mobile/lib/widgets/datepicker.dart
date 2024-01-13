@@ -3,7 +3,7 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 /// My app class to display the date range picker
 class MyDatePickerApp extends StatefulWidget {
-  const MyDatePickerApp({Key? key}) : super(key: key);
+  const MyDatePickerApp({super.key});
 
   @override
   MyAppState createState() => MyAppState();
