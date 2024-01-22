@@ -1,7 +1,7 @@
 
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
-#include <QtWidgets/QtWidgets>
+#include <QtWidgets>
 #include <QQuickView>
 #include <QUrl>
 #include <QDebug>
@@ -50,7 +50,8 @@ int main(int argc, char *argv[]) {
 //    QTimer::singleShot(200, []() {
 //        showWindow();
 //    });
-    app.connect(&app, SIGNAL(lastWindowClosed()), &app, SLOT(quit()));
+
+    app.connect(&app, SIGNAL(lastWindowClosed()), &app, SLOT(quit()));  // 该行似乎没有效果
 
     return app.exec();
 }
