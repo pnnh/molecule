@@ -1,4 +1,4 @@
-
+#include "app.h"
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QtWidgets>
@@ -32,7 +32,7 @@ void showWindow() {
     contentWindow->show();
 }
 
-int main(int argc, char *argv[]) {
+int runApp(int argc, char *argv[]) {
     QApplication app(argc, argv);
     //qmlRegisterType<VideoListModel>("an.qt.CModel", 1, 0, "VideoListModel");
 
