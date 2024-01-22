@@ -12,7 +12,7 @@ include_directories(src/include)
 
 include_directories(module)
 
-find_package(Qt6 COMPONENTS Core Quick Gui QuickControls2 Sql REQUIRED)
+find_package(Qt6 COMPONENTS Core Qml Quick Gui QuickControls2 Sql Widgets REQUIRED)
 qt_standard_project_setup(REQUIRES 6.5)
 
 set(PROJECT_SOURCES
@@ -25,29 +25,34 @@ set(PROJECT_SOURCES
         src/models/videoListModel.cc
         src/models/videoListModel.h
         src/models/sqliteModel.cc
-        src/models/sqliteModel.h)
+        src/models/sqliteModel.h
+        src/macos/checkeredwindow.cpp
+        src/macos/checkeredwindow.h
+        src/macos/macwindow.h
+        src/macos/macwindow.mm
+)
 
 qt6_add_executable(polaris-desktop
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES})
 
 target_link_libraries(polaris-desktop
-        PRIVATE Qt6::Core Qt6::Gui Qt6::Quick Qt6::QuickControls2 Qt6::Sql)
+        PRIVATE Qt6::Core Qt6::Qml Qt6::Gui Qt6::Quick Qt6::QuickControls2 Qt6::Sql
+        Qt6::Widgets
+        "-framework AppKit")
 
-qt6_add_qml_module(polaris-desktop 
+qt6_add_qml_module(polaris-desktop
         URI quick
         VERSION 1.0
-        SOURCES
-        src/include/mytype.h
-        src/models/mytype.cc
         QML_FILES
-        src/module/Main.qml
-        src/module/list_videos.qml
-        src/module/App.qml
-        src/module/Topbar.qml
-        src/module/FxScrollBar.qml
-        src/module/TaskList.qml
-        src/module/NavList.qml
+        content/Main.qml
+        content/list_videos.qml
+        content/App.qml
+        content/Topbar.qml
+        content/FxScrollBar.qml
+        content/TaskList.qml
+        content/NavList.qml
+        content/test.qml
         RESOURCES
-        src/assets/images/flag-fill.png
-        src/assets/images/files.svg)
+        content/assets/images/flag-fill.png
+        content/assets/images/files.svg)
