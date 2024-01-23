@@ -6,7 +6,6 @@
 #include <QUrl>
 #include <QDebug>
 
-#include "macos/checkeredwindow.h"
 #include "macos/macwindow.h"
 #include "utils/md5.h"
 #include "models/videoListModel.h"
@@ -15,15 +14,10 @@
 
 void showWindow() {
 
-    // Create the application content windows
-    // auto contentWindow = new CheckeredWindow();
-    // contentWindow->setColor(QColor(10, 60, 130));
     auto contentWindow = new QQuickView();
-    //contentWindow -> setSurfaceType(QSurface::OpenGLSurface);
     const QUrl url(QStringLiteral(u"qrc:/qt/qml/quick/content/test.qml"));
     contentWindow->setSource(url);
     contentWindow->setResizeMode(QQuickView::SizeRootObjectToView);
-    //contentWindow -> setColor(QColor(10, 60, 130));
     contentWindow->resize(400, 400);
 
     MacWindow *macWindow = new MacWindow(contentWindow);
@@ -51,7 +45,7 @@ int runApp(int argc, char *argv[]) {
 //        showWindow();
 //    });
 
-    app.connect(&app, SIGNAL(lastWindowClosed()), &app, SLOT(quit()));  // 该行似乎没有效果
+    //app.connect(&app, SIGNAL(lastWindowClosed()), &app, SLOT(quit()));  // 该行似乎没有效果
 
     return app.exec();
 }

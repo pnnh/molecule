@@ -27,14 +27,11 @@ set(PROJECT_SOURCES
         src/models/videoListModel.h
         src/models/sqliteModel.cc
         src/models/sqliteModel.h
-        src/macos/checkeredwindow.cpp
-        src/macos/checkeredwindow.h
         src/macos/macwindow.h
         src/macos/macwindow.mm
         src/macos/main.swift
         src/macos/AppDelegate.swift
         src/macos/ViewController.swift
-        src/macos/JFProgrammaticallyViewController.swift
         src/macos/WindowDelegate.swift
 )
 
