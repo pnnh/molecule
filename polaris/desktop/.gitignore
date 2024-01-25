@@ -3,3 +3,4 @@ build-*
 cmake-build-*
 CMakeLists.txt.user
 install/
+.cache/

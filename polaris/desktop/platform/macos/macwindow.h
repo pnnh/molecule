@@ -2,8 +2,8 @@
 #ifndef MACOS_MAC_WINDOW_H
 #define MACOS_MAC_WINDOW_H
 
-#include <QtCore/QtCore>
-#include <QtGui/QtGui>
+#include <QtCore>
+#include <QtGui>
 
 Q_FORWARD_DECLARE_OBJC_CLASS(NSWindow);
 

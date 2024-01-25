@@ -7,29 +7,24 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-include_directories(src)
-include_directories(src/include)
-
-include_directories(module)
-
 find_package(Qt6 COMPONENTS Core Qml Quick Gui QuickControls2 Sql Widgets REQUIRED)
 qt_standard_project_setup(REQUIRES 6.5)
 
 set(PROJECT_SOURCES
-        src/main.cpp
-        src/utils/md5.cc
-        src/utils/md5.h
-        src/wasm/wasm.h
-        src/sqlite/sqlite.cc
-        src/sqlite/sqlite.h
-        src/models/videoListModel.cc
-        src/models/videoListModel.h
-        src/models/sqliteModel.cc
-        src/models/sqliteModel.h
-        src/macos/macwindow.h
-        src/macos/macwindow.mm
-        src/macos/WindowController.mm
-        src/macos/WindowController.h
+        main.cpp
+        utils/md5.cc
+        utils/md5.h
+        wasm/wasm.h
+        sqlite/sqlite.cc
+        sqlite/sqlite.h
+        models/videoListModel.cc
+        models/videoListModel.h
+        models/sqliteModel.cc
+        models/sqliteModel.h
+        platform/macos/macwindow.h
+        platform/macos/macwindow.mm
+        platform/macos/WindowController.mm
+        platform/macos/WindowController.h
 )
 
 qt6_add_executable(polaris-desktop
