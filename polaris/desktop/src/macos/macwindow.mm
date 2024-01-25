@@ -1,4 +1,5 @@
 #include "macwindow.h"
+#import "WindowController.h"
 #import <AppKit/AppKit.h>
 
 MacWindow::MacWindow(QWindow *window)
@@ -13,7 +14,7 @@ void MacWindow::createNSWindow() {
     auto styleMask = NSWindowStyleMaskTitled | NSWindowStyleMaskClosable |
                      NSWindowStyleMaskMiniaturizable | NSWindowStyleMaskResizable;
 
-    NSRect frame = NSMakeRect(200, 200, 320, 200);
+    NSRect frame = NSMakeRect(200, 200, 1024, 688);
     m_nsWindow =
             [[NSWindow alloc] initWithContentRect:frame
                                         styleMask:styleMask
@@ -22,10 +23,16 @@ void MacWindow::createNSWindow() {
 
     m_nsWindow.titleVisibility = NSWindowTitleVisible;
     m_nsWindow.title = m_titleText.toNSString();
+    m_nsWindow.releasedWhenClosed = NO;
+    [m_nsWindow center];
 
     NSToolbar *toolbar = [[NSToolbar alloc] initWithIdentifier:@"main"];
     m_nsWindow.toolbar = toolbar;
     m_nsWindow.contentView = (__bridge NSView *) reinterpret_cast<void *>(m_window->winId());
+    m_nsWindow.titlebarAppearsTransparent = YES;
+    m_nsWindow.title = @"北极星笔记";
+    auto *controller = [[MacWindowController alloc] initWithWindow:m_nsWindow];
+    m_nsWindow.delegate = controller;
 }
 
 void MacWindow::setVisible(bool visible) {

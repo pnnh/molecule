@@ -16,8 +16,7 @@ find_package(Qt6 COMPONENTS Core Qml Quick Gui QuickControls2 Sql Widgets REQUIR
 qt_standard_project_setup(REQUIRES 6.5)
 
 set(PROJECT_SOURCES
-        src/common/app.h
-        src/common/app.cpp
+        src/main.cpp
         src/utils/md5.cc
         src/utils/md5.h
         src/wasm/wasm.h
@@ -29,10 +28,8 @@ set(PROJECT_SOURCES
         src/models/sqliteModel.h
         src/macos/macwindow.h
         src/macos/macwindow.mm
-        src/macos/main.swift
-        src/macos/AppDelegate.swift
-        src/macos/ViewController.swift
-        src/macos/WindowDelegate.swift
+        src/macos/WindowController.mm
+        src/macos/WindowController.h
 )
 
 qt6_add_executable(polaris-desktop
@@ -48,14 +45,12 @@ qt6_add_qml_module(polaris-desktop
         URI quick
         VERSION 1.0
         QML_FILES
-        content/Main.qml
         content/list_videos.qml
         content/App.qml
         content/Topbar.qml
         content/FxScrollBar.qml
         content/TaskList.qml
         content/NavList.qml
-        content/test.qml
         RESOURCES
         content/assets/images/flag-fill.png
         content/assets/images/files.svg)
