@@ -7,10 +7,6 @@
     {
       "name": "authorization",
       "path": "server/authorization"
-    },
-    {
-      "name": "portal",
-      "path": "."
     }
   ],
   "settings": {

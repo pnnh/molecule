@@ -1,6 +1,6 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Molecule", "Molecule\Molecule.csproj", "{63A2BFD9-A201-4D66-85DF-2C99D338FDA6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Molecule", "Molecule\Molecule.csproj", "{63A2BFD9-A201-4D66-85DF-2C99D338FDA6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Molecule.Tests", "Molecule.Tests\Molecule.Tests.csproj", "{F21FF37A-61A5-48B7-BBD4-A909E668EDB7}"
 EndProject
