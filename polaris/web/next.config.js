@@ -3,10 +3,10 @@ const path = require('path')
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'standalone',
-  experimental: {
-    esmExternals: 'loose',
-    webpackBuildWorker: true,
-  },
+  // experimental: {
+  //   esmExternals: true,
+  //   webpackBuildWorker: true,
+  // },
   reactStrictMode: true,
   images: {
     remotePatterns: [

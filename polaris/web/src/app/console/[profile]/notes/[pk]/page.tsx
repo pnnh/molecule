@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { ArticleModel, TocItem } from '@/models/article'
 import styles from './page.module.scss'
 import { BuildBodyHtml } from '@/components/common/article'
-import { generatorRandomString } from '~/@pnnh/stele/esm/utils/string'
+import { generatorRandomString } from '~/@pnnh/stele'
 import { TWButton } from '@/components/client/controls'
 import { ArticleService } from '@/services/article'
 

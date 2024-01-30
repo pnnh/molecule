@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import axios from 'axios'
-import { decodeBase64String } from '~/@pnnh/stele/esm/utils/base64'
+import { decodeBase64String } from '~/@pnnh/stele'
 import { loadServerConfig } from '@/services/server/config'
 
 interface OAuth2Token {

@@ -8,13 +8,16 @@ import { NoData } from '@/components/common/empty'
 import { PSImage } from '@/components/client/image'
 import { getIdentity } from '@/services/auth'
 import { formatRfc3339 } from '@/utils/datetime'
-import { subString } from '~/@pnnh/stele/esm/utils/string'
+import { STSubString } from '~/@pnnh/stele'
 import { loadServerConfig } from '@/services/server/config'
 import { ArticleService, articleContentViewUrl } from '@/services/article'
+import { helloFromSteleServer } from '@pnnh/stele/server'
 
 export default async function Home ({ searchParams }: {
   searchParams: Record<string, string>
 }) {
+  // todo 测试目的稍后移除
+  helloFromSteleServer()
   let page = Number(searchParams.page)
   if (isNaN(page)) {
     page = 1
@@ -49,7 +52,7 @@ function MiddleBody (props: { articles: { range: ArticleModel[], count: number }
         <div className={styles.title}>
           <Link href={articleContentViewUrl(model.profile_name, model.channel_name, model.path, model.name)}>{model.title}</Link></div>
         <div className={styles.description} title={model.description}>
-          {subString(model.description, 100)}
+          {STSubString(model.description, 100)}
         </div>
         <div className={styles.action}>
           <span><i className="bi bi-eye"></i>&nbsp;{model.discover}</span>&nbsp;

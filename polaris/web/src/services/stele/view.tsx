@@ -1,6 +1,6 @@
 import { TocItem } from '@/models/article'
 import styles from './view.module.scss'
-import { generatorRandomString } from '~/@pnnh/stele/esm/utils/string'
+import { generatorRandomString } from '~/@pnnh/stele'
 import { CodeBlockNode, HeadingNode, ParagraphNode, SteleNode } from './core'
 
 export function buildNodeView (tocList: Array<TocItem>, node: SteleNode) {

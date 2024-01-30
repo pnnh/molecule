@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from './page.module.scss'
 import Link from 'next/link'
-import { calcPagination } from '~/@pnnh/stele/esm/utils/helpers'
+import { calcPagination, STSubString } from '~/@pnnh/stele'
 import { PaginationPartial } from '@/components/common/pagination'
 import { replaceSearchParams } from '@/utils/query'
 import queryString from 'query-string'
@@ -9,7 +9,6 @@ import { ArticleModel } from '@/models/article'
 import { NoData } from '@/components/common/empty'
 import { PSImage } from '@/components/client/image'
 import { formatRfc3339 } from '@/utils/datetime'
-import { subString } from '~/@pnnh/stele/esm/utils/string'
 import { loadServerConfig } from '@/services/server/config'
 import { ArticleService, articleContentViewUrl } from '@/services/article'
 import { PLSelectResult } from '@/models/common-result'
@@ -117,7 +116,7 @@ function MiddleBody ({ selectResult }: { selectResult: PLSelectResult<ArticleMod
         <div className={styles.title}>
           <Link href={articleContentViewUrl(model.profile_name, model.channel_name, model.path, model.name)}>{model.title}</Link></div>
         <div className={styles.description} title={model.description}>
-          {subString(model.description, 100)}
+          {STSubString(model.description, 100)}
         </div>
         <div className={styles.action}>
           <span><i className="bi bi-eye"></i>&nbsp;{model.discover}</span>&nbsp;

@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import styles from './pagination.module.scss'
-import { Pagination } from '~/@pnnh/stele/esm/utils/helpers'
+import { Pagination } from '~/@pnnh/stele'
 
 export function PaginationPartial (props: {pagination:Pagination, calcUrl:(page:number)=>string}) {
   const pagination = props.pagination

@@ -10,7 +10,7 @@ import { ChannelModel } from '@/models/channel'
 import { ArticleModel } from '@/models/article'
 import { PaginationPartial } from '@/components/common/pagination'
 import { replaceSearchParams } from '@/utils/query'
-import { calcPagination } from '~/@pnnh/stele/esm/utils/helpers'
+import { calcPagination } from '~/@pnnh/stele'
 import { ArticleService } from '@/services/article'
 
 export function Table (props: {

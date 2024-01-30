@@ -1,6 +1,6 @@
 import styles from './page.module.scss'
 import React from 'react'
-import { calcPagination } from '~/@pnnh/stele/esm/utils/helpers'
+import { calcPagination } from '~/@pnnh/stele'
 import Link from 'next/link'
 import { ArticleModel } from '@/models/article'
 import { NoData } from '@/components/common/empty'
