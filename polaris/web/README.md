@@ -1,9 +1,9 @@
 
-## 手动进行brotli压缩
+## 如何构建
 
 ```shell
-npm i -g brotli-cli   # 安装压缩工具
-brotli-cli compress qt-canvas.wasm
+npm run setup --workspaces
+npm run build --workspaces
 ```
  
 ## 更新依赖包版本
