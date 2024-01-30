@@ -16,3 +16,4 @@ build/
 *.js
 *.js.map
 esm/
+build/

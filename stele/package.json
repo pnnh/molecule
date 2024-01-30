@@ -11,7 +11,39 @@
     "rollup": "rollup --config",
     "publish": "npm run build && npm publish"
   },
-  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./lib/index.common.mjs",
+      "require": "./lib/index.common.cjs"
+    },
+    "./server": {
+      "import": "./lib/index.server.mjs",
+      "require": "./lib/index.server.cjs"
+    },
+    "./client": {
+      "import": "./lib/index.client.mjs",
+      "require": "./lib/index.client.cjs"
+    }
+  },
+  "files": [
+    "lib"
+  ],
+  "main": "./lib/index.common.cjs",
+  "module": "./lib/index.common.mjs",
+  "types": "./lib/index.common.d.ts",
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./lib/index.common.d.ts"
+      ],
+      "server": [
+        "./lib/index.server.d.ts"
+      ],
+      "client": [
+        "./lib/index.client.d.ts"
+      ]
+    }
+  },
   "dependencies": {
     "@rollup/plugin-alias": "^4.0.3",
     "@rollup/plugin-strip": "^3.0.2",
@@ -29,6 +61,7 @@
     "@rollup/plugin-commonjs": "^24.0.1",
     "@rollup/plugin-json": "^6.0.1",
     "@rollup/plugin-node-resolve": "^15.0.1",
+    "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^11.0.0",
     "@rollup/plugin-url": "^8.0.1",
     "@types/estree": "^1.0.0",
@@ -41,6 +74,7 @@
     "@typescript-eslint/eslint-plugin": "^5.6.0",
     "@typescript-eslint/parser": "^5.6.0",
     "@vitejs/plugin-react": "^3.1.0",
+    "autoprefixer": "^10.4.17",
     "esbuild": "^0.17.15",
     "eslint": "^8.35.0",
     "eslint-config-next": "^13.2.1",

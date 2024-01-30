@@ -13,9 +13,9 @@
     "allowSyntheticDefaultImports": true,
     "rootDir": "src",
     "baseUrl": ".",
-    "outDir": "esm",
+    "outDir": "dts",
     "declaration": true,
-    "declarationDir": "esm",
+    "declarationDir": "dts",
     "emitDeclarationOnly": false,
     "paths": {
       "@/*": [
@@ -29,7 +29,7 @@
   },
   "include": [
     "src/**/*",
-    "src/index.tsx"
+    "src/index.server.tsx"
   ],
   "exclude": [
     "dist",
