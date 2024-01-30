@@ -9,11 +9,14 @@
     "fix": "eslint --fix --ext .js,.jsx,.ts,.tsx .",
     "analyze": "ENV=production ANALYZE=true next build"
   },
+  "workspaces": [
+    "../../stele",
+    "./"
+  ],
   "dependencies": {
     "@fluentui/react-components": "^9.21.0",
     "@fontsource/roboto": "^5.0.4",
     "@lit-labs/react": "^2.0.1",
-    "@pnnh/stele": "file:../../stele",
     "@reduxjs/toolkit": "^1.9.5",
     "@simplewebauthn/browser": "^8.0.2",
     "await-lock": "^2.2.2",
