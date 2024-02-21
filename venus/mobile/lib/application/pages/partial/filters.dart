@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class VFiltersWidget extends ConsumerWidget {
-  const VFiltersWidget({Key? key}) : super(key: key);
+  const VFiltersWidget({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -13,9 +13,9 @@ class VFiltersWidget extends ConsumerWidget {
       Container(
         height: 32,
         padding: const EdgeInsets.only(left: 16, right: 16),
-        child: Row(
+        child: const Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: const [
+          children: [
             Text(
               "筛选",
               style: TextStyle(fontSize: 14),

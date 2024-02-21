@@ -2,7 +2,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sharing_intent/model/sharing_file.dart';
 import 'package:go_router/go_router.dart';
@@ -11,7 +10,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:venus/application/providers/emotion.dart';
 
 class ShareReceivePage extends StatelessWidget {
-  const ShareReceivePage({Key? key}) : super(key: key);
+  const ShareReceivePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +19,7 @@ class ShareReceivePage extends StatelessWidget {
 }
 
 class _ShareReceivePageState extends ConsumerWidget {
-  const _ShareReceivePageState({Key? key}) : super(key: key);
+  const _ShareReceivePageState();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -77,7 +76,7 @@ class _ShareReceivePageState extends ConsumerWidget {
                 ),
                 Center(
                   child: Container(
-                      margin: EdgeInsets.symmetric(horizontal: 24),
+                      margin: const EdgeInsets.symmetric(horizontal: 24),
                       child: Text('Sharing data: \n${receivedList.join("\n\n")}\n')),
                 )
               ],

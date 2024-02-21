@@ -11,7 +11,7 @@ import 'package:venus/utils/utils.dart';
 final StateProvider<String> directoryProvider = StateProvider((_) => "");
 
 class VFoldersWidget extends ConsumerWidget {
-  const VFoldersWidget({Key? key}) : super(key: key);
+  const VFoldersWidget({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:loading_indicator/loading_indicator.dart';
  
 class PageLoadingWidget extends StatelessWidget {
-  const PageLoadingWidget({Key? key}) : super(key: key);
+  const PageLoadingWidget({super.key});
 
   @override
   Widget build(BuildContext context) { 

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class HeaderWidget extends StatelessWidget {
-  const HeaderWidget({Key? key}) : super(key: key);
+  const HeaderWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +34,8 @@ class HeaderWidget extends StatelessWidget {
                         children: [
                           Container(
                               padding: EdgeInsets.zero,
-                              child: Row(
-                                children: const [
+                              child: const Row(
+                                children: [
                                   Image(
                                     height: 32,
                                     width: 32,

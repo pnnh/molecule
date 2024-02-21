@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 
 class MainApplication extends StatefulWidget {
-  const MainApplication({Key? key}) : super(key: key);
+  const MainApplication({super.key});
 
   @override
   State<MainApplication> createState() => _MainApplicationState();

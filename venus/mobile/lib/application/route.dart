@@ -27,14 +27,14 @@ final GoRouter globalRouter = GoRouter(
           name: 'share',
           path: 'share',
           builder: (BuildContext context, GoRouterState state) {
-            return ShareSendPage();
+            return const ShareSendPage();
           },
         ),
         GoRoute(
           name: 'receive',
           path: 'receive',
           builder: (BuildContext context, GoRouterState state) {
-            return ShareReceivePage();
+            return const ShareReceivePage();
           },
         ),
       ],

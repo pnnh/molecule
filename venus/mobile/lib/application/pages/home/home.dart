@@ -15,7 +15,7 @@ import 'package:flutter_sharing_intent/model/sharing_file.dart';
 import 'dart:async';
 
 class HomePage extends ConsumerStatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   HomePageState createState() => HomePageState();
@@ -109,7 +109,7 @@ class HomePageState extends ConsumerState<HomePage> {
 }
 
 class HomeBody extends StatelessWidget {
-  const HomeBody({Key? key}) : super(key: key);
+  const HomeBody({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -123,11 +123,11 @@ class HomeBody extends StatelessWidget {
                 debugPrint("点击导入图片");
                 await requestPermission();
                 await pickImage();
-              }, child: Text("导入图片"),)
+              }, child: const Text("导入图片"),)
             ],
           ),
         ),
-        SizedBox(height: 16,),
+        const SizedBox(height: 16,),
         Expanded(child: FutureBuilder(
             builder: (context, snapshot) {
               if (snapshot.hasData) {

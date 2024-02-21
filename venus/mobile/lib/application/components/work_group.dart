@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'avatar.dart';
 
 class WorkGroupWidget extends StatefulWidget {
-  const WorkGroupWidget({Key? key}) : super(key: key);
+  const WorkGroupWidget({super.key});
 
   @override
   State<WorkGroupWidget> createState() => _WorkGroupWidget();
