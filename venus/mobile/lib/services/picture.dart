@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
-import 'package:photo_manager/photo_manager.dart';
 import 'package:venus/services/models/folder.dart';
 import 'package:venus/utils/utils.dart';
 
@@ -46,32 +45,22 @@ Future<List<PictureModel>> selectPicturesByFolder(FolderModel folder) async {
 }
 
 void insertPictureIfNotExists(PictureModel model, String folderPk) async {
-  await DBHelper.instance.transactionAsync((database) {
-    var sqlText =
-        '''select pk from pictures where folder = ? and basename = ?;''';
-    var list = database.select(sqlText, [folderPk, model.basename]);
-    if (list.isNotEmpty) {
-      return false;
-    }
-
-    // 插入图片数据
-    var sqlTextInsertPicture = '''
+  var commands = <String, List<Object?>>{};
+  var sqlText =
+  '''select pk from pictures where folder = ? and basename = ?;''';
+  commands[sqlText] = [folderPk, model.basename];
+  // 插入图片数据
+  var sqlTextInsertPicture = '''
 insert into pictures(pk, basename, folder)
 values(?, ?, ?);
 ''';
-    database
-        .execute(sqlTextInsertPicture, [model.pk, model.basename, folderPk]);
-
-    // 插入索引数据
-    var sqlTextInsertSearches = '''
+  commands[sqlTextInsertPicture] = [model.pk, model.basename, folderPk];
+  // 插入索引数据
+  var sqlTextInsertSearches = '''
 insert into searches(pk, header, body)
 values(?, ?, ?);
 ''';
-    database
-        .execute(sqlTextInsertSearches, [model.pk, 'picture', model.basename]);
-
-    return true;
-  });
+  commands[sqlTextInsertSearches] = [model.pk, 'picture', model.basename];
 }
 
 Future<void> scanPicturesWorker(FolderModel folderModel) async {
@@ -104,14 +93,15 @@ Future<void> scanPicturesWorker(FolderModel folderModel) async {
 }
 
 Future<bool> requestPermission() async {
-  final PermissionState ps = await PhotoManager.requestPermissionExtend();
-  if (ps.isAuth) {
-    logger.d("requestPermission: $ps");
-    return true;
-  } else {
-    logger.d("requestPermission2222: $ps");
-    return false;
-  }
+  // final PermissionState ps = await PhotoManager.requestPermissionExtend();
+  // if (ps.isAuth) {
+  //   logger.d("requestPermission: $ps");
+  //   return true;
+  // } else {
+  //   logger.d("requestPermission2222: $ps");
+  //   return false;
+  // }
+  return true;
 }
 
 Future<List<PictureModel>> selectImages() async {

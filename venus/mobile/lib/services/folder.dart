@@ -47,17 +47,13 @@ Future<void> updateFilesCount(String pk, int count) async {
 }
 
 Future<void> insertFolder(FolderModel model) async {
-  await DBHelper.instance.transactionAsync((database)
-  {
-      var sqlTextInsertFolder = '''
+  var sqlTextInsertFolder = '''
 insert into folders(pk, path, count)
 values(?, ?, 0);
 ''';
-      var pk = generateRandomString(8);
-
-      database.execute(sqlTextInsertFolder, [pk, model.path]);
-      return true;
-  });
+  var pk = generateRandomString(8);
+  var dbInstance = DBHelper.instance;
+  await dbInstance.executeAsync(sqlTextInsertFolder, [pk, model.path]);
 }
 
 Future<List<FolderModel>> queryFolders(String a) async {
