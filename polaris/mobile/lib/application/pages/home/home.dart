@@ -1,6 +1,8 @@
 
 import 'package:flutter/material.dart';
 import './list.dart';
+import 'partials/appbar.dart';
+import 'partials/appbody.dart';
 
 
 class HomePage extends StatelessWidget {
@@ -8,44 +10,12 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("北极星"),
-      ),
-      body: const SafeArea(
-        child: _HomeBody(),
+    return const Scaffold(
+      appBar: AppbarWidget(),
+      body: SafeArea(
+        child: AppBodyWidget(),
       ),
     );
   }
 }
 
-class _HomeBody extends StatelessWidget {
-  const _HomeBody();
-
-  @override
-  Widget build(BuildContext context) {
-    return const _DesktopHomeBodyWidgetState();
-  }
-}
-
-class _DesktopHomeBodyWidgetState extends StatelessWidget {
-  const _DesktopHomeBodyWidgetState();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        color: Colors.white,
-        child: Column(
-          children: [
-            Expanded(
-                child: GestureDetector(
-                    onTapDown: (detail) {
-                      debugPrint("out click");
-                    },
-                    child: const Row(children: [
-                      TodoListWidget()
-                    ])))
-          ],
-        ));
-  }
-}

@@ -112,7 +112,7 @@ class _ArticleReadPageState extends State<ArticleReadPage> {
                                 padding:const  EdgeInsets.all(8),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: MarkdownGenerator(data: model.body).widgets ?? [],
+                                  children: MarkdownGenerator().buildWidgets(model.body) ?? [],
                                 ),
                               ))
                         ],
