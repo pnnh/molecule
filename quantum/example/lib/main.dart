@@ -18,14 +18,11 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   String _platformVersion = 'Unknown';
-  String _randomString = "";
-  late int sumResult;
 
   @override
   void initState() {
     super.initState();
     initPlatformState();
-    sumResult = quantum.sum(1, 2);
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.
@@ -59,25 +56,13 @@ class _MyAppState extends State<MyApp> {
           ),
           body: Column(children: [
             SizedBox(
-              child: Text('randomString: $_randomString'),
-            ),
-            SizedBox(
               child: Text('Running on: $_platformVersion\n'),
             ),
             SizedBox(
-              child: Text('quantum sum is: $sumResult\n'),
-            ),
-            SizedBox(
                 child: TextButton(
-                    child: Text('Click'),
+                    child: const Text('Click'),
                     onPressed: () async {
-                      // var randomString = await quantum.Quantum.randomString();
-                      // setState(() {
-                      //   _randomString = randomString;
-                      // });
-                      var fullPath = await getDatabaseFullPath();
-                      var dbResult = quantum.openDatabase(fullPath);
-                      debugPrint("dbResult: $dbResult");
+                      quantum.Quantum.pluginSayHello();
                     }))
           ])),
     );

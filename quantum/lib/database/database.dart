@@ -1,64 +1,42 @@
-//import 'package:sqflite/sqflite.dart';
 
-class DataStore {
-  // final String fullPath;
-  // //final OnDatabaseCreateFn? onCreate;
-  // final int? version;
+import 'dart:ffi';
+import 'dart:io';
+import 'dart:ffi' as ffi;
+import 'dart:io' show Platform, Directory;
 
-  // DataStore(this.fullPath, {this.onCreate, this.version}) {}
-  //
-  // Future<Database> _getDatabase() async {
-  //   var db = openDatabase(
-  //     fullPath,
-  //     onCreate: onCreate,
-  //     version: version,
-  //   );
-  //   return db;
-  // }
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
+import 'package:path_provider/path_provider.dart';
 
-  // Future<Map<String, dynamic>?> getByPk(String table, String pk) async {
-  //   final db = await _getDatabase();
-  //
-  //   final List<Map<String, dynamic>> maps =
-  //       await db.query(table, where: "pk=?", whereArgs: [pk]);
-  //   if (maps.isNotEmpty) {
-  //     return maps.first;
-  //   }
-  //   return null;
-  // }
+Future<DynamicLibrary> openNativeLibrary(String libName) async {
+  Directory directory = await getApplicationDocumentsDirectory();
+  debugPrint("directory: $directory");
+  var libDir = await getLibraryDirectory();
+  debugPrint("libDir: $libDir");
+  debugPrint("current dir: ${Directory.current}");
+  if (Platform.isMacOS || Platform.isIOS) {
+    return DynamicLibrary.open('$libName.framework/$libName');
+    //return DynamicLibrary.process();
+    //return DynamicLibrary.executable();
+  }
+  if (Platform.isAndroid || Platform.isLinux) {
+    return DynamicLibrary.open('lib$libName.so');
+  }
+  if (Platform.isWindows) {
+    return DynamicLibrary.open('$libName.dll');
+  }
+  throw UnsupportedError('Unknown platform: ${Platform.operatingSystem}');
+}
 
-  // Future<List<Map<String, dynamic>>> query(String table,
-  //     {bool? distinct,
-  //     List<String>? columns,
-  //     String? where,
-  //     List<Object?>? whereArgs,
-  //     String? groupBy,
-  //     String? having,
-  //     String? orderBy,
-  //     int? limit,
-  //     int? offset}) async {
-  //   final db = await _getDatabase();
-  //
-  //   final List<Map<String, dynamic>> maps = await db.query(table,
-  //       columns: columns,
-  //       where: where,
-  //       whereArgs: whereArgs,
-  //       groupBy: groupBy,
-  //       having: having,
-  //       orderBy: orderBy,
-  //       limit: limit,
-  //       offset: offset);
-  //
-  //   return maps;
-  // }
+typedef HelloWorldFunc = ffi.Void Function();
+typedef HelloWorld = void Function();
 
-  // Future<void> insert(String table, Map<String, Object?> values) async {
-  //   final db = await _getDatabase();
-  //
-  //   await db.insert(
-  //     table,
-  //     values,
-  //     conflictAlgorithm: ConflictAlgorithm.replace,
-  //   );
-  // }
+
+void nativeSayHello() async {
+  final dylib = await openNativeLibrary("quantum_native");
+
+  final HelloWorld hello = dylib
+      .lookup<ffi.NativeFunction<HelloWorldFunc>>('hello_world')
+      .asFunction();
+  hello();
 }
