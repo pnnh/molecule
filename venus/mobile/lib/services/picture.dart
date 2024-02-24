@@ -1,16 +1,15 @@
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
-import 'package:venus/services/models/folder.dart';
+import 'package:venus/models/folder.dart';
 import 'package:venus/utils/utils.dart';
 
 import 'package:venus/utils/image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path/path.dart';
 
-import '../utils/logger.dart';
 import 'database.dart';
 import 'folder.dart';
-import 'models/picture.dart';
+import '../models/picture.dart';
 
 Future<List<PictureModel>> searchPictures(String a) async {
   var sqlText = '''select pk, header, body, 

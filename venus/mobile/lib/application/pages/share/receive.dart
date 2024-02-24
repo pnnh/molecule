@@ -3,11 +3,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_sharing_intent/model/sharing_file.dart';
 import 'package:go_router/go_router.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:venus/application/providers/emotion.dart';
 
 class ShareReceivePage extends StatelessWidget {
   const ShareReceivePage({super.key});
@@ -23,7 +21,6 @@ class _ShareReceivePageState extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var receivedList = ref.watch(shareReceiveProvider);
     return Scaffold(
       // appBar: AppBar(
       //   title: const Text("Venus"),
@@ -39,11 +36,11 @@ class _ShareReceivePageState extends ConsumerWidget {
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                     ),
-                    itemCount: receivedList.length,
+                    //itemCount: receivedList.length,
                     itemBuilder: (BuildContext context, int index) {
 
-                      var filePath = receivedList[index].value;
-                      return buildImageCard(context, filePath);
+                      // var filePath = receivedList[index].value;
+                      return buildImageCard(context, "");
                     }
                 )),
                 const SizedBox(height: 16,),
@@ -52,7 +49,7 @@ class _ShareReceivePageState extends ConsumerWidget {
                       children: [
                         ElevatedButton(
                           onPressed: () async {
-                            await savePictures(receivedList);
+                            //await savePictures(receivedList);
                             context.pop();
                           },
                           child: const Text("导入"),
@@ -77,7 +74,7 @@ class _ShareReceivePageState extends ConsumerWidget {
                 Center(
                   child: Container(
                       margin: const EdgeInsets.symmetric(horizontal: 24),
-                      child: Text('Sharing data: \n${receivedList.join("\n\n")}\n')),
+                      child: const Text('Sharing data')),
                 )
               ],
             ),
@@ -111,7 +108,7 @@ Widget buildImageCard(BuildContext context, String? filePath) {
   );
 }
 
-Future savePictures(List<SharedFile> receivedList) async {
+Future savePictures(List<String> receivedList) async {
   Directory appDocDir = await getApplicationDocumentsDirectory();
   String appDocPath = appDocDir.path;
   var homeDir = appDocPath;
@@ -124,8 +121,8 @@ Future savePictures(List<SharedFile> receivedList) async {
   }
 
   for (var o in receivedList) {
-    var filePath = o.value;
-    if (filePath == null) {
+    var filePath = o;
+    if (filePath == "") {
       continue;
     }
     var file = File(filePath);

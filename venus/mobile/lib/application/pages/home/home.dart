@@ -2,16 +2,12 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:venus/application/pages/folders/folders.dart';
 import 'package:venus/application/pages/tools/tools.dart';
-import 'package:venus/application/providers/emotion.dart';
 import 'package:venus/services/image/image.dart';
-import 'package:venus/services/models/picture.dart';
+import 'package:venus/models/picture.dart';
 import 'package:venus/services/picture.dart';
 import 'package:venus/utils/logger.dart';
-import 'package:flutter_sharing_intent/flutter_sharing_intent.dart';
-import 'package:flutter_sharing_intent/model/sharing_file.dart';
 import 'dart:async';
 
 class HomePage extends ConsumerStatefulWidget {
@@ -34,33 +30,33 @@ class HomePageState extends ConsumerState<HomePage> {
   @override
   void initState() {
     super.initState();
-    _intentDataStreamSubscription = FlutterSharingIntent.instance.getMediaStream()
-        .listen((List<SharedFile> value) {
-
-      ref.read(shareReceiveProvider.notifier)
-          .update((state) => value);
-
-      if (value.isNotEmpty) {
-        logger.d("有分享的文件");
-        context.go("/receive");
-      }
-      print("Shared: getMediaStream ${value.map((f) => f.value).join(",")}");
-    }, onError: (err) {
-      print("getIntentDataStream error: $err");
-    });
+    // _intentDataStreamSubscription = FlutterSharingIntent.instance.getMediaStream()
+    //     .listen((List<SharedFile> value) {
+    //
+    //   ref.read(shareReceiveProvider.notifier)
+    //       .update((state) => value);
+    //
+    //   if (value.isNotEmpty) {
+    //     logger.d("有分享的文件");
+    //     context.go("/receive");
+    //   }
+    //   print("Shared: getMediaStream ${value.map((f) => f.value).join(",")}");
+    // }, onError: (err) {
+    //   print("getIntentDataStream error: $err");
+    // });
 
     // For sharing images coming from outside the app while the app is closed
-    FlutterSharingIntent.instance.getInitialSharing().then((List<SharedFile> value) {
-      print("Shared: getInitialMedia ${value.map((f) => f.value).join(",")}");
-
-      ref.read(shareReceiveProvider.notifier)
-          .update((state) => value);
-
-      if (value.isNotEmpty) {
-        logger.d("有分享的文件");
-        context.go("/receive");
-      }
-    });
+    // FlutterSharingIntent.instance.getInitialSharing().then((List<SharedFile> value) {
+    //   print("Shared: getInitialMedia ${value.map((f) => f.value).join(",")}");
+    //
+    //   ref.read(shareReceiveProvider.notifier)
+    //       .update((state) => value);
+    //
+    //   if (value.isNotEmpty) {
+    //     logger.d("有分享的文件");
+    //     context.go("/receive");
+    //   }
+    // });
   }
 
 

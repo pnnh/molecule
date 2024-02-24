@@ -5,7 +5,7 @@ import 'package:uuid/uuid.dart';
 
 import '../database/image.dart';
 import '../files/files.dart';
-import '../models/picture.dart';
+import '../../models/picture.dart';
 
 Future pickImage() async {
   final ImagePicker picker = ImagePicker();

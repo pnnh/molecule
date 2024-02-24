@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'package:path/path.dart';
 import 'package:venus/services/folder.dart';
-import 'package:venus/services/models/folder.dart';
+import 'package:venus/models/folder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';

@@ -5,7 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:path/path.dart';
 import 'package:venus/application/providers/emotion.dart';
 import 'package:venus/services/folder.dart';
-import 'package:venus/services/models/folder.dart';
+import 'package:venus/models/folder.dart';
 import 'package:venus/utils/utils.dart';
 
 final StateProvider<String> directoryProvider = StateProvider((_) => "");
