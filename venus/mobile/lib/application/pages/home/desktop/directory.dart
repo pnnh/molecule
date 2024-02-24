@@ -45,7 +45,7 @@ class VSDirectoryWidget extends ConsumerWidget {
           width: double.infinity,
           padding: EdgeInsets.zero,
           child: FutureBuilder(
-            future: selectDirectories(currentAlbum.pk),
+            future: selectDirectories(currentAlbum),
             builder: (BuildContext context,
                 AsyncSnapshot<List<VSDirectoryModel>> snapshot) {
               var directoryModels = snapshot.data;
