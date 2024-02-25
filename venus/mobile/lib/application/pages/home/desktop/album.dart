@@ -17,7 +17,7 @@ class VSAlbumWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     if (albums.isEmpty) {
-      return const EmptyWidget();
+      return const VSEmptyWidget();
     }
     if (ref.watch(activeSelectAlbum).isEmpty) {
       return VSDirectoryWidget(albums.first);

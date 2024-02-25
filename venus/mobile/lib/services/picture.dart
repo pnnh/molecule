@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
+import 'package:venus/models/directory.dart';
 import 'package:venus/models/folder.dart';
 import 'package:venus/utils/utils.dart';
 
@@ -11,21 +12,39 @@ import 'database.dart';
 import 'folder.dart';
 import '../models/picture.dart';
 
-Future<List<PictureModel>> searchPictures(String a) async {
-  var sqlText = '''select pk, header, body, 
-    simple_highlight(searches, 3, '[', ']') as highlight 
-    from searches where body match jieba_query('国');''';
+Future<List<PictureModel>> selectPictures(
+    VSDirectoryModel directoryModel) async {
+  // var sqlText = '''select pk, header, body,
+  //   simple_highlight(searches, 3, '[', ']') as highlight
+  //   from searches where body match jieba_query('国');''';
 
-  var list = await DBHelper.instance.selectAsync(sqlText);
+  // var list = await DBHelper.instance.selectAsync(sqlText);
 
-  debugPrint("list ${list.length}");
+  // debugPrint("list ${list.length}");
 
   // var searchList = List.generate(list.length, (i) {
   //   return SearchModel.fromJson(list[i]);
   // });
+  var pictureList = <PictureModel>[];
 
-  return List.empty();
+  var dir = Directory(directoryModel.path);
+  var fileList = dir.listSync();
+  for (var item in fileList) {
+    if (item is File) {
+      var filename = basename(item.path);
+      var extName = extension(filename);
+      if (!isImageExt(extName)) continue;
+      pictureList.add(PictureModel(filename, filename, item.path));
+    }
+  }
+
+  return pictureList;
 }
+
+bool isImageExt(String extName) {
+  var exts = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.bmp', '.svg'];
+  return exts.contains(extName);
+} 
 
 Future<List<PictureModel>> selectPicturesByFolder(FolderModel folder) async {
   if (folder.pk.isEmpty) return List.empty();
@@ -46,7 +65,7 @@ Future<List<PictureModel>> selectPicturesByFolder(FolderModel folder) async {
 void insertPictureIfNotExists(PictureModel model, String folderPk) async {
   var commands = <String, List<Object?>>{};
   var sqlText =
-  '''select pk from pictures where folder = ? and basename = ?;''';
+      '''select pk from pictures where folder = ? and basename = ?;''';
   commands[sqlText] = [folderPk, model.basename];
   // 插入图片数据
   var sqlTextInsertPicture = '''
@@ -104,13 +123,10 @@ Future<bool> requestPermission() async {
 }
 
 Future<List<PictureModel>> selectImages() async {
-
   Directory appDocDir = await getApplicationDocumentsDirectory();
   String appDocPath = appDocDir.path;
   var homeDir = appDocPath;
   debugPrint("fullPath: $homeDir");
-
-
 
   var imagePath = join(homeDir, "images");
   final dir = Directory(imagePath);
@@ -128,10 +144,10 @@ Future<List<PictureModel>> selectImages() async {
 
       if (!isPic) continue;
       var picPk = generateRandomString(16);
-      var model = PictureModel(picPk, basename(entity.path), dirname(entity.path));
+      var model =
+          PictureModel(picPk, basename(entity.path), dirname(entity.path));
       fileList.add(model);
     }
   }
   return fileList;
-
 }

@@ -136,7 +136,7 @@ class HomeBody extends StatelessWidget {
                     itemBuilder: (BuildContext context, int index) {
 
                       var fileInfo = imageList[index];
-                      return buildImageCard(context, fileInfo.fullPath);
+                      return buildImageCard(context, fileInfo.path);
                     }
                 );
 

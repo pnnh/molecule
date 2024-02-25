@@ -15,10 +15,7 @@ class PictureModel {
       _$PictureModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$PictureModelToJson(this);
-
-  get fullPath {
-    return join(path, basename);
-  }
+ 
 }
 
 @JsonSerializable()
