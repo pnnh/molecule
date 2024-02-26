@@ -1,4 +1,0 @@
-LIBRARY   quantum
-EXPORTS
-   open_database
-   hello_world

@@ -19,6 +19,7 @@ class Quantum {
   }
 
   static void pluginSayHello() {
-    nativeSayHello();
+    //nativeSayHello();
+    QADatabase.instance.pluginSayHello();
   }
 }

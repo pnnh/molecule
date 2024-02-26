@@ -8,5 +8,6 @@ int open_database(const char* path) {
 
 void hello_world()
 {
+    std::cerr << "Hello CPP" << std::endl;
     printf("Hello World\n");
 }

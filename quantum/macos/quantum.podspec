@@ -26,7 +26,7 @@ A new flutter plugin project.
 #   s.library  = 'hello'
 #   s.library = 'c++', 'stdc++', 'z'
  #s.vendored_frameworks = '../bundle/lib/quantum_native.framework'
- s.vendored_frameworks = 'quantum_native.framework'
+ s.vendored_frameworks = 'frameworks/lib/quantum_native.framework'
 #   s.library = 'quantum_native'
 #   s.pod_target_xcconfig = {
 # #     'LIBRARY_SEARCH_PATHS' => '$(PODS_ROOT)/../bundle/lib',

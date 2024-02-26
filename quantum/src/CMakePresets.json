@@ -13,7 +13,7 @@
       "binaryDir": "${sourceDir}/build/macOS",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
-        "CMAKE_INSTALL_PREFIX": "../bundle",
+        "CMAKE_INSTALL_PREFIX": "../macos/frameworks",
         "CMAKE_TOOLCHAIN_FILE": {
           "type": "FILEPATH",
           "value": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
