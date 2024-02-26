@@ -1,14 +1,10 @@
 import 'dart:async';
-import 'dart:ffi';
-import 'dart:io';
-import 'dart:ui' as ui;
 
 import 'package:flutter/services.dart';
 
 import 'database/database.dart';
 
 const String _libName = 'quantum';
-
 
 class Quantum {
   static const MethodChannel _channel = MethodChannel('quantum');
@@ -19,7 +15,6 @@ class Quantum {
   }
 
   static void pluginSayHello() {
-    //nativeSayHello();
     QADatabase.instance.pluginSayHello();
   }
 }

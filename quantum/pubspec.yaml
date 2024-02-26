@@ -1,6 +1,6 @@
 name: quantum
 description: A flutter plugin for dream project.
-version: 0.0.1 
+version: 0.0.1
 
 environment:
   sdk: ">=2.18.0 <3.0.0"
@@ -38,13 +38,19 @@ dependencies:
     sdk: flutter
   plugin_platform_interface: ^2.0.2
   ffi: ^2.1.2
-  ffigen: ^7.2.4
   js: ^0.6.1
   path_provider: ^2.0.11
   path: ^1.8.2
 
 dev_dependencies:
+  ffigen: ^11.0.0
   build_runner:
   flutter_lints:
   flutter_test:
     sdk: flutter
+
+ffigen:
+  output: 'lib/generated_bindings.dart'
+  headers:
+    entry-points:
+      - 'src/quantum.h'

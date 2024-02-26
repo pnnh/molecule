@@ -8,6 +8,7 @@ set(CXX_STANDARD_REQUIRED)
 add_library(quantum_native SHARED
         quantum.cc
         quantum.h
+        quantum.def
 )
 
 if (APPLE)
