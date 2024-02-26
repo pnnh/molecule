@@ -3,7 +3,7 @@
 
 import 'package:uuid/uuid.dart';
 
-import '../models/picture.dart';
+import '../../models/picture.dart';
 import 'database.dart';
 
 Future insertImage(PictureModel model) async {

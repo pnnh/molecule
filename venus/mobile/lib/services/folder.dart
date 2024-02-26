@@ -4,7 +4,7 @@ import 'package:venus/utils/logger.dart';
 
 import '../utils/utils.dart';
 import 'database.dart';
-import 'models/folder.dart';
+import '../models/folder.dart';
 
 
 class Folders {

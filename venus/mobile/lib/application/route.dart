@@ -1,8 +1,8 @@
-import 'package:venus/application/pages/home/home.dart';
 import 'package:venus/application/pages/pictures/pictures.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import 'pages/home/desktop.dart';
 import 'pages/share/receive.dart';
 import 'pages/share/share.dart';
 
@@ -13,7 +13,7 @@ final GoRouter globalRouter = GoRouter(
       name: 'home',
       path: '/',
       builder: (BuildContext context, GoRouterState state) {
-        return const HomePage();
+        return const HomeDesktopPage();
       },
       routes: <RouteBase>[
         GoRoute(

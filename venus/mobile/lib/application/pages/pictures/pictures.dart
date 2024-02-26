@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:venus/services/folder.dart';
-import 'package:venus/services/models/picture.dart';
+import 'package:venus/models/picture.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path/path.dart' as path;
