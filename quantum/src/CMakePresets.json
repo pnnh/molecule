@@ -23,14 +23,14 @@
     },
     {
       "name": "Windows",
-      "generator": "Ninja",
+      "generator": "Visual Studio 17",
       "binaryDir": "${sourceDir}/build/windows",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
         "CMAKE_INSTALL_PREFIX": "../windows",
         "CMAKE_TOOLCHAIN_FILE": {
           "type": "FILEPATH",
-          "value": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
+          "value": "E:\\Apps\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake"
         }
       },
       "environment": {}
