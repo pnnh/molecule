@@ -7,6 +7,6 @@ export function fullAuthUrl (authServer: string, selfUrl: string, backPath?: str
   const state = base64.stringify(enc.encode(backUrl))
 
   const nonce = uuidv4().replace(/-/g, '')
-  const authQuery = `${authServer}/oauth2/auth?client_id=quantum&redirect_uri=${selfUrl}/oauth2/code&response_type=code&scope=openid&nonce=${nonce}&state=${state}`
+  const authQuery = `${authServer}/oauth2/auth?client_id=huable&redirect_uri=${selfUrl}/oauth2/code&response_type=code&scope=openid&nonce=${nonce}&state=${state}`
   return encodeURI(authQuery)
 }

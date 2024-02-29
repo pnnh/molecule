@@ -33,7 +33,7 @@ export async function GET (request: NextRequest) {
   const tokenResponse = await axios.post<OAuth2Token>(
     tokenUrl,
     {
-      client_id: 'quantum',
+      client_id: 'huable',
       client_secret: 'foobar',
       grant_type: 'authorization_code',
       redirect_uri: `${serverConfig.SELF_URL}/oauth2/code`,

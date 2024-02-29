@@ -16,7 +16,7 @@ interface Oauth2Userinfo {
 async function fetchUserinfo (idToken: string) {
   const url = `${serverConfig.AUTH_SERVER}/oauth2/user`
 
-  const clientId = 'quantum'
+  const clientId = 'huable'
   const clientSecret = 'foobar'
   const enc = new TextEncoder()
   const data = enc.encode(`${clientId}:${clientSecret}`)
@@ -85,7 +85,7 @@ export async function getAccessToken () {
     return undefined
   }
 
-  const cacheKey = 'quantum:token:' + decodeToken.jti
+  const cacheKey = 'huable:token:' + decodeToken.jti
 
   const accessToken = await cacheStore.get(cacheKey)
   if (accessToken) {
@@ -114,7 +114,7 @@ export async function getIdentity (): Promise<string | undefined> {
   if (!decodeToken || !decodeToken.jti || !decodeToken.sub) {
     return undefined
   }
-  const cacheKey = 'quantum:identity:' + decodeToken.jti
+  const cacheKey = 'huable:identity:' + decodeToken.jti
 
   const identityModel = await cacheStore.get(cacheKey)
   if (identityModel) {
