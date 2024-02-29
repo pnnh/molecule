@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:venus/services/folder.dart';
-import 'package:venus/services/models/picture.dart';
+import 'package:venus/models/picture.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path/path.dart' as path;
@@ -12,7 +12,7 @@ final StateProvider<String> _searchProvider = StateProvider((_) => "");
 
 class PicturesPage extends StatelessWidget {
   final String folderPk;
-  const PicturesPage({Key? key, required this.folderPk}) : super(key: key);
+  const PicturesPage({super.key, required this.folderPk});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class PicturesPage extends StatelessWidget {
 
 class _PicturesBody extends ConsumerStatefulWidget {
   final String folderPk;
-  const _PicturesBody({Key? key, required this.folderPk}) : super(key: key);
+  const _PicturesBody({required this.folderPk});
 
   @override
   ConsumerState<_PicturesBody> createState() => _MPicturesPageState();
@@ -75,8 +75,7 @@ class _PicturesGrid extends ConsumerWidget {
   final String folderPk;
   final String searchText;
 
-  const _PicturesGrid({Key? key, required this.folderPk, this.searchText = ""})
-      : super(key: key);
+  const _PicturesGrid({required this.folderPk, this.searchText = ""});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -135,7 +134,7 @@ class _PicturesImageCell extends ConsumerWidget {
     borderRadius: BorderRadius.circular(4),
   );
 
-  _PicturesImageCell(this.model, {Key? key}) : super(key: key) {
+  _PicturesImageCell(this.model) {
     _controller = TextEditingController(text: path.basename(model.path));
   }
 

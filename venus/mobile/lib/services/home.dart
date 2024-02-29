@@ -4,7 +4,7 @@ import 'package:venus/config.dart';
 import 'package:http/http.dart' as http;
 import 'package:venus/utils/logger.dart';
 
-import 'models/home.dart';
+import '../models/home.dart';
 
 Future<HomeResult> queryHome(int page) async {
   var url = Uri.parse('${AppConfig.serverUrl}/pwa/restful/resources/query');

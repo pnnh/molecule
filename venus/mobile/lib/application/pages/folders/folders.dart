@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'package:path/path.dart';
 import 'package:venus/services/folder.dart';
-import 'package:venus/services/models/folder.dart';
+import 'package:venus/models/folder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -11,7 +11,7 @@ import 'package:venus/utils/logger.dart';
 final StateProvider<String> _directoryProvider = StateProvider((_) => "");
 
 class FoldersBody extends StatelessWidget {
-  const FoldersBody({Key? key}) : super(key: key);
+  const FoldersBody({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class FoldersBody extends StatelessWidget {
 }
 
 class _FoldersBodyState extends ConsumerWidget {
-  const _FoldersBodyState({Key? key}) : super(key: key);
+  const _FoldersBodyState();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -64,7 +64,7 @@ class _FoldersBodyState extends ConsumerWidget {
 }
 
 class _MFoldersPartial extends ConsumerWidget {
-  const _MFoldersPartial({Key? key}) : super(key: key);
+  const _MFoldersPartial();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

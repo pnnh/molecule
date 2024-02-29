@@ -2,11 +2,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
-import 'package:venus/utils/utils.dart';
 
 import '../database/image.dart';
 import '../files/files.dart';
-import '../models/picture.dart';
+import '../../models/picture.dart';
 
 Future pickImage() async {
   final ImagePicker picker = ImagePicker();

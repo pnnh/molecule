@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ShareSendPage extends StatelessWidget {
-  const ShareSendPage({Key? key}) : super(key: key);
+  const ShareSendPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -12,11 +12,11 @@ class ShareSendPage extends StatelessWidget {
 }
 
 class _ShareSendPageState extends ConsumerWidget {
-  const _ShareSendPageState({Key? key}) : super(key: key);
+  const _ShareSendPageState();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Scaffold(
+    return const Scaffold(
       body: SafeArea(
         child: Center(
           child: Text("文件分享页面"),

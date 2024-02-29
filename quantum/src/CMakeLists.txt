@@ -1,65 +1,57 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(QuantumNative VERSION 0.0.1 LANGUAGES C CXX)
+project(quantum_native VERSION 0.0.1 LANGUAGES C CXX)
 
+# 设置语言标准
+set(CMAKE_C_STANDARD 17)
+set(CMAKE_C_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+# 设置开启显示详细的构建过程
+set(CMAKE_VERBOSE_MAKEFILE ON)
+# 设置生成clangd compile_commands.json文件，方便开发过程
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-set(CMAKE_CXX_STANDARD 17)
-set(CXX_STANDARD_REQUIRED)
-
-
-include(FetchContent)
-
-FetchContent_Declare(simple
-        GIT_REPOSITORY https://github.com/wangfenjin/simple.git
-        GIT_TAG v0.2.2)
-FetchContent_MakeAvailable(simple)
-
-#FetchContent_GetProperties(simple)
-#if(NOT simple_POPULATED)
-#    # Fetch the content using previously declared details
-#    FetchContent_Populate(simple)
-#    add_subdirectory(${simple_SOURCE_DIR} ${simple_BINARY_DIR})
-#endif()
-message("simple2 ${simple_SOURCE_DIR} ${simple_BINARY_DIR}")
-
-add_library(QuantumNative SHARED
+add_library(quantum_native SHARED
         quantum.cc
         quantum.h
-        #  database/database.cpp
-        test.cc
-        test.h
-        )
+        quantum.def
+)
 
-target_link_libraries(QuantumNative PRIVATE simple)
-target_link_libraries(QuantumNative PRIVATE SQLite3)
+# 查找并引用sqlite3
+find_package(unofficial-sqlite3 CONFIG REQUIRED)
+target_link_libraries(quantum_native PRIVATE unofficial::sqlite3::sqlite3)
+
+# 查找并引用日志库
+find_package(spdlog CONFIG REQUIRED)
+target_link_libraries(quantum_native PRIVATE spdlog::spdlog)
 
 if (APPLE)
     message("configure for Apple")
-#    set(MACOSX_FRAMEWORK_IDENTIFIER "direct.multiverse.QuantumNative")
-#    set(MACOSX_FRAMEWORK_NAME "QuantumNative")
-#    set(MACOSX_FRAMEWORK_BUNDLE_VERSION "1.0.0")
-#    set(MACOSX_FRAMEWORK_SHORT_VERSION_STRING "1.0.0")
-
-    # set(RESOURCE_FILES
-    #         ${CMAKE_BINARY_DIR}/cppjieba/src/cppjieba/dict/jieba.dict.utf8)
-
-    message("cppjiebadict ${RESOURCE_FILES}")
-    set_target_properties(QuantumNative PROPERTIES
+    set_target_properties(quantum_native PROPERTIES
             FRAMEWORK TRUE
             FRAMEWORK_VERSION A
-            MACOSX_FRAMEWORK_IDENTIFIER direct.multiverse.QuantumNative
-            VERSION 0.0.1
-            SOVERSION 0.0.1
+            VERSION ${PROJECT_VERSION}
+            SOVERSION 1
             PUBLIC_HEADER "quantum.h"
+            OUTPUT_NAME "quantum_native"
             XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "iPhone Developer"
-            MACOSX_BUNDLE TRUE
-            # RESOURCE "${RESOURCE_FILES}"
-            )
-endif()
+            MACOSX_BUNDLE TRUE)
+endif ()
 
-set_target_properties(QuantumNative PROPERTIES
+set_target_properties(quantum_native PROPERTIES
+        VERSION ${PROJECT_VERSION}
+        SOVERSION 1
         PUBLIC_HEADER quantum.h
-        OUTPUT_NAME "QuantumNative"
-        )
+        OUTPUT_NAME "quantum_native")
 
-target_compile_definitions(QuantumNative PUBLIC DART_SHARED_LIB)
+target_compile_definitions(quantum_native PUBLIC DART_SHARED_LIB)
+
+install(TARGETS quantum_native
+        RUNTIME_DEPENDENCY_SET quantum_dependencies
+        DESTINATION lib)
+install(RUNTIME_DEPENDENCY_SET quantum_dependencies)
+
+add_executable(main main.cc)
+add_dependencies(main quantum_native)
+target_link_libraries(main quantum_native)

@@ -1,29 +1,22 @@
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-//#include "database/database.h"
 
-#if _WIN32
-#include <windows.h>
-#else
-#include <pthread.h>
-#include <unistd.h>
-#endif
+//#define EXPORT extern "C" __attribute__((visibility("default"))) __attribute__((used))
+//
+//EXPORT int open_database(const char* path);
+//EXPORT void hello_world();
 
-#if _WIN32
-#define FFI_PLUGIN_EXPORT __declspec(dllexport)
-#else
-#define FFI_PLUGIN_EXPORT
-#endif
-
-#ifdef __cplusplus
+#if defined(__cplusplus)
 extern "C" {
 #endif
 
-FFI_PLUGIN_EXPORT intptr_t sum(intptr_t a, intptr_t b);
+int open_database(const char *path);
 
-FFI_PLUGIN_EXPORT int open_database(const char* path);
+void hello_world();
 
-#ifdef __cplusplus
+int sum(int a, int b);
+int subtract(int *a, int b);
+int *multiply(int a, int b);
+void free_pointer(int *int_pointer);
+
+#if defined(__cplusplus)
 }
 #endif

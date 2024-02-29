@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class FilterGroupWidget extends StatefulWidget {
-  const FilterGroupWidget({Key? key}) : super(key: key);
+  const FilterGroupWidget({super.key});
 
   @override
   State<FilterGroupWidget> createState() => _FilterGroupWidget();

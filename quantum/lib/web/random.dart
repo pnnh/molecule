@@ -16,11 +16,6 @@ external void log(dynamic str);
 external sayHello();
 
 @JS()
-external String randomString(int length, bool hasNumber, bool hasLetter,
-    bool hasUppercase, bool hasSymbol);
-
-
-@JS()
 external Future<String> getFontData(String fontName);
 
 @JS()

@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class EFuncGroupWidget extends ConsumerWidget {
-  const EFuncGroupWidget({Key? key}) : super(key: key);
+  const EFuncGroupWidget({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

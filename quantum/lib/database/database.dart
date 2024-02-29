@@ -1,64 +1,61 @@
-//import 'package:sqflite/sqflite.dart';
+import 'dart:ffi' as ffi;
+import 'dart:ffi';
+import 'dart:io' show Platform, Directory;
+import 'dart:io';
 
-class DataStore {
-  // final String fullPath;
-  // //final OnDatabaseCreateFn? onCreate;
-  // final int? version;
+import 'package:ffi/ffi.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
+import 'package:quantum/generated_bindings.dart';
 
-  // DataStore(this.fullPath, {this.onCreate, this.version}) {}
-  //
-  // Future<Database> _getDatabase() async {
-  //   var db = openDatabase(
-  //     fullPath,
-  //     onCreate: onCreate,
-  //     version: version,
-  //   );
-  //   return db;
-  // }
+typedef HelloWorldFunc = ffi.Void Function();
+typedef HelloWorld = void Function();
 
-  // Future<Map<String, dynamic>?> getByPk(String table, String pk) async {
-  //   final db = await _getDatabase();
-  //
-  //   final List<Map<String, dynamic>> maps =
-  //       await db.query(table, where: "pk=?", whereArgs: [pk]);
-  //   if (maps.isNotEmpty) {
-  //     return maps.first;
-  //   }
-  //   return null;
-  // }
+class QADatabase {
+  static final QADatabase instance = QADatabase('quantum_native');
 
-  // Future<List<Map<String, dynamic>>> query(String table,
-  //     {bool? distinct,
-  //     List<String>? columns,
-  //     String? where,
-  //     List<Object?>? whereArgs,
-  //     String? groupBy,
-  //     String? having,
-  //     String? orderBy,
-  //     int? limit,
-  //     int? offset}) async {
-  //   final db = await _getDatabase();
-  //
-  //   final List<Map<String, dynamic>> maps = await db.query(table,
-  //       columns: columns,
-  //       where: where,
-  //       whereArgs: whereArgs,
-  //       groupBy: groupBy,
-  //       having: having,
-  //       orderBy: orderBy,
-  //       limit: limit,
-  //       offset: offset);
-  //
-  //   return maps;
-  // }
+  late final ffi.DynamicLibrary _dylib;
+  late final HelloWorld _helloWorld;
+  late final NativeLibrary _quantumNative;
 
-  // Future<void> insert(String table, Map<String, Object?> values) async {
-  //   final db = await _getDatabase();
-  //
-  //   await db.insert(
-  //     table,
-  //     values,
-  //     conflictAlgorithm: ConflictAlgorithm.replace,
-  //   );
-  // }
+  QADatabase(String libName) {
+    _dylib = _openNativeLibrary(libName);
+    _helloWorld = _dylib
+        .lookup<ffi.NativeFunction<HelloWorldFunc>>('hello_world')
+        .asFunction();
+    _quantumNative = NativeLibrary(_dylib);
+  }
+
+  DynamicLibrary _openNativeLibrary(String libName) {
+    debugPrint("current dir: ${Directory.current}");
+    if (Platform.isMacOS || Platform.isIOS) {
+      return DynamicLibrary.process();
+    }
+    if (Platform.isAndroid || Platform.isLinux) {
+      return DynamicLibrary.open('lib$libName.so');
+    }
+    if (Platform.isWindows) {
+      return DynamicLibrary.open('$libName.dll');
+    }
+    throw UnsupportedError('Unknown platform: ${Platform.operatingSystem}');
+  }
+
+  void pluginSayHello() {
+    _helloWorld();
+
+    // 尝试调用sum，传递和返回int参数
+    print('3 + 5 = ${_quantumNative.sum(3, 5)}');
+
+    // 尝试调用subtract，传递指针
+    final p = calloc<Int>();
+    p.value = 3;
+    print('3 - 5 = ${_quantumNative.subtract(p, 5)}');
+    calloc.free(p); // 释放dart端分配的内存
+
+    // 尝试调用multiply，返回指针
+    final resultPointer = _quantumNative.multiply(3, 5);
+    final int result = resultPointer.value;
+    print('3 * 5 = $result');
+    _quantumNative.free_pointer(resultPointer); // 释放native端分配的内存
+  }
 }

@@ -1,0 +1,8 @@
+LIBRARY   quantum_native
+EXPORTS
+    hello_world
+    sum
+    subtract
+    multiply
+    free_pointer
+    open_database

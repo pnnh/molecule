@@ -19,21 +19,19 @@ A new flutter plugin project.
   s.platform = :osx, '10.13'
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES' }
   s.swift_version = '5.0'
-  s.prepare_command = <<-CMD
-    cmake --preset Default
-    xcodebuild -project target/quantum.xcodeproj -scheme quantum -configuration Release build
-  CMD
 
-      # s.vendored_library    = './build/shared/Debug/libquantum.dylib'
+  #s.vendored_library    = '../bundle/lib/libhello.dylib'
   #s.vendored_library    = 'libquantum.dylib'
-  s.vendored_libraries = "target/lib/Release/**/*.dylib"
-  #s.library  = 'quantum'
-  #s.library = 'c++', 'stdc++', 'z'
-  # s.pod_target_xcconfig = {
-  #   'LIBRARY_SEARCH_PATHS' => '$(PODS_ROOT)/target/debug/lib/Debug',
-  #   'OTHER_LDFLAGS' => '-lquantum'
-  # }
-#   s.vendored_frameworks = 'QtCore.framework'
-#   s.vendored_library    = 'libcouch_shared.dylib'
+#   s.vendored_libraries = "../bundle/lib/libhello.dylib"
+#   s.library  = 'hello'
+#   s.library = 'c++', 'stdc++', 'z'
+ #s.vendored_frameworks = '../bundle/lib/quantum_native.framework'
+ s.vendored_frameworks = 'frameworks/lib/quantum_native.framework'
+#   s.library = 'quantum_native'
+#   s.pod_target_xcconfig = {
+# #     'LIBRARY_SEARCH_PATHS' => '$(PODS_ROOT)/../bundle/lib',
+#     'OTHER_LDFLAGS' => '-lquantum_native'
+#   }
+    #s.vendored_library    = 'libcouch_shared.dylib'
 #   s.library  = 'couch_shared'
 end

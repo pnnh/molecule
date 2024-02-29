@@ -17,7 +17,7 @@ final GoRouter globalRouter = GoRouter(
           name: 'articleRead',
           path: 'article/read',
           builder: (BuildContext context, GoRouterState state) {
-            return ArticleReadPage(state.queryParams);
+            return ArticleReadPage(state.pathParameters);
           },
         ),
       ],

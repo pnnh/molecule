@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart'; 
 
 class ToolsBody extends StatelessWidget {
-  const ToolsBody({Key? key}) : super(key: key);
+  const ToolsBody({super.key});
 
   @override
   Widget build(BuildContext context) {

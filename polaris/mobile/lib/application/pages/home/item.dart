@@ -18,7 +18,7 @@ class _TodoItemWidget extends State<TodoItemWidget> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        context.goNamed('articleRead', queryParams: {'pk': widget.article.pk});
+        context.goNamed('articleRead', pathParameters: {'pk': widget.article.pk});
       },
       child: Text(
           widget.article.title
