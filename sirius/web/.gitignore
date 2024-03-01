@@ -16,7 +16,6 @@ pkg
 *.log
 .DS_Store
 vendor
-build.sh
 bin/
 node_modules/
 /static
@@ -24,3 +23,5 @@ build/
 gen/
 debug/
 dist/
+.env.local
+.next/

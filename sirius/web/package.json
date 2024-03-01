@@ -1,11 +1,12 @@
 {
-  "name": "venus",
+  "name": "sirius",
   "version": "1.0.0",
   "scripts": {
     "dev": "next dev -p 8700",
-    "build": "next build",
+    "build": "NODE_ENV=production next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "setup": "npm install"
   },
   "private": true,
   "dependencies": {

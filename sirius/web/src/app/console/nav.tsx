@@ -1,4 +1,3 @@
-import {PSSTextLink} from '@/components/link'
 import Link from 'next/link'
 import styles from './nav.module.scss'
 
@@ -24,10 +23,10 @@ export function ConsoleLeftNav () {
         <div className={styles.navTitle}>控制台左侧导航</div>
         <div className={styles.navMenu}>
             <div className={styles.navItem}>
-                <PSSTextLink href='/console/resources'>资源管理</PSSTextLink>
+                <Link href='/console/resources'>资源管理</Link>
             </div>
             <div className={styles.navItem}>
-                <PSSTextLink href='/console/tags'>标签管理</PSSTextLink>
+                <Link href='/console/tags'>标签管理</Link>
             </div>
         </div>
     </div>

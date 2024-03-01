@@ -1,6 +1,5 @@
 import AwaitLock from 'await-lock'
-import { createClient, RedisClientType } from 'redis'
-import { serverConfig } from './server/config'
+import { createClient, RedisClientType } from 'redis' 
 
 class CacheStore {
   lock: AwaitLock
@@ -17,8 +16,8 @@ class CacheStore {
         return this.redisClient
       }
       const client = createClient({
-        url: serverConfig.REDIS,
-        password: serverConfig.REDIS_PASSWORD
+        url: process.env.REDIS,
+        password: process.env.REDIS_PASSWORD
       })
       await client.connect()
 

@@ -1,26 +1,17 @@
-const path = require('path') 
-
-const { generateConfig } = require('./compile/generate')
-
-console.log(`process.env.ENV: ${process.env.ENV}\n`)
-
-// 生成运行时配置信息
-generateConfig()
+const path = require('path')
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    appDir: true,
-    esmExternals: 'loose'
-  },
-  distDir: 'build',
+  output: 'standalone',
+  reactStrictMode: true,
+  compress: process.env.NODE_ENV === 'production',
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production'
   },
   sassOptions: {
     includePaths: [path.join(__dirname, 'styles')],
-  }
+  },
 }
 
 module.exports = nextConfig
- 
+
