@@ -1,6 +1,5 @@
 import React from 'react'
-import styles from './page.module.scss' 
-import { getIdentity } from '@/services/auth'  
+import styles from './page.module.scss'
 import { selectApps } from '@/services/server/app'
 
 export default async function Home () {

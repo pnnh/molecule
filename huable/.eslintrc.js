@@ -1,8 +1,8 @@
 module.exports = {
-  env: {
-    browser: true,
-    es6: true
-  },
+  // env: {
+  //   browser: true,
+  //   es6: true
+  // },
   extends: [
     'plugin:react/recommended',
     'eslint:recommended',
@@ -30,14 +30,14 @@ module.exports = {
     '@typescript-eslint'
   ],
   rules: {
-    'no-use-before-define': 'off', // React已经全局定义，但是eslint识别不到所以会报错，这里禁用
+    //'no-use-before-define': 'off', // React已经全局定义，但是eslint识别不到所以会报错，这里禁用
     '@typescript-eslint/no-use-before-define': 'off',
     'no-unused-vars': 'off',
     'no-trailing-spaces': 'off',
     'object-curly-spacing': 'off',
-    'arrow-spacing': 'off',
+    // 'arrow-spacing': 'off',
     'padded-blocks': 'off',
-    'space-infix-ops': 'off',
+    // 'space-infix-ops': 'off',
     'no-multiple-empty-lines': 'off',
     'spaced-comment': 'off',
     'comma-dangle': 'off',
