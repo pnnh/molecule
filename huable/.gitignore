@@ -6,7 +6,6 @@ pkg
 *.log
 .DS_Store
 vendor
-build.sh
 bin/
 node_modules/
 /static
@@ -21,3 +20,4 @@ npm-debug.log*
 .vscode/
 debug/
 config.json
+.env.local

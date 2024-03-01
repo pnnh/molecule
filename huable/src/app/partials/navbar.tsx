@@ -1,7 +1,6 @@
 import Link from 'next/link'
 import styles from './navbar.module.scss'
 import { fullAuthUrl } from '@/services/common/const'
-import { serverConfig } from '@/services/server/config'
 
 export function PublicNavbar (props: { account?: string }) {
   return <div className={styles.navHeader}>
@@ -17,7 +16,7 @@ export function PublicNavbar (props: { account?: string }) {
 
 function UserAction (props: { account?: string }) {
   if (!props.account) {
-    const clientAuthUrl = fullAuthUrl(serverConfig.AUTH_SERVER, serverConfig.SELF_URL, '/')
+    const clientAuthUrl = fullAuthUrl(process.env.AUTH_SERVER, process.env.SELF_URL, '/')
     return <Link
       href={clientAuthUrl} className={styles.loginLink}>登录</Link>
   }

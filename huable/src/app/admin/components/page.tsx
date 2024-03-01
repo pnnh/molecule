@@ -1,24 +1,10 @@
 import Image from 'next/image'
-import {ResourceModel, selectResources} from '@/models/resource'
-import {getJwtToken, getSession} from '@/services/auth'
+import {ResourceModel, selectResources} from '@/models/resource' 
 import {formatRfc3339} from '@/utils/datetime'
 import prettyBytes from 'pretty-bytes'
 
 export default async function Page () {
-  const session = await getSession()
-  if (!session || !session.username) {
-    return <div> 未登录
-        </div>
-  }
-
-  const basicToken = getJwtToken()
-  if (!basicToken) {
-    return <div> 未登录
-        </div>
-  }
-
-
-  const resources = await selectResources(1, 28, basicToken)
+  const resources = await selectResources(1, 28, 'basicToken')
 
   console.debug('resources:', resources.count)
 

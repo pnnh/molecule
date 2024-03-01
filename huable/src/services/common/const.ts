@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid'
 import { base64 } from '~/rfc4648'
 
-export function fullAuthUrl (authServer: string, selfUrl: string, backPath?: string): string {
+export function fullAuthUrl (authServer: string|undefined, selfUrl: string|undefined, backPath?: string): string {
   const backUrl = backPath ? `${selfUrl}/${backPath}` : selfUrl
   const enc = new TextEncoder()
   const state = base64.stringify(enc.encode(backUrl))

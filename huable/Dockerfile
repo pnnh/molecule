@@ -1,7 +1,7 @@
 FROM node
 
 ENV NODE_ENV production
-ENV PORT 8100
+ENV PORT 8800
 
 # 指定RUN工作目录
 WORKDIR /opt

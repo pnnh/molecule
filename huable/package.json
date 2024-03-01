@@ -3,9 +3,10 @@
   "version": "0.1.0",
   "scripts": {
     "dev": "next dev -p 8800",
-    "build": "next build",
+    "build": "NODE_ENV=production next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "setup": "npm install"
   },
   "private": true,
   "dependencies": {

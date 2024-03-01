@@ -1,6 +1,5 @@
 import axios, { Method } from '~/axios'
 import { getAccessToken } from '@/services/auth'
-import { serverConfig } from '@/services/server/config'
 
 export async function sessionForwardToServer<T> (
   method: Method,
@@ -8,7 +7,7 @@ export async function sessionForwardToServer<T> (
   data: object,
   contentType: string) {
   const token = await getAccessToken()
-  const url = serverConfig.SERVER + path
+  const url = process.env.SERVER + path
 
   const response = await axios<T>(
     {

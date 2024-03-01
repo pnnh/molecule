@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import axios from 'axios'
-import { serverConfig } from '@/services/server/config'
+import axios from 'axios' 
 import { decodeBase64String } from '@/utils/base64'
 
 interface OAuth2Token {
@@ -28,7 +27,7 @@ export async function GET (request: NextRequest) {
   const sourceUrl = new URL(stateDecode)
   console.log('sourceUrl222', sourceUrl)
 
-  const tokenUrl = `${serverConfig.AUTH_SERVER}/oauth2/token`
+  const tokenUrl = `${process.env.AUTH_SERVER}/oauth2/token`
 
   const tokenResponse = await axios.post<OAuth2Token>(
     tokenUrl,
@@ -36,7 +35,7 @@ export async function GET (request: NextRequest) {
       client_id: 'huable',
       client_secret: 'foobar',
       grant_type: 'authorization_code',
-      redirect_uri: `${serverConfig.SELF_URL}/oauth2/code`,
+      redirect_uri: `${process.env.SELF_URL}/oauth2/code`,
       code
     },
     {
@@ -54,7 +53,7 @@ export async function GET (request: NextRequest) {
   if (redirectPath === '/') {
     redirectPath = '/admin'
   }
-  const redirectUrl = `${serverConfig.SELF_URL}${redirectPath}${sourceUrl.search}`
+  const redirectUrl = `${process.env.SELF_URL}${redirectPath}${sourceUrl.search}`
   const response = NextResponse.redirect(redirectUrl)
   const token = tokenResult.id_token
   response.cookies.set('Authorization', token, {

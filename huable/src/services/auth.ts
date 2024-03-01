@@ -5,7 +5,6 @@ import { logger } from '@/services/logger'
 import jwksClient from 'jwks-rsa'
 import { base64 } from '~/rfc4648'
 import axios from '~/axios'
-import { serverConfig } from '@/services/server/config'
 
 interface Oauth2Userinfo {
   username: string
@@ -14,7 +13,7 @@ interface Oauth2Userinfo {
 }
 
 async function fetchUserinfo (idToken: string) {
-  const url = `${serverConfig.AUTH_SERVER}/oauth2/user`
+  const url = `${process.env.AUTH_SERVER}/oauth2/user`
 
   const clientId = 'huable'
   const clientSecret = 'foobar'
