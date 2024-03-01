@@ -17,6 +17,6 @@ if [ ${BUILD_ID} ]; then
     docker run -d --restart=always \
         --name huable-web \
         -p 8800:8800 \
-        -v /opt/services/huable/web/runtime:/data/runtime \
+        -v /opt/services/huable/web/.env.production:/data/.env.production \
         huable-web
 fi
