@@ -5,7 +5,7 @@ class AppConfig {
     if (kDebugMode) {
       return "127.0.0.1:3500";
     }
-    return "client.polaris.direct";
+    return "venus.huable.xyz";
   }
 
   static String get selfUrl {
@@ -17,9 +17,9 @@ class AppConfig {
 
   static String get serverHost {
     if (kDebugMode) {
-      return "debug.polaris.direct";
+      return "venus.huable.xyz";
     }
-    return "client.polaris.direct";
+    return "venus.huable.xyz";
   }
 
   static String get serverUrl {

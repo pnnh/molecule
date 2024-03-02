@@ -5,6 +5,13 @@
       },
       {
         "path": "mobile"
+      },
+      {
+        "path": "web"
+      },
+      {
+        "name": "venus-business",
+        "path": "server/business"
       }
     ],
     "settings": {

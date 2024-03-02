@@ -19,7 +19,7 @@ class VSAppBar extends ConsumerWidget implements PreferredSizeWidget {
       child: const Row(
         children: [
           SizedBox(width: 16,),
-          Text("Polaris"),
+          Text("Venus"),
           Spacer(),
           SizedBox(width: 16,),
           Text("xspanni@gmail.com"),
