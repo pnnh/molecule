@@ -4,14 +4,14 @@ using System.Text.Encodings.Web;
 using System.Text.Unicode;
 using System.Text;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.IdentityModel.Tokens;
-using Venususiness.Models;
+using Microsoft.IdentityModel.Tokens; 
 using StackExchange.Redis;
 using Npgsql;
 using Venus.Business.Services;
 using Microsoft.AspNetCore.Diagnostics;
 using System.Net.Mime;
 using System.Text.Json;
+using Venus.Business.Models;
 
 namespace Venus
 {
@@ -66,7 +66,8 @@ namespace Venus
 
             var app = builder.Build();
 
-
+            var pathBase = app.Configuration["PathBase"] ?? "/";
+            app.UsePathBase(pathBase);
             app.UseExceptionHandler(exceptionHandlerApp =>
             {
                 exceptionHandlerApp.Run(async context =>
