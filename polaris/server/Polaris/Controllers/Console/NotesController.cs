@@ -27,7 +27,7 @@ public class NoteContentController : ControllerBase
     [HttpGet]
     public PLSelectResult<NoteModel> Select()
     {
-        var queryHelper = new PLQueryHelper(Request.Query);
+        var queryHelper = new MQueryHelper(Request.Query);
         var notebook = queryHelper.GetString("notebook");
         var directory = queryHelper.GetString("directory");
         var keyword = queryHelper.GetString("keyword");
@@ -36,7 +36,7 @@ public class NoteContentController : ControllerBase
 
         var page = queryHelper.GetInt("page") ?? 1;
         var size = queryHelper.GetInt("size") ?? 10;
-        var (offset, limit) = Pagination.CalcOffset(page, size);
+        var (offset, limit) = MPagination.CalcOffset(page, size);
 
         var sqlBuilder = new StringBuilder();
         var parameters = new Dictionary<string, object>();

@@ -1,0 +1,36 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "polaris-web",
+            "type": "node",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "run-script",
+                "dev"
+            ],
+            "console": "internalConsole",
+            "env": {
+                "ENV": "development",
+                "config": "./config.debug.js"
+            }
+        },
+        {
+            "name": "polaris-server",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/server/Polaris/bin/Debug/net8.0/Polaris.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/server/Polaris",
+            "stopAtEntry": false,
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "console": "internalConsole",
+            "justMyCode": true
+        }
+    ]
+}

@@ -2,6 +2,7 @@ namespace Polaris.Business.Services;
 
 using System.Data.Entity;
 using System.Text;
+using Molecule.Helpers;
 using Polaris.Business.Helpers;
 using Polaris.Business.Models;
 
@@ -16,10 +17,10 @@ public class PageService
 
     public PLSelectResult<PageModel> Select(string queryString)
     {
-        var queryHelper = new PLQueryHelper(queryString);
+        var queryHelper = new MQueryHelper(queryString);
         var page = queryHelper.GetInt("page") ?? 1;
         var size = queryHelper.GetInt("size") ?? 10;
-        var (offset, limit) = Pagination.CalcOffset(page, size);
+        var (offset, limit) = MPagination.CalcOffset(page, size);
 
         var totalCount = serviceContext.DataContext.Pages.Count();
         var models = serviceContext.DataContext.Pages.OrderByDescending(o => o.UpdateTime)
@@ -32,7 +33,7 @@ public class PageService
         };
     }
 
-    public PageModel? GetByQuery(PLQueryHelper queryHelper)
+    public PageModel? GetByQuery(MQueryHelper queryHelper)
     {
         var profile = queryHelper.GetString("profile");
         var channel = queryHelper.GetString("channel");

@@ -1,7 +1,7 @@
 
-using Microsoft.AspNetCore.Mvc; 
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using System.Text; 
+using System.Text;
 using Molecule.Models;
 using Polaris.Business.Models;
 using Polaris.Business.Helpers;
@@ -21,17 +21,17 @@ public class RelationsController : ControllerBase
         this._logger = logger;
         this._dataContext = configuration;
     }
-  
+
     [Route("/admin/relations")]
     [HttpGet]
-    public Molecule.Models.SelectResult<RelationFullModel<ChannelModel, HistoryModel>>  Select()
+    public Molecule.Models.SelectResult<RelationFullModel<ChannelModel, HistoryModel>> Select()
     {
-        var queryHelper = new Molecule.Helpers.QueryHelper(Request.Query);
-        var channel = queryHelper.GetString("channel");  
+        var queryHelper = new Molecule.Helpers.MQueryHelper(Request.Query);
+        var channel = queryHelper.GetString("channel");
 
         var page = queryHelper.GetInt("page") ?? 1;
         var size = queryHelper.GetInt("size") ?? 10;
-        var (offset, limit) = Pagination.CalcOffset(page, size);
+        var (offset, limit) = MPagination.CalcOffset(page, size);
 
         var sqlBuilder = new StringBuilder();
         var parameters = new Dictionary<string, object>();
@@ -48,7 +48,7 @@ where r.status = 0
             sqlBuilder.Append(@" and r.source = @channel");
             parameters.Add("@channel", channel);
         }
-        
+
         var countSqlText = $@"
 select count(1) from ({sqlBuilder}) as temp;";
 
@@ -110,7 +110,7 @@ select count(1) from ({sqlBuilder}) as temp;";
         };
     }
 
-  
+
 
     [Route("/admin/relations/{pk}")]
     [HttpPost]
@@ -139,5 +139,5 @@ select count(1) from ({sqlBuilder}) as temp;";
 
         return new CommonResult<object> { Code = Codes.Ok, Data = model.Pk };
     }
- 
+
 }

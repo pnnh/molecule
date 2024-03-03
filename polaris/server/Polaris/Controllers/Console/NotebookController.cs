@@ -27,7 +27,7 @@ public class NotebookContentController : ControllerBase
     [HttpGet]
     public PLSelectResult<NotebookModel> Select()
     {
-        var queryHelper = new PLQueryHelper(Request.Query);
+        var queryHelper = new MQueryHelper(Request.Query);
         var profile = queryHelper.GetString("profile");
 
         var profileModel = _dataContext.Profiles.FirstOrDefault(x => x.Username == profile);

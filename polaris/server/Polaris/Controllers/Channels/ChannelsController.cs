@@ -7,6 +7,7 @@ using Molecule.Models;
 using Polaris.Business.Models;
 using System.Data.Entity;
 using Polaris.Business.Helpers;
+using Molecule.Helpers;
 
 namespace Polaris.Controllers.Channels;
 
@@ -57,10 +58,10 @@ public class ChannelsController : ControllerBase
     [AllowAnonymous]
     public PLSelectResult<ChannelModel> Select()
     {
-        var queryHelper = new PLQueryHelper(Request.Query);
+        var queryHelper = new MQueryHelper(Request.Query);
         var page = queryHelper.GetInt("page") ?? 1;
         var size = queryHelper.GetInt("size") ?? 10;
-        var (offset, limit) = Pagination.CalcOffset(page, size);
+        var (offset, limit) = MPagination.CalcOffset(page, size);
         var models = _dataContext.Channels.OrderByDescending(o => o.UpdateTime).Skip(offset).Take(limit).ToList();
         var totalCount = _dataContext.Channels.Count();
 

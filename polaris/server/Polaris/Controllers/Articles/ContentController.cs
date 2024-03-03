@@ -25,7 +25,7 @@ public class ArticleContentController : ControllerBase
     [AllowAnonymous]
     public PageModel Get([FromRoute] string pk)
     {
-        var queryHelper = new PLQueryHelper(Request.Query);
+        var queryHelper = new MQueryHelper(Request.Query);
 
         var pageService = new PageService(new Business.Services.ServiceContext(_dataContext));
 
@@ -68,7 +68,7 @@ where a.pk = @article
     [AllowAnonymous]
     public PLSelectResult<PageModel> Select()
     {
-        var queryHelper = new PLQueryHelper(Request.Query);
+        var queryHelper = new MQueryHelper(Request.Query);
         var channel = queryHelper.GetString("channel");
         var keyword = queryHelper.GetString("keyword");
         var sort = queryHelper.GetString("sort") ?? "latest";
@@ -76,7 +76,7 @@ where a.pk = @article
 
         var page = queryHelper.GetInt("page") ?? 1;
         var size = queryHelper.GetInt("size") ?? 10;
-        var (offset, limit) = Pagination.CalcOffset(page, size);
+        var (offset, limit) = MPagination.CalcOffset(page, size);
 
         var sqlBuilder = new StringBuilder();
         var parameters = new Dictionary<string, object>();

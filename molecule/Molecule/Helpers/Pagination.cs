@@ -1,8 +1,8 @@
 using System.Drawing;
 
-namespace Polaris.Business.Helpers;
+namespace Molecule.Helpers;
 
-public class Pagination
+public class MPagination
 {
     public long Total = 0;
     public int Next = 0,
@@ -23,11 +23,11 @@ public class Pagination
         return new Tuple<int, int>(offset, size);
     }
 
-    public static Pagination Calc(int page, int size)
+    public static MPagination Calc(int page, int size)
     {
         var (offset, limit) = CalcOffset(page, size);
 
-        return new Pagination
+        return new MPagination
         {
             Total = 0,
             Page = 1,

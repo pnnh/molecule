@@ -2,13 +2,23 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "venus-web",
+            "type": "node-terminal",
+            "request": "launch",
+            "command": "npm run dev",
+            "env": {
+                "ENV": "development",
+                "config": "./config.debug.js"
+            }
+        },
+        {
             "name": "venus-business",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/Venus/bin/Debug/net8.0/Venus.dll",
+            "program": "${workspaceFolder}/server/business/Venus/bin/Debug/net8.0/Venus.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/Venus",
+            "cwd": "${workspaceFolder}/server/business/Venus",
             "stopAtEntry": false,
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development"

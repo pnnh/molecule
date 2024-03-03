@@ -1,17 +1,20 @@
 {
   "folders": [
+    // {
+    //   "path": "web"
+    // },
+    // {
+    //   "path": "server"
+    // },
     {
-      "path": "web"
+      "path": "../molecule"
     },
     {
-      "path": "server"
+      "path": "."
     },
-    {
-      "path": "mobile"
-    },
-    {
-      "path": "desktop"
-    }
+    // {
+    //   "path": "desktop"
+    // }
   ],
   "settings": {
     "dotnet.defaultSolution": "server/Polaris.sln",

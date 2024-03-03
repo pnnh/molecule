@@ -27,7 +27,7 @@ public class DirectoryContentController : ControllerBase
     [HttpGet]
     public PLSelectResult<DirectoryModel> Select()
     {
-        var queryHelper = new PLQueryHelper(Request.Query);
+        var queryHelper = new MQueryHelper(Request.Query);
         var notebook = queryHelper.GetString("notebook");
         if (string.IsNullOrEmpty(notebook))
         {
