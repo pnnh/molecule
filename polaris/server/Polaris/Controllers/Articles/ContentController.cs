@@ -64,7 +64,7 @@ where a.pk = @article
     }
 
 
-    [Route("/server/posts")]
+    [Route("/posts")]
     [AllowAnonymous]
     public PLSelectResult<PageModel> Select()
     {
@@ -88,7 +88,7 @@ from posts as a
      join partitions pa on pa.pk = a.partition
      join profiles as p on p.pk = a.profile
      join channels as c on c.pk = a.channel
-where a.pk is not null
+where a.uid is not null
 ");
         if (!string.IsNullOrEmpty(channel))
         {
@@ -148,7 +148,7 @@ select count(1) from ({sqlBuilder}) as temp;";
     [HttpDelete]
     public PLDeleteResult Delete([FromRoute] string pk)
     {
-        var model = _dataContext.Pages.FirstOrDefault(m => m.Uid == pk);
+        var model = _dataContext.Pages.FirstOrDefault(m => m.Uid.ToString() == pk);
         if (model == null)
         {
             throw new PLBizException("文章不存在");
@@ -177,7 +177,7 @@ select count(1) from ({sqlBuilder}) as temp;";
         }
         var model = new PageModel()
         {
-            Uid = Guid.NewGuid().ToString(),
+            Uid = MIDHelper.Default.NewUUIDv7(),
             Title = title,
             Body = body,
             Header = "markdown",
@@ -188,7 +188,7 @@ select count(1) from ({sqlBuilder}) as temp;";
         _dataContext.Pages.Add(model);
         _dataContext.SaveChanges();
 
-        return new PLInsertResult { Pk = model.Uid };
+        return new PLInsertResult { Pk = model.Uid.ToString() };
     }
 
     [Route("/server/page/{pk}")]
@@ -199,7 +199,7 @@ select count(1) from ({sqlBuilder}) as temp;";
         var title = jsonHelper.GetString("title") ?? throw new PLBizException("title is required");
         var body = jsonHelper.GetString("body") ?? throw new PLBizException("body is required");
 
-        var model = _dataContext.Pages.FirstOrDefault(m => m.Uid == pk);
+        var model = _dataContext.Pages.FirstOrDefault(m => m.Uid.ToString() == pk);
         if (model == null)
         {
             throw new PLBizException("文章不存在");

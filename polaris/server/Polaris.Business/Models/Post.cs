@@ -18,7 +18,7 @@ namespace Polaris.Business.Models
     {
         [Column("uid", TypeName = "uuid")]
         [JsonPropertyName("uid")]
-        public string Uid { get; set; } = "";
+        public Guid Uid { get; set; }
 
         [Column("title", TypeName = "varchar(128)")]
         [JsonPropertyName("title")]

@@ -11,13 +11,10 @@ import { formatRfc3339 } from '@/utils/datetime'
 import { STSubString } from '~/@pnnh/stele'
 import { loadServerConfig } from '@/services/server/config'
 import { ArticleService, articleContentViewUrl } from '@/services/article'
-import { helloFromSteleServer } from '@pnnh/stele/server'
 
 export default async function Home ({ searchParams }: {
   searchParams: Record<string, string>
 }) {
-  // todo 测试目的稍后移除
-  helloFromSteleServer()
   let page = Number(searchParams.page)
   if (isNaN(page)) {
     page = 1

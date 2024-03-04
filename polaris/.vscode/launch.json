@@ -13,8 +13,7 @@
             ],
             "console": "internalConsole",
             "env": {
-                "ENV": "development",
-                "config": "web/runtime/server.development.json"
+                "ENV": "development"
             }
         },
         {
