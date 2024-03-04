@@ -29,7 +29,12 @@ namespace Polaris
                 options.IncludeScopes = true;
                 options.UseUtcTimestamp = true;
             });
-            builder.Configuration.AddJsonFile("runtime/appsettings.json", optional: false, reloadOnChange: true);
+            var configFileName = "appsettings.json";
+            if (builder.Environment.IsDevelopment())
+            {
+                configFileName = "appsettings.Development.json";
+            }
+            builder.Configuration.AddJsonFile(configFileName, optional: false, reloadOnChange: true);
 
             builder.Services.AddControllers().AddJsonOptions(options =>
             options.JsonSerializerOptions.Encoder = JavaScriptEncoder.Create(UnicodeRanges.All));
@@ -61,7 +66,9 @@ namespace Polaris
 
             var app = builder.Build();
 
-
+            var pathBase = app.Configuration["PathBase"] ?? "/";
+            app.UsePathBase(pathBase);
+            
             app.UseExceptionHandler(exceptionHandlerApp =>
             {
                 exceptionHandlerApp.Run(async context =>

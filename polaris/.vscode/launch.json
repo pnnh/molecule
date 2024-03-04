@@ -5,7 +5,7 @@
             "name": "polaris-web",
             "type": "node",
             "request": "launch",
-            "cwd": "${workspaceFolder}",
+            "cwd": "${workspaceFolder}/web",
             "runtimeExecutable": "npm",
             "runtimeArgs": [
                 "run-script",
@@ -14,7 +14,7 @@
             "console": "internalConsole",
             "env": {
                 "ENV": "development",
-                "config": "./config.debug.js"
+                "config": "web/runtime/server.development.json"
             }
         },
         {

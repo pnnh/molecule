@@ -13,12 +13,12 @@ namespace Polaris.Business.Models
 {
 
     [Table("posts")]
-    [PrimaryKey(nameof(Pk))]
-    public class PageModel// : BaseModel
+    [PrimaryKey(nameof(Uid))]
+    public class PageModel
     {
-        [Column("pk", TypeName = "varchar(64)")]
-        [JsonPropertyName("pk")]
-        public string Pk { get; set; } = "";
+        [Column("uid", TypeName = "uuid")]
+        [JsonPropertyName("uid")]
+        public string Uid { get; set; } = "";
 
         [Column("title", TypeName = "varchar(128)")]
         [JsonPropertyName("title")]

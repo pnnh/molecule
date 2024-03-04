@@ -20,7 +20,7 @@ public class ArticleContentController : ControllerBase
         this._dataContext = configuration;
     }
 
-    [Route("/server/posts/{pk}")]
+    [Route("/posts/{pk}")]
     [HttpGet]
     [AllowAnonymous]
     public PageModel Get([FromRoute] string pk)
@@ -148,7 +148,7 @@ select count(1) from ({sqlBuilder}) as temp;";
     [HttpDelete]
     public PLDeleteResult Delete([FromRoute] string pk)
     {
-        var model = _dataContext.Pages.FirstOrDefault(m => m.Pk == pk);
+        var model = _dataContext.Pages.FirstOrDefault(m => m.Uid == pk);
         if (model == null)
         {
             throw new PLBizException("文章不存在");
@@ -177,7 +177,7 @@ select count(1) from ({sqlBuilder}) as temp;";
         }
         var model = new PageModel()
         {
-            Pk = Guid.NewGuid().ToString(),
+            Uid = Guid.NewGuid().ToString(),
             Title = title,
             Body = body,
             Header = "markdown",
@@ -188,7 +188,7 @@ select count(1) from ({sqlBuilder}) as temp;";
         _dataContext.Pages.Add(model);
         _dataContext.SaveChanges();
 
-        return new PLInsertResult { Pk = model.Pk };
+        return new PLInsertResult { Pk = model.Uid };
     }
 
     [Route("/server/page/{pk}")]
@@ -199,7 +199,7 @@ select count(1) from ({sqlBuilder}) as temp;";
         var title = jsonHelper.GetString("title") ?? throw new PLBizException("title is required");
         var body = jsonHelper.GetString("body") ?? throw new PLBizException("body is required");
 
-        var model = _dataContext.Pages.FirstOrDefault(m => m.Pk == pk);
+        var model = _dataContext.Pages.FirstOrDefault(m => m.Uid == pk);
         if (model == null)
         {
             throw new PLBizException("文章不存在");
