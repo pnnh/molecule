@@ -7,6 +7,13 @@ export function articleContentViewUrl (profile: string, channel: string, path: s
   return `/posts/${profile}/${channel}${path}/` + page
 }
 
+export function articleContentViewUrl2 (model: ArticleModel) {
+  if (model.name) {
+    return `/posts/${model.name}`
+  }
+  return `/posts/${model.url_name}`
+}
+
 export class ArticleService extends ModelService {
   constructor (baseUrl = '') {
     super(baseUrl, 'article')

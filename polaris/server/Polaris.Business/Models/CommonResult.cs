@@ -9,6 +9,18 @@ public class PLBizException : Exception
         Code = code;
     }
 
+    public PLBizException(int code = (int)PLCodes.Error, string publicMessage = "",
+        string internalMessage = "") : base(publicMessage + "\n" + internalMessage)
+    {
+        Code = code;
+        InternalMessage = internalMessage;
+        PublicMessage = publicMessage;
+    }
+
+    public int Code { get; set; }
+    public string InternalMessage { get; set; } = "";
+    public string PublicMessage { get; set; } = "";
+
     public static PLBizException BadRequest(string message)
     {
         return new PLBizException(message, (int)PLCodes.BadRequest);
@@ -29,18 +41,6 @@ public class PLBizException : Exception
         return new PLBizException(message, (int)PLCodes.Unauthorized);
     }
 
-    public PLBizException(int code = (int)PLCodes.Error, string publicMessage = "",
-        string internalMessage = "") : base(publicMessage + "\n" + internalMessage)
-    {
-        Code = code;
-        InternalMessage = internalMessage;
-        PublicMessage = publicMessage;
-    }
-
-    public int Code { get; set; }
-    public string InternalMessage { get; set; } = "";
-    public string PublicMessage { get; set; } = "";
-
     public static PLBizException New(int code = (int)PLCodes.Error, string publicMessage = "",
         string internalMessage = "")
     {
@@ -52,7 +52,6 @@ public class PLBizException : Exception
     {
         return new PLBizException((int)code, publicMessage, internalMessage);
     }
-
 }
 
 public enum PLCodes
@@ -63,35 +62,29 @@ public enum PLCodes
     NotFound = 404,
     Error = 500,
     Pending = 600, // 业务处理中
-    InvalidArgument = 601,
+    InvalidArgument = 601
 }
 
 public class PLExceptionResult
 {
-    [JsonPropertyName("code")]
-    public int Code { get; set; }
+    [JsonPropertyName("code")] public int Code { get; set; }
 
-    [JsonPropertyName("message")]
-    public string Message { get; set; } = "";
+    [JsonPropertyName("message")] public string Message { get; set; } = "";
 }
 
 public class PLSelectResult<T>
 {
-    [JsonPropertyName("page")]
-    public int Page { get; set; }
+    [JsonPropertyName("page")] public int Page { get; set; }
 
-    [JsonPropertyName("size")]
-    public int Size { get; set; }
+    [JsonPropertyName("size")] public int Size { get; set; }
 
-    [JsonPropertyName("count")]
-    public int Count { get; init; } = 0;
+    [JsonPropertyName("count")] public int Count { get; init; }
 
-    [JsonPropertyName("range")]
-    public List<T> Range { get; init; } = new();
+    [JsonPropertyName("range")] public List<T> Range { get; init; } = new();
 
     public static PLSelectResult<T> New(int page, int size, int count, List<T> range)
     {
-        return new()
+        return new PLSelectResult<T>
         {
             Page = page,
             Size = size,
@@ -102,14 +95,14 @@ public class PLSelectResult<T>
 
     public PLSelectResult<T> AddRange(params T[] range)
     {
-        this.Range.AddRange(range);
+        Range.AddRange(range);
         return this;
     }
 }
 
 public class PLInsertResult
 {
-    public string Pk { get; set; } = "";
+    public Guid Pk { get; set; }
 }
 
 public class PLUpdateResult

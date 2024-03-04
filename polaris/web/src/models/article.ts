@@ -17,6 +17,7 @@ export class ArticleModel {
   channel_name = ''
   partition = ''
   path = ''
+  url_name = ''
 }
 
 // Deprecated

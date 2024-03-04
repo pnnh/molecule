@@ -13,12 +13,15 @@ public class MapperHelper
         {
             cfg.AddDataReaderMapping();
             cfg.AddDataRecordMember();
-            PageModel.MapperConfig(cfg);
+            cfg.SourceMemberNamingConvention = new LowerUnderscoreNamingConvention();
+            cfg.DestinationMemberNamingConvention = new PascalCaseNamingConvention();
+
+            PostModel.MapperConfig(cfg);
             ChannelModel.MapperConfig(cfg);
             RelationModel.MapperConfig(cfg);
             HistoryModel.MapperConfig(cfg);
             RelationFullModel<ChannelModel, HistoryModel>.MapperConfig(cfg);
-            RelationFullModel<ChannelModel, PageModel>.MapperConfig(cfg);
+            RelationFullModel<ChannelModel, PostModel>.MapperConfig(cfg);
             PartitionQueryModel.MapperConfig(cfg);
             NoteModel.MapperConfig(cfg);
             DirectoryModel.MapperConfig(cfg);

@@ -8,12 +8,12 @@ using System.Data;
 using AutoMapper;
 
 [Table("channels")]
-[PrimaryKey(nameof(Pk))]
+[PrimaryKey(nameof(Uid))]
 public class ChannelModel// : BaseModel
 {
-    [Column("pk", TypeName = "varchar(64)")]
-    [JsonPropertyName("pk")]
-    public string Pk { get; set; } = "";
+    [Column("uid", TypeName = "uuid")]
+    [JsonPropertyName("uid")]
+    public Guid Uid { get; set; }
 
     [Column("name", TypeName = "varchar(64)")]
     [JsonPropertyName("name")]
@@ -31,9 +31,9 @@ public class ChannelModel// : BaseModel
     [JsonPropertyName("update_time")]
     public DateTime UpdateTime { get; set; } = DateTime.MinValue;
 
-    [Column("creator", TypeName = "varchar(64)")]
-    [JsonPropertyName("creator")]
-    public string Creator { get; set; } = "";
+    [Column("owner", TypeName = "uuid")]
+    [JsonPropertyName("owner")]
+    public Guid Owner { get; set; }
 
     [Column("description", TypeName = "varchar(256)")]
     [JsonPropertyName("description")]
@@ -43,19 +43,11 @@ public class ChannelModel// : BaseModel
     [JsonPropertyName("image")]
     public string Image { get; set; } = "";
 
-    [Column("profile", TypeName = "varchar(96)")]
-    [JsonPropertyName("profile")]
-    public string Profile { get; set; } = "";
-
-    [NotMapped]
-    [JsonPropertyName("profile_name")]
-    public string ProfileName { get; set; } = "";
-
     public static void MapperConfig(IMapperConfigurationExpression cfg)
     {
         cfg.CreateMap<IDataReader, ChannelModel>()
             .ForMember(a => a.CreateTime, opt => opt.MapFrom(src => src["create_time"]))
             .ForMember(a => a.UpdateTime, opt => opt.MapFrom(src => src["update_time"]))
-            .ForMember(a => a.ProfileName, opt => opt.MapFrom(src => src["profile_name"]));
+            ;
     }
 }

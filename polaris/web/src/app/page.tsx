@@ -10,7 +10,7 @@ import { getIdentity } from '@/services/auth'
 import { formatRfc3339 } from '@/utils/datetime'
 import { STSubString } from '~/@pnnh/stele'
 import { loadServerConfig } from '@/services/server/config'
-import { ArticleService, articleContentViewUrl } from '@/services/article'
+import { ArticleService, articleContentViewUrl2 } from '@/services/article'
 
 export default async function Home ({ searchParams }: {
   searchParams: Record<string, string>
@@ -47,7 +47,7 @@ function MiddleBody (props: { articles: { range: ArticleModel[], count: number }
     return <div className={styles.middleItem} key={model.pk}>
       <div className={styles.itemDetail}>
         <div className={styles.title}>
-          <Link href={articleContentViewUrl(model.profile_name, model.channel_name, model.path, model.name)}>{model.title}</Link></div>
+          <Link href={articleContentViewUrl2(model)}>{model.title}</Link></div>
         <div className={styles.description} title={model.description}>
           {STSubString(model.description, 100)}
         </div>

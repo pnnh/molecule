@@ -1,14 +1,11 @@
-namespace Molecule.Helpers;
-
-using System.Collections.Specialized;
-using System.Text;
-using System.Web;
-using Microsoft.AspNetCore.Http;
-using Microsoft.IdentityModel.Tokens;
 using System.Buffers.Binary;
-using SimpleBase;
-using IdGen;
+using System.Text;
 using Base62;
+using DaanV2.UUID;
+using IdGen;
+using SimpleBase;
+
+namespace Molecule.Helpers;
 
 internal class TestTimeSource : ITimeSource
 {
@@ -59,8 +56,6 @@ public class BizIdendity
 
 public class MIDHelper
 {
-    public static MIDHelper Default { get; } = new MIDHelper();
-    
     static MIDHelper()
     {
         var structure = new IdStructure(47, 6, 10);
@@ -70,6 +65,8 @@ public class MIDHelper
         Generator = new IdGenerator(0, options);
     }
 
+    public static MIDHelper Default { get; } = new();
+
     private static IdGenerator Generator { get; }
 
     public static BizIdendity NewIdendity()
@@ -77,97 +74,83 @@ public class MIDHelper
         return new BizIdendity(Generator.CreateId());
     }
 
-    public static string LongToBase62(long id)
+    public string LongToBase62(long id)
     {
         return new BizIdendity(id).StringValue();
     }
 
     public string NewUUIDv7String()
     {
-        var uuid = DaanV2.UUID.V7.Generate();
+        var uuid = V7.Generate();
 
         return uuid.ToString();
     }
 
-    public DaanV2.UUID.UUID NewUUIDv7()
+    public UUID NewUUIDv7()
     {
-        return DaanV2.UUID.V7.Generate();
+        return V7.Generate();
     }
 
-    public string ULongBase32(ulong intValue)
+    public string LongBase32(long intValue)
     {
-        byte[] bytes = new byte[8];
-        BinaryPrimitives.WriteUInt64BigEndian(bytes, intValue);
+        var bytes = new byte[8];
+        BinaryPrimitives.WriteInt64BigEndian(bytes, intValue);
         var list = new List<byte>();
         foreach (var b in bytes)
-        {
             if (b != 0)
                 list.Add(b);
-        }
 
         var base32String = Base32.Rfc4648.Encode(list.ToArray());
         return base32String.ToLower();
     }
 
-    public ulong? Base32ULong(string base32String)
+    public long? Base32Long(string base32String)
     {
-        if (base32String.Length < 1 || base32String.Length > 16)
-        {
-            return null;
-        }
+        if (base32String.Length < 1 || base32String.Length > 16) return null;
         base32String = base32String.ToUpper();
         var bytes = new byte[8];
 
-        if (Base32.Rfc4648.TryDecode(base32String, bytes, out int numBytesWritten))
+        if (Base32.Rfc4648.TryDecode(base32String, bytes, out var numBytesWritten))
         {
             var list = new List<byte>();
             list.AddRange(bytes.Take(numBytesWritten));
             var itemCount = list.Count;
-            for (var i = 0; i < 8 - itemCount; i++)
-            {
-                list.Insert(0, 0);
-            }
-            var value = BinaryPrimitives.ReadUInt64BigEndian(list.ToArray());
+            for (var i = 0; i < 8 - itemCount; i++) list.Insert(0, 0);
+            var value = BinaryPrimitives.ReadInt64BigEndian(list.ToArray());
             return value;
         }
+
         return null;
     }
 
-    public string ULongBase58(ulong intValue)
+    public string LongBase58(ulong intValue)
     {
-        byte[] bytes = new byte[8];
+        var bytes = new byte[8];
         BinaryPrimitives.WriteUInt64BigEndian(bytes, intValue);
         var list = new List<byte>();
         foreach (var b in bytes)
-        {
             if (b != 0)
                 list.Add(b);
-        }
 
         var base58String = Base58.Flickr.Encode(list.ToArray());
         return base58String;
     }
 
-    public ulong? Base58ULong(string base58String)
+    public long? Base58Long(string base58String)
     {
-        if (base58String.Length < 1 || base58String.Length > 16)
-        {
-            return null;
-        }
+        if (base58String.Length < 1 || base58String.Length > 16) return null;
         var bytes = new byte[8];
 
-        if (Base58.Flickr.TryDecode(base58String, bytes, out int numBytesWritten))
+        if (Base58.Flickr.TryDecode(base58String, bytes, out var numBytesWritten))
         {
             var list = new List<byte>();
             list.AddRange(bytes.Take(numBytesWritten));
             var itemCount = list.Count;
-            for (var i = 0; i < 8 - itemCount; i++)
-            {
-                list.Insert(0, 0);
-            }
-            var value = BinaryPrimitives.ReadUInt64BigEndian(list.ToArray());
+            for (var i = 0; i < 8 - itemCount; i++) list.Insert(0, 0);
+            var value = BinaryPrimitives.ReadInt64BigEndian(list.ToArray());
             return value;
         }
+
         return null;
     }
 }

@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore;
 namespace Polaris.Business.Models;
 
 [Table("accounts")]
-[PrimaryKey(nameof(Pk))]
+[PrimaryKey(nameof(Uid))]
 public class AccountModel
 {
-    [Column("pk", TypeName = "varchar(64)")]
-    public string Pk { get; set; } = "";
+    [Column("uid", TypeName = "uuid")]
+    public Guid Uid { get; set; }
 
     [Column("create_time", TypeName = "timestamptz")]
     public DateTimeOffset CreateTime { get; set; } = new(2023, 1, 1, 0, 0, 0, TimeSpan.Zero);
@@ -56,13 +56,4 @@ public class AccountModel
     [JsonIgnore]
     public DateTimeOffset SyncTime { get; set; } = new(2023, 1, 1, 0, 0, 0, TimeSpan.Zero);
 }
-
-public class AccountMakeAssertion
-{
-    public string Authorization { get; set; } = "";
-}
-
-public class AccountValidate
-{
-    public string Name { get; set; } = "";
-}
+  

@@ -1,13 +1,8 @@
-
-using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Molecule.Models;
-using Polaris.Business.Models;
 using System.Data.Entity;
-using Polaris.Business.Helpers;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Molecule.Helpers;
+using Polaris.Business.Models;
 
 namespace Polaris.Controllers.Channels;
 
@@ -15,13 +10,13 @@ namespace Polaris.Controllers.Channels;
 [Authorize]
 public class ChannelsController : ControllerBase
 {
-    private readonly ILogger<ChannelsController> _logger;
     private readonly DatabaseContext _dataContext;
+    private readonly ILogger<ChannelsController> _logger;
 
     public ChannelsController(ILogger<ChannelsController> logger, DatabaseContext configuration)
     {
-        this._logger = logger;
-        this._dataContext = configuration;
+        _logger = logger;
+        _dataContext = configuration;
     }
 
     [Route("/server/channels/{pk}")]
@@ -29,11 +24,9 @@ public class ChannelsController : ControllerBase
     [AllowAnonymous]
     public ChannelModel Get([FromRoute] string pk)
     {
-        var model = _dataContext.Channels.FirstOrDefault(m => m.Pk == pk);
-        if (model == null)
-        {
-            throw new PLBizException("频道不存在");
-        }
+        if (!Guid.TryParse(pk, out var uid)) throw new PLBizException("频道不存在");
+        var model = _dataContext.Channels.FirstOrDefault(m => m.Uid == uid);
+        if (model == null) throw new PLBizException("频道不存在");
 
         return model;
     }
@@ -42,11 +35,9 @@ public class ChannelsController : ControllerBase
     [HttpDelete]
     public async Task<PLDeleteResult> Delete([FromRoute] string pk)
     {
-        var model = await _dataContext.Channels.FirstOrDefaultAsync(m => m.Pk == pk);
-        if (model == null)
-        {
-            throw new PLBizException("频道不存在");
-        }
+        if (!Guid.TryParse(pk, out var uid)) throw new PLBizException("频道不存在");
+        var model = await _dataContext.Channels.FirstOrDefaultAsync(m => m.Uid == uid);
+        if (model == null) throw new PLBizException("频道不存在");
         _dataContext.Channels.Remove(model);
         var changes = _dataContext.SaveChanges();
 
@@ -77,36 +68,30 @@ public class ChannelsController : ControllerBase
     public async Task<PLInsertResult> Insert([FromBody] ChannelModel request)
     {
         var user = HttpContext.User;
-        if (user.Identity == null || string.IsNullOrEmpty(user.Identity.Name))
+        if (user.Identity == null || string.IsNullOrEmpty(user.Identity.Name)) throw new PLBizException("用户未登录");
+        var model = new ChannelModel
         {
-            throw new PLBizException("用户未登录");
-        }
-        var model = new ChannelModel()
-        {
-            Pk = Guid.NewGuid().ToString(),
+            Uid = Guid.NewGuid(),
             Name = request.Title,
             Title = request.Title,
             CreateTime = DateTime.UtcNow,
             UpdateTime = DateTime.UtcNow,
-            Creator = user.Identity.Name,
+            Owner = Guid.Empty,
             Description = request.Description,
             Image = request.Image
         };
         await _dataContext.Channels.AddAsync(model);
         await _dataContext.SaveChangesAsync();
 
-        return new PLInsertResult { Pk = model.Pk };
+        return new PLInsertResult { Pk = model.Uid };
     }
 
     [Route("/server/channel/{pk}")]
     [HttpPut]
     public async Task<PLUpdateResult> Update([FromBody] ChannelModel request)
     {
-        var model = await _dataContext.Channels.FirstOrDefaultAsync(m => m.Pk == request.Pk);
-        if (model == null)
-        {
-            throw new PLBizException("频道不存在");
-        }
+        var model = await _dataContext.Channels.FirstOrDefaultAsync(m => m.Uid == request.Uid);
+        if (model == null) throw new PLBizException("频道不存在");
 
         model.Title = request.Title;
         var changes = _dataContext.SaveChanges();

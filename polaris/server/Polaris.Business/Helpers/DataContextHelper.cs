@@ -1,9 +1,8 @@
-using System.Data; 
+using System.Data;
 using Microsoft.EntityFrameworkCore;
 using Polaris.Business.Models;
 
 namespace Polaris.Business.Helpers;
-
 
 public static class DatabaseContextHelper
 {

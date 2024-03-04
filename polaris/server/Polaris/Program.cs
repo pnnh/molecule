@@ -1,123 +1,120 @@
-
-using Microsoft.EntityFrameworkCore;
-using System.Text.Encodings.Web;
-using System.Text.Unicode;
-using System.Text;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.IdentityModel.Tokens;
-using Polaris.Business.Models;
-using StackExchange.Redis;
-using Npgsql;
-using Polaris.Business.Services;
-using Microsoft.AspNetCore.Diagnostics;
 using System.Net.Mime;
+using System.Text;
+using System.Text.Encodings.Web;
 using System.Text.Json;
+using System.Text.Unicode;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Npgsql;
+using Polaris.Business.Models;
+using Polaris.Business.Services;
+using StackExchange.Redis;
 
-namespace Polaris
+namespace Polaris;
+
+public class PolarisApplication
 {
-    public class PolarisApplication
+    public static void Main(string[] args)
     {
-        public static void Main(string[] args)
+        var builder = WebApplication.CreateBuilder(args);
+
+        var services = builder.Services;
+
+        builder.Logging.ClearProviders().AddSimpleConsole(options =>
         {
-            var builder = WebApplication.CreateBuilder(args);
+            options.SingleLine = false;
+            options.IncludeScopes = true;
+            options.UseUtcTimestamp = true;
+        });
+        var configFileName = "appsettings.json";
+        if (builder.Environment.IsDevelopment()) configFileName = "appsettings.Development.json";
+        builder.Configuration.AddJsonFile(configFileName, false, true);
 
-            var services = builder.Services;
+        builder.Services.AddControllers().AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.Encoder = JavaScriptEncoder.Create(UnicodeRanges.All);
+            options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower;
+        });
 
-            builder.Logging.ClearProviders().AddSimpleConsole(options =>
+        var connString = builder.Configuration.GetConnectionString("Default");
+
+        var dbDataSource = new NpgsqlDataSourceBuilder(connString).Build();
+
+        builder.Services.AddDbContext<DatabaseContext>(options =>
+        {
+            options.UseNpgsql(dbDataSource,
+                    x => x.MigrationsHistoryTable("migrations_history"))
+                .LogTo(Console.WriteLine, LogLevel.Information)
+                .EnableSensitiveDataLogging()
+                .EnableDetailedErrors();
+        }, ServiceLifetime.Transient);
+
+        var redisConn = builder.Configuration.GetSection("RedisConn:Url").Value;
+        if (redisConn == null)
+            throw new Exception("REDIS_CONN_URL is not set");
+        var multiplexer = ConnectionMultiplexer.Connect(redisConn);
+        builder.Services.AddSingleton<IConnectionMultiplexer>(multiplexer);
+
+        var secretKey = builder.Configuration["Jwt:Secret"];
+        if (secretKey == null)
+            throw new Exception("JWT_SECRET is not set");
+
+        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+
+        builder.Services.AddAuthentication()
+            .AddScheme<AuthenticationSchemeOptions, OAuth2AuthenticationHandler>(
+                OAuth2AuthenticationDefaults.AuthenticationScheme, null);
+
+        var app = builder.Build();
+
+        var pathBase = app.Configuration["PathBase"] ?? "/";
+        app.UsePathBase(pathBase);
+
+        app.UseExceptionHandler(exceptionHandlerApp =>
+        {
+            exceptionHandlerApp.Run(async context =>
             {
-                options.SingleLine = false;
-                options.IncludeScopes = true;
-                options.UseUtcTimestamp = true;
-            });
-            var configFileName = "appsettings.json";
-            if (builder.Environment.IsDevelopment())
-            {
-                configFileName = "appsettings.Development.json";
-            }
-            builder.Configuration.AddJsonFile(configFileName, optional: false, reloadOnChange: true);
+                var statusCode = (int)PLCodes.Ok;
+                var publicMessage = "出现异常";
 
-            builder.Services.AddControllers().AddJsonOptions(options =>
-            options.JsonSerializerOptions.Encoder = JavaScriptEncoder.Create(UnicodeRanges.All));
+                var exceptionHandlerPathFeature =
+                    context.Features.Get<IExceptionHandlerPathFeature>();
 
-            var connString = builder.Configuration.GetConnectionString("Default");
-
-            var dbDataSource = new NpgsqlDataSourceBuilder(connString).Build();
-
-            builder.Services.AddDbContext<DatabaseContext>(options =>
-            {
-                options.UseNpgsql(dbDataSource);
-            });
-
-            var redisConn = builder.Configuration.GetSection("RedisConn:Url").Value;
-            if (redisConn == null)
-                throw new Exception("REDIS_CONN_URL is not set");
-            var multiplexer = ConnectionMultiplexer.Connect(redisConn);
-            builder.Services.AddSingleton<IConnectionMultiplexer>(multiplexer);
-
-            var secretKey = builder.Configuration["Jwt:Secret"];
-            if (secretKey == null)
-                throw new Exception("JWT_SECRET is not set");
-
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
-
-            builder.Services.AddAuthentication()
-                .AddScheme<AuthenticationSchemeOptions, OAuth2AuthenticationHandler>(
-                    OAuth2AuthenticationDefaults.AuthenticationScheme, null);
-
-            var app = builder.Build();
-
-            var pathBase = app.Configuration["PathBase"] ?? "/";
-            app.UsePathBase(pathBase);
-            
-            app.UseExceptionHandler(exceptionHandlerApp =>
-            {
-                exceptionHandlerApp.Run(async context =>
+                if (exceptionHandlerPathFeature is { Error: PLBizException bizExp })
                 {
-                    var statusCode = (int)PLCodes.Ok;
-                    var publicMessage = "出现异常";
+                    statusCode = bizExp.Code;
+                    publicMessage = bizExp.PublicMessage;
+                }
 
-                    var exceptionHandlerPathFeature =
-                        context.Features.Get<IExceptionHandlerPathFeature>();
+                context.Response.StatusCode = StatusCodes.Status200OK;
+                context.Response.ContentType = MediaTypeNames.Application.Json;
 
-                    if (exceptionHandlerPathFeature is { Error: PLBizException bizExp })
-                    {
-                        statusCode = bizExp.Code;
-                        publicMessage = bizExp.PublicMessage;
-                    }
+                if (exceptionHandlerPathFeature != null)
+                    app.Logger.LogInformation($"message={exceptionHandlerPathFeature.Error.Message}");
 
-                    context.Response.StatusCode = StatusCodes.Status200OK;
-                    context.Response.ContentType = MediaTypeNames.Application.Json;
+                var commonResult = new PLExceptionResult
+                {
+                    Code = statusCode,
+                    Message = publicMessage
+                };
+                var jsonResponse = JsonSerializer.Serialize(commonResult);
 
-                    if (exceptionHandlerPathFeature != null)
-                        app.Logger.LogInformation($"message={exceptionHandlerPathFeature.Error.Message}");
-
-                    var commonResult = new PLExceptionResult
-                    {
-                        Code = statusCode,
-                        Message = publicMessage
-                    };
-                    var jsonResponse = JsonSerializer.Serialize(commonResult);
-
-                    await context.Response.WriteAsync(jsonResponse);
-                });
+                await context.Response.WriteAsync(jsonResponse);
             });
+        });
 
-            if (!app.Environment.IsDevelopment())
-            {
-                app.UseExceptionHandler("/Home/Error");
-            }
+        if (!app.Environment.IsDevelopment()) app.UseExceptionHandler("/Home/Error");
 
-            app.UseStaticFiles();
-            app.UseRouting();
-            app.UseAuthentication();
+        app.UseStaticFiles();
+        app.UseRouting();
+        app.UseAuthentication();
 
-            app.MapControllers();
+        app.MapControllers();
 
-            app.UseAuthorization();
+        app.UseAuthorization();
 
-            app.Run();
-        }
-
+        app.Run();
     }
 }
-

@@ -1,42 +1,43 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Text;
 using Microsoft.AspNetCore.Authorization;
-using System.Text;
-using Polaris.Business.Models;
-using Polaris.Business.Helpers;
+using Microsoft.AspNetCore.Mvc;
 using Molecule.Helpers;
-using Polaris.Business.Services;
+using Polaris.Business.Helpers;
+using Polaris.Business.Models;
 
-namespace Polaris.Controllers.Article;
+namespace Polaris.Controllers.Articles;
 
 [ApiController]
-public class ArticleContentController : ControllerBase
+public class ArticleContentController(DatabaseContext configuration) : ControllerBase
 {
-    private readonly ILogger<ArticleContentController> _logger;
-    private readonly DatabaseContext _dataContext;
-
-    public ArticleContentController(ILogger<ArticleContentController> logger, DatabaseContext configuration)
-    {
-        this._logger = logger;
-        this._dataContext = configuration;
-    }
-
-    [Route("/posts/{pk}")]
+    [Route("/posts/{name}")]
     [HttpGet]
     [AllowAnonymous]
-    public PageModel Get([FromRoute] string pk)
+    public PostModel? Get([FromRoute] string name)
     {
-        var queryHelper = new MQueryHelper(Request.Query);
-
-        var pageService = new PageService(new Business.Services.ServiceContext(_dataContext));
-
-        if (pk == "+")
+        if (string.IsNullOrEmpty(name) || string.IsNullOrWhiteSpace(name))
+            return null;
+        Guid? uid = null;
+        long? nid = null;
+        switch (name.Length)
         {
-            var getResult = pageService.GetByQuery(queryHelper);
-            if (getResult == null)
+            case <= 20:
+                if (name.Length <= 13)
+                {
+                    var baseValue = MIDHelper.Default.Base32Long(name);
+                    if (baseValue != null)
+                        nid = baseValue;
+                }
+
+                if (nid == null && long.TryParse(name, out var longValue)) nid = longValue;
+                break;
+            case 32:
+            case 36:
             {
-                throw PLBizException.BadRequest("文章不存在");
+                if (Guid.TryParse(name, out var guidValue))
+                    uid = guidValue;
+                break;
             }
-            return getResult;
         }
 
         var sqlBuilder = new StringBuilder();
@@ -45,20 +46,30 @@ public class ArticleContentController : ControllerBase
         sqlBuilder.Append(@"
 select a.*
 from posts as a
-where a.pk = @article
 ");
-        parameters.Add("@article", pk);
+        if (uid.HasValue)
+        {
+            sqlBuilder.Append(" where  a.uid = @uid");
+            parameters.Add("uid", uid.Value);
+        }
+        else if (nid.HasValue)
+        {
+            sqlBuilder.Append(" where  a.nid = @nid");
+            parameters.Add("nid", nid.Value);
+        }
+        else
+        {
+            sqlBuilder.Append(" where  a.name = @name");
+            parameters.Add("name", name);
+        }
 
         var querySqlText = sqlBuilder.ToString();
 
-        var modelsQuery = DatabaseContextHelper.RawSqlQuery<PageModel>(_dataContext, querySqlText, parameters);
+        var modelsQuery = DatabaseContextHelper.RawSqlQuery<PostModel>(configuration, querySqlText, parameters);
 
         var model = modelsQuery.FirstOrDefault();
 
-        if (model == null)
-        {
-            throw new PLBizException("文章不存在");
-        }
+        if (model == null) throw new PLBizException("文章不存在");
 
         return model;
     }
@@ -66,7 +77,7 @@ where a.pk = @article
 
     [Route("/posts")]
     [AllowAnonymous]
-    public PLSelectResult<PageModel> Select()
+    public PLSelectResult<PostModel> Select()
     {
         var queryHelper = new MQueryHelper(Request.Query);
         var channel = queryHelper.GetString("channel");
@@ -82,12 +93,12 @@ where a.pk = @article
         var parameters = new Dictionary<string, object>();
 
         sqlBuilder.Append(@"
-select a.*, p.username as profile_name, c.name as channel_name,
+select a.*, p.nickname as owner_name, c.name as channel_name,
         '/' || replace(pa.path::varchar, '.', '/') as path
 from posts as a
-     join partitions pa on pa.pk = a.partition
-     join profiles as p on p.pk = a.profile
-     join channels as c on c.pk = a.channel
+     left join partitions pa on pa.uid = a.partition
+     left join accounts as p on p.uid = a.owner
+     left join channels as c on c.uid = a.channel
 where a.uid is not null
 ");
         if (!string.IsNullOrEmpty(channel))
@@ -116,16 +127,9 @@ where a.uid is not null
         var countSqlText = $@"
 select count(1) from ({sqlBuilder}) as temp;";
 
-        var totalCount = DatabaseContextHelper.RawSqlScalar<int?>(_dataContext, countSqlText, parameters);
+        var totalCount = DatabaseContextHelper.RawSqlScalar<int?>(configuration, countSqlText, parameters);
 
-        if (sort == "read")
-        {
-            sqlBuilder.Append(@" order by a.discover desc");
-        }
-        else
-        {
-            sqlBuilder.Append(@" order by a.update_time desc");
-        }
+        sqlBuilder.Append(sort == "read" ? @" order by a.discover desc" : @" order by a.update_time desc");
 
         sqlBuilder.Append(@" limit @limit offset @offset;");
         parameters.Add("@offset", offset);
@@ -133,14 +137,14 @@ select count(1) from ({sqlBuilder}) as temp;";
 
         var querySqlText = sqlBuilder.ToString();
 
-        var modelsQuery = DatabaseContextHelper.RawSqlQuery<PageModel>(_dataContext, querySqlText, parameters);
+        var modelsQuery = DatabaseContextHelper.RawSqlQuery<PostModel>(configuration, querySqlText, parameters);
 
         var models = modelsQuery.ToList();
 
-        return new PLSelectResult<PageModel>
+        return new PLSelectResult<PostModel>
         {
             Range = models,
-            Count = totalCount ?? 0,
+            Count = totalCount ?? 0
         };
     }
 
@@ -148,13 +152,10 @@ select count(1) from ({sqlBuilder}) as temp;";
     [HttpDelete]
     public PLDeleteResult Delete([FromRoute] string pk)
     {
-        var model = _dataContext.Pages.FirstOrDefault(m => m.Uid.ToString() == pk);
-        if (model == null)
-        {
-            throw new PLBizException("文章不存在");
-        }
-        _dataContext.Pages.Remove(model);
-        var changes = _dataContext.SaveChanges();
+        var model = configuration.Pages.FirstOrDefault(m => m.Uid.ToString() == pk);
+        if (model == null) throw new PLBizException("文章不存在");
+        configuration.Pages.Remove(model);
+        var changes = configuration.SaveChanges();
 
         return new PLDeleteResult
         {
@@ -171,11 +172,8 @@ select count(1) from ({sqlBuilder}) as temp;";
         var body = jsonHelper.GetString("body") ?? throw new PLBizException("body is required");
 
         var user = HttpContext.User;
-        if (user.Identity == null || string.IsNullOrEmpty(user.Identity.Name))
-        {
-            throw new PLBizException("用户未登录");
-        }
-        var model = new PageModel()
+        if (user.Identity == null || string.IsNullOrEmpty(user.Identity.Name)) throw new PLBizException("用户未登录");
+        var model = new PostModel
         {
             Uid = MIDHelper.Default.NewUUIDv7(),
             Title = title,
@@ -183,12 +181,12 @@ select count(1) from ({sqlBuilder}) as temp;";
             Header = "markdown",
             CreateTime = DateTime.UtcNow,
             UpdateTime = DateTime.UtcNow,
-            Creator = user.Identity.Name,
+            Owner = Guid.Empty
         };
-        _dataContext.Pages.Add(model);
-        _dataContext.SaveChanges();
+        configuration.Pages.Add(model);
+        configuration.SaveChanges();
 
-        return new PLInsertResult { Pk = model.Uid.ToString() };
+        return new PLInsertResult { Pk = model.Uid };
     }
 
     [Route("/server/page/{pk}")]
@@ -199,15 +197,12 @@ select count(1) from ({sqlBuilder}) as temp;";
         var title = jsonHelper.GetString("title") ?? throw new PLBizException("title is required");
         var body = jsonHelper.GetString("body") ?? throw new PLBizException("body is required");
 
-        var model = _dataContext.Pages.FirstOrDefault(m => m.Uid.ToString() == pk);
-        if (model == null)
-        {
-            throw new PLBizException("文章不存在");
-        }
+        var model = configuration.Pages.FirstOrDefault(m => m.Uid.ToString() == pk);
+        if (model == null) throw new PLBizException("文章不存在");
 
         model.Title = title;
         model.Body = body;
-        var changes = _dataContext.SaveChanges();
+        var changes = configuration.SaveChanges();
 
         return new PLUpdateResult { Changes = changes };
     }
@@ -220,31 +215,29 @@ select count(1) from ({sqlBuilder}) as temp;";
         var pk = formHelper.GetString("pk") ?? throw new Exception("pk is required");
         var address = formHelper.GetString("address") ?? throw new Exception("address is required");
 
-        var model = _dataContext.Channels.FirstOrDefault(m => m.Name == address);
-        if (model == null)
-        {
-            throw new PLBizException("频道不存在");
-        }
+        var model = configuration.Channels.FirstOrDefault(m => m.Name == address);
+        if (model == null) throw new PLBizException("频道不存在");
         var user = HttpContext.User;
-        var creatorPk = "";
+        var creatorPk = Guid.Empty;
         if (user.Identity != null && !string.IsNullOrEmpty(user.Identity.Name))
         {
-            var account = _dataContext.Accounts.FirstOrDefault(o => o.Username == user.Identity.Name);
-            if (account != null) creatorPk = account.Pk;
+            var account = configuration.Accounts.FirstOrDefault(o => o.Username == user.Identity.Name);
+            if (account != null) creatorPk = account.Uid;
         }
-        var relation = new RelationModel()
+
+        var relation = new RelationModel
         {
-            Pk = Guid.NewGuid().ToString(),
-            Source = model.Pk,
-            Target = pk,
+            Uid = Guid.NewGuid(),
+            Source = model.Uid,
+            Target = Guid.Parse(pk),
             Direction = "cta",
             CreateTime = DateTime.UtcNow,
             UpdateTime = DateTime.UtcNow,
-            Creator = creatorPk,
-            Discover = 0,
+            Owner = creatorPk,
+            Discover = 0
         };
-        _dataContext.Relations.Add(relation);
-        var changes = _dataContext.SaveChanges();
+        configuration.Relations.Add(relation);
+        var changes = configuration.SaveChanges();
 
         return new PLUpdateResult { Changes = changes };
     }
