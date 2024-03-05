@@ -1,8 +1,8 @@
 export class ChannelModel {
-  pk = ''
+  uid = ''
   title = ''
-  create_time: Date = new Date()
-  update_time: Date = new Date()
+  create_time = ''
+  update_time = ''
   creator = ''
   description = ''
   image = ''

@@ -3,15 +3,8 @@ import { PLSelectResult } from '@/models/common-result'
 import { ArticleModel } from '@/models/article'
 import { ModelService } from './service'
 
-export function articleContentViewUrl (profile: string, channel: string, path: string, page: string) {
-  return `/posts/${profile}/${channel}${path}/` + page
-}
-
 export function articleContentViewUrl2 (model: ArticleModel) {
-  if (model.name) {
-    return `/posts/${model.name}`
-  }
-  return `/posts/${model.url_name}`
+  return `/posts/${model.urn}.html`
 }
 
 export class ArticleService extends ModelService {
@@ -29,8 +22,8 @@ export class ArticleService extends ModelService {
     return response.data
   }
 
-  async getArticle (pk: string, queryString: string = '') {
-    const url = this.baseUrl + '/restful/posts/' + pk + '?' + queryString
+  async getArticle (name: string) {
+    const url = this.baseUrl + '/restful/posts/' + name
     const response = await axios.get<ArticleModel>(url)
     return response.data
   }

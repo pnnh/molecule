@@ -8,8 +8,7 @@ namespace Polaris.Business.Models;
 [PrimaryKey(nameof(Uid))]
 public class AccountModel
 {
-    [Column("uid", TypeName = "uuid")]
-    public Guid Uid { get; set; }
+    [Column("uid", TypeName = "uuid")] public Guid Uid { get; set; }
 
     [Column("create_time", TypeName = "timestamptz")]
     public DateTimeOffset CreateTime { get; set; } = new(2023, 1, 1, 0, 0, 0, TimeSpan.Zero);
@@ -32,14 +31,12 @@ public class AccountModel
     [Column("mail", TypeName = "varchar(128)")]
     public string Mail { get; set; } = "";
 
-    [Column("status", TypeName = "int")]
-    public int Status { get; set; } = 0;
+    [Column("status", TypeName = "int")] public int Status { get; set; } = 0;
 
     [Column("nickname", TypeName = "varchar(64)")]
     public string Nickname { get; set; } = "";
 
-    [Column("counter", TypeName = "int")]
-    public uint Counter { get; set; } = 0;
+    [Column("counter", TypeName = "int")] public uint Counter { get; set; } = 0;
 
     [Column("access_token", TypeName = "varchar(256)")]
     public string AccessToken { get; set; } = "";
@@ -55,5 +52,8 @@ public class AccountModel
     [Column("sync_time", TypeName = "timestamptz")]
     [JsonIgnore]
     public DateTimeOffset SyncTime { get; set; } = new(2023, 1, 1, 0, 0, 0, TimeSpan.Zero);
+
+    [Column("login_session", TypeName = "varchar(256)")]
+    [JsonIgnore]
+    public string LoginSession { get; set; } = "";
 }
-  

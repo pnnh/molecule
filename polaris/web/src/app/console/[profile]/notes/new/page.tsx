@@ -12,7 +12,7 @@ export default function Page () {
   return <MarkdownEditorForm onSubmit={async (newModel) => {
     const result = await service.updateArticle(newModel)
     console.debug('result', result)
-    if (result && result.pk) {
+    if (result && result.uid) {
       router.replace('/console/articles')
       router.refresh()
     }

@@ -104,6 +104,46 @@ public class MIDHelper
         return base32String.ToLower();
     }
 
+
+    public string GuidBase32(Guid guidValue)
+    {
+        var bytes = guidValue.ToByteArray();
+        var base32String = Base32.Rfc4648.Encode(bytes);
+        return base32String.ToLower();
+    }
+
+    public Guid Base32Guid(string base32String)
+    {
+        if (base32String.Length < 1 || base32String.Length > 26) return Guid.Empty;
+        base32String = base32String.ToUpper();
+        var bytes = new byte[16];
+
+        if (Base32.Rfc4648.TryDecode(base32String, bytes, out var numBytesWritten))
+        {
+            var list = new List<byte>();
+            list.AddRange(bytes.Take(numBytesWritten));
+            var itemCount = list.Count;
+            for (var i = 0; i < 16 - itemCount; i++) list.Insert(0, 0);
+            var value = new Guid(list.ToArray());
+            return value;
+        }
+
+        return Guid.Empty;
+    }
+
+    public bool Base32Long(string base32String, out long longValue)
+    {
+        var value = Base32Long(base32String);
+        if (value != null)
+        {
+            longValue = value.Value;
+            return true;
+        }
+
+        longValue = 0;
+        return false;
+    }
+
     public long? Base32Long(string base32String)
     {
         if (base32String.Length < 1 || base32String.Length > 16) return null;

@@ -15,6 +15,8 @@ public class PostModel
     [JsonPropertyName("uid")]
     public Guid Uid { get; set; }
 
+    [NotMapped] public string Urn => MIDHelper.Default.GuidBase32(Uid);
+
     [Column("title", TypeName = "varchar(128)")]
     [JsonPropertyName("title")]
     public string Title { get; set; } = "";
@@ -67,9 +69,6 @@ public class PostModel
     [JsonPropertyName("channel_name")]
     public string? ChannelName { get; set; } = "";
 
-    [Column("name", TypeName = "varchar(96)")]
-    [JsonPropertyName("name")]
-    public string Name { get; set; } = "";
 
     [NotMapped]
     [JsonPropertyName("owner_name")]
@@ -78,10 +77,6 @@ public class PostModel
     [Column("partition", TypeName = "uuid")]
     [JsonPropertyName("partition")]
     public Guid Partition { get; set; }
-
-    [Column("nid", TypeName = "bigint")] public long Nid { get; set; }
-
-    public string UrlName => MIDHelper.Default.LongBase32(Nid);
 
     public static void MapperConfig(IMapperConfigurationExpression cfg)
     {

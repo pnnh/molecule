@@ -33,7 +33,7 @@ export default function Page (request: IReadRequest) {
     }
     service.updateArticle(newModel).then((result) => {
       console.debug('result', result)
-      if (result && result.pk) {
+      if (result && result.uid) {
         router.replace('/console/articles')
         router.refresh()
       }

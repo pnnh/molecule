@@ -1,5 +1,6 @@
 export class ArticleModel {
-  pk = ''
+  uid = ''
+  urn = ''
   title = ''
   header = ''
   body = ''
@@ -17,13 +18,6 @@ export class ArticleModel {
   channel_name = ''
   partition = ''
   path = ''
-  url_name = ''
-}
-
-// Deprecated
-export class SelectResultModel {
-  count = 0
-  list: ArticleModel[] = []
 }
 
 export class TocItem {

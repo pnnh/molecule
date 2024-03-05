@@ -9,7 +9,7 @@ import { PaginationPartial } from '@/components/common/pagination'
 import { replaceQueryStringNew, replaceSearchParams } from '@/utils/query'
 
 import { ChannelInfo } from '@/components/common/channel'
-import { ArticleService, articleContentViewUrl } from '@/services/article'
+import { ArticleService, articleContentViewUrl2 } from '@/services/article'
 import { loadServerConfig } from '@/services/server/config'
 import { PLSelectResult } from '@/models/common-result'
 import { ChannelService } from '@/services/channel'
@@ -51,7 +51,7 @@ function ArticleList (props: {channel: string, result: PLSelectResult<ArticleMod
   return <>
     <div className={styles.articleList}>
       {result.range.map((model) => {
-        return <ArticleItem key={model.pk} model={model}/>
+        return <ArticleItem key={model.uid} model={model}/>
       })
       }
     </div>
@@ -65,13 +65,13 @@ function ArticleItem ({ model }: { model: ArticleModel }) {
   return <div className={styles.articleItem}>
     <article className={styles.articleContent}>
       <div className={styles.articleTitle}>
-        <Link className={styles.articleLink} href={articleContentViewUrl(model.profile_name, model.channel_name, model.path, model.name)}>{model.title}</Link>
+        <Link className={styles.articleLink} href={articleContentViewUrl2(model)}>{model.title}</Link>
       </div>
       <div className={styles.articleDescription}>
         {model.description}
       </div>
       <div>
-        <Link className='btn btn-outline-secondary btn-sm' href={articleContentViewUrl(model.profile_name, model.channel_name, model.path, model.name)}>阅读更多</Link>
+        <Link className='btn btn-outline-secondary btn-sm' href={articleContentViewUrl2(model)}>阅读更多</Link>
       </div>
     </article>
   </div>

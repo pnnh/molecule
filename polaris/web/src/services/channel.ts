@@ -3,8 +3,8 @@ import { PLInsertResult, PLSelectResult } from '@/models/common-result'
 import { ChannelModel } from '@/models/channel'
 import { ModelService } from './service'
 
-export function channelPageUrl (pk: string) {
-  return '/channels/' + pk
+export function channelPageUrl (name: string) {
+  return '/channels/' + name
 }
 
 export class ChannelService extends ModelService {

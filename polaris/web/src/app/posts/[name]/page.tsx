@@ -8,25 +8,17 @@ import { generatorRandomString } from '~/@pnnh/stele'
 import { headers } from 'next/headers'
 import { formatRfc3339 } from '@/utils/datetime'
 import { loadServerConfig } from '@/services/server/config'
-import { ArticleService, articleContentViewUrl } from '@/services/article'
-import queryString from 'query-string'
+import { ArticleService, articleContentViewUrl2 } from '@/services/article'
 import { Metadata } from 'next'
-
-interface PageProps {
-  profile: string
-  channel: string
-  partition: string[]
-}
 
 export const metadata: Metadata = {
   title: '北极星笔记'
 }
 
-export default async function Home ({ params }: { params: PageProps }) {
+export default async function Home ({ params }: { params: { name: string }}) {
   const serverConfig = await loadServerConfig()
   const service = ArticleService.Instance(serverConfig.SERVER)
-  const getQuery = queryString.stringify(params, { arrayFormat: 'comma' })
-  const articleModel = await service.getArticle('+', getQuery)
+  const articleModel = await service.getArticle(params.name)
   if (articleModel == null) {
     return <div>遇到错误</div>
   }
@@ -43,7 +35,7 @@ export default async function Home ({ params }: { params: PageProps }) {
   console.log('clientIp', clientIp)
   // 更新文章阅读次数
   // await ViewerService.Instance(serverConfig.SERVER).newArticleViewer(params.channel, params.name, clientIp)
-  const readUrl = articleContentViewUrl(articleModel.profile_name, articleModel.channel_name, articleModel.path, articleModel.name)
+  const readUrl = articleContentViewUrl2(articleModel)
   return <div className={styles.articleContainer}>
     <div className={styles.leftArea}>
       <div className={styles.articleInfo}>
@@ -58,7 +50,7 @@ export default async function Home ({ params }: { params: PageProps }) {
       </div>
     </div>
     <div className={styles.rightArea}>
-        <TocInfo channel={params.channel} readurl={readUrl} model={tocList} />
+        <TocInfo readurl={readUrl} model={tocList} />
     </div>
   </div>
 }

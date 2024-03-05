@@ -1,33 +1,32 @@
+using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Text;
 using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Molecule.Utils;
 using Newtonsoft.Json;
 using Polaris.Business.Models;
-
 
 namespace Polaris.Business.Services;
 
 public abstract class OAuth2AuthenticationDefaults
 {
     public const string AuthenticationScheme = "OAuth2";
+    public const string CookieScheme = "Cookie";
 }
 
 internal class OAuth2IntrospectResult
 {
     public bool Active { get; set; } = false;
-    [JsonProperty("client_id")]
-    public string ClientId { get; set; } = "";
 
-    [JsonProperty("username")]
-    public string Username { get; set; } = "";
+    [JsonProperty("client_id")] public string ClientId { get; set; } = "";
+
+    [JsonProperty("username")] public string Username { get; set; } = "";
 
     public long Exp { get; set; }
     public long Iat { get; set; }
@@ -44,54 +43,90 @@ public class OAuth2AuthenticationClient : IIdentity
     public string? Name { get; init; }
 }
 
-public class OAuth2AuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
+public class OAuth2AuthenticationHandler(
+    IOptionsMonitor<AuthenticationSchemeOptions> options,
+    ILoggerFactory logger,
+    UrlEncoder encoder,
+    DatabaseContext databaseContext,
+    IConfiguration configuration)
+    : AuthenticationHandler<AuthenticationSchemeOptions>(options, logger, encoder)
 {
-    private readonly DatabaseContext _databaseContext;
-    private readonly IConfiguration _configuration;
-
-
-    public OAuth2AuthenticationHandler(IOptionsMonitor<AuthenticationSchemeOptions> options,
-        ILoggerFactory logger,
-        UrlEncoder encoder,
-        DatabaseContext databaseContext,
-        IConfiguration configuration) : base(options, logger, encoder)
-    {
-        _databaseContext = databaseContext;
-        _configuration = configuration;
-    }
-
-    AuthenticateResult debugAuth(string? basicToken)
+    private AuthenticateResult debugAuth(string? basicToken)
     {
         if (basicToken == null)
             return AuthenticateResult.Fail("Invalid Authorization Header");
         var decodedToken = Encoding.UTF8.GetString(Convert.FromBase64String(basicToken));
         var username = decodedToken.Split(":")[0];
-        username = $"debug-{username??"anonymous"}";
-        var client = new OAuth2AuthenticationClient()
+        username = $"debug-{username ?? "anonymous"}";
+        var client = new OAuth2AuthenticationClient
         {
             AuthenticationType = OAuth2AuthenticationDefaults.AuthenticationScheme,
             IsAuthenticated = true,
             Name = username
         };
         var claims = new List<Claim>
-                {
-                    new(ClaimTypes.Name, username)
-                };
+        {
+            new(ClaimTypes.Name, username)
+        };
         var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(client, claims));
 
         return AuthenticateResult.Success(new AuthenticationTicket(claimsPrincipal, Scheme.Name));
-
     }
 
     protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
     {
-        if (!Request.Headers.ContainsKey("Authorization"))
+        if (!Request.Headers.TryGetValue("Authorization", out var authorizationHeader))
         {
-            return AuthenticateResult.NoResult();
+            var token = authorizationHeader.FirstOrDefault();
+            if (token != null)
+                return await ValidateAuth2(token);
         }
-        var authorizationHeader = Request.Headers["Authorization"].ToString();
+        else if (!Request.Cookies.TryGetValue("PolarisJWT", out var jwtToken) && !string.IsNullOrEmpty(jwtToken))
 
-#if DEBUG 
+        {
+            return ValidateCookie(jwtToken);
+        }
+
+        return AuthenticateResult.NoResult();
+    }
+
+
+    private AuthenticateResult ValidateCookie(string authCookie)
+    {
+        var jwtSecret = configuration.GetSection("Jwt:Secret").Value;
+        if (jwtSecret == null || string.IsNullOrEmpty(jwtSecret))
+            return AuthenticateResult.Fail("JwtKey is not configured");
+
+        var validateToken = JwtHelper.ValidateToken(jwtSecret, authCookie);
+
+        var loginSession = validateToken.Claims.FirstOrDefault(o => o.Type == JwtRegisteredClaimNames.Jti)?.Value;
+        if (string.IsNullOrEmpty(loginSession))
+            return AuthenticateResult.Fail("Invalid token");
+
+        var accountModel = databaseContext.Accounts.FirstOrDefault(a => a.LoginSession == loginSession);
+        if (accountModel == null)
+            return AuthenticateResult.Fail("Invalid token");
+
+        var client = new OAuth2AuthenticationClient
+        {
+            AuthenticationType = OAuth2AuthenticationDefaults.CookieScheme,
+            IsAuthenticated = true,
+            Name = accountModel.LoginSession
+        };
+        var claims = new List<Claim>
+        {
+            new(ClaimTypes.Name, accountModel.LoginSession)
+        };
+        var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(client, claims));
+
+        return AuthenticateResult.Success(new AuthenticationTicket(claimsPrincipal, Scheme.Name));
+    }
+
+    protected async Task<AuthenticateResult> ValidateAuth2(string authorizationHeader)
+    {
+        if (string.IsNullOrEmpty(authorizationHeader)) return AuthenticateResult.NoResult();
+
+#if DEBUG
         if (authorizationHeader.StartsWith("Basic", StringComparison.OrdinalIgnoreCase))
         {
             var basicToken = authorizationHeader.Substring("Basic ".Length).Trim();
@@ -104,12 +139,9 @@ public class OAuth2AuthenticationHandler : AuthenticationHandler<AuthenticationS
 
         var accessToken = authorizationHeader.Substring("Bearer ".Length).Trim();
 
-        if (string.IsNullOrEmpty(accessToken))
-        {
-            return AuthenticateResult.Fail("Missing Authorization Header");
-        }
+        if (string.IsNullOrEmpty(accessToken)) return AuthenticateResult.Fail("Missing Authorization Header");
 
-        var accountModel = _databaseContext.Accounts.FirstOrDefault(o =>
+        var accountModel = databaseContext.Accounts.FirstOrDefault(o =>
             o.AccessToken == accessToken);
 
         if (accountModel == null || accountModel.TokenExpire > DateTimeOffset.Now ||
@@ -124,7 +156,7 @@ public class OAuth2AuthenticationHandler : AuthenticationHandler<AuthenticationS
             var authHeader = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{clientId}:{clientSecret}"));
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authHeader);
 
-            var authServer = _configuration.GetSection("AuthServer").Value;
+            var authServer = configuration.GetSection("AuthServer").Value;
             if (authServer == null || string.IsNullOrEmpty(authServer))
                 return AuthenticateResult.Fail("AuthServer is not configured");
 
@@ -147,7 +179,7 @@ public class OAuth2AuthenticationHandler : AuthenticationHandler<AuthenticationS
         }
 
         var username = accountModel.Username;
-        var client = new OAuth2AuthenticationClient()
+        var client = new OAuth2AuthenticationClient
         {
             AuthenticationType = OAuth2AuthenticationDefaults.AuthenticationScheme,
             IsAuthenticated = true,
@@ -162,12 +194,13 @@ public class OAuth2AuthenticationHandler : AuthenticationHandler<AuthenticationS
         return AuthenticateResult.Success(new AuthenticationTicket(claimsPrincipal, Scheme.Name));
     }
 
+
     private AccountModel SaveAccount(string accessToken, DateTimeOffset tokenExpire, OAuth2IntrospectResult tokenModel)
     {
-        var account = _databaseContext.Accounts.FirstOrDefault(o => o.Username == tokenModel.Username);
+        var account = databaseContext.Accounts.FirstOrDefault(o => o.Username == tokenModel.Username);
         if (account == null)
         {
-            account = new AccountModel()
+            account = new AccountModel
             {
                 AccessToken = accessToken,
                 CreateTime = DateTimeOffset.Now,
@@ -178,10 +211,10 @@ public class OAuth2AuthenticationHandler : AuthenticationHandler<AuthenticationS
                 Nickname = tokenModel.Username,
                 Status = 0,
                 TokenExpire = tokenExpire,
-                TokenIssuer = tokenModel.Iss ?? "",
+                TokenIssuer = tokenModel.Iss ?? ""
             };
-            _databaseContext.Add(account);
-            _databaseContext.SaveChanges();
+            databaseContext.Add(account);
+            databaseContext.SaveChanges();
         }
         else
         {
@@ -189,8 +222,8 @@ public class OAuth2AuthenticationHandler : AuthenticationHandler<AuthenticationS
             account.TokenExpire = tokenExpire;
             account.TokenIssuer = tokenModel.Iss ?? "";
             account.UpdateTime = DateTimeOffset.Now;
-            _databaseContext.Update(account);
-            _databaseContext.SaveChanges();
+            databaseContext.Update(account);
+            databaseContext.SaveChanges();
         }
 
         return account;

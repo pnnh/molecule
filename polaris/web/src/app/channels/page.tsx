@@ -8,7 +8,7 @@ import { loadServerConfig } from '@/services/server/config'
 import { ChannelService, channelPageUrl } from '@/services/channel'
 
 function Item (props: { model: ChannelModel }) {
-  const readUrl = channelPageUrl(props.model.pk)
+  const readUrl = channelPageUrl(props.model.name)
   return <PSCard className={styles.item}>
     <div className={styles.itemCover}>
       <PSImage src={props.model.image} alt='star' width={256} height={256}/>
@@ -36,7 +36,7 @@ export default async function Home () {
     <div className={styles.body}>
       <div className={styles.list}>
         {result.range.map((model) => {
-          return <Item key={model.pk} model={model}/>
+          return <Item key={model.uid} model={model}/>
         })
         }
       </div>

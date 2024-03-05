@@ -17,7 +17,7 @@ public class MapperHelper
             cfg.DestinationMemberNamingConvention = new PascalCaseNamingConvention();
 
             PostModel.MapperConfig(cfg);
-            ChannelModel.MapperConfig(cfg);
+            // ChannelModel.MapperConfig(cfg);
             RelationModel.MapperConfig(cfg);
             HistoryModel.MapperConfig(cfg);
             RelationFullModel<ChannelModel, HistoryModel>.MapperConfig(cfg);

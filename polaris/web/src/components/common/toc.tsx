@@ -1,7 +1,7 @@
 import styles from './toc.module.scss'
 import { TocItem } from '@/models/article'
 
-export function TocInfo (props: { channel: string, readurl: string, model: TocItem[] }) {
+export function TocInfo (props: { readurl: string, model: TocItem[] }) {
   return <div className={styles.tocCard}>
     <div className={styles.tocHeader}>
       目录信息

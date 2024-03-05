@@ -45,7 +45,7 @@ export default function EditPartial (props: { model: ChannelModel }) {
           const service = ChannelService.Instance()
           const result = await service.updateChannel(model)
           console.debug('result', result)
-          if (result && result.pk) {
+          if (result && result.uid) {
             router.push('/console/channel')
           }
         }}>保存

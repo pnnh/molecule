@@ -15,8 +15,8 @@ export function PSNotesList (props: { result: PLSelectResult<NoteModel> }) {
   return <div className={styles.articleTable + ' table w-full'}>
       {
         props.result.range.map((item) => {
-          return <div key={item.pk} className={styles.articleRow} onClick={() => {
-            setNote(item.pk)
+          return <div key={item.uid} className={styles.articleRow} onClick={() => {
+            setNote(item.uid)
           }}>
             <div className={styles.articleTitle} title={item.title}>
               {item.title}

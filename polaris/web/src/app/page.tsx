@@ -44,7 +44,7 @@ function MiddleBody (props: { articles: { range: ArticleModel[], count: number }
     return <NoData size='large' />
   }
   return props.articles.range.map((model) => {
-    return <div className={styles.middleItem} key={model.pk}>
+    return <div className={styles.middleItem} key={model.uid}>
       <div className={styles.itemDetail}>
         <div className={styles.title}>
           <Link href={articleContentViewUrl2(model)}>{model.title}</Link></div>
@@ -59,7 +59,6 @@ function MiddleBody (props: { articles: { range: ArticleModel[], count: number }
       <div className={styles.itemCover}>
         <PSImage src={model.cover} alt={model.title} fill={true}/>
       </div>
-
     </div>
   })
 }

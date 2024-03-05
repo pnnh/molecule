@@ -10,7 +10,7 @@ import { NoData } from '@/components/common/empty'
 import { PSImage } from '@/components/client/image'
 import { formatRfc3339 } from '@/utils/datetime'
 import { loadServerConfig } from '@/services/server/config'
-import { ArticleService, articleContentViewUrl } from '@/services/article'
+import { ArticleService, articleContentViewUrl2 } from '@/services/article'
 import { PLSelectResult } from '@/models/common-result'
 
 export default async function Page ({ searchParams }: {
@@ -89,10 +89,10 @@ export default async function Page ({ searchParams }: {
             {
               rankSelectResult.range && rankSelectResult.range.length > 0
                 ? rankSelectResult.range.map((model, index) => {
-                  return <div key={model.pk} className={styles.rankItem}>
+                  return <div key={model.uid} className={styles.rankItem}>
                     <div className={styles.rankIndex + (index <= 2 ? ' ' + styles.rankTop : '')}>{index + 1}</div>
                     <div className={styles.rankTitle}>
-                      <Link href={articleContentViewUrl(model.profile_name, model.channel_name, model.path, model.name)}
+                      <Link href={articleContentViewUrl2(model)}
                       title={model.title}>{model.title}</Link>
                     </div>
                   </div>
@@ -111,10 +111,10 @@ function MiddleBody ({ selectResult }: { selectResult: PLSelectResult<ArticleMod
     return <NoData size='large' />
   }
   return selectResult.range.map((model) => {
-    return <div className={styles.middleItem} key={model.pk}>
+    return <div className={styles.middleItem} key={model.uid}>
       <div className={styles.itemDetail}>
         <div className={styles.title}>
-          <Link href={articleContentViewUrl(model.profile_name, model.channel_name, model.path, model.name)}>{model.title}</Link></div>
+          <Link href={articleContentViewUrl2(model)}>{model.title}</Link></div>
         <div className={styles.description} title={model.description}>
           {STSubString(model.description, 100)}
         </div>
