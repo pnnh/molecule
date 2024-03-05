@@ -1,8 +1,10 @@
 using System.Buffers.Binary;
+using System.IO.Compression;
 using System.Text;
 using Base62;
 using DaanV2.UUID;
 using IdGen;
+using Microsoft.AspNetCore.Mvc.Diagnostics;
 using SimpleBase;
 
 namespace Molecule.Helpers;
@@ -67,6 +69,8 @@ public class MIDHelper
 
     public static MIDHelper Default { get; } = new();
 
+    public static Base58Encoder Base58 { get; } = new();
+
     private static IdGenerator Generator { get; }
 
     public static BizIdendity NewIdendity()
@@ -109,6 +113,7 @@ public class MIDHelper
     {
         var bytes = guidValue.ToByteArray();
         var base32String = Base32.Rfc4648.Encode(bytes);
+
         return base32String.ToLower();
     }
 
@@ -130,6 +135,7 @@ public class MIDHelper
 
         return Guid.Empty;
     }
+
 
     public bool Base32Long(string base32String, out long longValue)
     {
@@ -163,10 +169,55 @@ public class MIDHelper
         return null;
     }
 
-    public string LongBase58(ulong intValue)
+
+    public long? Base58Long(string base58String)
+    {
+        if (base58String.Length < 1 || base58String.Length > 16) return null;
+        var bytes = new byte[8];
+
+        if (SimpleBase.Base58.Flickr.TryDecode(base58String, bytes, out var numBytesWritten))
+        {
+            var list = new List<byte>();
+            list.AddRange(bytes.Take(numBytesWritten));
+            var itemCount = list.Count;
+            for (var i = 0; i < 8 - itemCount; i++) list.Insert(0, 0);
+            var value = BinaryPrimitives.ReadInt64BigEndian(list.ToArray());
+            return value;
+        }
+
+        return null;
+    }
+}
+
+public class Base58Encoder
+{
+    public string GuidEncode(Guid guidValue)
+    {
+        var bytes = guidValue.ToByteArray();
+
+        var base58String = Base58.Flickr.Encode(bytes);
+
+        return base58String;
+    }
+
+    public Guid? GuidDecode(string base36String)
+    {
+        var bytes = new byte[16];
+        if (Base58.Flickr.TryDecode(base36String, bytes, out var numBytesWritten))
+        {
+            byte[] binaryData = bytes.Take(numBytesWritten).ToArray();
+            string strHex = BitConverter.ToString(binaryData);
+            if (Guid.TryParse(strHex, out var value))
+                return value;
+        }
+
+        return null;
+    }
+
+    public string LongEncode(long intValue)
     {
         var bytes = new byte[8];
-        BinaryPrimitives.WriteUInt64BigEndian(bytes, intValue);
+        BinaryPrimitives.WriteInt64BigEndian(bytes, intValue);
         var list = new List<byte>();
         foreach (var b in bytes)
             if (b != 0)
@@ -176,7 +227,7 @@ public class MIDHelper
         return base58String;
     }
 
-    public long? Base58Long(string base58String)
+    public long? LongDecode(string base58String)
     {
         if (base58String.Length < 1 || base58String.Length > 16) return null;
         var bytes = new byte[8];

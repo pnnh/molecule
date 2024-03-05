@@ -1,13 +1,8 @@
 {
   "folders": [
     {
-      "name": "web",
-      "path": "web"
+      "path": "."
     },
-    {
-      "name": "authorization",
-      "path": "server/authorization"
-    }
   ],
   "settings": {
     "files.autoSave": "afterDelay",

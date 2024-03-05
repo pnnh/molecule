@@ -75,14 +75,13 @@ public class OAuth2AuthenticationHandler(
 
     protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
     {
-        if (!Request.Headers.TryGetValue("Authorization", out var authorizationHeader))
+        if (Request.Headers.TryGetValue("Authorization", out var authorizationHeader))
         {
             var token = authorizationHeader.FirstOrDefault();
             if (token != null)
                 return await ValidateAuth2(token);
         }
-        else if (!Request.Cookies.TryGetValue("PolarisJWT", out var jwtToken) && !string.IsNullOrEmpty(jwtToken))
-
+        else if (Request.Cookies.TryGetValue(AccountService.AuthCookieName, out var jwtToken) && !string.IsNullOrEmpty(jwtToken))
         {
             return ValidateCookie(jwtToken);
         }
@@ -104,7 +103,7 @@ public class OAuth2AuthenticationHandler(
             return AuthenticateResult.Fail("Invalid token");
 
         var accountModel = databaseContext.Accounts.FirstOrDefault(a => a.LoginSession == loginSession);
-        if (accountModel == null)
+        if (accountModel == null || accountModel.LoginSession == null)
             return AuthenticateResult.Fail("Invalid token");
 
         var client = new OAuth2AuthenticationClient
@@ -174,8 +173,15 @@ public class OAuth2AuthenticationHandler(
             if (expireTime < DateTime.Now)
                 return AuthenticateResult.Fail("Access token expired");
 
+            var oauth2User = new OAuth2User{
+                Identifier = tokenModel.Sub ?? "",
+                Nickname = tokenModel.Username,
+                Username = tokenModel.Username,
+                Issuer = tokenModel.Iss ?? ""
+            };
+
             // 将introspect结果保存到数据库
-            accountModel = SaveAccount(accessToken, new DateTimeOffset(expireTime), tokenModel);
+            accountModel = AccountService.SyncAccount(databaseContext, accessToken, new DateTimeOffset(expireTime), oauth2User);
         }
 
         var username = accountModel.Username;
@@ -195,37 +201,4 @@ public class OAuth2AuthenticationHandler(
     }
 
 
-    private AccountModel SaveAccount(string accessToken, DateTimeOffset tokenExpire, OAuth2IntrospectResult tokenModel)
-    {
-        var account = databaseContext.Accounts.FirstOrDefault(o => o.Username == tokenModel.Username);
-        if (account == null)
-        {
-            account = new AccountModel
-            {
-                AccessToken = accessToken,
-                CreateTime = DateTimeOffset.Now,
-                UpdateTime = DateTimeOffset.Now,
-                Username = tokenModel.Username,
-                Description = "",
-                Mail = "",
-                Nickname = tokenModel.Username,
-                Status = 0,
-                TokenExpire = tokenExpire,
-                TokenIssuer = tokenModel.Iss ?? ""
-            };
-            databaseContext.Add(account);
-            databaseContext.SaveChanges();
-        }
-        else
-        {
-            account.AccessToken = accessToken;
-            account.TokenExpire = tokenExpire;
-            account.TokenIssuer = tokenModel.Iss ?? "";
-            account.UpdateTime = DateTimeOffset.Now;
-            databaseContext.Update(account);
-            databaseContext.SaveChanges();
-        }
-
-        return account;
-    }
 }

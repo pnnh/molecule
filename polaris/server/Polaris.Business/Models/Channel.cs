@@ -11,7 +11,7 @@ public class ChannelModel
 {
     [Column("uid", TypeName = "uuid")] public Guid Uid { get; set; }
 
-    [NotMapped] public string Urn => MIDHelper.Default.GuidBase32(Uid);
+    [NotMapped] public string Urn => MIDHelper.Base58.GuidEncode(Uid);
 
     [Column("title", TypeName = "varchar(128)")]
     public string Title { get; set; } = "";

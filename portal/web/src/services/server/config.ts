@@ -30,7 +30,7 @@ interface IServerConfig {
 let serverConfig: IServerConfig | undefined
  
 export async function loadServerConfig (): Promise<IServerConfig> {
-  let configPath = process.env.ENV ? `./runtime/server.${process.env.ENV}.json` : './runtime/server.json'
+  let configPath = process.env.NODE_ENV ? `./runtime/server.${process.env.NODE_ENV}.json` : './runtime/server.json'
     
   if (!path.isAbsolute(configPath)) {
     configPath = path.join(process.cwd(), configPath)

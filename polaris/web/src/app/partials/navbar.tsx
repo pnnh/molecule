@@ -2,8 +2,9 @@ import Link from 'next/link'
 import styles from './navbar.module.scss'
 import { fullAuthUrl } from '@/services/common/const'
 import Image from 'next/image'
+import { AccountModel } from '@/models/account'
 
-export function PublicNavbar (props: {authServer:string, selfUrl: string, account?: string }) {
+export function PublicNavbar (props: {authServer:string, account?: AccountModel }) {
   return <div className={styles.navHeader}>
     <div className={styles.leftNav}>
       <div>
@@ -15,18 +16,18 @@ export function PublicNavbar (props: {authServer:string, selfUrl: string, accoun
       <Link className={styles.navLink} href={'/posts'}>文章</Link>
     </div>
     <div className={styles.rightNav}>
-      <UserAction authServer={props.authServer} selfUrl={props.selfUrl} account={props.account} />
+      <UserAction authServer={props.authServer} account={props.account} />
     </div>
   </div>
 }
 
-function UserAction (props: {authServer:string, selfUrl: string, account?: string }) {
+function UserAction (props: {authServer:string, account?: AccountModel }) {
   if (!props.account) {
-    const clientAuthUrl = fullAuthUrl(props.authServer, props.selfUrl, '/')
+    const clientAuthUrl = fullAuthUrl(props.authServer, '/')
     return <Link
       href={clientAuthUrl} rel='nofollow' className={styles.loginLink}>登录</Link>
   }
   return <div>
-    <Link className={styles.loginLink} href={'/console'}>{props.account}</Link>
+    <Link className={styles.loginLink} href={'/console'}>{props.account.nickname}</Link>
   </div>
 }

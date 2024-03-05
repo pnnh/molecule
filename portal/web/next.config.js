@@ -28,9 +28,9 @@ const nextConfig = {
       }
     ]
   },
-  compress: process.env.ENV === 'production',
+  compress: process.env.NODE_ENV === 'production',
   compiler: {
-    removeConsole: process.env.ENV === 'production'
+    removeConsole: process.env.NODE_ENV === 'production'
   },
   sassOptions: {
     includePaths: [path.join(__dirname, 'styles')],

@@ -15,14 +15,16 @@ public class PostModel
     [JsonPropertyName("uid")]
     public Guid Uid { get; set; }
 
-    [NotMapped] public string Urn => MIDHelper.Default.GuidBase32(Uid);
+    [Column("nid", TypeName = "bigint")]
+    public long Nid { get; set; }
+
+    [NotMapped] public string Urn => MIDHelper.Base58.LongEncode(Nid);
 
     [Column("title", TypeName = "varchar(128)")]
     [JsonPropertyName("title")]
     public string Title { get; set; } = "";
 
     [Column("header", TypeName = "varchar(64)")]
-    [JsonPropertyName("header")]
     public string Header { get; set; } = "";
 
     [Column("body", TypeName = "text")]
@@ -38,7 +40,6 @@ public class PostModel
     public DateTimeOffset UpdateTime { get; set; } = new(2023, 1, 1, 0, 0, 0, TimeSpan.Zero);
 
     [Column("owner", TypeName = "uuid")]
-    [JsonPropertyName("owner")]
     public Guid Owner { get; set; }
 
     [Column("keywords", TypeName = "varchar(128)")]
@@ -50,7 +51,6 @@ public class PostModel
     public string Description { get; set; } = "";
 
     [Column("status", TypeName = "int")]
-    [JsonPropertyName("status")]
     public int Status { get; set; }
 
     [Column("cover", TypeName = "varchar(256)")]

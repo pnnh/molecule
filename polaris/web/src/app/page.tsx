@@ -27,7 +27,7 @@ export default async function Home ({ searchParams }: {
   const identity = await getIdentity()
   return <div className={styles.indexPage}>
     <div>
-      <PublicNavbar authServer={serverConfig.AUTH_SERVER} selfUrl={serverConfig.SELF_URL} account={identity}/>
+      <PublicNavbar authServer={serverConfig.AUTH_SERVER} account={identity}/>
     </div>
     <div className={styles.container}>
       <div className={styles.conMiddle}>

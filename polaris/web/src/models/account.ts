@@ -1,7 +1,7 @@
 export class AccountModel {
   pk = ''
-  create_time: Date = new Date()
-  update_time: Date = new Date()
+  create_time = ''
+  update_time = ''
   username = ''
   image = ''
   description = ''

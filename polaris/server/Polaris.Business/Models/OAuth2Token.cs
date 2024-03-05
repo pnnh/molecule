@@ -20,11 +20,17 @@ namespace Polaris.Business.Models
     }
 
     public class OAuth2User {
+        [JsonProperty("identifier")]
+        public string Identifier { get; set; } = "";
+
         [JsonProperty("username")]
         public string Username { get; set; } = "";
 
         [JsonProperty("nickname")]
         public string Nickname { get; set; } = ""; 
+
+        [JsonProperty("issuer")]
+        public string Issuer { get; set; } = ""; 
     }
 
 }

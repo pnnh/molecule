@@ -17,8 +17,8 @@ export class ArticleService extends ModelService {
   }
 
   async selectArticles (queryString: string) {
-    const response = await axios.get<PLSelectResult<ArticleModel>>(
-      this.baseUrl + '/restful/posts?' + queryString)
+    const url = this.baseUrl + '/posts?' + queryString
+    const response = await axios.get<PLSelectResult<ArticleModel>>(url)
     return response.data
   }
 

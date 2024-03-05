@@ -13,7 +13,7 @@
             ],
             "console": "internalConsole",
             "env": {
-                "ENV": "development"
+                "NODE_ENV": "development"
             }
         },
         {

@@ -17,6 +17,7 @@ public class AccountModel
     public DateTimeOffset UpdateTime { get; set; } = new(2023, 1, 1, 0, 0, 0, TimeSpan.Zero);
 
     [Column("account", TypeName = "varchar(96)")]
+    [JsonIgnore]
     public string Username { get; set; } = "";
 
     [Column("password", TypeName = "varchar(96)")]
@@ -55,5 +56,5 @@ public class AccountModel
 
     [Column("login_session", TypeName = "varchar(256)")]
     [JsonIgnore]
-    public string LoginSession { get; set; } = "";
+    public string? LoginSession { get; set; } = "";
 }
