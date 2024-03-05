@@ -4,32 +4,28 @@ import Link from 'next/link'
 import { PSCard } from '@/components/client/controls'
 import { ChannelModel } from '@/models/channel'
 import { PSImage } from '@/components/client/image'
-import { loadServerConfig } from '@/services/server/config'
-import { ChannelService, channelPageUrl } from '@/services/channel'
+import { serverConfig } from '@/services/server/config'
+import { ChannelService } from '@/services/channel'
 
 function Item (props: { model: ChannelModel }) {
-  const readUrl = channelPageUrl(props.model.name)
+  const readUrl = `/channels/${props.model.urn}`
   return <PSCard className={styles.item}>
     <div className={styles.itemCover}>
       <PSImage src={props.model.image} alt='star' width={256} height={256}/>
     </div>
     <div className={styles.content}>
       <div className={styles.title}>
-        <Link className={styles.link} href={readUrl}>{props.model.title}</Link>
+        <Link className={styles.link} href={readUrl}>{props.model.name}</Link>
       </div>
       <div className={styles.description}>
         {props.model.description}
       </div>
-      {/* <div className={styles.actions}>
-        <Link href={readUrl} className={styles.readButton}>查看文章</Link>
-      </div> */}
     </div>
   </PSCard>
 }
 
 export default async function Home () {
   const pageSize = 64
-  const serverConfig = await loadServerConfig()
   const service = ChannelService.Instance(serverConfig.SERVER)
   const result = await service.selectChannels(`page=1&size=${pageSize}`)
   return <div className={styles.container}>

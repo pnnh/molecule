@@ -2,43 +2,28 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Molecule.Helpers;
+using Molecule.Models;
 using Polaris.Business.Helpers;
 using Polaris.Business.Models;
+using Polaris.Business.Services;
 
 namespace Polaris.Controllers.Articles;
 
 [ApiController]
-public class ArticleContentController(DatabaseContext configuration) : ControllerBase
+public class ArticleContentController(DatabaseContext configuration, ModelService modelService) : ControllerBase
 {
-    [Route("/posts/{uid}.{ext}")]
+    [Route("/posts/{name}")]
     [HttpGet]
     [AllowAnonymous]
-    public PostModel? Get([FromRoute] Guid uid, [FromRoute] string ext)
+    public PostModel? Get([FromRoute] string name)
     {
-        var sqlBuilder = new StringBuilder();
-        var parameters = new Dictionary<string, object>();
-
-        sqlBuilder.Append(@"
-select a.*
-from posts as a
-");
-        sqlBuilder.Append(" where a.uid = @uid");
-        parameters.Add("uid", uid);
-
-        var querySqlText = sqlBuilder.ToString();
-
-        var modelsQuery = DatabaseContextHelper.RawSqlQuery<PostModel>(configuration, querySqlText, parameters);
-
-        var model = modelsQuery.FirstOrDefault();
-
-        if (model == null) throw new PLBizException("文章不存在");
-
+        var model = modelService.GetByUrn<PostModel>(name);
         return model;
     }
 
     [Route("/posts")]
     [AllowAnonymous]
-    public PLSelectResult<PostModel> Select()
+    public MSelectResult<PostModel> Select()
     {
         var queryHelper = new MQueryHelper(Request.Query);
         var keyword = queryHelper.GetString("keyword");
@@ -94,7 +79,7 @@ select count(1) from ({sqlBuilder}) as temp;";
 
         var models = modelsQuery.ToList();
 
-        return new PLSelectResult<PostModel>
+        return new MSelectResult<PostModel>
         {
             Range = models,
             Count = totalCount ?? 0

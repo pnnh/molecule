@@ -2,6 +2,8 @@ import axios from '~/axios/index'
 import { PLInsertResult, PLSelectResult } from '@/models/common-result'
 import { ChannelModel } from '@/models/channel'
 import { ModelService } from './service'
+import { serverConfig } from './server/config'
+import { makeHttpGet } from './server/http'
 
 export function channelPageUrl (name: string) {
   return '/channels/' + name
@@ -17,15 +19,21 @@ export class ChannelService extends ModelService {
   }
 
   async selectChannels (queryString: string) {
-    const url = this.baseUrl + '/restful/channels?' + queryString
-    const response = await axios.get<PLSelectResult<ChannelModel>>(url)
-    return response.data
+
+    const url = serverConfig.SERVER + '/channels/?' + queryString
+    return makeHttpGet<PLSelectResult<ChannelModel>>(url)
+
+
   }
 
   async getChannel (pk: string) {
     const url = this.baseUrl + '/restful/channels/' + pk
-    const response = await axios.get<ChannelModel>(url)
-    return response.data
+    return makeHttpGet<PLSelectResult<ChannelModel>>(url)
+  }
+
+  async selectPosts (urn: string) {
+    const url = this.baseUrl + `/channels/${urn}/posts`
+    return makeHttpGet<PLSelectResult<ChannelModel>>(url)
   }
 
   async insertChannel (model: ChannelModel) {

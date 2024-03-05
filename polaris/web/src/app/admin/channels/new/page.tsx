@@ -40,7 +40,7 @@ export default function Page () {
             return
           }
           const model = new ChannelModel()
-          model.title = title
+          model.name = title
           model.description = description
           const servcie = ChannelService.Instance()
           const result = await servcie.insertChannel(model)

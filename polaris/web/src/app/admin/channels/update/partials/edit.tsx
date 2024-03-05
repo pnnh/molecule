@@ -8,7 +8,7 @@ import { ChannelService } from '@/services/channel'
 
 export default function EditPartial (props: { model: ChannelModel }) {
   const model = props.model
-  const [title, setTitle] = useState<string>(model.title)
+  const [title, setTitle] = useState<string>(model.name)
   const [description, setDescription] = useState<string>(model.description)
   const router = useRouter()
   return <div>
@@ -40,7 +40,7 @@ export default function EditPartial (props: { model: ChannelModel }) {
           if (!title) {
             return
           }
-          model.title = title
+          model.name = title
           model.description = description
           const service = ChannelService.Instance()
           const result = await service.updateChannel(model)

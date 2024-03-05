@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Molecule.Helpers;
+using Molecule.Models;
 
 namespace Polaris.Business.Models;
 
@@ -11,10 +12,13 @@ public class ChannelModel
 {
     [Column("uid", TypeName = "uuid")] public Guid Uid { get; set; }
 
-    [NotMapped] public string Urn => MIDHelper.Base58.GuidEncode(Uid);
+    [Column("nid", TypeName = "bigint")]
+    public long Nid { get; set; }
 
-    [Column("title", TypeName = "varchar(128)")]
-    public string Title { get; set; } = "";
+    [NotMapped] public string Urn => MIDHelper.Base58.LongEncode(Nid);
+
+    [Column("name", TypeName = "varchar(128)")]
+    public string Name { get; set; } = "";
 
     [Column("create_time", TypeName = "timestamptz")]
     [JsonPropertyName("create_time")]
@@ -31,12 +35,10 @@ public class ChannelModel
 
     [Column("image", TypeName = "varchar(2048)")]
     public string Image { get; set; } = "";
+}
 
-    // public static void MapperConfig(IMapperConfigurationExpression cfg)
-    // {
-    //     cfg.CreateMap<IDataReader, ChannelModel>()
-    //         .ForMember(a => a.CreateTime, opt => opt.MapFrom(src => src["create_time"]))
-    //         .ForMember(a => a.UpdateTime, opt => opt.MapFrom(src => src["update_time"]))
-    //         ;
-    // }
+public class ChannelPostsView
+{
+    public ChannelModel Channel { get; set; } = new();
+    public MSelectResult<PostModel> Posts { get; set; } = new();
 }

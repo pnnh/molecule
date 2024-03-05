@@ -72,7 +72,7 @@ function TableRow (props: { model: RelationFullModel<ChannelModel, ArticleModel>
         </th>
         <td className={styles.channelTitle}>
             <Link href={service.consoleViewUrl(props.model.pk)}
-                  title={channelModel.title}>{channelModel.title}</Link>
+                  title={channelModel.name}>{channelModel.name}</Link>
         </td>
         <td>
             {updateTimeString}

@@ -47,7 +47,7 @@ function TableRow (props: { model: ChannelModel }) {
     </th>
     <td>
       <Link href={'/console/channel/update?pk=' + props.model.uid}
-        title={props.model.title}>{props.model.title}</Link>
+        title={props.model.name}>{props.model.name}</Link>
     </td>
     <td>
       {updateTimeString}

@@ -2,7 +2,7 @@ import styles from './channel.module.scss'
 import { ChannelModel } from '@/models/channel'
 
 export function ChannelInfo (props: {model: ChannelModel | undefined}) {
-  const channelTitle = props.model ? props.model.title : '所有'
+  const channelTitle = props.model ? props.model.name : '所有'
   const channelDescription = props.model ? props.model.description : ''
   return <div className={styles.channelCard}>
     <div className={styles.channelHeader}>

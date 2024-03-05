@@ -6,6 +6,7 @@ using Polaris.Business.Models.Personal;
 using Polaris.Business.Helpers;
 using Molecule.Helpers;
 using Polaris.Business.Services;
+using Molecule.Models;
 
 namespace Polaris.Controllers.Console;
 
@@ -25,7 +26,7 @@ public class NoteContentController : ControllerBase
     [Route("/server/console/notes")]
     [AllowAnonymous]
     [HttpGet]
-    public PLSelectResult<NoteModel> Select()
+    public MSelectResult<NoteModel> Select()
     {
         var queryHelper = new MQueryHelper(Request.Query);
         var notebook = queryHelper.GetString("notebook");
@@ -102,7 +103,7 @@ select count(1) from ({sqlBuilder}) as temp;";
 
         var models = modelsQuery.ToList();
 
-        return new PLSelectResult<NoteModel>
+        return new MSelectResult<NoteModel>
         {
             Range = models,
             Count = totalCount ?? 0,

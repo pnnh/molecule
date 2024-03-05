@@ -72,34 +72,6 @@ public class PLExceptionResult
     [JsonPropertyName("message")] public string Message { get; set; } = "";
 }
 
-public class PLSelectResult<T>
-{
-    [JsonPropertyName("page")] public int Page { get; set; }
-
-    [JsonPropertyName("size")] public int Size { get; set; }
-
-    [JsonPropertyName("count")] public int Count { get; init; }
-
-    [JsonPropertyName("range")] public List<T> Range { get; init; } = new();
-
-    public static PLSelectResult<T> New(int page, int size, int count, List<T> range)
-    {
-        return new PLSelectResult<T>
-        {
-            Page = page,
-            Size = size,
-            Count = count,
-            Range = range
-        };
-    }
-
-    public PLSelectResult<T> AddRange(params T[] range)
-    {
-        Range.AddRange(range);
-        return this;
-    }
-}
-
 public class PLInsertResult
 {
     public Guid Pk { get; set; }

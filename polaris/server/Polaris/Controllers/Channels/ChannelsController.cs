@@ -3,59 +3,27 @@ using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Molecule.Helpers;
+using Molecule.Models;
 using Polaris.Business.Helpers;
 using Polaris.Business.Models;
+using Polaris.Business.Services;
 
 namespace Polaris.Controllers.Channels;
 
 [ApiController]
 [Authorize]
-public class ChannelsController(ILogger<ChannelsController> logger, DatabaseContext configuration)
+public class ChannelsController(ILogger<ChannelsController> logger, DatabaseContext configuration,
+    ModelService modelService)
     : ControllerBase
 {
     private readonly ILogger<ChannelsController> _logger = logger;
 
-    [Route("/channels/{name}")]
+    [Route("/channels/{urn}")]
     [HttpGet]
     [AllowAnonymous]
-    public ChannelModel? Get([FromRoute] string name)
+    public ChannelModel? Get([FromRoute] string urn)
     {
-        if (string.IsNullOrEmpty(name) || string.IsNullOrWhiteSpace(name))
-            return null;
-
-        long? nid = null;
-
-#if DEBUG
-        if (long.TryParse(name, out var longValue))
-            nid = longValue;
-#endif
-        if (nid == null && MIDHelper.Default.Base32Long(name, out var baseValue)) nid = baseValue;
-
-        var sqlBuilder = new StringBuilder();
-        var parameters = new Dictionary<string, object>();
-
-        sqlBuilder.Append(@"
-select a.*
-from channels as a 
-");
-
-        sqlBuilder.Append(" where a.name = @name");
-        parameters.Add("name", name);
-        if (nid.HasValue)
-        {
-            sqlBuilder.Append(" or a.nid = @nid");
-            parameters.Add("nid", nid.Value);
-        }
-
-        var querySqlText = sqlBuilder.ToString();
-
-        var modelsQuery = DatabaseContextHelper.RawSqlQuery<ChannelModel>(configuration, querySqlText, parameters);
-
-        var model = modelsQuery.FirstOrDefault();
-
-        if (model == null) throw new PLBizException("数据不存在");
-
-        return model;
+        return modelService.GetByUrn<ChannelModel>(urn);
     }
 
     [Route("/channels/{pk}")]
@@ -74,7 +42,7 @@ from channels as a
     [Route("/channels")]
     [HttpGet]
     [AllowAnonymous]
-    public PLSelectResult<ChannelModel> Select()
+    public MSelectResult<ChannelModel> Select()
     {
         var queryHelper = new MQueryHelper(Request.Query);
         var page = queryHelper.GetInt("page") ?? 1;
@@ -83,16 +51,16 @@ from channels as a
         var models = configuration.Channels.OrderByDescending(o => o.UpdateTime).Skip(offset).Take(limit).ToList();
         var totalCount = configuration.Channels.Count();
 
-        return new PLSelectResult<ChannelModel>
+        return new MSelectResult<ChannelModel>
         {
             Range = models,
             Count = totalCount
         };
     }
 
-    [Route("/channels/{uid}/posts")]
+    [Route("/channels/{urn}/posts")]
     [AllowAnonymous]
-    public PLSelectResult<PostModel> SelectPosts([FromRoute] Guid uid)
+    public ChannelPostsView? SelectPosts([FromRoute] string urn)
     {
         var queryHelper = new MQueryHelper(Request.Query);
         var keyword = queryHelper.GetString("keyword");
@@ -102,6 +70,9 @@ from channels as a
         var page = queryHelper.GetInt("page") ?? 1;
         var size = queryHelper.GetInt("size") ?? 10;
         var (offset, limit) = MPagination.CalcOffset(page, size);
+
+        var channelModel = modelService.GetByUrn<ChannelModel>(urn);
+        if (channelModel == null) throw new PLBizException("频道不存在");
 
         var sqlBuilder = new StringBuilder();
         var parameters = new Dictionary<string, object>();
@@ -114,7 +85,7 @@ from posts as a
      left join channels as c on c.uid = a.channel
 where a.channel = @channel
 ");
-        parameters.Add("channel", uid);
+        parameters.Add("channel", channelModel.Uid);
 
         if (keyword != null && !string.IsNullOrEmpty(keyword))
         {
@@ -150,10 +121,14 @@ select count(1) from ({sqlBuilder}) as temp;";
 
         var models = modelsQuery.ToList();
 
-        return new PLSelectResult<PostModel>
+        return new ChannelPostsView
         {
-            Range = models,
-            Count = totalCount ?? 0
+            Channel = channelModel,
+            Posts = new MSelectResult<PostModel>
+            {
+                Range = models,
+                Count = totalCount ?? 0
+            }
         };
     }
 
@@ -166,7 +141,7 @@ select count(1) from ({sqlBuilder}) as temp;";
         var model = new ChannelModel
         {
             Uid = MIDHelper.Default.NewUUIDv7(),
-            Title = request.Title,
+            Name = request.Name,
             CreateTime = DateTime.UtcNow,
             UpdateTime = DateTime.UtcNow,
             Owner = Guid.Empty,
@@ -186,7 +161,7 @@ select count(1) from ({sqlBuilder}) as temp;";
         var model = await configuration.Channels.FirstOrDefaultAsync(m => m.Uid == request.Uid);
         if (model == null) throw new PLBizException("频道不存在");
 
-        model.Title = request.Title;
+        model.Name = request.Name;
         var changes = configuration.SaveChanges();
 
         return new PLUpdateResult { Changes = changes };

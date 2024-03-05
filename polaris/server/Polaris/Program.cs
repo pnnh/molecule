@@ -38,6 +38,8 @@ public class PolarisApplication
             options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower;
         });
 
+        builder.Services.AddScoped<ModelService>();
+
         var connString = builder.Configuration.GetConnectionString("Default");
 
         var dbDataSource = new NpgsqlDataSourceBuilder(connString).Build();
@@ -66,44 +68,13 @@ public class PolarisApplication
         builder.Services.AddAuthentication()
             .AddScheme<AuthenticationSchemeOptions, OAuth2AuthenticationHandler>(
                 OAuth2AuthenticationDefaults.AuthenticationScheme, null);
+        builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 
         var app = builder.Build();
 
         var pathBase = app.Configuration["PathBase"] ?? "/";
         app.UsePathBase(pathBase);
-
-        app.UseExceptionHandler(exceptionHandlerApp =>
-        {
-            exceptionHandlerApp.Run(async context =>
-            {
-                var statusCode = (int)PLCodes.Ok;
-                var publicMessage = "出现异常";
-
-                var exceptionHandlerPathFeature =
-                    context.Features.Get<IExceptionHandlerPathFeature>();
-
-                if (exceptionHandlerPathFeature is { Error: PLBizException bizExp })
-                {
-                    statusCode = bizExp.Code;
-                    publicMessage = bizExp.PublicMessage;
-                }
-
-                context.Response.StatusCode = StatusCodes.Status200OK;
-                context.Response.ContentType = MediaTypeNames.Application.Json;
-
-                if (exceptionHandlerPathFeature != null)
-                    app.Logger.LogInformation($"message={exceptionHandlerPathFeature.Error.Message}");
-
-                var commonResult = new PLExceptionResult
-                {
-                    Code = statusCode,
-                    Message = publicMessage
-                };
-                var jsonResponse = JsonSerializer.Serialize(commonResult);
-
-                await context.Response.WriteAsync(jsonResponse);
-            });
-        });
+ 
 
         if (!app.Environment.IsDevelopment()) app.UseExceptionHandler("/Home/Error");
 
@@ -116,5 +87,50 @@ public class PolarisApplication
         app.UseAuthorization();
 
         app.Run();
+    }
+
+}
+
+public class CustomExceptionHandler : IExceptionHandler
+{
+    private readonly ILogger<CustomExceptionHandler> logger;
+    public CustomExceptionHandler(ILogger<CustomExceptionHandler> logger)
+    {
+        this.logger = logger;
+    }
+    public ValueTask<bool> TryHandleAsync(
+        HttpContext context,
+        Exception exception,
+        CancellationToken cancellationToken)
+    { 
+        var statusCode = (int)PLCodes.Ok;
+        var publicMessage = "出现异常";
+
+        var exceptionHandlerPathFeature =
+            context.Features.Get<IExceptionHandlerPathFeature>();
+
+        if (exceptionHandlerPathFeature is { Error: PLBizException bizExp })
+        {
+            statusCode = bizExp.Code;
+            publicMessage = bizExp.PublicMessage;
+        }
+
+        context.Response.StatusCode = StatusCodes.Status200OK;
+        context.Response.ContentType = MediaTypeNames.Application.Json;
+
+        if (exceptionHandlerPathFeature != null)
+            logger.LogInformation($"message={exceptionHandlerPathFeature.Error.Message}");
+
+        var commonResult = new PLExceptionResult
+        {
+            Code = statusCode,
+            Message = publicMessage
+        };
+        var jsonResponse = JsonSerializer.Serialize(commonResult);
+
+        var streamWriter = new StreamWriter(context.Response.Body);
+        streamWriter.Write(jsonResponse);
+
+        return ValueTask.FromResult(false);
     }
 }

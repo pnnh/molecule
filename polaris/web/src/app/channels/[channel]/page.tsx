@@ -10,7 +10,7 @@ import { replaceQueryStringNew, replaceSearchParams } from '@/utils/query'
 
 import { ChannelInfo } from '@/components/common/channel'
 import { ArticleService, articleContentViewUrl2 } from '@/services/article'
-import { loadServerConfig } from '@/services/server/config'
+import { serverConfig } from '@/services/server/config'
 import { PLSelectResult } from '@/models/common-result'
 import { ChannelService } from '@/services/channel'
 
@@ -19,12 +19,11 @@ export default async function Home ({ params, searchParams }: {
   params: {channel: string},
   searchParams: Record<string, string>
 }) {
-  const serviceConfig = await loadServerConfig()
-  const channelService = ChannelService.Instance(serviceConfig.SERVER)
+  const channelService = ChannelService.Instance(serverConfig.SERVER)
   const channelInfo = await channelService.getChannel(params.channel)
   const articlesQuery = replaceQueryStringNew(queryString.stringify(searchParams), 'channel', params.channel)
 
-  const service = ArticleService.Instance(serviceConfig.SERVER)
+  const service = ArticleService.Instance(serverConfig.SERVER)
   const result = await service.selectArticles(articlesQuery)
 
   return <div className={styles.articleContainer}>

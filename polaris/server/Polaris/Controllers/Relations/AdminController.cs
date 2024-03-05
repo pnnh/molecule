@@ -23,7 +23,7 @@ public class RelationsController : ControllerBase
 
     [Route("/admin/relations")]
     [HttpGet]
-    public SelectResult<RelationFullModel<ChannelModel, HistoryModel>> Select()
+    public MSelectResult<RelationFullModel<ChannelModel, HistoryModel>> Select()
     {
         var queryHelper = new MQueryHelper(Request.Query);
         var channel = queryHelper.GetString("channel");
@@ -66,27 +66,11 @@ select count(1) from ({sqlBuilder}) as temp;";
 
         var models = modelsQuery.ToList();
 
-        return new SelectResult<RelationFullModel<ChannelModel, HistoryModel>>
+        return new MSelectResult<RelationFullModel<ChannelModel, HistoryModel>>
         {
-            Code = Codes.Ok,
-            Data = new SelectData<RelationFullModel<ChannelModel, HistoryModel>>
-            {
-                // Page = page,
-                // Size = size,
-                List = models,
-                Count = totalCount ?? 0
-            }
+            Range = models,
+            Count = totalCount ?? 0
         };
-
-        // return new CommonResult<object>
-        // {
-        //     Code = Codes.Ok,
-        //     Data = new
-        //     {
-        //         list = models,
-        //         count = totalCount
-        //     }
-        // };
     }
 
     [Route("/admin/relations/{pk}")]

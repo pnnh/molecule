@@ -2,9 +2,11 @@ import axios from '~/axios/index'
 import { PLSelectResult } from '@/models/common-result'
 import { ArticleModel } from '@/models/article'
 import { ModelService } from './service'
+import { serverConfig } from './server/config'
+import { makeHttpGet } from './server/http'
 
 export function articleContentViewUrl2 (model: ArticleModel) {
-  return `/posts/${model.urn}.html`
+  return `/posts/${model.urn}`
 }
 
 export class ArticleService extends ModelService {
@@ -23,9 +25,8 @@ export class ArticleService extends ModelService {
   }
 
   async getArticle (name: string) {
-    const url = this.baseUrl + '/restful/posts/' + name
-    const response = await axios.get<ArticleModel>(url)
-    return response.data
+    const url = serverConfig.SERVER + '/posts/' + name
+    return makeHttpGet<ArticleModel | undefined>(url)
   }
 
   async updateArticle (model: ArticleModel) {

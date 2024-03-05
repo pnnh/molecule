@@ -1,4 +1,5 @@
 using Molecule.Helpers;
+using Molecule.Models;
 using Polaris.Business.Models;
 
 namespace Polaris.Business.Services;
@@ -12,7 +13,7 @@ public class PageService
         this.serviceContext = serviceContext;
     }
 
-    public PLSelectResult<PostModel> Select(string queryString)
+    public MSelectResult<PostModel> Select(string queryString)
     {
         var queryHelper = new MQueryHelper(queryString);
         var page = queryHelper.GetInt("page") ?? 1;
@@ -23,7 +24,7 @@ public class PageService
         var models = serviceContext.DataContext.Pages.OrderByDescending(o => o.UpdateTime)
             .Skip(offset).Take(limit).ToList();
 
-        return new PLSelectResult<PostModel>
+        return new MSelectResult<PostModel>
         {
             Range = models,
             Count = totalCount

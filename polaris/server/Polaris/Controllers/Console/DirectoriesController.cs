@@ -6,6 +6,7 @@ using Polaris.Business.Models.Personal;
 using Polaris.Business.Helpers;
 using Molecule.Helpers;
 using Polaris.Business.Services;
+using Molecule.Models;
 
 namespace Polaris.Controllers.Console;
 
@@ -25,7 +26,7 @@ public class DirectoryContentController : ControllerBase
     [Route("/server/console/directories")]
     [AllowAnonymous]
     [HttpGet]
-    public PLSelectResult<DirectoryModel> Select()
+    public MSelectResult<DirectoryModel> Select()
     {
         var queryHelper = new MQueryHelper(Request.Query);
         var notebook = queryHelper.GetString("notebook");
@@ -56,7 +57,7 @@ where a.pk is not null
         var directoryService = new DirectoryService(new ServiceContext(_dataContext));
         var directoryTree = directoryService.RenderDirectoryTree(models, null);
 
-        return new PLSelectResult<DirectoryModel>
+        return new MSelectResult<DirectoryModel>
         {
             Range = directoryTree,
             Count = models.Count,

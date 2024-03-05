@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Molecule.Helpers;
+using Molecule.Models;
 using Polaris.Business.Helpers;
 using Polaris.Business.Models;
 using Polaris.Business.Models.Personal;
@@ -24,7 +25,7 @@ public class NotebookContentController : ControllerBase
     [Route("/server/console/notebooks")]
     [AllowAnonymous]
     [HttpGet]
-    public PLSelectResult<NotebookModel> Select()
+    public MSelectResult<NotebookModel> Select()
     {
         var queryHelper = new MQueryHelper(Request.Query);
         var profile = queryHelper.GetString("profile");
@@ -47,7 +48,7 @@ where a.profile = @profile
 
         var models = modelsQuery.ToList();
 
-        return new PLSelectResult<NotebookModel>
+        return new MSelectResult<NotebookModel>
         {
             Range = models,
             Count = models.Count

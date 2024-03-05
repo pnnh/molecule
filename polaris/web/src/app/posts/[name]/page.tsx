@@ -7,7 +7,7 @@ import { TocInfo } from '@/components/common/toc'
 import { generatorRandomString } from '~/@pnnh/stele'
 import { headers } from 'next/headers'
 import { formatRfc3339 } from '@/utils/datetime'
-import { loadServerConfig } from '@/services/server/config'
+import { serverConfig } from '@/services/server/config'
 import { ArticleService, articleContentViewUrl2 } from '@/services/article'
 import { Metadata } from 'next'
 
@@ -16,7 +16,6 @@ export const metadata: Metadata = {
 }
 
 export default async function Home ({ params }: { params: { name: string }}) {
-  const serverConfig = await loadServerConfig()
   const service = ArticleService.Instance(serverConfig.SERVER)
   const articleModel = await service.getArticle(params.name)
   if (articleModel == null) {
