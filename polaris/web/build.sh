@@ -5,8 +5,8 @@ set -e
 
 # 构建应用
 pwd
-npm run setup --workspaces
-npm run build --workspaces
+npm install
+npm run build
 
 # 构建镜像
 docker build -t polaris-web -f Dockerfile .

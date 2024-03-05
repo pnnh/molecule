@@ -2,7 +2,6 @@
   "name": "polaris-cloud",
   "version": "0.1.0",
   "scripts": {
-    "setup": "npm install",
     "dev": "next dev -p 8100",
     "build": "NODE_ENV=production next build",
     "start": "next start",
@@ -10,10 +9,6 @@
     "fix": "eslint --fix --ext .js,.jsx,.ts,.tsx .",
     "analyze": "ENV=production ANALYZE=true next build"
   },
-  "workspaces": [
-    "../../stele",
-    "./"
-  ],
   "dependencies": {
     "@fluentui/react-components": "^9.21.0",
     "@fontsource/roboto": "^5.0.4",
@@ -49,7 +44,11 @@
     "tw-elements": "^1.0.0",
     "uuid": "^9.0.0",
     "winston": "^3.8.2",
-    "@pnnh/stele": "^0.1.12"
+    "react-dom": "^18.2.0",
+    "remixicon": "^3.0.0",
+    "slate": "^0.91.4",
+    "slate-history": "^0.86.0",
+    "slate-react": "^0.92.0"
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^14.0.0",

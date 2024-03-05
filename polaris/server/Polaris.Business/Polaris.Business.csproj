@@ -40,6 +40,6 @@
     <None Remove="obj\**" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\molecule\Molecule\Molecule.csproj" />
+    <ProjectReference Include="..\Molecule\Molecule.csproj" />
   </ItemGroup>
 </Project>
