@@ -1,7 +1,8 @@
 import 'dart:math';
-
+import 'dart:io';
 import 'package:polaris/config.dart';
 import 'package:flutter/material.dart';
+import 'package:crypto/crypto.dart';
 
 String buildFileUrl(String fileUrl) {
   // if (kDebugMode) {
@@ -56,4 +57,11 @@ String formatDateTime(int nanoseconds) {
   DateTime.fromMicrosecondsSinceEpoch((nanoseconds / 1000).round())
       .toString();
   return timeStr.substring(0, 16);
+}
+
+
+Future<String> generateChecksum(String filePath) async {
+  final fileStream = File(filePath).openRead();
+  final checksum = (await md5.bind(fileStream).first).toString();
+  return checksum;
 }

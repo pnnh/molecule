@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 
-class EmptyWidget extends StatefulWidget {
+class VSEmptyWidget extends StatefulWidget {
   final String message;
 
-  const EmptyWidget({super.key, this.message = ""});
+  const VSEmptyWidget({super.key, this.message = ""});
 
   @override
-  State<EmptyWidget> createState() => _EmptyWidget();
+  State<VSEmptyWidget> createState() => _EmptyWidget();
 }
 
-class _EmptyWidget extends State<EmptyWidget> {
+class _EmptyWidget extends State<VSEmptyWidget> {
   @override
   Widget build(BuildContext context) {
     return Center(
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-      const Image(image: AssetImage('images/interface/empty.png')),
+      const Image(image: AssetImage('bundle/images/placeholder/empty.png')),
       Text(
         widget.message,
         style: const TextStyle(

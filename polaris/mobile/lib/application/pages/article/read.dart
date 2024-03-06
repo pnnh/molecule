@@ -1,7 +1,7 @@
 
 import 'package:polaris/config.dart';
+import 'package:polaris/models/article.dart';
 import 'package:polaris/services/articles.dart';
-import 'package:polaris/services/models/article.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_highlight/flutter_highlight.dart';
 import 'package:flutter_highlight/themes/github.dart';

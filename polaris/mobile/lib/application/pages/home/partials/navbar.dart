@@ -18,7 +18,7 @@ class NavbarWidget extends ConsumerWidget {
           children: [
             SizedBox(height: 16,),
             Container(
-              child: Image(image: AssetImage('static/images/console/file-copy-line.png'),
+              child: Image(image: AssetImage('bundle/images/console/file-copy-line.png'),
               fit: BoxFit.cover),
             ),
           ]),

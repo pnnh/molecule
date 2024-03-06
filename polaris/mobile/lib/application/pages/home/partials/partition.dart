@@ -26,7 +26,7 @@ class PartitionWidget extends ConsumerWidget {
                 children: [
                   SizedBox(width: 16,),
                   Text("Dotnet"),
-                  Image(image: AssetImage('static/images/console/down-arrow.png'))
+                  Image(image: AssetImage('bundle/images/console/down-arrow.png'))
                 ],
               ),
             ),

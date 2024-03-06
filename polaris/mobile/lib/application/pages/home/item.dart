@@ -1,6 +1,6 @@
 import 'package:go_router/go_router.dart';
-import 'package:polaris/services/models/article.dart';
 import 'package:flutter/material.dart';
+import 'package:polaris/models/article.dart';
 
 class TodoItemWidget extends StatefulWidget {
   final ArticleModel article;

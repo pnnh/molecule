@@ -1,7 +1,7 @@
 
 import 'package:polaris/application/pages/partial/page_loading.dart';
+import 'package:polaris/models/article.dart';
 import 'package:polaris/services/articles.dart';
-import 'package:polaris/services/models/article.dart';
 
 import './item.dart';
 import 'package:flutter/material.dart';

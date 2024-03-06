@@ -1,6 +1,14 @@
 import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:polaris/models/folder.dart';
+
+
+final StateProvider<FolderModel> folderProvider = StateProvider((_) => FolderModel("", path: ""));
+
+final StateProvider<String> gridProvider = StateProvider((_) => "");
+
+
 
 final weEmotionProvider =
     StateNotifierProvider<EmotionNotifier, String>((ref) => EmotionNotifier());

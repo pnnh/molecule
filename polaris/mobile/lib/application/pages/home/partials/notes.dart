@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:polaris/services/models/note.dart';
+import 'package:polaris/models/note.dart';
 
 final StateProvider<String> _activeItem = StateProvider((_) => "");
 

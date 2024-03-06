@@ -1,5 +1,6 @@
-import 'package:polaris/services/models/task.dart';
+
 import 'package:hive/hive.dart';
+import 'package:polaris/models/task.dart';
 
 class TaskAdapter extends TypeAdapter<Article> {
   @override

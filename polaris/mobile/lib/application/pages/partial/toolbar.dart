@@ -1,5 +1,5 @@
 
-import 'package:polaris/services/models/authorization.dart';
+import 'package:polaris/models/authorization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 

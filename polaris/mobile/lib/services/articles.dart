@@ -1,6 +1,7 @@
 
 
-import 'models/article.dart';
+
+import 'package:polaris/models/article.dart';
 
 class ArticleService {
 
