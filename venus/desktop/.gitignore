@@ -1,8 +1,0 @@
-.idea
-build-*
-cmake-build-*
-CMakeLists.txt.user
-CMakeUserPresets.json
-build/
-.fleet/
-.vs/
