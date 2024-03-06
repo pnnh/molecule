@@ -13,8 +13,8 @@ import (
 
 	"multiverse-authorization/models"
 
-	"github.com/pnnh/quantum-go/config"
-	"github.com/pnnh/quantum-go/server/helpers"
+	"github.com/pnnh/neutron/config"
+	"github.com/pnnh/neutron/server/helpers"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-webauthn/webauthn/protocol"

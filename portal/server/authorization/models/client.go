@@ -2,8 +2,9 @@ package models
 
 import (
 	"fmt"
-	"github.com/pnnh/quantum-go/services/datastore"
 	"strings"
+
+	"github.com/pnnh/neutron/services/datastore"
 
 	"github.com/jmoiron/sqlx"
 	"github.com/ory/fosite"

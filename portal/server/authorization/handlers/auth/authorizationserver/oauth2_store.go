@@ -11,9 +11,9 @@ import (
 
 	"multiverse-authorization/models"
 
-	quantum_helpers "github.com/pnnh/quantum-go/server/helpers"
+	quantum_helpers "github.com/pnnh/neutron/server/helpers"
 
-	"gopkg.in/square/go-jose.v2"
+	"github.com/go-jose/go-jose/v3"
 
 	"github.com/ory/fosite"
 )

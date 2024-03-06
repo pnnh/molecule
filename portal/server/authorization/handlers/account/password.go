@@ -13,7 +13,7 @@ import (
 	"multiverse-authorization/models"
 
 	"github.com/gin-gonic/gin"
-	"github.com/pnnh/quantum-go/server/helpers"
+	"github.com/pnnh/neutron/server/helpers"
 )
 
 //func PasswordSignupBeginHandler(gctx *gin.Context) {

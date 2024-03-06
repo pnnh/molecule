@@ -5,7 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	// "multiverse-authorization/helpers"
 	// "multiverse-authorization/models"
-	// "github.com/pnnh/quantum-go/config"
+	// "github.com/pnnh/neutron/config"
 	// "github.com/sirupsen/logrus"
 	// "net/http"
 )

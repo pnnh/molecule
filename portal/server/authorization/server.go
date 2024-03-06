@@ -17,7 +17,7 @@ import (
 	"multiverse-authorization/helpers"
 
 	"github.com/gin-contrib/cors"
-	"github.com/pnnh/quantum-go/config"
+	"github.com/pnnh/neutron/config"
 
 	"github.com/gin-gonic/gin"
 )
@@ -41,11 +41,11 @@ func NewWebServer() (*WebServer, error) {
 		resources: make(map[string]IResource)}
 
 	selfUrl, _ := config.GetConfigurationString("SELF_URL")
-	if selfUrl == "" { 
+	if selfUrl == "" {
 		return nil, fmt.Errorf("SELF_URL未配置")
 	}
 	corsDomain := []string{selfUrl}
- 
+
 	router.Use(cors.New(cors.Config{
 		AllowOrigins:     corsDomain,
 		AllowMethods:     []string{"PUT", "PATCH", "POST", "GET"},

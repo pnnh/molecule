@@ -5,8 +5,8 @@ import (
 	"multiverse-authorization/handlers/auth/authorizationserver"
 
 	"github.com/gin-gonic/gin"
-	"github.com/pnnh/quantum-go/config"
-	"github.com/pnnh/quantum-go/services/datastore"
+	"github.com/pnnh/neutron/config"
+	"github.com/pnnh/neutron/services/datastore"
 	"github.com/sirupsen/logrus"
 )
 

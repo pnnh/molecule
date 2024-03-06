@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/pnnh/quantum-go/server/helpers"
-	"github.com/pnnh/quantum-go/services/datastore"
+	"github.com/pnnh/neutron/server/helpers"
+	"github.com/pnnh/neutron/services/datastore"
 
 	"github.com/jmoiron/sqlx"
 )

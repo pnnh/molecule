@@ -11,9 +11,9 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
-	"github.com/pnnh/quantum-go/config"
-	"github.com/pnnh/quantum-go/server/helpers"
-	//"github.com/pnnh/quantum-go/services/email"
+	"github.com/pnnh/neutron/config"
+	"github.com/pnnh/neutron/server/helpers"
+	//"github.com/pnnh/neutronrvices/email"
 )
 
 func MailSignupBeginHandler(gctx *gin.Context) {

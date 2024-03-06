@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
-	"github.com/pnnh/quantum-go/config"
+	"github.com/pnnh/neutron/config"
 )
 
 func GetIssure() string {
@@ -17,12 +17,12 @@ func GetIssure() string {
 func GenerateJwtTokenRs256(username string, privKeyString string, tokenId string) (string, error) {
 	claims := jwt.MapClaims{
 		//"username": username,
-		"exp":      time.Now().Add(time.Hour * 24 * 3).Unix(),
-		"iat":      time.Now().Unix(),
-		"sub":      username,
-		"iss":      GetIssure(),
+		"exp": time.Now().Add(time.Hour * 24 * 3).Unix(),
+		"iat": time.Now().Unix(),
+		"sub": username,
+		"iss": GetIssure(),
 		//"aud":      []string{"multiverse.cloud"},
-		"jti":      tokenId,
+		"jti": tokenId,
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodRS256, claims)

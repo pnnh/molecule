@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/jmoiron/sqlx"
-	"github.com/pnnh/quantum-go/services/datastore"
+	"github.com/pnnh/neutron/services/datastore"
 )
 
 type AccessTokenModel struct {

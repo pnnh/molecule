@@ -1,7 +1,7 @@
 package models
 
 import (
-	"github.com/pnnh/quantum-go/services/datastore"
+	"github.com/pnnh/neutron/services/datastore"
 )
 
 type PermissionSchema struct {

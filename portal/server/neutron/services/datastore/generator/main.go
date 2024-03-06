@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/pnnh/quantum/golang/neutron/services/datastore"
+	"github.com/pnnh/neutron/services/datastore"
 	"github.com/sirupsen/logrus"
 	"go/ast"
 	"go/format"
@@ -60,7 +60,7 @@ func main() {
 package %s
 
 import (
-	"github.com/pnnh/quantum/golang/neutron/services/datastore"
+	"github.com/pnnh/neutron/services/datastore"
 )
 `
 	packageAndImport = fmt.Sprintf(packageAndImport, f.Name.Name)

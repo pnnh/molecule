@@ -12,7 +12,7 @@ import (
 	"github.com/ory/fosite/compose"
 	"github.com/ory/fosite/handler/openid"
 	"github.com/ory/fosite/token/jwt"
-	"github.com/pnnh/quantum-go/config"
+	"github.com/pnnh/neutron/config"
 	"github.com/sirupsen/logrus"
 )
 

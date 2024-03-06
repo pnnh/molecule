@@ -4,9 +4,9 @@ import (
 	"flag"
 	"time"
 
-	"github.com/pnnh/quantum/golang/neutron/internal/debug"
+	//"github.com/pnnh/neutron/internal/debug"
 	"github.com/sirupsen/logrus"
-	v2 "github.com/pnnh/quantum/golang/neutron/config/v2"
+	v2 "github.com/pnnh/neutron/config/v2"
 )
 
 // Deprecated: 已废弃，不再解析flag
@@ -21,9 +21,9 @@ var staticConfigModel v2.ConfigMap
 func init() {
 	configLog()
 	// 在执行单元测试时，不进行后续处理
-	if debug.IsTesting() {
-		return
-	}
+	// if debug.IsTesting() {
+	// 	return
+	// }
 	flag.Parse()
 	model, err := v2.ParseConfig(*configFile, *runMode)
 	if err != nil {

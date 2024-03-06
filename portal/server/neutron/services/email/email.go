@@ -3,7 +3,7 @@ package email
 import (
 	"fmt"
 
-	"github.com/pnnh/quantum/golang/neutron/config"
+	"github.com/pnnh/neutron/config"
 	"golang.org/x/time/rate"
 
 	gomail "gopkg.in/gomail.v2"
