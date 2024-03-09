@@ -1,47 +1,45 @@
 import React from 'react'
 import styles from './layout.module.scss'
-import { ConsoleSidebar } from './sidebar'
-import { ConsoleNavbar } from './navbar'
-import { getIdentity } from '@/services/auth'
+import {ConsoleSidebar} from './sidebar'
+import {ConsoleNavbar} from './navbar'
+import {getIdentity} from '@/services/auth'
 import Link from 'next/link'
-import { fullAuthUrl } from '@/services/common/const'
-import { FluentProviders } from '@/components/client/providers'
-import { AdminReduxProvider } from './state/ReduxProvider'
-import { loadServerConfig } from '@/services/server/config'
+import {fullAuthUrl} from '@/services/common/const'
+import {FluentProviders} from '@/components/client/providers'
+import {AdminReduxProvider} from './state/ReduxProvider'
 
-export default async function ConsoleLayout ({
-  children
-}: {
+export default async function ConsoleLayout({
+                                                children
+                                            }: {
     children: React.ReactNode
 }) {
-  const identity = await getIdentity()
-  const serverConfig = await loadServerConfig()
+    const identity = await getIdentity()
 
-  if (!identity) {
-    const clientAuthUrl = fullAuthUrl(serverConfig.AUTH_SERVER, serverConfig.SELF_URL, '/console')
+    if (!identity) {
+        const clientAuthUrl = fullAuthUrl('/console')
 
-    return <div>
-      <h1>您尚未登陆或已过期</h1>
-      <Link
-        href={clientAuthUrl} className={styles.loginLink}>前往登陆</Link>
-    </div>
-  }
-  return (
-
-    <AdminReduxProvider>
-    <FluentProviders>
-    <div className={styles.childrenContainer}>
-      <div className={styles.navbar}>
-        <ConsoleNavbar account={identity}></ConsoleNavbar>
-      </div>
-      <div className={styles.mainContainer}>
-        <div className={styles.leftNav}><ConsoleSidebar></ConsoleSidebar></div>
-        <div className={styles.rightBody}>
-          {children}
+        return <div>
+            <h1>您尚未登陆或已过期</h1>
+            <Link
+                href={clientAuthUrl} className={styles.loginLink}>前往登陆</Link>
         </div>
-      </div>
-    </div>
-    </FluentProviders>
-    </AdminReduxProvider>
-  )
+    }
+    return (
+
+        <AdminReduxProvider>
+            <FluentProviders>
+                <div className={styles.childrenContainer}>
+                    <div className={styles.navbar}>
+                        <ConsoleNavbar account={identity}></ConsoleNavbar>
+                    </div>
+                    <div className={styles.mainContainer}>
+                        <div className={styles.leftNav}><ConsoleSidebar></ConsoleSidebar></div>
+                        <div className={styles.rightBody}>
+                            {children}
+                        </div>
+                    </div>
+                </div>
+            </FluentProviders>
+        </AdminReduxProvider>
+    )
 }

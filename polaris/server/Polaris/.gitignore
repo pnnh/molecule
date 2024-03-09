@@ -2,3 +2,4 @@ bin/
 obj/
 /packages/
 runtime/
+appsettings.Development.json
