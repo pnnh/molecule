@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:polaris/application/pages/home/desktop.dart';
 
 import 'pages/article/read.dart';
 import 'pages/home/home.dart';
@@ -13,7 +14,8 @@ final GoRouter globalRouter = GoRouter(
     GoRoute(
       path: '/',
       builder: (BuildContext context, GoRouterState state) {
-        return const HomePage();
+        return const HomeDesktopPage();
+        // return const HomePage();
       },
       routes: <RouteBase>[
         GoRoute(
@@ -23,7 +25,6 @@ final GoRouter globalRouter = GoRouter(
             return ArticleReadPage(state.pathParameters);
           },
         ),
-
         GoRoute(
           name: 'pictures',
           path: 'pictures/:pk',

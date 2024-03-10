@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:polaris/models/album.dart';
 
 Future<List<VSAlbumModel>> selectAlbums() async {
@@ -16,8 +17,11 @@ Future<List<VSAlbumModel>> selectAlbums() async {
 
   var currentPath = Directory.current.path;
   debugPrint("currentPath: $currentPath");
+  final Directory appDocumentsDir = await getApplicationDocumentsDirectory();
+  debugPrint("appDocumentsDir, $appDocumentsDir");
 
-  var dir = Directory("Documents/Venus");
+  //var dir = Directory("Documents/Venus");
+  var dir = appDocumentsDir;
   var lists = dir.listSync();
   for (var item in lists) {
     var albumExt = ".vsalbum";

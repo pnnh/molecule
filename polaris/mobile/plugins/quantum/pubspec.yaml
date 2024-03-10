@@ -3,8 +3,8 @@ description: A flutter plugin for dream project.
 version: 0.0.1
 
 environment:
-  sdk: ">=2.18.0 <3.0.0"
-  flutter: ">=2.11.0"
+  sdk: ">=3.0.0 <4.0.0"
+  flutter: ">=3.11.0"
 
 flutter:
   plugin:
@@ -28,8 +28,6 @@ flutter:
       web:
         pluginClass: QuantumWeb
         fileName: quantum_web.dart
-  assets:
-    - bundle/lib/
 
 dependencies:
   flutter:
@@ -37,7 +35,7 @@ dependencies:
   flutter_web_plugins:
     sdk: flutter
   plugin_platform_interface: ^2.0.2
-  ffi: ^2.1.2
+  ffi: ^2.1.0
   js: ^0.6.1
   path_provider: ^2.0.11
   path: ^1.8.2
