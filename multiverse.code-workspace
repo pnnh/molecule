@@ -5,5 +5,14 @@
 			"path": "."
 		}
 	],
-	"settings": {}
+	"settings": {
+	  "dotnet.defaultSolution": "server/Polaris.sln",
+	  "files.autoSave": "afterDelay",
+	  "remote.autoForwardPorts": false,
+	  "editor.fontFamily": "Menlo, Monaco, 'Courier New', monospace",
+	  "editor.fontSize": 12
+	},
+	"extensions": {
+	  "recommendations": []
+	}
 }
