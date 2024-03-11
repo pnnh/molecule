@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:polaris/application/components/empty.dart';
-import 'package:polaris/application/pages/home/desktop/directory.dart';
 import 'package:polaris/models/library.dart';
+
+import 'album.dart';
 
 final StateProvider<String> _activeItem = StateProvider((_) => "");
 final StateProvider<String> activeSelectLibrary = StateProvider((_) => "");
@@ -17,14 +18,14 @@ class VSLibraryWidget extends ConsumerWidget {
       return const VSEmptyWidget();
     }
     if (ref.watch(activeSelectLibrary).isEmpty) {
-      return VSDirectoryWidget(libraries.first);
+      return VSAlbumWidget(libraries.first);
     }
     var currentKey = ref.watch(activeSelectLibrary);
     if (currentKey != "XXX") {
       var newLibrary = libraries.firstWhere(
           (element) => element.uid == ref.watch(activeSelectLibrary),
           orElse: () => libraries.first);
-      return VSDirectoryWidget(newLibrary);
+      return VSAlbumWidget(newLibrary);
     }
     return Container(
       color: const Color(0xFFF9F9F9),

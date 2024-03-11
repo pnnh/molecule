@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path/path.dart';
-import 'package:polaris/models/directory.dart';
+import 'package:polaris/models/album.dart';
 import 'package:polaris/models/folder.dart';
 import 'package:polaris/models/picture.dart';
 import 'package:polaris/services/folder.dart';
@@ -12,7 +12,7 @@ import 'package:polaris/utils/utils.dart';
 import 'database.dart';
 
 Future<List<PictureModel>> selectPictures(
-    VSDirectoryModel directoryModel) async {
+    VSAlbumModel albumModel) async {
   // var sqlText = '''select pk, header, body,
   //   simple_highlight(searches, 3, '[', ']') as highlight
   //   from searches where body match jieba_query('国');''';
@@ -26,7 +26,7 @@ Future<List<PictureModel>> selectPictures(
   // });
   var pictureList = <PictureModel>[];
 
-  var dir = Directory(directoryModel.path);
+  var dir = Directory(albumModel.path);
   var fileList = dir.listSync();
   for (var item in fileList) {
     if (item is File) {
