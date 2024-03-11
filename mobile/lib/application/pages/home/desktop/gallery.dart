@@ -24,21 +24,28 @@ class VSGalleryWidget extends ConsumerWidget {
           if (albums == null || albums.isEmpty) {
             return const VSEmptyWidget();
           }
-          return GridView.builder(
-            shrinkWrap: true,
-            itemCount: albums.length,
-            physics: const NeverScrollableScrollPhysics(),
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 8,
-              mainAxisSpacing: 8,
-              crossAxisSpacing: 8,
-              childAspectRatio: 1,
-            ),
-            itemBuilder: (context, index) {
-              return _PictureTileWidget(albums[index]);
-            },
-          );
+          return Row(
+            children: [
+              GridView.builder(
+                shrinkWrap: true,
+                itemCount: albums.length,
+                physics: const NeverScrollableScrollPhysics(),
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 8,
+                  mainAxisSpacing: 8,
+                  crossAxisSpacing: 8,
+                  childAspectRatio: 1,
+                ),
+                itemBuilder: (context, index) {
+                  return _PictureTileWidget(albums[index]);
+                },
+              ),
+              Container(
+                child: const Text("图片预览"),
+              )
+            ],
+          ) ;
         }));
   }
 }

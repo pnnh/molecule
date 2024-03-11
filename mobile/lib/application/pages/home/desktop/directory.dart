@@ -1,30 +1,27 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:polaris/application/components/arrow.dart';
 import 'package:polaris/application/components/loading.dart';
-import 'package:polaris/models/album.dart';
 import 'package:polaris/models/directory.dart';
+import 'package:polaris/models/library.dart';
 import 'package:polaris/services/directory.dart';
 
-import 'album.dart';
+import 'library.dart';
 
 final StateProvider<String> _activeItem = StateProvider((_) => "");
 final StateProvider<VSDirectoryModel?> directoryModelProvider =
     StateProvider((_) => null);
 
 class VSDirectoryWidget extends ConsumerStatefulWidget {
-  final VSAlbumModel currentAlbum;
+  final VSLibraryModel currentLibrary;
 
-  const VSDirectoryWidget(this.currentAlbum, {super.key});
+  const VSDirectoryWidget(this.currentLibrary, {super.key});
 
   @override
   ConsumerState<VSDirectoryWidget> createState() => _VSDirectoryWidgetState();
 }
 
 class _VSDirectoryWidgetState extends ConsumerState<VSDirectoryWidget> {
-  final ScrollController _hCtrl = ScrollController();
   final ScrollController _vCtrl = ScrollController();
 
   _VSDirectoryWidgetState();
@@ -41,7 +38,6 @@ class _VSDirectoryWidgetState extends ConsumerState<VSDirectoryWidget> {
 
   @override
   void dispose() {
-    _hCtrl.dispose();
     _vCtrl.dispose();
     super.dispose();
   }
@@ -60,12 +56,12 @@ class _VSDirectoryWidgetState extends ConsumerState<VSDirectoryWidget> {
               const SizedBox(
                 width: 16,
               ),
-              Text(widget.currentAlbum.title),
+              Text(widget.currentLibrary.title),
               GestureDetector(
                 child: const Image(
                     image: AssetImage('bundle/images/console/down-arrow.png')),
                 onTap: () {
-                  ref.read(activeSelectAlbum.notifier).update((state) => "XXX");
+                  ref.read(activeSelectLibrary.notifier).update((state) => "XXX");
                 },
               )
             ],
@@ -76,7 +72,7 @@ class _VSDirectoryWidgetState extends ConsumerState<VSDirectoryWidget> {
           width: double.infinity,
           padding: EdgeInsets.zero,
           child: FutureBuilder(
-            future: selectDirectories(widget.currentAlbum),
+            future: selectDirectories(widget.currentLibrary),
             builder: (BuildContext context,
                 AsyncSnapshot<List<VSDirectoryModel>> snapshot) {
               var directoryModels = snapshot.data;
@@ -84,54 +80,14 @@ class _VSDirectoryWidgetState extends ConsumerState<VSDirectoryWidget> {
                 return const VSLoading();
               }
 
-              return Scrollbar(
-                //-> ::tag1::
-                thumbVisibility: true,
-                notificationPredicate: (ScrollNotification notification) =>
-                    notification.depth == 1,
-                key: const Key('debuggerCodeViewVerticalScrollbarKey'),
-                controller: _vCtrl,
-                child: LayoutBuilder(
-                  builder: (context, constraints) {
-                    final double boxHeight = 2500;
-                    double boxWidth = 500; //calculateText(text, style);
-                    return Scrollbar(
-                      key: const Key('debuggerCodeViewHorizontalScrollbarKey'),
-                      thumbVisibility: true,
-                      controller: _hCtrl,
-                      child: SingleChildScrollView(
-                          controller: _hCtrl,
-                          scrollDirection: Axis.horizontal,
-                          child: SizedBox(
-                              height: constraints.maxHeight,
-                              width: max(boxWidth, constraints.maxWidth),
-                              child: SingleChildScrollView(
-                                  controller: _vCtrl, //-> ::tag3::
-                                  child: Container(
-                                    color: Colors.blue,
-                                    height: boxHeight,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children:
-                                          directoryModels.map((directory) {
-                                        return _ItemWidget(directory);
-                                      }).toList(),
-                                    ),
-                                  )))),
-                    );
-                  },
-                ),
-              );
-
-              // return SingleChildScrollView(
-              //     scrollDirection: Axis.horizontal,
-              //     child: Column(
-              //       crossAxisAlignment: CrossAxisAlignment.start,
-              //       children: directoryModels.map((directory) {
-              //         return _ItemWidget(directory);
-              //       }).toList(),
-              //     ));
+              return SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: directoryModels.map((directory) {
+                      return _ItemWidget(directory);
+                    }).toList(),
+                  ));
             },
           ),
         ))

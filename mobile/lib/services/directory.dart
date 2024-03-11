@@ -3,9 +3,10 @@ import 'dart:io';
 import 'package:path/path.dart';
 import 'package:polaris/models/album.dart';
 import 'package:polaris/models/directory.dart';
+import 'package:polaris/models/library.dart';
 
 Future<List<VSDirectoryModel>> selectDirectories(
-    VSAlbumModel albumModel) async {
+    VSLibraryModel albumModel) async {
   var list = <VSDirectoryModel>[];
 
   var dir = Directory(albumModel.path);

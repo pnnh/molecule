@@ -2,31 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:polaris/application/components/empty.dart';
 import 'package:polaris/application/pages/home/desktop/directory.dart';
-import 'package:polaris/models/album.dart';
-
-import 'appbody.dart';
+import 'package:polaris/models/library.dart';
 
 final StateProvider<String> _activeItem = StateProvider((_) => "");
-final StateProvider<String> activeSelectAlbum = StateProvider((_) => "");
+final StateProvider<String> activeSelectLibrary = StateProvider((_) => "");
 
-class VSAlbumWidget extends ConsumerWidget {
-  final List<VSAlbumModel> albums;
-  const VSAlbumWidget(this.albums, {super.key});
+class VSLibraryWidget extends ConsumerWidget {
+  final List<VSLibraryModel> libraries;
+  const VSLibraryWidget(this.libraries, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    if (albums.isEmpty) {
+    if (libraries.isEmpty) {
       return const VSEmptyWidget();
     }
-    if (ref.watch(activeSelectAlbum).isEmpty) {
-      return VSDirectoryWidget(albums.first);
+    if (ref.watch(activeSelectLibrary).isEmpty) {
+      return VSDirectoryWidget(libraries.first);
     }
-    var currentKey = ref.watch(activeSelectAlbum);
+    var currentKey = ref.watch(activeSelectLibrary);
     if (currentKey != "XXX") {
-      var newAlbum = albums.firstWhere(
-          (element) => element.pk == ref.watch(activeSelectAlbum),
-          orElse: () => albums.first);
-      return VSDirectoryWidget(newAlbum);
+      var newLibrary = libraries.firstWhere(
+          (element) => element.uid == ref.watch(activeSelectLibrary),
+          orElse: () => libraries.first);
+      return VSDirectoryWidget(newLibrary);
     }
     return Container(
       color: const Color(0xFFF9F9F9),
@@ -50,7 +48,7 @@ class VSAlbumWidget extends ConsumerWidget {
                           AssetImage('bundle/images/console/down-arrow.png')),
                 ),
                 onTap: () {
-                  ref.read(activeSelectAlbum.notifier).update((state) => "XXX");
+                  ref.read(activeSelectLibrary.notifier).update((state) => "XXX");
                 },
               )
             ],
@@ -62,7 +60,7 @@ class VSAlbumWidget extends ConsumerWidget {
                 padding: EdgeInsets.zero,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: albums.map((album) => _ItemWidget(album)).toList(),
+                  children: libraries.map((album) => _ItemWidget(album)).toList(),
                 )))
       ]),
     );
@@ -70,8 +68,8 @@ class VSAlbumWidget extends ConsumerWidget {
 }
 
 class _ItemWidget extends ConsumerWidget {
-  final VSAlbumModel albumModel;
-  const _ItemWidget(this.albumModel);
+  final VSLibraryModel libraryModel;
+  const _ItemWidget(this.libraryModel);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -81,17 +79,17 @@ class _ItemWidget extends ConsumerWidget {
           padding:
               const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
           width: double.infinity,
-          color: ref.watch(_activeItem) == albumModel.pk
+          color: ref.watch(_activeItem) == libraryModel.uid
               ? const Color(0xFFF2F2F2)
               : Colors.transparent,
-          child: Text(albumModel.title),
+          child: Text(libraryModel.title),
         ),
         onTap: () {
-          ref.read(activeSelectAlbum.notifier).update((state) => albumModel.pk);
+          ref.read(activeSelectLibrary.notifier).update((state) => libraryModel.uid);
         },
       ),
       onEnter: (event) {
-        ref.read(_activeItem.notifier).update((state) => albumModel.pk);
+        ref.read(_activeItem.notifier).update((state) => libraryModel.uid);
       },
       onExit: (event) {
         ref.read(_activeItem.notifier).update((state) => "");

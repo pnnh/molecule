@@ -4,24 +4,12 @@ import 'package:flutter/foundation.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:polaris/models/album.dart';
+import 'package:polaris/models/library.dart';
 
-Future<List<VSAlbumModel>> selectAlbums() async {
+Future<List<VSAlbumModel>> selectAlbums(VSLibraryModel libraryModel) async {
   var list = <VSAlbumModel>[];
 
-  // list.add(VSAlbumModel("a",
-  //     path: "/Users/Larry/Pictures/Venus/一号图集.vsalbum", title: "一号图集"));
-  // list.add(VSAlbumModel("b",
-  //     path: "/Users/Larry/Pictures/Venus/二号图集.vsalbum", title: "二号图集"));
-  // list.add(VSAlbumModel("c",
-  //     path: "/Users/Larry/Pictures/Venus/哔哔叭叭让人.vsalbum", title: "哔哔叭叭让人"));
-
-  var currentPath = Directory.current.path;
-  debugPrint("currentPath: $currentPath");
-  final Directory appDocumentsDir = await getApplicationDocumentsDirectory();
-  debugPrint("appDocumentsDir, $appDocumentsDir");
-
-  //var dir = Directory("Documents/Venus");
-  var dir = appDocumentsDir;
+  var dir = Directory(libraryModel.path);
   var lists = dir.listSync();
   for (var item in lists) {
     var albumExt = ".vsalbum";
