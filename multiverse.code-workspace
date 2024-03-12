@@ -6,13 +6,25 @@
 		}
 	],
 	"settings": {
-	  "dotnet.defaultSolution": "server/Polaris.sln",
-	  "files.autoSave": "afterDelay",
-	  "remote.autoForwardPorts": false,
-	  "editor.fontFamily": "Menlo, Monaco, 'Courier New', monospace",
-	  "editor.fontSize": 12
+		"dotnet.defaultSolution": "polaris-server/Polaris.sln",
+		"files.autoSave": "afterDelay",
+		"remote.autoForwardPorts": false,
+		"editor.fontFamily": "Menlo, Monaco, 'Courier New', monospace",
+		"editor.fontSize": 12,
+		"sqltools.connections": [
+			{
+				"previewLimit": 50,
+				"server": "10.1.0.4",
+				"port": 5432,
+				"askForPassword": true,
+				"driver": "PostgreSQL",
+				"name": "develop",
+				"database": "polaris",
+				"username": "huable"
+			}
+		]
 	},
 	"extensions": {
-	  "recommendations": []
+		"recommendations": []
 	}
 }

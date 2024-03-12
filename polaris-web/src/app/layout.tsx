@@ -14,9 +14,7 @@ export const metadata: Metadata = {
     title: '北极星笔记'
 }
 
-export default async function RootLayout({
-                                             children
-                                         }: {
+export default async function RootLayout({children}: {
     children: React.ReactNode
 }) {
     return (
@@ -25,7 +23,7 @@ export default async function RootLayout({
             <base href="/"/>
             <meta charSet="utf-8"/>
             <meta name="viewport"
-                  content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"/>
+                content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"/>
             <meta name="renderer" content="webkit"/>
             <meta httpEquiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
             <meta name="robots" content="index,follow"/>

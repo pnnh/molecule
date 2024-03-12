@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "scripts": {
     "dev": "next dev -p 8000",
-    "build": "ENV=production next build",
+    "build": "NODE_ENV=production next build",
     "start": "next start",
     "lint": "next lint",
     "analyze": "ENV=production ANALYZE=true next build"

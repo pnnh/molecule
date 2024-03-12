@@ -22,11 +22,11 @@ public class ChannelModel
 
     [Column("create_time", TypeName = "timestamptz")]
     [JsonPropertyName("create_time")]
-    public DateTime CreateTime { get; set; } = DateTime.MinValue;
+    public DateTimeOffset CreateTime { get; set; } = DateTimeOffset.MinValue;
 
     [Column("update_time", TypeName = "timestamptz")]
     [JsonPropertyName("update_time")]
-    public DateTime UpdateTime { get; set; } = DateTime.MinValue;
+    public DateTimeOffset UpdateTime { get; set; } = DateTimeOffset.MinValue;
 
     [Column("owner", TypeName = "uuid")] public Guid Owner { get; set; }
 
