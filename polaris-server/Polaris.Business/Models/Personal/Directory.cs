@@ -76,14 +76,14 @@ namespace Polaris.Business.Models.Personal
         [JsonPropertyName("children")]
         public List<DirectoryModel> Children { get; set; } = new();
 
-        public static void MapperConfig(IMapperConfigurationExpression cfg)
-        {
-            cfg.CreateMap<IDataReader, DirectoryModel>()
-                .ForMember(a => a.CreateTime, opt => opt.MapFrom(src => src["create_time"]))
-                .ForMember(a => a.UpdateTime, opt => opt.MapFrom(src => src["update_time"]))
-                .ForMember(a => a.NotebookName, opt => opt.MapFrom(src => src["notebook_name"]))
-                .ForMember(a => a.ProfileName, opt => opt.MapFrom(src => src["profile_name"]))
-                .ForMember(a => a.Children, opt => opt.Ignore());
-        }
+        // public static void MapperConfig(IMapperConfigurationExpression cfg)
+        // {
+        //     cfg.CreateMap<IDataReader, DirectoryModel>()
+        //         .ForMember(a => a.CreateTime, opt => opt.MapFrom(src => src["create_time"]))
+        //         .ForMember(a => a.UpdateTime, opt => opt.MapFrom(src => src["update_time"]))
+        //         .ForMember(a => a.NotebookName, opt => opt.MapFrom(src => src["notebook_name"]))
+        //         .ForMember(a => a.ProfileName, opt => opt.MapFrom(src => src["profile_name"]))
+        //         .ForMember(a => a.Children, opt => opt.Ignore());
+        // }
     }
 }
