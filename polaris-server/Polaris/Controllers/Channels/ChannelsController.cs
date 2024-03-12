@@ -118,8 +118,9 @@ select count(1) from ({sqlBuilder}) as temp;";
         var querySqlText = sqlBuilder.ToString();
 
         var modelsQuery = DatabaseContextHelper.RawSqlQuery<PostModel>(configuration, querySqlText, parameters);
-
+        
         var models = modelsQuery.ToList();
+
 
         return new ChannelPostsView
         {

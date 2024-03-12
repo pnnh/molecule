@@ -1,6 +1,17 @@
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data;
+using System.Linq.Expressions;
+using System.Reflection;
+using System.Reflection.Emit;
 using AutoMapper;
+using AutoMapper.Configuration.Conventions;
 using AutoMapper.Data;
+using AutoMapper.Data.Configuration.Conventions;
+using AutoMapper.Data.Mappers;
+using AutoMapper.Data.Utils;
 using AutoMapper.Internal;
+using AutoMapper.Internal.Mappers;
+using AutoMapper.Utils;
 using Polaris.Business.Models;
 using Polaris.Business.Models.Personal;
 
@@ -15,10 +26,9 @@ public class MapperHelper
             cfg.SourceMemberNamingConvention = new LowerUnderscoreNamingConvention();
             cfg.DestinationMemberNamingConvention = new PascalCaseNamingConvention();
 
-            cfg.AddDataReaderMapping();
-            cfg.AddDataRecordMember();
+            cfg.AddDataReaderMapping(); 
 
-            cfg.AddProfile<AutoMapperProfile>();
+            cfg.AddProfile<AutoMapperProfile2>();
         });
 #if DEBUG
         configuration.AssertConfigurationIsValid();
@@ -28,4 +38,6 @@ public class MapperHelper
 
         return mapper;
     }
+    
 }
+

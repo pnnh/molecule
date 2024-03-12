@@ -60,34 +60,10 @@ public class ModelService(DatabaseContext databaseContext)
 
         var querySqlText = sqlBuilder.ToString();
 
-        var modelsQuery = RawSqlQuery<T>(querySqlText, parameters);
+        var modelsQuery = DatabaseContextHelper.RawSqlQuery<T>(databaseContext, querySqlText, parameters);
 
         var model = modelsQuery.FirstOrDefault();
 
         return model;
     }
-
-    public List<T> RawSqlQuery<T>(string query,
-        Dictionary<string, object>? parameters)
-    {
-        using var command = databaseContext.Database.GetDbConnection().CreateCommand();
-        command.CommandText = query;
-        command.CommandType = CommandType.Text;
-        if (parameters != null)
-            foreach (var parameter in parameters)
-            {
-                var dbParameter = command.CreateParameter();
-                dbParameter.ParameterName = parameter.Key;
-                dbParameter.Value = parameter.Value;
-                command.Parameters.Add(dbParameter);
-            }
-
-        databaseContext.Database.OpenConnection();
-
-        using var reader = command.ExecuteReader();
-        var mapper = MapperHelper.GetMapper();
-
-        return mapper.Map<IDataReader, List<T>>(reader);
-    }
-
 }

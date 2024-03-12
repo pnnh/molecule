@@ -33,11 +33,11 @@ public class PostModel
 
     [Column("create_time", TypeName = "timestamptz")]
     [JsonPropertyName("create_time")]
-    public DateTimeOffset CreateTime { get; set; } = new(2023, 1, 1, 0, 0, 0, TimeSpan.Zero);
+    public DateTime CreateTime { get; set; } = DateTime.MinValue;
 
     [Column("update_time", TypeName = "timestamptz")]
     [JsonPropertyName("update_time")]
-    public DateTimeOffset UpdateTime { get; set; } = new(2023, 1, 1, 0, 0, 0, TimeSpan.Zero);
+    public DateTime UpdateTime { get; set; } = DateTime.MinValue;
 
     [Column("owner", TypeName = "uuid")]
     public Guid Owner { get; set; }
@@ -78,12 +78,12 @@ public class PostModel
     [JsonPropertyName("partition")]
     public Guid Partition { get; set; }
 
-    public static void MapperConfig(IMapperConfigurationExpression cfg)
-    {
-        cfg.CreateMap<IDataReader, PostModel>()
-            .ForMember(a => a.CreateTime, opt => opt.MapFrom(src => src["create_time"]))
-            .ForMember(a => a.UpdateTime, opt => opt.MapFrom(src => src["update_time"]));
-        //.ForMember(a => a.ChannelName, opt => opt.MapFrom(src => src["channel_name"]))
-        //.ForMember(a => a.OwnerName, opt => opt.MapFrom(src => src["profile_name"]));
-    }
+    // public static void MapperConfig(IMapperConfigurationExpression cfg)
+    // {
+    //     cfg.CreateMap<IDataReader, PostModel>()
+    //         .ForMember(a => a.CreateTime, opt => opt.MapFrom(src => src["create_time"]))
+    //         .ForMember(a => a.UpdateTime, opt => opt.MapFrom(src => src["update_time"]));
+    //     //.ForMember(a => a.ChannelName, opt => opt.MapFrom(src => src["channel_name"]))
+    //     //.ForMember(a => a.OwnerName, opt => opt.MapFrom(src => src["profile_name"]));
+    // }
 }

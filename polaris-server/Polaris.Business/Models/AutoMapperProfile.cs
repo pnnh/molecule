@@ -5,32 +5,38 @@ using AutoMapper;
 using Polaris.Business.Models;
 using Polaris.Business.Models.Personal;
 
-public class AutoMapperProfile : Profile
+public class AutoMapperProfile2 : Profile
 {
-    public AutoMapperProfile()
+    public AutoMapperProfile2()
     {
-        CreateMap<IDataReader, ChannelModel>().ForAllMembers(m=>
-            m.MapFrom(src => Map(src, m.DestinationMember)));
-        CreateMap<IDataReader, PostModel>().ForAllMembers(m=> 
-            m.MapFrom(src=>Map(src, m.DestinationMember)));
-        CreateMap<IDataReader, RelationModel>().ForAllMembers(m=> 
-            m.MapFrom(src=>Map(src, m.DestinationMember)));
-        CreateMap<IDataReader, HistoryModel>().ForAllMembers(m => 
-            m.MapFrom(src => Map(src, m.DestinationMember)));
+        CreateMap<IDataReader, ChannelModel>();
+        CreateMap<IDataReader, PostModel>();
+        // CreateMap<IDataReader, RelationModel>().ForAllMembers(m=> 
+        //     m.MapFrom(src=>Map(src, m.DestinationMember)));
+        // CreateMap<IDataReader, HistoryModel>().ForAllMembers(m => 
+        //     m.MapFrom(src => Map(src, m.DestinationMember)));
         // CreateMap<IDataReader, RelationFullModel<ChannelModel, HistoryModel>>().ForAllMembers(m => 
         //     m.MapFrom(src => Map(src, m.DestinationMember)));
         // CreateMap<IDataReader, RelationFullModel<ChannelModel, PostModel>>().ForAllMembers(m => 
         //     m.MapFrom(src => Map(src, m.DestinationMember)));
-        CreateMap<IDataReader, PartitionQueryModel>().ForAllMembers(m => 
-            m.MapFrom(src => Map(src, m.DestinationMember)));
+        // CreateMap<IDataReader, PartitionQueryModel>().ForAllMembers(m => 
+        //     m.MapFrom(src => Map(src, m.DestinationMember)));
         // CreateMap<IDataReader, DirectoryModel>().ForAllMembers(m => 
         //     m.MapFrom(src => Map(src, m.DestinationMember)));
-        CreateMap<IDataReader, NoteModel>().ForAllMembers(m => 
-            m.MapFrom(src => Map(src, m.DestinationMember)));
-        CreateMap<IDataReader, NotebookModel>().ForAllMembers(m => 
-           m.MapFrom(src => Map(src, m.DestinationMember)));
+        // CreateMap<IDataReader, NoteModel>().ForAllMembers(m => 
+        //     m.MapFrom(src => Map(src, m.DestinationMember)));
+        // CreateMap<IDataReader, NotebookModel>().ForAllMembers(m => 
+        //    m.MapFrom(src => Map(src, m.DestinationMember)));
     }
     
+    internal class DateTimeTypeConverter : ITypeConverter<DateTime, DateTimeOffset>
+    {
+        public DateTimeOffset Convert(DateTime source, DateTimeOffset destination, ResolutionContext context)
+        {
+            var newValue = new DateTimeOffset(source.Ticks, TimeSpan.Zero);
+            return newValue;
+        }
+    }
     private object Map(IDataReader dataReader, MemberInfo memberInfo)
     {
         var v = new PascalCaseNamingConvention();
