@@ -161,10 +161,17 @@ public static class DatabaseContextHelper
 
         private object GetByName(string name)
         {
-            var srcVal = dataReader[GetOrdinal(name)];
-            if (srcVal is DateTime dt)
-                return new DateTime(dt.Ticks, DateTimeKind.Utc);
-            return srcVal;
+            try
+            { 
+                var index = GetOrdinal(name);
+                var srcVal = dataReader[index];
+                if (srcVal is DateTime dt)
+                    return new DateTime(dt.Ticks, DateTimeKind.Utc);
+                return srcVal;
+            } catch (IndexOutOfRangeException)
+            {
+                return default;
+            } 
         }
 
         public void Dispose()

@@ -73,9 +73,8 @@ public class PolarisApplication
         var app = builder.Build();
 
         var pathBase = app.Configuration["PathBase"] ?? "/";
-        app.UsePathBase(pathBase);
- 
-
+        app.UsePathBase(new PathString(pathBase));
+        
         if (!app.Environment.IsDevelopment()) app.UseExceptionHandler("/Home/Error");
 
         app.UseStaticFiles();

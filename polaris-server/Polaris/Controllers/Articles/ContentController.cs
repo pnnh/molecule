@@ -23,6 +23,7 @@ public class ArticleContentController(DatabaseContext configuration, ModelServic
 
     [Route("/posts")]
     [AllowAnonymous]
+    [HttpGet]
     public MSelectResult<PostModel> Select()
     {
         var queryHelper = new MQueryHelper(Request.Query);
