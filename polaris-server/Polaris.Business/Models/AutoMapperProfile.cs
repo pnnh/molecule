@@ -11,6 +11,7 @@ public class AutoMapperProfile2 : Profile
     {
         CreateMap<IDataReader, ChannelModel>();
         CreateMap<IDataReader, PostModel>();
+        CreateMap<IDataReader, PictureModel>();
         // CreateMap<IDataReader, RelationModel>().ForAllMembers(m=> 
         //     m.MapFrom(src=>Map(src, m.DestinationMember)));
         // CreateMap<IDataReader, HistoryModel>().ForAllMembers(m => 

@@ -89,14 +89,14 @@ select count(1) from ({sqlBuilder}) as temp;";
 
     [Route("/posts/{uid}")]
     [HttpDelete]
-    public PLDeleteResult Delete([FromRoute] Guid uid)
+    public PModifyResult Delete([FromRoute] Guid uid)
     {
         var model = configuration.Pages.FirstOrDefault(m => m.Uid == uid);
         if (model == null) throw new PLBizException("文章不存在");
         configuration.Pages.Remove(model);
         var changes = configuration.SaveChanges();
 
-        return new PLDeleteResult
+        return new PModifyResult
         {
             Changes = changes
         };
@@ -104,7 +104,7 @@ select count(1) from ({sqlBuilder}) as temp;";
 
     [Route("/posts")]
     [HttpPost]
-    public async Task<PLInsertResult> Insert()
+    public async Task<PModifyResult> Insert()
     {
         var jsonHelper = await JsonHelper.NewAsync(Request.Body);
         var title = jsonHelper.GetString("title") ?? throw new PLBizException("title is required");
@@ -125,12 +125,12 @@ select count(1) from ({sqlBuilder}) as temp;";
         configuration.Pages.Add(model);
         configuration.SaveChanges();
 
-        return new PLInsertResult { Pk = model.Uid };
+        return new PModifyResult { Pk = model.Uid };
     }
 
     [Route("/posts/{uid}")]
     [HttpPut]
-    public async Task<PLUpdateResult> Update([FromRoute] Guid uid)
+    public async Task<PModifyResult> Update([FromRoute] Guid uid)
     {
         var jsonHelper = await JsonHelper.NewAsync(Request.Body);
         var title = jsonHelper.GetString("title") ?? throw new PLBizException("title is required");
@@ -143,6 +143,6 @@ select count(1) from ({sqlBuilder}) as temp;";
         model.Body = body;
         var changes = configuration.SaveChanges();
 
-        return new PLUpdateResult { Changes = changes };
+        return new PModifyResult { Changes = changes };
     }
 }

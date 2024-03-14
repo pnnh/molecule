@@ -28,7 +28,7 @@ public class ChannelsController(ILogger<ChannelsController> logger, DatabaseCont
 
     [Route("/channels/{pk}")]
     [HttpDelete]
-    public async Task<PLDeleteResult> Delete([FromRoute] string pk)
+    public async Task<PModifyResult> Delete([FromRoute] string pk)
     {
         if (!Guid.TryParse(pk, out var uid)) throw new PLBizException("频道不存在");
         var model = await configuration.Channels.FirstOrDefaultAsync(m => m.Uid == uid);
@@ -36,7 +36,7 @@ public class ChannelsController(ILogger<ChannelsController> logger, DatabaseCont
         configuration.Channels.Remove(model);
         var changes = configuration.SaveChanges();
 
-        return new PLDeleteResult { Changes = changes };
+        return new PModifyResult { Changes = changes };
     }
 
     [Route("/channels")]
@@ -135,7 +135,7 @@ select count(1) from ({sqlBuilder}) as temp;";
 
     [Route("/channels")]
     [HttpPost]
-    public async Task<PLInsertResult> Insert([FromBody] ChannelModel request)
+    public async Task<PModifyResult> Insert([FromBody] ChannelModel request)
     {
         var user = HttpContext.User;
         if (user.Identity == null || string.IsNullOrEmpty(user.Identity.Name)) throw new PLBizException("用户未登录");
@@ -152,12 +152,12 @@ select count(1) from ({sqlBuilder}) as temp;";
         await configuration.Channels.AddAsync(model);
         await configuration.SaveChangesAsync();
 
-        return new PLInsertResult { Pk = model.Uid };
+        return new PModifyResult { Pk = model.Uid };
     }
 
     [Route("/channels/{pk}")]
     [HttpPut]
-    public async Task<PLUpdateResult> Update([FromBody] ChannelModel request)
+    public async Task<PModifyResult> Update([FromBody] ChannelModel request)
     {
         var model = await configuration.Channels.FirstOrDefaultAsync(m => m.Uid == request.Uid);
         if (model == null) throw new PLBizException("频道不存在");
@@ -165,12 +165,12 @@ select count(1) from ({sqlBuilder}) as temp;";
         model.Name = request.Name;
         var changes = configuration.SaveChanges();
 
-        return new PLUpdateResult { Changes = changes };
+        return new PModifyResult { Changes = changes };
     }
 
     [Route("/channels/{channel}/relation/{post}")]
     [HttpPost]
-    public PLUpdateResult Share([FromRoute] Guid channel, [FromRoute] Guid post)
+    public PModifyResult Share([FromRoute] Guid channel, [FromRoute] Guid post)
     {
         var model = configuration.Channels.FirstOrDefault(m => m.Uid == channel);
         if (model == null) throw new PLBizException("频道不存在");
@@ -196,6 +196,6 @@ select count(1) from ({sqlBuilder}) as temp;";
         configuration.Relations.Add(relation);
         var changes = configuration.SaveChanges();
 
-        return new PLUpdateResult { Changes = changes };
+        return new PModifyResult { Changes = changes };
     }
 }

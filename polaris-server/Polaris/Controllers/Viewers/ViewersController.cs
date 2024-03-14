@@ -22,7 +22,7 @@ public class ViewersController : ControllerBase
     [Route("/viewer")]
     [AllowAnonymous]
     [HttpPost]
-    public PLInsertResult Insert()
+    public PModifyResult Insert()
     {
         var queryHelper = new FormHelper(Request.Form);
         var channelPk = queryHelper.GetString("channel");
@@ -46,7 +46,7 @@ public class ViewersController : ControllerBase
             {
                 if (viewer.UpdateTime.AddHours(24) > DateTime.UtcNow)
                     // 24小时内只能更新一次
-                    return new PLInsertResult { Pk = viewer.Uid };
+                    return new PModifyResult { Pk = viewer.Uid };
 
                 _dataContext.Attach(viewer);
                 viewer.UpdateTime = DateTime.UtcNow;
@@ -84,6 +84,6 @@ public class ViewersController : ControllerBase
             transaction.Commit();
         }
 
-        return new PLInsertResult { Pk = Guid.Empty };
+        return new PModifyResult { Pk = Guid.Empty };
     }
 }

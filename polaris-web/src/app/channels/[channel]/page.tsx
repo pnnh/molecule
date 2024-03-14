@@ -3,12 +3,10 @@ import React from 'react'
 import Link from 'next/link'
 import {ArticleModel} from '@/models/article'
 import {NoData} from '@/components/common/empty'
-import queryString from 'query-string'
 import {PaginationPartial} from '@/components/common/pagination'
-import {replaceQueryStringNew, replaceSearchParams} from '@/utils/query'
-
+import { replaceSearchParams} from '@/utils/query'
 import {ChannelInfo} from '@/components/common/channel'
-import {articleContentViewUrl2, ArticleService} from '@/services/article'
+import {articleContentViewUrl2} from '@/services/article'
 import {serverConfig} from '@/services/server/config'
 import {PLSelectResult} from '@/models/common-result'
 import {ChannelService} from '@/services/channel'
@@ -20,18 +18,14 @@ export default async function Home({params, searchParams}: {
     searchParams: Record<string, string>
 }) {
     const channelService = ChannelService.Instance(serverConfig.SERVER)
-    const channelInfo = await channelService.getChannel(params.channel)
-    const articlesQuery = replaceQueryStringNew(queryString.stringify(searchParams), 'channel', params.channel)
-
-    const service = ArticleService.Instance(serverConfig.SERVER)
-    const result = await service.selectArticles(articlesQuery)
+    const channelInfo = await channelService.selectPosts(params.channel)
 
     return <div className={styles.articleContainer}>
         <div className={styles.leftArea}>
-            <ArticleList channel={params.channel} result={result} searchParams={searchParams}/>
+            <ArticleList channel={params.channel} result={channelInfo.posts} searchParams={searchParams}/>
         </div>
         <div className={styles.rightArea}>
-            <ChannelInfo model={channelInfo}/>
+            <ChannelInfo model={channelInfo.channel}/>
         </div>
     </div>
 }

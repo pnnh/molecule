@@ -72,17 +72,8 @@ public class PLExceptionResult
     [JsonPropertyName("message")] public string Message { get; set; } = "";
 }
 
-public class PLInsertResult
+public class PModifyResult
 {
     public Guid Pk { get; set; }
-}
-
-public class PLUpdateResult
-{
     public int Changes { get; set; }
-}
-
-public class PLDeleteResult
-{
-    public int Changes { get; set; }
-}
+} 

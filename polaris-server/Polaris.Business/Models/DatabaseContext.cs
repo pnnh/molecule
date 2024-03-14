@@ -14,6 +14,7 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
     public DbSet<RelationModel> Relations => Set<RelationModel>();
     public DbSet<ChannelModel> Channels => Set<ChannelModel>();
     public DbSet<ViewerModel> Viewers => Set<ViewerModel>();
+    public DbSet<PictureModel> Pictures => Set<PictureModel>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

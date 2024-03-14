@@ -1,6 +1,6 @@
 import axios from '~/axios/index'
 import {PLInsertResult, PLSelectResult} from '@/models/common-result'
-import {ChannelModel} from '@/models/channel'
+import {ChannelModel, ChannelPostsView} from '@/models/channel'
 import {ModelService} from './service'
 import {serverConfig} from './server/config'
 import {makeHttpGet} from './server/http'
@@ -33,7 +33,7 @@ export class ChannelService extends ModelService {
 
     async selectPosts(urn: string) {
         const url = this.baseUrl + `/channels/${urn}/posts`
-        return makeHttpGet<PLSelectResult<ChannelModel>>(url)
+        return makeHttpGet<ChannelPostsView>(url)
     }
 
     async insertChannel(model: ChannelModel) {
