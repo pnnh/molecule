@@ -1,47 +1,55 @@
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:polaris/application/pages/home/desktop.dart';
-
+import 'package:polaris/application/pages/desktop/home.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'dart:io' show Platform;
 import 'pages/article/read.dart';
-import 'pages/home/home.dart';
-import 'pages/pictures/pictures.dart';
-import 'pages/share/receive.dart';
-import 'pages/share/share.dart';
+import 'pages/desktop/pictures/pictures.dart';
+import 'pages/mobile/home.dart';
+import 'pages/mobile/share/receive.dart';
+import 'pages/mobile/share/share.dart';
+import 'pages/web/home.dart';
 
 final GoRouter globalRouter = GoRouter(
   routes: <RouteBase>[
     GoRoute(
       path: '/',
       builder: (BuildContext context, GoRouterState state) {
-        return const HomeDesktopPage();
-        // return const HomePage();
+        if (kIsWeb) {
+          return const WHomePage();
+        }
+
+        if (Platform.isMacOS || Platform.isLinux || Platform.isWindows || Platform.isFuchsia) {
+          return const DHomePage();
+        }
+        if (Platform.isAndroid || Platform.isIOS) {
+          return const MHomePage();
+        }
+
+        throw UnsupportedError('Unknown platform: ${Platform.operatingSystem}');
       },
       routes: <RouteBase>[
         GoRoute(
-          name: 'articleRead',
           path: 'article/read',
           builder: (BuildContext context, GoRouterState state) {
             return ArticleReadPage(state.pathParameters);
           },
         ),
         GoRoute(
-          name: 'pictures',
           path: 'pictures/:pk',
           builder: (BuildContext context, GoRouterState state) {
             return PicturesPage(folderPk: state.pathParameters['pk'] as String);
           },
         ),
         GoRoute(
-          name: 'share',
-          path: 'share',
+          path: 'mobile/share',
           builder: (BuildContext context, GoRouterState state) {
             return const ShareSendPage();
           },
         ),
         GoRoute(
-          name: 'receive',
-          path: 'receive',
+          path: 'mobile/receive',
           builder: (BuildContext context, GoRouterState state) {
             return const ShareReceivePage();
           },

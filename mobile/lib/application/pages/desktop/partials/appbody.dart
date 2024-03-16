@@ -3,9 +3,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:polaris/application/pages/home/partials/details.dart';
-import 'package:polaris/application/pages/home/partials/notes.dart';
-import './partition.dart';
+import 'notes.dart';
+import 'partition.dart';
 
 import 'navbar.dart';
 

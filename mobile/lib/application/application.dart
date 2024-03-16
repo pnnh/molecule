@@ -1,14 +1,14 @@
 import 'package:polaris/application/route.dart';
 import 'package:flutter/material.dart';
 
-class MobileApplication extends StatefulWidget {
-  const MobileApplication({super.key});
+class HuableApplication extends StatefulWidget {
+  const HuableApplication({super.key});
 
   @override
-  State<MobileApplication> createState() => _MobileApplicationState();
+  State<HuableApplication> createState() => _HuableApplicationState();
 }
 
-class _MobileApplicationState extends State<MobileApplication> {
+class _HuableApplicationState extends State<HuableApplication> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
@@ -30,5 +30,5 @@ class _MobileApplicationState extends State<MobileApplication> {
 
 
 Future<Widget> initApp() async {
-    return const MobileApplication();
+    return const HuableApplication();
 }

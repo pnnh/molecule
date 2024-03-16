@@ -3,7 +3,7 @@ import 'package:polaris/application/pages/partial/page_loading.dart';
 import 'package:polaris/models/article.dart';
 import 'package:polaris/services/articles.dart';
 
-import './item.dart';
+import 'item.dart';
 import 'package:flutter/material.dart';
 import 'package:split_view/split_view.dart';
 
