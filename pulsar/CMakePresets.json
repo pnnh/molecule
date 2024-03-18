@@ -74,6 +74,10 @@
       "configurePreset": "Linux"
     },
     {
+      "name": "Web",
+      "configurePreset": "Web"
+    },
+    {
       "name": "macOS",
       "configurePreset": "macOS"
     },

@@ -17,4 +17,5 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-add_subdirectory(desktop)
+#add_subdirectory(desktop)
+add_subdirectory(web)
