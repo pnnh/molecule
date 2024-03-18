@@ -22,6 +22,9 @@
 				"database": "polaris",
 				"username": "huable"
 			}
+		],
+		"cSpell.words": [
+			"stylex"
 		]
 	},
 	"extensions": {

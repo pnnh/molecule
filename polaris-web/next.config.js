@@ -1,12 +1,12 @@
 const path = require('path')
+const stylexPlugin = require('@stylexjs/nextjs-plugin');
+
+const bundleAnalyzerPlugin = require('@next/bundle-analyzer')
+
 
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+let nextConfig = {
   output: 'standalone',
-  // experimental: {
-  //   esmExternals: true,
-  //   webpackBuildWorker: true,
-  // },
   reactStrictMode: true,
   images: {
     remotePatterns: [
@@ -53,8 +53,18 @@ const nextConfig = {
   }
 }
 
-const withBundleAnalyzer = require('@next/bundle-analyzer')({
+// 使用bundleAnalyzer插件
+nextConfig = bundleAnalyzerPlugin({
   enabled: process.env.ANALYZE === 'true'
-})
+})(nextConfig)
 
-module.exports = withBundleAnalyzer(nextConfig)
+// 使用stylex插件
+nextConfig = stylexPlugin({
+  aliases: {
+    '@/*': [path.join(__dirname, '*')],
+  },
+  rootDir: __dirname,
+})({});
+
+// 导出nextjs配置
+module.exports = nextConfig

@@ -11,6 +11,17 @@ import {formatRfc3339} from '@/utils/datetime'
 import {serverConfig} from '@/services/server/config'
 import {articleContentViewUrl2, ArticleService} from '@/services/article'
 import {STSubString} from "@/utils/string";
+import * as stylex from '@stylexjs/stylex';
+
+const stylexCss = stylex.create({
+    foo: {
+        color: 'red',
+        height: 40,
+    },
+    bar: {
+        backgroundColor: 'blue',
+    },
+});
 
 export default async function Home({searchParams}: {
     searchParams: Record<string, string>
@@ -27,7 +38,10 @@ export default async function Home({searchParams}: {
     return <div className={styles.indexPage}>
         <div>
             <PublicNavbar account={identity}/>
-        </div>
+            <div {...stylex.props(stylexCss.foo, stylexCss.bar)}>
+                <div>hello world</div>
+                </div>
+        </div> 
         <div className={styles.container}>
             <div className={styles.conMiddle}>
                 <div className={styles.middleBody}>
