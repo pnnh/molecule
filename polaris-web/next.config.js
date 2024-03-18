@@ -8,6 +8,13 @@ const bundleAnalyzerPlugin = require('@next/bundle-analyzer')
 let nextConfig = {
   output: 'standalone',
   reactStrictMode: true,
+  loose: true,
+  esmExternals: true,
+  webpack: function (config, options) {
+    config.experiments = { asyncWebAssembly: true, topLevelAwait: true};
+    //config.output.webassemblyModuleFilename = "[modulehash].wasm";
+    return config;
+},
   images: {
     remotePatterns: [
       {

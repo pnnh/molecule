@@ -13,6 +13,29 @@ import {articleContentViewUrl2, ArticleService} from '@/services/article'
 import {STSubString} from "@/utils/string";
 import * as stylex from '@stylexjs/stylex';
 
+import {default as Module2} from 'pulsar-web'
+
+
+
+var Module = {
+    locateFile: function (path, scriptDirectory) {
+        console.log('locateFile', path, scriptDirectory)
+        //return path;
+        return 'node_modules/pulsar-web/pulsar-wasm.wasm'
+    }
+}
+
+
+console.log('Module', Module2)
+
+var module2 = new Module2(Module);
+
+console.log('lerp result: ' + module2);
+
+
+
+
+
 const stylexCss = stylex.create({
     foo: {
         color: 'red',

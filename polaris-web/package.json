@@ -32,6 +32,7 @@
     "prism-react-renderer": "^2.0.0",
     "prism-themes": "^1.9.0",
     "prismjs": "^1.26.0",
+    "pulsar-web": "file:../pulsar/build/web/web",
     "query-string": "^9.0.0",
     "react": "^18.1.0",
     "react-dom": "^18.2.0",
@@ -51,6 +52,7 @@
     "winston": "^3.8.2"
   },
   "devDependencies": {
+    "@babel/plugin-transform-private-methods": "^7.23.3",
     "@next/bundle-analyzer": "^14.0.0",
     "@stylexjs/eslint-plugin": "^0.5.1",
     "@stylexjs/nextjs-plugin": "^0.5.1",
