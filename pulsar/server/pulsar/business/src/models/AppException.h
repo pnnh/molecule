@@ -7,6 +7,8 @@
 
 #include <exception>
 #include <string>
+#include <QString>
+#include<initializer_list>
 
 namespace business {
 class AppException : public std::exception {
@@ -16,6 +18,8 @@ class AppException : public std::exception {
 
 public:
   AppException(QString message) : message(message) {}
+AppException(QString message, QString extraMessage) : message(message + extraMessage) {}
+
 
 private:
   QString message;

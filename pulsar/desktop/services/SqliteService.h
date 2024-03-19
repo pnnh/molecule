@@ -7,9 +7,23 @@
 
 #include <QDateTime>
 #include <QString>
+#include <QSqlDatabase>
 
 namespace services {
-void initSqlite();
+  class Sqlite3Service {
+  public:
+    Sqlite3Service(QString fullPath);
+    ~Sqlite3Service();
+
+  QString sqlite3Version();
+  std::shared_ptr<QSqlQuery> query(QString sqlText);
+
+  private:
+    QString dbPath;
+    QSqlDatabase sqldb;
+  };
+
+  std::shared_ptr<Sqlite3Service> getSqlite3Service(QString dbPath = "");
 }
 
 #endif // QT_EDITOR_SQLITE_H
