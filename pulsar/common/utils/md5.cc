@@ -15,3 +15,10 @@ string calcMd5(const string& content) {
 
   return md5.toStdString();
 }
+
+std::string toString(const md5::digest_type &digest) {
+  const auto charDigest = reinterpret_cast<const char *>(&digest);
+  std::string result;
+  boost::algorithm::hex(charDigest, charDigest + sizeof(md5::digest_type), std::back_inserter(result));
+  return result;
+}
