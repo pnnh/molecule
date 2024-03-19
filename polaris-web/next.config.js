@@ -1,6 +1,4 @@
 const path = require('path')
-const stylexPlugin = require('@stylexjs/nextjs-plugin');
-
 const bundleAnalyzerPlugin = require('@next/bundle-analyzer')
 
 
@@ -8,13 +6,14 @@ const bundleAnalyzerPlugin = require('@next/bundle-analyzer')
 let nextConfig = {
   output: 'standalone',
   reactStrictMode: true,
-  loose: true,
-  esmExternals: true,
   webpack: function (config, options) {
-    config.experiments = { asyncWebAssembly: true, topLevelAwait: true};
-    //config.output.webassemblyModuleFilename = "[modulehash].wasm";
+    config.experiments = {
+      asyncWebAssembly: true,
+      topLevelAwait: true,
+    };
     return config;
-},
+  },
+  transpilePackages: ['pulsar-web'],
   images: {
     remotePatterns: [
       {
@@ -52,9 +51,6 @@ let nextConfig = {
     ]
   },
   compress: process.env.ENV === 'production',
-  compiler: {
-    removeConsole: process.env.ENV === 'production'
-  },
   sassOptions: {
     includePaths: [path.join(__dirname, 'styles')]
   }
@@ -64,14 +60,6 @@ let nextConfig = {
 nextConfig = bundleAnalyzerPlugin({
   enabled: process.env.ANALYZE === 'true'
 })(nextConfig)
-
-// 使用stylex插件
-nextConfig = stylexPlugin({
-  aliases: {
-    '@/*': [path.join(__dirname, '*')],
-  },
-  rootDir: __dirname,
-})({});
 
 // 导出nextjs配置
 module.exports = nextConfig

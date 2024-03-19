@@ -3,8 +3,6 @@ cmake_minimum_required(VERSION 3.27)
 set(LANGUAGES C CXX)
 
 if (APPLE)
-        set(CMAKE_OSX_DEPLOYMENT_TARGET "10.15" CACHE STRING "Minimum OS X deployment version")
-        set(CMAKE_OSX_ARCHITECTURES "x86_64;arm64" CACHE STRING "Build architectures for OS X")
         list(append LANGUAGES OBJC OBJCXX Swift)
 endif ()
 
@@ -18,4 +16,4 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 #add_subdirectory(desktop)
-add_subdirectory(web)
+add_subdirectory(pulsar/web)

@@ -31,8 +31,7 @@ module.exports = {
   ],
   plugins: [
     'react',
-    '@typescript-eslint',
-    "@stylexjs"
+    '@typescript-eslint'
   ],
   rules: {
     'no-use-before-define': 'off', // React已经全局定义，但是eslint识别不到所以会报错，这里禁用
@@ -57,7 +56,6 @@ module.exports = {
     'space-before-function-paren': 'off',
     'object-shorthand': 'off',
     quotes: 'off',
-    'object-curly-newline': 'off',
-    "@stylexjs/valid-styles": "error",
+    'object-curly-newline': 'off'
   }
 }

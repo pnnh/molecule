@@ -11,40 +11,26 @@ import {formatRfc3339} from '@/utils/datetime'
 import {serverConfig} from '@/services/server/config'
 import {articleContentViewUrl2, ArticleService} from '@/services/article'
 import {STSubString} from "@/utils/string";
-import * as stylex from '@stylexjs/stylex';
 
-import {default as Module2} from 'pulsar-web'
-
+import MainModuleFactory from 'pulsar-web'
 
 
-var Module = {
-    locateFile: function (path, scriptDirectory) {
+
+const Module = {
+    locateFile: function (path: string, scriptDirectory: string) {
         console.log('locateFile', path, scriptDirectory)
         //return path;
-        return 'node_modules/pulsar-web/pulsar-wasm.wasm'
+        return 'node_modules/pulsar-web/pulsar-web.wasm'
     }
 }
 
 
-console.log('Module', Module2)
+console.log('Module', MainModuleFactory)
 
-var module2 = new Module2(Module);
+const module2 = MainModuleFactory(Module);
 
 console.log('lerp result: ' + module2);
 
-
-
-
-
-const stylexCss = stylex.create({
-    foo: {
-        color: 'red',
-        height: 40,
-    },
-    bar: {
-        backgroundColor: 'blue',
-    },
-});
 
 export default async function Home({searchParams}: {
     searchParams: Record<string, string>
@@ -61,9 +47,6 @@ export default async function Home({searchParams}: {
     return <div className={styles.indexPage}>
         <div>
             <PublicNavbar account={identity}/>
-            <div {...stylex.props(stylexCss.foo, stylexCss.bar)}>
-                <div>hello world</div>
-                </div>
         </div> 
         <div className={styles.container}>
             <div className={styles.conMiddle}>

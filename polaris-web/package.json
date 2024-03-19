@@ -2,13 +2,16 @@
   "name": "polaris-cloud",
   "version": "0.1.0",
   "scripts": {
-    "dev": "next dev -p 8100",
+    "dev": "next dev --turbo -p 8100",
     "build": "NODE_ENV=production next build",
     "start": "next start",
     "lint": "next lint",
     "fix": "eslint --fix --ext .js,.jsx,.ts,.tsx .",
     "analyze": "ENV=production ANALYZE=true next build"
   },
+  "workspaces": [
+    "./workspaces/pulsar-web"
+  ],
   "dependencies": {
     "@fluentui/react-components": "^9.21.0",
     "@fontsource/roboto": "^5.0.4",
@@ -32,7 +35,6 @@
     "prism-react-renderer": "^2.0.0",
     "prism-themes": "^1.9.0",
     "prismjs": "^1.26.0",
-    "pulsar-web": "file:../pulsar/build/web/web",
     "query-string": "^9.0.0",
     "react": "^18.1.0",
     "react-dom": "^18.2.0",
@@ -48,14 +50,13 @@
     "supports-color": "^9.3.1",
     "swr": "^2.2.4",
     "tw-elements": "^2.0.0",
+    "pulsar-web": "^0.1.0",
     "uuid": "^9.0.0",
     "winston": "^3.8.2"
   },
   "devDependencies": {
     "@babel/plugin-transform-private-methods": "^7.23.3",
     "@next/bundle-analyzer": "^14.0.0",
-    "@stylexjs/eslint-plugin": "^0.5.1",
-    "@stylexjs/nextjs-plugin": "^0.5.1",
     "@types/html": "^1.0.1",
     "@types/markdown-it": "^13.0.0",
     "@types/prismjs": "^1.26.0",
