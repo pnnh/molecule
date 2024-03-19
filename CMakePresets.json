@@ -27,7 +27,6 @@
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/build/web",
       "cacheVariables": {
-        // "CMAKE_PREFIX_PATH": "~/Qt/6.6.1/gcc_64/lib/cmake",
         "CMAKE_INSTALL_PREFIX": "${sourceDir}/polaris-web/workspaces/pulsar-web",
         "CMAKE_TOOLCHAIN_FILE": {
           "type": "FILEPATH",

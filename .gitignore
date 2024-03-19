@@ -24,3 +24,4 @@ go.work.sum
 target/bin/
 .vscode/
 debug/
+vcpkg_installed/
