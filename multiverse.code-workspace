@@ -32,6 +32,11 @@
 		]
 	},
 	"extensions": {
-		"recommendations": []
+		"recommendations": [
+			"ms-dotnettools.csdevkit",
+			"ms-vscode.cpptools-extension-pack",
+			"mhutchie.git-graph",
+			"donjayamanne.githistory"
+		]
 	}
 }

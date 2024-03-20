@@ -1,10 +1,8 @@
 using System.Buffers.Binary;
-using System.IO.Compression;
 using System.Text;
 using Base62;
 using DaanV2.UUID;
 using IdGen;
-using Microsoft.AspNetCore.Mvc.Diagnostics;
 using SimpleBase;
 
 namespace Molecule.Helpers;
