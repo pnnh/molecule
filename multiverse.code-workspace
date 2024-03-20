@@ -24,7 +24,11 @@
 			}
 		],
 		"cSpell.words": [
-			"stylex"
+			"buildsystems",
+			"CHAINLOAD",
+			"emscripten",
+			"stylex",
+			"VCPKG"
 		]
 	},
 	"extensions": {

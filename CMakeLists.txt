@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.27)
 
-set(LANGUAGES C CXX)
+set(LANGUAGES C CXX CSharp)
 
 if (APPLE)
         list(append LANGUAGES OBJC OBJCXX Swift)
@@ -17,3 +17,4 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 #add_subdirectory(desktop)
 add_subdirectory(pulsar/web)
+add_subdirectory(polaris-server)

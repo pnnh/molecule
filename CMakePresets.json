@@ -12,7 +12,20 @@
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/build/linux",
       "cacheVariables": {
-        "CMAKE_PREFIX_PATH": "~/Qt/6.6.1/gcc_64/lib/cmake",
+        "CMAKE_INSTALL_PREFIX": "${sourceDir}/install",
+        "CMAKE_TOOLCHAIN_FILE": {
+          "type": "FILEPATH",
+          "value": "/home/applications/vcpkg/scripts/buildsystems/vcpkg.cmake"
+        }
+      },
+      "environment": {}
+    },
+    {
+      "name": "MSBuild",
+      "displayName": "MSBuild Config",
+      "generator": "Visual Studio 17 2019",
+      "binaryDir": "${sourceDir}/build/msbuild",
+      "cacheVariables": {
         "CMAKE_INSTALL_PREFIX": "${sourceDir}/install",
         "CMAKE_TOOLCHAIN_FILE": {
           "type": "FILEPATH",
@@ -83,6 +96,10 @@
     {
       "name": "Windows",
       "configurePreset": "Windows"
+    },
+    {
+      "name": "MSBuild",
+      "configurePreset": "MSBuild"
     }
   ]
 }
