@@ -21,20 +21,6 @@
       "environment": {}
     },
     {
-      "name": "MSBuild",
-      "displayName": "MSBuild Config",
-      "generator": "Visual Studio 17 2019",
-      "binaryDir": "${sourceDir}/build/msbuild",
-      "cacheVariables": {
-        "CMAKE_INSTALL_PREFIX": "${sourceDir}/install",
-        "CMAKE_TOOLCHAIN_FILE": {
-          "type": "FILEPATH",
-          "value": "/home/applications/vcpkg/scripts/buildsystems/vcpkg.cmake"
-        }
-      },
-      "environment": {}
-    },
-    {
       "name": "Web",
       "displayName": "Web Config",
       "generator": "Ninja",
@@ -68,10 +54,24 @@
     },
     {
       "name": "Windows",
-      "generator": "Visual Studio 17",
+      "generator": "Visual Studio 17 2022",
       "binaryDir": "${sourceDir}/build/windows",
       "cacheVariables": {
         "CMAKE_INSTALL_PREFIX": "../windows",
+        "CMAKE_TOOLCHAIN_FILE": {
+          "type": "FILEPATH",
+          "value": "E:\\Apps\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake"
+        }
+      },
+      "environment": {}
+    },
+    {
+      "name": "MSBuild",
+      "displayName": "MSBuild Config",
+      "generator": "Visual Studio 17 2022",
+      "binaryDir": "${sourceDir}/build/msbuild",
+      "cacheVariables": {
+        //"CMAKE_INSTALL_PREFIX": "${sourceDir}/install",
         "CMAKE_TOOLCHAIN_FILE": {
           "type": "FILEPATH",
           "value": "E:\\Apps\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake"

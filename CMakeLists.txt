@@ -1,6 +1,12 @@
 cmake_minimum_required(VERSION 3.27)
 
-set(LANGUAGES C CXX CSharp)
+set(LANGUAGES C CXX)
+
+if (WIN32)
+        list(APPEND LANGUAGES CSharp)
+        # set(CMAKE_DOTNET_TARGET_FRAMEWORK "net8.0")
+        set(CMAKE_CSharp_FLAGS "${CMAKE_CSharp_FLAGS} /platform:x64 /langversion:latest")
+endif ()
 
 if (APPLE)
         list(append LANGUAGES OBJC OBJCXX Swift)
