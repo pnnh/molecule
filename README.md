@@ -53,3 +53,11 @@ cmake --install build/build
 cmake --preset Linux
 cmake --build --preset Linux --target pulsar-server --verbose
 ```
+
+## bazel使用示例
+
+### 生成customrule:hello目标
+
+```bash
+bazel build --sandbox_debug --verbose_failures //customrule:hello
+```
