@@ -5,6 +5,7 @@
 #include <QQmlDebuggingEnabler>
 #include <QQuickWindow>
 #include <iostream>
+
 #if TARGET_OS_MAC
   #include "macos/objc_code.h"
 #endif

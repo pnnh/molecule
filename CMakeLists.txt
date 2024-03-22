@@ -36,6 +36,10 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_subdirectory(pulsar/common)
 
+if (Linux OR APPLE OR WIN32)
+        add_subdirectory(pulsar/desktop)
+endif()
+
 if (Linux)
         add_subdirectory(pulsar/server)
 endif()

@@ -1,14 +1,15 @@
 
+
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+
 find_package(Qt6 COMPONENTS Core Qml Quick Gui QuickControls2 Sql Widgets REQUIRED)
-qt_standard_project_setup(REQUIRES 6.5)
+
+qt_policy(SET QTP0001 NEW)
 
 set(PROJECT_SOURCES
         main.cpp
-        utils/md5.cc
-        utils/md5.h
-        wasm/wasm.h
-        sqlite/sqlite.cc
-        sqlite/sqlite.h
         models/videoListModel.cc
         models/videoListModel.h
         models/sqliteModel.cc
