@@ -1,26 +1,42 @@
 cmake_minimum_required(VERSION 3.27)
 
-set(LANGUAGES C CXX)
+project(pulsar VERSION 0.1 LANGUAGES C CXX)
 
 if (WIN32)
-        list(APPEND LANGUAGES CSharp)
-        # set(CMAKE_DOTNET_TARGET_FRAMEWORK "net8.0")
+        enable_language(CSharp)
         set(CMAKE_CSharp_FLAGS "${CMAKE_CSharp_FLAGS} /platform:x64 /langversion:latest")
 endif ()
 
 if (APPLE)
-        list(append LANGUAGES OBJC OBJCXX Swift)
+        enable_language(OBJC OBJCXX Swift)
 endif ()
 
-project(pulsar VERSION 0.1 LANGUAGES  ${LANGUAGES})
 
+# 设置语言标准
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_C_STANDARD 23)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
+# 设置开启显示详细的构建过程
+set(CMAKE_VERBOSE_MAKEFILE ON)
 
-#add_subdirectory(desktop)
-add_subdirectory(pulsar/web)
-add_subdirectory(polaris-server)
+# 查找并设置ccache
+find_program(CCACHE_PROGRAM ccache)
+if (CCACHE_PROGRAM)
+    set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
+endif ()
+
+# 设置生成clangd compile_commands.json文件，方便和IDE集成
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+add_subdirectory(pulsar/server)
+
+if (EMSCRIPTEN)
+        add_subdirectory(pulsar/web)
+endif()
+
+if (WIN32)
+        # 测试目的，验证cmake管理C#项目可行性
+        add_subdirectory(polaris-server)
+endif ()

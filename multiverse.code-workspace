@@ -27,6 +27,7 @@
 			"buildsystems",
 			"CHAINLOAD",
 			"emscripten",
+			"spdlog",
 			"stylex",
 			"VCPKG"
 		]

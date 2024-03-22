@@ -1,9 +1,10 @@
-#include "server/server.h"
-#include "controllers/sitemap.h"
-#include "controllers/message.h"
-#include "controllers/mail.h"
+
+// #include "server/server.h"
+// #include "controllers/sitemap.h"
+// #include "controllers/message.h"
+// #include "controllers/mail.h"
 #include <spdlog/spdlog.h>
-#include "workflow/WFHttpServer.h"
+#include <workflow/WFHttpServer.h>
 
 int main(int argc, char *argv[]) {
 #ifndef NDEBUG

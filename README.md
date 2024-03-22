@@ -46,3 +46,10 @@ cmake --build --preset MSBuild --target Molecule
 # 安装native库到指定目录
 cmake --install build/build
 ```
+
+### 生成server库
+
+```bash
+cmake --preset Linux
+cmake --build --preset Linux --target pulsar-server --verbose
+```
