@@ -15,7 +15,11 @@ endif ()
 # 设置语言标准
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_C_STANDARD 23)
+if (WIN32)
+        set(CMAKE_C_STANDARD 17)
+else()
+        set(CMAKE_C_STANDARD 23)
+endif()
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
 # 设置开启显示详细的构建过程
@@ -30,7 +34,8 @@ endif ()
 # 设置生成clangd compile_commands.json文件，方便和IDE集成
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-add_subdirectory(pulsar/server)
+#add_subdirectory(pulsar/common)
+#add_subdirectory(pulsar/server)
 
 if (EMSCRIPTEN)
         add_subdirectory(pulsar/web)

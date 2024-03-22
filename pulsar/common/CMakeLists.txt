@@ -1,21 +1,7 @@
-cmake_minimum_required(VERSION 3.10)
-
-project(quantum_native VERSION 0.0.1 LANGUAGES C CXX)
-
-# 设置语言标准
-set(CMAKE_C_STANDARD 17)
-set(CMAKE_C_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_STANDARD 23)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-# 设置开启显示详细的构建过程
-set(CMAKE_VERBOSE_MAKEFILE ON)
-# 设置生成clangd compile_commands.json文件，方便开发过程
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-
 add_library(quantum_native SHARED
-        quantum.cc
-        quantum.h
-        quantum.def
+        database/quantum.cc
+        database/quantum.h
+        database/quantum.def
 )
 
 # 查找并引用sqlite3
@@ -52,6 +38,6 @@ install(TARGETS quantum_native
         DESTINATION lib)
 install(RUNTIME_DEPENDENCY_SET quantum_dependencies)
 
-add_executable(main main.cc)
-add_dependencies(main quantum_native)
-target_link_libraries(main quantum_native)
+add_executable(quantum_main database/main.cc)
+add_dependencies(quantum_main quantum_native)
+target_link_libraries(quantum_main quantum_native)

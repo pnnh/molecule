@@ -59,8 +59,8 @@
       "cacheVariables": {
         "CMAKE_INSTALL_PREFIX": "../windows",
         "CMAKE_TOOLCHAIN_FILE": {
-          "type": "FILEPATH",
-          "value": "E:\\Apps\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake"
+        "type": "FILEPATH",
+        "value": "E:\\Apps\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake"
         }
       },
       "environment": {}
@@ -96,7 +96,7 @@
     {
       "name": "Windows",
       "configurePreset": "Windows"
-    },
+},
     {
       "name": "MSBuild",
       "configurePreset": "MSBuild"
