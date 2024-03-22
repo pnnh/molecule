@@ -34,14 +34,19 @@ endif ()
 # 设置生成clangd compile_commands.json文件，方便和IDE集成
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-#add_subdirectory(pulsar/common)
-#add_subdirectory(pulsar/server)
+add_subdirectory(pulsar/common)
+
+if (Linux)
+        add_subdirectory(pulsar/server)
+endif()
 
 if (EMSCRIPTEN)
         add_subdirectory(pulsar/web)
 endif()
 
 if (WIN32)
-        # 测试目的，验证cmake管理C#项目可行性
-        add_subdirectory(polaris-server)
+        if(NOT DEFINED VCPKG_TARGET_TRIPLET)
+                # 当前未采用VCPKG工具链，可以编译C#项目
+                add_subdirectory(polaris-server)
+        endif(NOT DEFINED VCPKG_TARGET_TRIPLET)
 endif ()

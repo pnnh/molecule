@@ -40,9 +40,9 @@ cmake --build --preset Web --verbose
 
 ```bash
 # 配置cmake
-cmake --preset MSBuild
+cmake --preset windows-dotnet
 # 生成native库
-cmake --build --preset MSBuild --target Molecule
+cmake --build --preset windows-dotnet --target Molecule --verbose
 # 安装native库到指定目录
 cmake --install build/build
 ```
@@ -54,6 +54,13 @@ cmake --preset Linux
 cmake --build --preset Linux --target pulsar-server --verbose
 ```
 
+### 生成common库
+
+```bash
+cmake --preset windows
+cmake --build --preset windows --target pulsar-common --verbose
+```
+
 ## bazel使用示例
 
 ### 生成customrule:hello目标
@@ -61,3 +68,4 @@ cmake --build --preset Linux --target pulsar-server --verbose
 ```bash
 bazel build --sandbox_debug --verbose_failures //customrule:hello
 ```
+ 

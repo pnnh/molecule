@@ -7,16 +7,12 @@
   },
   "configurePresets": [
     {
-      "name": "Linux",
-      "displayName": "Linux Config",
+      "name": "linux",
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/build/linux",
+      "toolchainFile": "/home/applications/vcpkg/scripts/buildsystems/vcpkg.cmake",
       "cacheVariables": {
-        "CMAKE_INSTALL_PREFIX": "${sourceDir}/install",
-        "CMAKE_TOOLCHAIN_FILE": {
-          "type": "FILEPATH",
-          "value": "/home/applications/vcpkg/scripts/buildsystems/vcpkg.cmake"
-        }
+        "CMAKE_INSTALL_PREFIX": "${sourceDir}/install"
       },
       "environment": {}
     },
@@ -53,37 +49,29 @@
       "environment": {}
     },
     {
-      "name": "Windows",
+      "name": "windows",
       "generator": "Visual Studio 17 2022",
       "binaryDir": "${sourceDir}/build/windows",
+      "toolchainFile": "E:\\Apps\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake",
       "cacheVariables": {
-        "CMAKE_INSTALL_PREFIX": "../windows",
-        "CMAKE_TOOLCHAIN_FILE": {
-        "type": "FILEPATH",
-        "value": "E:\\Apps\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake"
-        }
+        "CMAKE_INSTALL_PREFIX": "${sourceDir}/install"
       },
       "environment": {}
     },
     {
-      "name": "MSBuild",
-      "displayName": "MSBuild Config",
+      "name": "windows-dotnet",
       "generator": "Visual Studio 17 2022",
-      "binaryDir": "${sourceDir}/build/msbuild",
+      "binaryDir": "${sourceDir}/build/windows-dotnet",
       "cacheVariables": {
-        //"CMAKE_INSTALL_PREFIX": "${sourceDir}/install",
-        "CMAKE_TOOLCHAIN_FILE": {
-          "type": "FILEPATH",
-          "value": "E:\\Apps\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake"
-        }
+        "CMAKE_INSTALL_PREFIX": "${sourceDir}/install"
       },
       "environment": {}
     }
   ],
   "buildPresets": [
     {
-      "name": "Linux",
-      "configurePreset": "Linux"
+      "name": "linux",
+      "configurePreset": "linux"
     },
     {
       "name": "Web",
@@ -94,12 +82,12 @@
       "configurePreset": "macOS"
     },
     {
-      "name": "Windows",
-      "configurePreset": "Windows"
-},
+      "name": "windows",
+      "configurePreset": "windows"
+    },
     {
-      "name": "MSBuild",
-      "configurePreset": "MSBuild"
+      "name": "windows-dotnet",
+      "configurePreset": "windows-dotnet"
     }
   ]
 }

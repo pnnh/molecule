@@ -1,4 +1,4 @@
-LIBRARY   quantum_native
+LIBRARY   pulsar-common
 EXPORTS
     hello_world
     sum
