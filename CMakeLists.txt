@@ -44,7 +44,7 @@ else()
         add_subdirectory(pulsar/native)
 endif()
 
-if (Linux)
+if (UNIX)
         add_subdirectory(pulsar/server)
 endif()
 

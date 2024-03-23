@@ -1,5 +1,13 @@
 add_executable(pulsar-server main.cpp)
 
+# find_package(PkgConfig REQUIRED)
+# find_package(ZLIB)
+
+# 查找并引用Boost库
+find_package(Boost COMPONENTS system thread REQUIRED)
+target_include_directories(pulsar-server PRIVATE ${Boost_INCLUDE_DIRS})
+target_link_libraries(pulsar-server PRIVATE ${Boost_LIBRARIES})
+
 target_include_directories(pulsar-server PRIVATE src)
 
 # 查找Workflow库，实现HTTP服务
@@ -7,13 +15,6 @@ set(WORKFLOW_BUILD_STATIC_RUNTIME ON)
 find_library(workflow_lib workflow)
 target_link_libraries(pulsar-server PRIVATE ${workflow_lib})
 
-# find_package(PkgConfig REQUIRED)
-# find_package(ZLIB)
-
-# # 查找并引用Boost库
-# set(Boost_NO_WARN_NEW_VERSIONS 1)
-# find_package(Boost COMPONENTS system thread REQUIRED)
-# target_link_libraries(pulsar-server PRIVATE ${Boost_LIBRARIES})
 
 # # 查找并引用folly库
 # find_package(folly REQUIRED)

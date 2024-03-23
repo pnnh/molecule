@@ -1,0 +1,94 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "pulsar-test",
+            "type": "node",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/pulsar/build/web/web",
+            "runtimeExecutable": "node",
+            "runtimeArgs": [
+                "test.mjs",
+            ],
+            "console": "internalConsole",
+            "env": {
+                "NODE_ENV": "development"
+            }
+        },
+        {
+            "name": "polaris-web",
+            "type": "node",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/polaris-web",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "run-script",
+                "dev"
+            ],
+            "console": "internalConsole",
+            "env": {
+                "NODE_ENV": "development"
+            }
+        },
+        {
+            "name": "polaris-server",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "polaris-server-build",
+            "program": "${workspaceFolder}/polaris-server/Polaris/bin/Debug/net8.0/Polaris.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/polaris-server/Polaris",
+            "stopAtEntry": false,
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "console": "internalConsole",
+            "justMyCode": false
+        },
+        {
+            "name": "portal-web",
+            "type": "node",
+            "request": "launch",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "run-script",
+                "dev"
+            ],
+            "console": "internalConsole",
+            "env": {
+                "NODE_ENV": "development",
+                "config": "./config.debug.js"
+            },
+            "cwd": "${workspaceFolder}/portal-web"
+        },
+        {
+            "name": "portal-authorization",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "program": "${workspaceFolder}/portal-server/authorization",
+            "args": [
+                "-config",
+                "runtime/config.yml"
+            ],
+            "env": {
+                "mode": "debug"
+            },
+            "cwd": "${workspaceFolder}/portal-server/authorization"
+        },
+        {
+            "name": "pulsar-server",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/linux/pulsar/server/pulsar-server",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "preLaunchTask": "pulsar-server-build",
+            "setupCommands": []
+        },
+    ]
+}
