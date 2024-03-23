@@ -1,16 +1,17 @@
 add_library(pulsar-common SHARED
-        database/quantum.cc
-        database/quantum.h
-        database/quantum.def
+        utils/md5.cc
+        utils/md5.h
+        common.def
 )
-
-# 查找并引用sqlite3
-find_package(unofficial-sqlite3 CONFIG REQUIRED)
-target_link_libraries(pulsar-common PRIVATE unofficial::sqlite3::sqlite3)
 
 # 查找并引用日志库
 find_package(spdlog CONFIG REQUIRED)
 target_link_libraries(pulsar-common PRIVATE spdlog::spdlog)
+
+# 查找并引用Boost库
+find_package(Boost COMPONENTS system thread chrono REQUIRED)
+target_include_directories(pulsar-common PUBLIC ${Boost_INCLUDE_DIRS})
+target_link_libraries(pulsar-common PUBLIC ${Boost_LIBRARIES})
 
 if (APPLE)
     message("configure for Apple")
@@ -28,16 +29,17 @@ endif ()
 set_target_properties(pulsar-common PROPERTIES
         VERSION ${PROJECT_VERSION}
         SOVERSION 1
-        PUBLIC_HEADER quantum.h
+        PUBLIC_HEADER "utils/md5.h"
         OUTPUT_NAME "pulsar-common")
 
-target_compile_definitions(pulsar-common PUBLIC DART_SHARED_LIB)
-
 install(TARGETS pulsar-common
-        RUNTIME_DEPENDENCY_SET quantum_dependencies
+        RUNTIME_DEPENDENCY_SET pulsar-common-dependencies
         DESTINATION lib)
-install(RUNTIME_DEPENDENCY_SET quantum_dependencies)
+install(RUNTIME_DEPENDENCY_SET pulsar-common-dependencies)
 
-add_executable(quantum_main database/main.cc)
-add_dependencies(quantum_main pulsar-common)
-target_link_libraries(quantum_main pulsar-common)
+# 测试程序
+add_executable(pulsar-common-test main.cc)
+target_link_libraries(pulsar-common-test PRIVATE pulsar-common)
+
+# 添加测试用例
+add_test(NAME pulsar-common-test COMMAND pulsar-common-test)

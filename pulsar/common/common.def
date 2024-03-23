@@ -1,0 +1,4 @@
+LIBRARY   pulsar-common
+EXPORTS
+    toString
+    calcMd5

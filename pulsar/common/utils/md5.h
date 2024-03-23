@@ -2,8 +2,8 @@
 // Created by linyangz on 2021/12/11.
 //
 
-#ifndef QT_CANVAS_MD5_H
-#define QT_CANVAS_MD5_H
+#ifndef PL_MD5_H
+#define PL_MD5_H
 
 #include <string>
 
@@ -14,10 +14,9 @@
 #include <boost/algorithm/hex.hpp>
 
 using boost::uuids::detail::md5;
-using namespace std;
 
 std::string toString(const md5::digest_type &digest);
 
-string calcMd5(const string& content);
+std::string calcMd5(const std::string& content);
 
-#endif //QT_CANVAS_MD5_H
+#endif //PL_MD5_H

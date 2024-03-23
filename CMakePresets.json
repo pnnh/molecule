@@ -54,11 +54,7 @@
       "binaryDir": "${sourceDir}/build/windows",
       "toolchainFile": "E:\\Apps\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake",
       "cacheVariables": {
-        "CMAKE_INSTALL_PREFIX": "${sourceDir}/install",
-        "VCPKG_CHAINLOAD_TOOLCHAIN_FILE": {
-          "type": "FILEPATH",
-          "value": "E:\\Qt\\6.6.1\\msvc2019_64\\lib\\cmake\\Qt6\\qt.toolchain.cmake"
-        }
+        "CMAKE_INSTALL_PREFIX": "${sourceDir}/install"
       },
       "environment": {}
     },
@@ -92,6 +88,12 @@
     {
       "name": "windows-dotnet",
       "configurePreset": "windows-dotnet"
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "windows",
+      "configurePreset": "windows"
     }
   ]
 }

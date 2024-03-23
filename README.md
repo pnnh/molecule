@@ -61,6 +61,17 @@ cmake --preset windows
 cmake --build --preset windows --target pulsar-common --verbose
 ```
 
+### 执行单元测试
+
+```bash
+# 配置及构建项目
+cmake --preset windows 
+cmake --build --preset windows --target pulsar-common-test
+# 进入配置目录执行ctest测试命令
+cd build/windows
+ctest -C Debug
+```
+
 ## bazel使用示例
 
 ### 生成customrule:hello目标

@@ -2,18 +2,22 @@
 // Created by linyangz on 2021/12/11.
 //
 
-#include "md5.h"
-#include <QtCore>
+#include "md5.h" 
+#include <iostream>
+#include <algorithm>
+#include <iterator>
+#include <boost/uuid/detail/md5.hpp>
+#include <boost/algorithm/hex.hpp>
 
-string calcMd5(const string& content) {
-  QString md5;
-  QString pwd = QString::fromUtf8(content);
-  QByteArray bb;
-
-  bb = QCryptographicHash::hash (pwd.toUtf8(), QCryptographicHash::Md5 );
-  md5.append(bb.toHex());
-
-  return md5.toStdString();
+std::string calcMd5(const std::string& content) {
+    md5 hash;
+    md5::digest_type digest;
+    hash.process_bytes(content.data(), content.size());
+    hash.get_digest(digest);
+    const auto intDigest = reinterpret_cast<const int*>(&digest);
+    std::string result;
+    boost::algorithm::hex(intDigest, intDigest + (sizeof(md5::digest_type)/sizeof(int)), std::back_inserter(result));
+    return result;
 }
 
 std::string toString(const md5::digest_type &digest) {

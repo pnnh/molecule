@@ -5,6 +5,10 @@
   "dependencies": [
     "spdlog",
     {
+      "name": "boost",
+      "version>=": "1.84.0"
+    },
+    {
       "name": "workflow",
       "version>=": "0.10.9"
     },
