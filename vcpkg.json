@@ -9,13 +9,29 @@
       "version>=": "1.84.0"
     },
     {
-      "name": "workflow",
-      "version>=": "0.10.9"
+      "name": "inja",
+      "version>=": "3.4.0"
+    },
+    {
+      "name": "nlohmann-json",
+      "version>=": "3.11.3"
+    },
+    {
+      "name": "cmark",
+      "version>=": "0.30.3"
+    },
+    {
+      "name": "abseil",
+      "version>=": "20230802.1"
+    },
+    {
+      "name": "folly",
+      "version>=": "2024.01.01.00"
     },
     {
       "name": "sqlite3",
       "version>=": "3.45.1"
     }
   ],
-  "builtin-baseline": "3850888eb8480abc8f73f84bf618de3b68900572"
+  "builtin-baseline": "a34c873a9717a888f58dc05268dea15592c2f0ff"
 }

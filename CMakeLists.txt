@@ -27,6 +27,8 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 # 启用测试
 enable_testing()
 
+find_package(PkgConfig REQUIRED)
+
 # 查找并设置ccache
 find_program(CCACHE_PROGRAM ccache)
 if (CCACHE_PROGRAM)
