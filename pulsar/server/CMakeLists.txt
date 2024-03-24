@@ -1,10 +1,18 @@
 add_executable(pulsar-server 
     main.cpp
     src/process.cpp
-    src/process.h)
+    src/process.h
+    src/controllers/sitemap.cpp
+    src/controllers/sitemap.h
+    src/models/message.cpp
+    src/models/message.h
+    src/services/config/appconfig.cpp
+    src/services/config/appconfig.h
+    src/services/business/message.cpp
+    src/services/business/message.h)
 
 # 查找并引用Boost库
-find_package(Boost COMPONENTS system thread REQUIRED)
+find_package(Boost COMPONENTS system thread chrono REQUIRED)
 target_include_directories(pulsar-server PRIVATE ${Boost_INCLUDE_DIRS})
 target_link_libraries(pulsar-server PRIVATE ${Boost_LIBRARIES})
 
@@ -35,9 +43,17 @@ target_link_libraries(pulsar-server PRIVATE nlohmann_json::nlohmann_json)
 find_package(inja CONFIG REQUIRED)
 target_link_libraries(pulsar-server PRIVATE pantor::inja)
 
+# 查找并引用env解析库
+find_package(libenvpp CONFIG REQUIRED)
+target_link_libraries(pulsar-server PRIVATE libenvpp::libenvpp)
+
+# 查找并引用日期库
+find_package(date CONFIG REQUIRED)
+target_link_libraries(pulsar-server PRIVATE date::date date::date-tz)
+
 # 拷贝资源文件到二进制目录，方便调试
-file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})
+file(COPY assets DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
-# ADD_SUBDIRECTORY(server)
-# add_subdirectory(oatpp)
-
+# 引用公共库
+target_include_directories(pulsar-server PRIVATE ${pulsar-common_INCLUDE_DIRS})
+target_link_libraries(pulsar-server PRIVATE pulsar-common)

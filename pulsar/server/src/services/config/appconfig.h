@@ -6,21 +6,26 @@
 #define SFX_SERVER_API_APPCONFIG_H
 
 #include <string>
-#include <toml++/toml.h>
+#include <libenvpp/env.hpp>
 
-class AppConfig {
+class AppConfig
+{
 public:
-    static AppConfig &Default() {
+    static AppConfig &Default()
+    {
         static AppConfig instance;
         return instance;
     }
     AppConfig(AppConfig const &) = delete;
     AppConfig &operator=(AppConfig const &) = delete;
     AppConfig();
-    std::string GetConfigItem(const std::string &key);
+
+    std::string GetDSN();
+
 private:
     ~AppConfig() = default;
-    toml::table tbl;
+    std::shared_ptr<env::parsed_and_validated_prefix<env::prefix>> parsedEnvPrefixPtr;
+    std::string dnsValue;
 };
 
-#endif //SFX_SERVER_API_APPCONFIG_H
+#endif // SFX_SERVER_API_APPCONFIG_H

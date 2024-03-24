@@ -21,11 +21,15 @@ else()
 endif()
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
+include_directories(${PROJECT_SOURCE_DIR})
+
 # 设置开启显示详细的构建过程
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
 # 启用测试
 enable_testing()
+
+include(GNUInstallDirs)
 
 find_package(PkgConfig REQUIRED)
 

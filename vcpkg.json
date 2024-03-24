@@ -31,6 +31,14 @@
     {
       "name": "sqlite3",
       "version>=": "3.45.1"
+    },
+    {
+      "name": "libenvpp",
+      "version>=": "1.4.0"
+    },
+    {
+      "name": "date",
+      "version>=": "3.0.1"
     }
   ],
   "builtin-baseline": "a34c873a9717a888f58dc05268dea15592c2f0ff"

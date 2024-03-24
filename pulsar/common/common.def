@@ -2,3 +2,6 @@ LIBRARY   pulsar-common
 EXPORTS
     toString
     calcMd5
+    mime_type
+    makeTimePoint
+    formatTime

@@ -5,17 +5,10 @@
 #ifndef SFX_SERVER_API_SITEMAP_H
 #define SFX_SERVER_API_SITEMAP_H
 
-#include <boost/beast/core.hpp>
-#include <boost/beast/http.hpp>
-#include <boost/asio.hpp>
-#include <chrono>
-#include <cstdlib>
-#include <ctime>
-#include <iostream>
-#include <memory>
+#include "workflow/WFServer.h"
 
-void HandleSitemap(boost::beast::http::request<boost::beast::http::dynamic_body> &request,
-                   boost::beast::http::response<boost::beast::http::dynamic_body> &response);
+
+void HandleSitemap(WFHttpTask *httpTask);
 
 
 #endif //SFX_SERVER_API_SITEMAP_H

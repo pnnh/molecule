@@ -5,15 +5,20 @@
 #include "sitemap.h"
 #include <iostream>
 #include <fstream>
-#include "utils/mime.h"
+#include "pulsar/common/utils/mime.h"
 #include "services/business/message.h"
-#include "utils/datetime.h"
+#include "pulsar/common/utils/datetime.h"
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 
-void HandleSitemap(boost::beast::http::request<boost::beast::http::dynamic_body> &request,
-                   boost::beast::http::response<boost::beast::http::dynamic_body> &response) {
-    response.set(boost::beast::http::field::content_type, "text/xml");
+void HandleSitemap(WFHttpTask *httpTask) {
+    protocol::HttpRequest *request = httpTask->get_req();
+    protocol::HttpResponse *response = httpTask->get_resp();
+
+    response->set_http_version("HTTP/1.1");
+    response->add_header_pair("Content-Type", "text/xml");
+    response->add_header_pair("Server", "Sogou WFHttpServer");
+    response->add_header_pair("Connection", "Close");
 
     boost::property_tree::ptree pt;
 
@@ -24,7 +29,7 @@ void HandleSitemap(boost::beast::http::request<boost::beast::http::dynamic_body>
 
     auto articlesList = MessageService().selectMessages(100);
     if (articlesList == std::nullopt) {
-        response.result(boost::beast::http::status::not_found);
+        response->set_status_code("500");
         return;
     }
     for (const auto &article: *articlesList) {
@@ -35,5 +40,11 @@ void HandleSitemap(boost::beast::http::request<boost::beast::http::dynamic_body>
     }
     std::ostringstream oss;
     boost::property_tree::write_xml(oss, pt);
-    boost::beast::ostream(response.body()) << oss.str();
+ 
+    auto bodyStr = oss.str();
+    auto bodySize = bodyStr.size();
+
+    response -> append_output_body(bodyStr.c_str(), bodySize);
+
+    response->set_status_code("200");
 }

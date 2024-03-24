@@ -83,12 +83,13 @@
             "program": "${workspaceFolder}/build/linux/pulsar/server/pulsar-server",
             "args": [],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
+            "cwd": "${workspaceFolder}/build/linux/pulsar/server",
             "environment": [],
             "externalConsole": false,
             "MIMode": "gdb",
             "preLaunchTask": "pulsar-server-build",
-            "setupCommands": []
+            "setupCommands": [],
+            "envFile": "${workspaceFolder}/build/linux/pulsar/server/assets/.env.local"
         },
     ]
 }

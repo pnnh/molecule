@@ -4,26 +4,26 @@
 
 #include "message.h"
 #include "services/config/appconfig.h"
-#include "utils/datetime.h"
+#include "pulsar/common/utils/datetime.h"
 #include <iostream>
 #include <pqxx/pqxx>
 #include <spdlog/spdlog.h>
 #include <date/date.h>
 
-MessageService::MessageService() : connection(AppConfig::Default().GetConfigItem("DSN")) {
+MessageService::MessageService() : connection(AppConfig::Default().GetDSN()) {
     if (!this->connection.is_open()) {
         throw std::runtime_error("Can't open database");
     }
 }
 
 MessageService::~MessageService() {
-    this->connection.close();
+    //this->connection.close();
 }
 
 std::optional<std::vector<MessageModel>> MessageService::selectMessages(int limit) {
     std::vector<MessageModel> articlesList;
     const char *sqlText =
-            "select  pk, title, content, create_time, update_time, creator, sender, receiver "
+            "select  uid, title, content, create_time, update_time, creator, sender, receiver "
             "from messages order by update_time desc limit $1;";
     pqxx::nontransaction N(this->connection);
     pqxx::result R(N.exec_params(sqlText, limit));

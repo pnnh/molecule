@@ -59,6 +59,7 @@ cmake --build --preset Linux --target pulsar-server --verbose
 ```bash
 cmake --preset windows
 cmake --build --preset windows --target pulsar-common --verbose
+cmake --install build/linux
 ```
 
 ### 执行单元测试

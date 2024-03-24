@@ -10,7 +10,7 @@
 #include <spdlog/spdlog.h>
 #include <date/date.h>
 
-MailService::MailService() : connection(AppConfig::Default().GetConfigItem("DSN")) {
+MailService::MailService() : connection(AppConfig::Default().GetDSN()) {
     if (!this->connection.is_open()) {
         throw std::runtime_error("Can't open database");
     }
