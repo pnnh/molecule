@@ -5,12 +5,16 @@
 // #include "controllers/mail.h"
 #include <spdlog/spdlog.h>
 #include <workflow/WFHttpServer.h>
+#include "process.h"
 
 int main(int argc, char *argv[]) {
 #ifndef NDEBUG
     spdlog::set_level(spdlog::level::debug); // Set global log level to debug
 #endif
     spdlog::debug("Hello, {}", "World!");
+
+    std::string str = "Hello, World!";
+    spdlog::debug("Hello, {}!", str);
 
     // auto server = PulsarServer();
     // server.RegisterHandler("/sitemap", HandleSitemap);
@@ -26,13 +30,14 @@ int main(int argc, char *argv[]) {
     // server.RegisterHandler("/mail/select", MailController::HandleSelect);
 
 
-    WFHttpServer server([](WFHttpTask *task) {
-        task->get_resp()->append_output_body("<html>Hello World!</html>");
-    });
+    WFHttpServer server(process);
 
-    if (server.start(8888) == 0) { // start server on port 8888
-        getchar(); // press "Enter" to end.
+    if (server.start(8888) == 0) {
+        pause(); 
         server.stop();
+    } else {
+        perror("server start failed");
+        exit(1);
     }
 
     return 0;

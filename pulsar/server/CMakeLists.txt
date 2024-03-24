@@ -1,4 +1,7 @@
-add_executable(pulsar-server main.cpp)
+add_executable(pulsar-server 
+    main.cpp
+    src/process.cpp
+    src/process.h)
 
 # 查找并引用Boost库
 find_package(Boost COMPONENTS system thread REQUIRED)

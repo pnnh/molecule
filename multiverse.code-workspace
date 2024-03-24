@@ -11,18 +11,6 @@
 		"remote.autoForwardPorts": false,
 		"editor.fontFamily": "Menlo, Monaco, 'Courier New', monospace",
 		"editor.fontSize": 12,
-		"sqltools.connections": [
-			{
-				"previewLimit": 50,
-				"server": "10.1.0.4",
-				"port": 5432,
-				"askForPassword": true,
-				"driver": "PostgreSQL",
-				"name": "develop",
-				"database": "polaris",
-				"username": "huable"
-			}
-		],
 		"cSpell.words": [
 			"buildsystems",
 			"CHAINLOAD",
