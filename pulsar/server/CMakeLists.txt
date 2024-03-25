@@ -2,6 +2,8 @@ add_executable(pulsar-server
     main.cpp
     src/process.cpp
     src/process.h
+    src/router.cpp
+    src/router.h
     src/controllers/sitemap.cpp
     src/controllers/sitemap.h
     src/models/message.cpp

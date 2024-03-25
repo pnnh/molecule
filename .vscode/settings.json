@@ -5,7 +5,8 @@
     "middlewares"
   ],
   "editor.formatOnSave": true,
-  "eslint.format.enable": true,
+  "editor.formatOnPaste": true,
+  "editor.formatOnType": true,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
   },
@@ -23,8 +24,6 @@
     "**/node_modules/*/**": true
   },
   "cmake.configureOnOpen": false,
-  "typescript.tsdk": "node_modules/typescript/lib",
-  "typescript.enablePromptUseWorkspaceTsdk": true,
   "editor.foldingMaximumRegions": 50000,
-  "cmake.sourceDirectory": "${workspaceFolder}",
+  "cmake.sourceDirectory": "${workspaceFolder}"
 }

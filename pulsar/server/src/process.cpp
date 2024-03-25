@@ -15,6 +15,7 @@
 #include "workflow/WFHttpServer.h"
 #include "workflow/WFFacilities.h"
 #include "controllers/sitemap.h"
+#include "router.h"
 
 void process(WFHttpTask *httpTask)
 {
@@ -23,10 +24,15 @@ void process(WFHttpTask *httpTask)
 
     auto request_uri = request -> get_request_uri();
     // todo: 后续改成路由匹配模式
-    if (strcmp(request_uri, "/sitemap") == 0) {
-        HandleSitemap(httpTask);
-        return;
-    } 
+    // if (strcmp(request_uri, "/sitemap") == 0) {
+    //     HandleSitemap(httpTask);
+    //     return;
+    // } 
+    Router router;
+	router.register_route("^/sitemap$", "GET", HandleSitemap);
+	router.route_request(httpTask);
+
+    return ;
 
     long long seq = httpTask -> get_task_seq();
     protocol::HttpHeaderCursor cursor(request);
