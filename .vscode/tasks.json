@@ -30,6 +30,7 @@
                 "--preset",
                 "linux",
                 "--target",
+                "pulsar-server",
                 "--verbose"
             ]
         }

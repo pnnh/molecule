@@ -20,15 +20,13 @@
   },
   "search.exclude": {
     "**/.git": true,
-    "**/.gitee": true,
-    "vcpkg_installed/": true,
-    "build/": true,
-    "install/": true,
+    "vcpkg_installed/": false,
+    "build/": false,
+    "install/": false,
+    "compile_commands.json": false,
     ".clang-format*": true,
     ".cppcheck-ignore": true,
-    ".gitignore": true,
-    ".gitlab-ci.yml": true,
-    "**/LICENSE": true
+    ".gitignore": true
   },
   "C_Cpp.codeAnalysis.exclude": {
     "**/.git": true,

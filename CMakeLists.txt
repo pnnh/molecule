@@ -51,7 +51,7 @@ else()
 endif()
 
 if (UNIX)
-        # add_subdirectory(pulsar/server)
+        add_subdirectory(pulsar/server)
         add_subdirectory(pulsar/wetee)
 endif()
 

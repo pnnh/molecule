@@ -41,3 +41,8 @@ sudo docker run -p 8090:8080 dream-pulsar
 sudo docker run -p 8090:8080 dream-pulsar
 ```
 
+## 关于folly库引用
+
+目前folly库如果通过vcpkg引用，则会编译报错
+通过手动在Ubuntu 23.10下编译并安装，则其会依赖fmt v9版本和spdlog v1.10版本
+所以在vcpkg.json中引用spdlog时需要指定低版本，否则会因为版本过高，进而导致folly链接失败

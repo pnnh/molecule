@@ -18,7 +18,7 @@ AppConfig::AppConfig()
     if (parsedEnvPrefixPtr-> errors().size() > 0)
     {
         spdlog::error("Error parsing and validating environment variables: {}\n{}",
-                      parsedEnvPrefixPtr->error_message(), parsedEnvPrefixPtr->warning_message());
+        parsedEnvPrefixPtr->error_message(), parsedEnvPrefixPtr->warning_message());
         exit(1);
     } 
     dnsValue = parsedEnvPrefixPtr -> get(dsnKey);
