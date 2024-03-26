@@ -1,9 +1,4 @@
 {
-  "cSpell.words": [
-    "esbuild",
-    "iife",
-    "middlewares"
-  ],
   "editor.formatOnSave": true,
   "editor.formatOnPaste": true,
   "editor.formatOnType": true,
@@ -22,6 +17,23 @@
     "**/.git/objects/**": true,
     "**/.git/subtree-cache/**": true,
     "**/node_modules/*/**": true
+  },
+  "search.exclude": {
+    "**/.git": true,
+    "**/.gitee": true,
+    "vcpkg_installed/": true,
+    "build/": true,
+    "install/": true,
+    ".clang-format*": true,
+    ".cppcheck-ignore": true,
+    ".gitignore": true,
+    ".gitlab-ci.yml": true,
+    "**/LICENSE": true
+  },
+  "C_Cpp.codeAnalysis.exclude": {
+    "**/.git": true,
+    "build/": true,
+    "install/": true,
   },
   "cmake.configureOnOpen": false,
   "editor.foldingMaximumRegions": 50000,

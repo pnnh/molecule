@@ -5,6 +5,7 @@
 			"path": "."
 		}
 	],
+
 	"settings": {
 		"dotnet.defaultSolution": "polaris-server/Polaris.sln",
 		"files.autoSave": "afterDelay",
