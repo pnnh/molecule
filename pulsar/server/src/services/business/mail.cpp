@@ -78,7 +78,7 @@ int MailService::insertMail(const MailModel &model) {
     pqxx::work W(this->connection);
     auto createTime = date::format("%FT%TZ", time_point_cast<std::chrono::microseconds>(model.create_time));
     auto updateTime = date::format("%FT%TZ", time_point_cast<std::chrono::microseconds>(model.update_time));
-    W.exec_params(sqlText, model.pk, model.title, model.content,
+    W.exec_params(sqlText, model.uid, model.title, model.content,
                   createTime, updateTime,
                   model.creator, model.sender, model.receiver);
     W.commit();
@@ -93,7 +93,7 @@ int MailService::updateMail(const MailModel &model) {
 
     pqxx::work W(this->connection);
     W.exec_params(sqlText, model.title, model.content,
-                  model.update_time.time_since_epoch().count(), model.sender, model.receiver, model.pk);
+                  model.update_time.time_since_epoch().count(), model.sender, model.receiver, model.uid);
     W.commit();
 
     return 0;

@@ -5,10 +5,10 @@
 #ifndef PULSAR_MESSAGE_SERVICE_H
 #define PULSAR_MESSAGE_SERVICE_H
 
-#include "models/message.h"
+#include "models/article.h"
 #include <optional>
-#include <vector>
 #include <pqxx/pqxx>
+#include <vector>
 
 class MessageService {
 public:

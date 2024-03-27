@@ -1,6 +1,6 @@
 
 #include "process.h"
-#include "controllers/message.h"
+#include "controllers/article.h"
 #include "controllers/sitemap.h"
 #include "router.h"
 #include "workflow/HttpMessage.h"

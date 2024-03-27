@@ -1,6 +1,6 @@
-#include "message.h"
+#include "article.h";
 #include "models/codes.h";
-#include "services/business/message.h"
+#include "services/business/article.h"
 #include <boost/range/algorithm.hpp>
 #include <boost/url.hpp>
 #include <boost/uuid/uuid.hpp>
@@ -161,6 +161,7 @@ void HandleArticles(WFHttpTask *httpTask) {
 
   response->set_http_version("HTTP/1.1");
   response->add_header_pair("Content-Type", "application/json; charset=utf-8");
+  response->add_header_pair("Access-Control-Allow-Origin", "*");
   response->add_header_pair("Server", "Sogou WFHttpServer");
 
   auto request_uri = request->get_request_uri();
@@ -197,9 +198,9 @@ void HandleArticles(WFHttpTask *httpTask) {
   json range = json::array();
   for (auto &m : *result) {
     json item = {
-        {"pk", m.pk},
+        {"uid", m.uid},
         {"title", m.title},
-        {"content", m.content},
+        {"body", m.body},
     };
     range.push_back(item);
   }
@@ -208,7 +209,7 @@ void HandleArticles(WFHttpTask *httpTask) {
                             {
                                 "range",
                                 range,
-                            }}); 
+                            }});
 
   std::ostringstream oss;
   oss << data;

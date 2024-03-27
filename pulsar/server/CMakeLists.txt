@@ -4,18 +4,18 @@ add_executable(pulsar-server
     src/process.h
     src/router.cpp
     src/router.h
-    src/controllers/message.cpp
-    src/controllers/message.h
+    src/controllers/article.cpp
+    src/controllers/article.h
     src/controllers/sitemap.cpp
     src/controllers/sitemap.h
     src/models/codes.cpp
     src/models/codes.h
-    src/models/message.cpp
-    src/models/message.h
+    src/models/article.cpp
+    src/models/article.h
     src/services/config/appconfig.cpp
     src/services/config/appconfig.h
-    src/services/business/message.cpp
-    src/services/business/message.h)
+    src/services/business/article.cpp
+    src/services/business/article.h)
 
 target_include_directories(pulsar-server PRIVATE src)
 
