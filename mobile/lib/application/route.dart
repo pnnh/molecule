@@ -4,11 +4,11 @@ import 'package:go_router/go_router.dart';
 import 'package:polaris/application/pages/desktop/home.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'dart:io' show Platform;
-import 'pages/article/read.dart';
 import 'pages/desktop/pictures/pictures.dart';
 import 'pages/mobile/home.dart';
 import 'pages/mobile/share/receive.dart';
 import 'pages/mobile/share/share.dart';
+import 'pages/web/article/read.dart';
 import 'pages/web/home.dart';
 
 final GoRouter globalRouter = GoRouter(
@@ -33,7 +33,7 @@ final GoRouter globalRouter = GoRouter(
         GoRoute(
           path: 'article/read',
           builder: (BuildContext context, GoRouterState state) {
-            return ArticleReadPage(state.pathParameters);
+            return WArticleReadPage(state.pathParameters);
           },
         ),
         GoRoute(

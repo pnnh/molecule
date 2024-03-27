@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:async';
 
-import 'package:polaris/application/pages/folders/folders.dart';
+import 'package:polaris/application/pages/desktop/folders.dart';
 import 'package:polaris/application/pages/common/tools.dart';
 import 'package:polaris/models/picture.dart';
 import 'package:polaris/services/image/image.dart';

@@ -11,7 +11,7 @@ class ArticleService {
 
     for(var i = 0; i< 10; i++) {
 
-      var model = ArticleModel(pk: "pk$i", title: "title$i", body: "body$i");
+      var model = ArticleModel(uid: "pk$i", title: "title$i", body: "body$i");
       _items.add(model);
     }
   }
@@ -31,7 +31,7 @@ class ArticleService {
   Future<ArticleModel?> getArticle(String pk) async {
     for(var i = 0; i < _items.length; i++){
       var model = _items[i];
-      if (model.pk == pk) {
+      if (model.uid == pk) {
         return model;
       }
     }

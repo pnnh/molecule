@@ -6,29 +6,27 @@ part 'article.g.dart';
 
 @JsonSerializable()
 class ArticleModel {
-  String pk = "";
+  String uid = "";
   String title = "";
-  String description = "";
-  String mime = "";
-  String body = "";
+  String? description = "";
+  String? mime = "";
+  String? body = "";
   @JsonKey(name: 'create_time')
-  DateTime createTime = DateTime.utc(0);
+  DateTime? createTime = DateTime.utc(0);
   @JsonKey(name: 'update_time')
-  DateTime updateTime = DateTime.utc(0);
-  int created = 0;
-  String cover = "";
+  DateTime? updateTime = DateTime.utc(0);
+  int? created = 0;
+  String? cover = "";
   @JsonKey(name: 'keywords_list')
-  List<String> keywordsList = <String>[];
+  List<String>? keywordsList = <String>[];
 
   ArticleModel(
-      {this.pk = "", this.title = "", this.body = ""});
+      {this.uid = "", this.title = "", this.body = ""});
 
   factory ArticleModel.fromJson(Map<String, dynamic> json) =>
       _$ArticleModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$ArticleModelToJson(this);
-
-  Map<String, dynamic> bodyJson() => jsonDecode(body);
 }
 
 @JsonSerializable()
