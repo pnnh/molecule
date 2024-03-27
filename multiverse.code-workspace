@@ -5,7 +5,6 @@
 			"path": "."
 		}
 	],
-
 	"settings": {
 		"dotnet.defaultSolution": "polaris-server/Polaris.sln",
 		"files.autoSave": "afterDelay",
@@ -103,7 +102,6 @@
 			"variant": "cpp"
 		},
 		"cmake.allowCommentsInPresetsFile": true,
-		"C_Cpp.default.intelliSenseMode": "",
 		"C_Cpp.workspaceSymbols": "All",
 		"C_Cpp.errorSquiggles": "disabled",
 		"C_Cpp.intelliSenseEngineFallback": "disabled",
@@ -143,7 +141,7 @@
 			// 我选择禁用
 			"--function-arg-placeholders=false",
 			// compelie_commands.json 文件的目录位置(相对于工作区，由于 CMake 生成的该文件默认在 build 文件夹中，故设置为 build)
-			"--compile-commands-dir=build/linux"
+			"--compile-commands-dir=./build/linux"
 		],
 	},
 	"extensions": {

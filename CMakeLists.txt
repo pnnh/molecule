@@ -21,8 +21,6 @@ else()
 endif()
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
-include_directories(${PROJECT_SOURCE_DIR})
-
 # 设置开启显示详细的构建过程
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
@@ -42,11 +40,14 @@ endif ()
 # 设置生成clangd compile_commands.json文件，方便和IDE集成
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/pulsar)
+
 add_subdirectory(pulsar/common)
 
 if (EMSCRIPTEN)
         add_subdirectory(pulsar/web)
-else()
+elseif(DEFINED VCPKG_TARGET_TRIPLET)
         add_subdirectory(pulsar/native)
 endif()
 

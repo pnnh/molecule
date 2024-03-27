@@ -9,8 +9,8 @@ add_library(pulsar-common STATIC
 )
 
 # 查找并引用日志库
-find_package(spdlog CONFIG REQUIRED)
-target_link_libraries(pulsar-common PUBLIC spdlog::spdlog)
+find_library(spdlog_lib spdlog)
+target_link_libraries(pulsar-common PRIVATE ${spdlog_lib})
 
 # 查找并引用Boost库
 find_package(Boost COMPONENTS system thread chrono REQUIRED)
@@ -38,10 +38,10 @@ install(TARGETS pulsar-common
         RUNTIME_DEPENDENCY_SET pulsar-common-dependencies
         DESTINATION lib)
 
-install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/"
-        DESTINATION include/pulsar/common
-        FILES_MATCHING PATTERN "*.h")
-install(RUNTIME_DEPENDENCY_SET pulsar-common-dependencies)
+# install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/"
+#         DESTINATION include/pulsar/common
+#         FILES_MATCHING PATTERN "*.h")
+# install(RUNTIME_DEPENDENCY_SET pulsar-common-dependencies)
 
 # 测试程序
 add_executable(pulsar-common-test main.cc)

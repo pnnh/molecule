@@ -1,6 +1,6 @@
 #include "article.h"
-#include "models/codes.h"
-#include "services/business/article.h"
+#include "lib/models/codes.h"
+#include "lib/services/business/article.h"
 #include <boost/range/algorithm.hpp>
 #include <boost/url.hpp>
 #include <boost/uuid/uuid.hpp>

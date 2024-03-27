@@ -10,3 +10,4 @@ build-*/
 debug/
 vcpkg_installed/
 bazel-*
+.cache/

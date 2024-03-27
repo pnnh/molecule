@@ -23,17 +23,20 @@
     "vcpkg_installed/": false,
     "build/": false,
     "install/": false,
-    "compile_commands.json": false,
     ".clang-format*": true,
     ".cppcheck-ignore": true,
     ".gitignore": true
   },
   "C_Cpp.codeAnalysis.exclude": {
     "**/.git": true,
-    "build/": true,
     "install/": true,
   },
   "editor.foldingMaximumRegions": 50000,
   "cmake.sourceDirectory": "${workspaceFolder}",
-  "cmake.configureOnOpen": true
+  "cmake.configureOnOpen": false,
+  "C_Cpp.autocomplete": "disabled",
+  "C_Cpp.codeFolding": "disabled",
+  "C_Cpp.intelliSenseEngine": "disabled",
+  "C_Cpp.codeAnalysis.clangTidy.enabled": true,
+  "C_Cpp.codeAnalysis.clangTidy.useBuildPath": true
 }

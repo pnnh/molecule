@@ -3,12 +3,12 @@
 //
 
 #include "mail.h"
-#include "services/config/appconfig.h"
+#include "lib/services/config/appconfig.h"
 #include "utils/datetime.h"
+#include <date/date.h>
 #include <iostream>
 #include <pqxx/pqxx>
 #include <spdlog/spdlog.h>
-#include <date/date.h>
 
 MailService::MailService() : connection(AppConfig::Default().GetDSN()) {
     if (!this->connection.is_open()) {

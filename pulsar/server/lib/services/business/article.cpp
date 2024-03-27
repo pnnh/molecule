@@ -1,6 +1,6 @@
 #include "article.h"
-#include "pulsar/common/utils/datetime.h"
-#include "services/config/appconfig.h"
+#include "common/utils/datetime.h"
+#include "lib/services/config/appconfig.h"
 #include <date/date.h>
 #include <iostream>
 #include <pqxx/pqxx>

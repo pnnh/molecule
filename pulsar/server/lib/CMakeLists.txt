@@ -16,8 +16,6 @@ add_library(pulsar-server-lib STATIC
     services/business/article.cpp
     services/business/article.h)
 
-target_include_directories(pulsar-server-lib PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
-
 # 查找并引用Boost库
 find_package(Boost COMPONENTS system thread chrono filesystem url REQUIRED) 
 target_include_directories(pulsar-server-lib PRIVATE ${Boost_INCLUDE_DIRS})
@@ -37,8 +35,8 @@ find_library(PQXX_LIB pqxx)
 target_link_libraries(pulsar-server-lib PRIVATE ${PQXX_LIB})
 
 # 查找并引用日志库
-find_package(spdlog CONFIG REQUIRED)
-target_link_libraries(pulsar-server-lib PRIVATE spdlog::spdlog)
+find_library(spdlog_lib spdlog)
+target_link_libraries(pulsar-server-lib PRIVATE ${spdlog_lib})
 
 # 查找JSON库
 find_package(nlohmann_json CONFIG REQUIRED)
@@ -54,4 +52,4 @@ target_link_libraries(pulsar-server-lib PRIVATE libenvpp::libenvpp)
 
 # 查找并引用日期库
 find_package(date CONFIG REQUIRED)
-target_link_libraries(pulsar-server-lib PRIVATE date::date date::date-tz)
+target_link_libraries(pulsar-server-lib PRIVATE date::date-tz)

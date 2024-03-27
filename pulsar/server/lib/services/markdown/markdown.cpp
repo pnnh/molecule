@@ -10,7 +10,7 @@ extern "C" {
 
 #include "markdown.h"
 #include "mdtransform.hpp" // 需要实现的 Markdown 解析类
-#include "services/business/article.h"
+#include "lib/services/business/article.h"
 #include <QDomDocument>
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/replace.hpp>
