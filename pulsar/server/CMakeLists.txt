@@ -4,8 +4,12 @@ add_executable(pulsar-server
     src/process.h
     src/router.cpp
     src/router.h
+    src/controllers/message.cpp
+    src/controllers/message.h
     src/controllers/sitemap.cpp
     src/controllers/sitemap.h
+    src/models/codes.cpp
+    src/models/codes.h
     src/models/message.cpp
     src/models/message.h
     src/services/config/appconfig.cpp
@@ -13,12 +17,12 @@ add_executable(pulsar-server
     src/services/business/message.cpp
     src/services/business/message.h)
 
+target_include_directories(pulsar-server PRIVATE src)
+
 # 查找并引用Boost库
-find_package(Boost COMPONENTS system thread chrono REQUIRED)
+find_package(Boost COMPONENTS system thread chrono filesystem url REQUIRED) 
 target_include_directories(pulsar-server PRIVATE ${Boost_INCLUDE_DIRS})
 target_link_libraries(pulsar-server PRIVATE ${Boost_LIBRARIES})
-
-target_include_directories(pulsar-server PRIVATE src)
 
 # 查找Workflow库，实现HTTP服务
 set(WORKFLOW_BUILD_STATIC_RUNTIME ON)

@@ -5,6 +5,7 @@
 #ifndef SFX_SERVER_API_APPCONFIG_H
 #define SFX_SERVER_API_APPCONFIG_H
 
+#include <memory>
 #include <string>
 #include <libenvpp/env.hpp>
 

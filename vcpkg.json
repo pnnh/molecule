@@ -3,7 +3,10 @@
   "name": "multiverse",
   "version": "0.1.0",
   "dependencies": [
-    "spdlog",
+    {
+      "name": "spdlog",
+      "version>=": "1.9.0"
+    },
     {
       "name": "boost",
       "version>=": "1.84.0"
@@ -25,10 +28,6 @@
       "version>=": "20230802.1"
     },
     {
-      "name": "folly",
-      "version>=": "2024.01.01.00"
-    },
-    {
       "name": "sqlite3",
       "version>=": "3.45.1"
     },
@@ -40,7 +39,16 @@
       "name": "date",
       "version>=": "3.0.1"
     }
-
   ],
-  "builtin-baseline": "a34c873a9717a888f58dc05268dea15592c2f0ff"
+  "builtin-baseline": "9de2e978bdfec6bb7852cc1d6ecf375c923c485c",
+  "overrides": [
+    {
+      "name": "fmt",
+      "version": "9.1.0"
+    },
+    {
+      "name": "spdlog",
+      "version": "1.10.0"
+    }
+  ]
 }

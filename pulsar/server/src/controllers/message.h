@@ -14,23 +14,8 @@
 #include <iostream>
 #include <memory>
 
-class MessageController {
-public:
-    static void HandleGet(boost::beast::http::request<boost::beast::http::dynamic_body> &request,
-                          boost::beast::http::response<boost::beast::http::dynamic_body> &response);
+#include "workflow/WFTaskFactory.h"
 
-    static void HandleDelete(boost::beast::http::request<boost::beast::http::dynamic_body> &request,
-                             boost::beast::http::response<boost::beast::http::dynamic_body> &response);
-
-    static void HandleSelect(boost::beast::http::request<boost::beast::http::dynamic_body> &request,
-                             boost::beast::http::response<boost::beast::http::dynamic_body> &response);
-
-    static void HandleInsert(boost::beast::http::request<boost::beast::http::dynamic_body> &request,
-                             boost::beast::http::response<boost::beast::http::dynamic_body> &response);
-
-    static void HandleUpdate(boost::beast::http::request<boost::beast::http::dynamic_body> &request,
-                             boost::beast::http::response<boost::beast::http::dynamic_body> &response);
-};
-
+void HandleArticles(WFHttpTask *httpTask);
 
 #endif //PULSAR_MESSAGE_CONTROLLER_H

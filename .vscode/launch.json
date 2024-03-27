@@ -90,6 +90,6 @@
             "preLaunchTask": "pulsar-server-build",
 "setupCommands": [],
             "envFile": "${workspaceFolder}/build/linux/pulsar/server/assets/.env.local"
-        },
+        }
     ]
 }
