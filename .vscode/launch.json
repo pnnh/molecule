@@ -2,7 +2,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "pulsar-test",
+            "name": "pulsar-web-test",
             "type": "node",
             "request": "launch",
             "cwd": "${workspaceFolder}/pulsar/build/web/web",
@@ -82,13 +82,28 @@
             "request": "launch",
             "program": "${workspaceFolder}/build/linux/pulsar/server/pulsar-server",
             "args": [],
-"stopAtEntry": false,
+            "stopAtEntry": false,
             "cwd": "${workspaceFolder}/build/linux/pulsar/server",
-"environment": [],
+            "environment": [],
             "externalConsole": false,
             "MIMode": "gdb",
             "preLaunchTask": "pulsar-server-build",
-"setupCommands": [],
+            "setupCommands": [],
+            "envFile": "${workspaceFolder}/build/linux/pulsar/server/assets/.env.local"
+        },
+        {
+            "name": "pulsar-server-test",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/linux/pulsar/server/pulsar-server-test",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/build/linux/pulsar/server",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "preLaunchTask": "pulsar-server-test-build",
+            "setupCommands": [],
             "envFile": "${workspaceFolder}/build/linux/pulsar/server/assets/.env.local"
         }
     ]

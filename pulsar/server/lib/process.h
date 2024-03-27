@@ -3,6 +3,6 @@
 
 #include "workflow/WFServer.h"
 
-void process(WFHttpTask *httpTask);
+int runServer(int port);
 
 #endif //PL_PROCESS_H

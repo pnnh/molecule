@@ -1,11 +1,9 @@
 // #include "server/server.h"
 // #include "controllers/sitemap.h"
 // #include "controllers/message.h"
-// #include "controllers/mail.h"
-#include <unistd.h>
-#include <spdlog/spdlog.h>
-#include <workflow/WFHttpServer.h>
-#include "process.h"
+// #include "controllers/mail.h" 
+#include <spdlog/spdlog.h> 
+#include "lib/process.h"
 
 int main(int argc, char *argv[]) {
 #ifndef NDEBUG
@@ -26,15 +24,5 @@ spdlog::debug("Hello, {}", "World!");
     // server.RegisterHandler("/mail/update", MailController::HandleUpdate);
     // server.RegisterHandler("/mail/select", MailController::HandleSelect);
 
-    WFHttpServer server(process);
-
-    if (server.start(8501) == 0) {
-        pause(); 
-        server.stop();
-    } else {
-        perror("server start failed");
-        exit(1);
-    }
-
-    return 0;
+    return runServer(8501);
 }

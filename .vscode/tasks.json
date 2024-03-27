@@ -33,6 +33,19 @@
                 "pulsar-server",
                 "--verbose"
             ]
+        },
+        {
+            "label": "pulsar-server-test-build",
+            "command": "cmake",
+            "type": "process",
+            "args": [
+                "--build",
+                "--preset",
+                "linux",
+                "--target",
+                "pulsar-server-test",
+                "--verbose"
+            ]
         }
     ]
 }

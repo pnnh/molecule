@@ -1,4 +1,4 @@
-add_library(pulsar-common SHARED
+add_library(pulsar-common STATIC
         utils/md5.cc
         utils/md5.h
         utils/mime.cpp

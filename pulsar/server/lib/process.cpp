@@ -11,12 +11,15 @@
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #include <signal.h>
+#include <spdlog/spdlog.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <string>
 #include <sys/socket.h>
 #include <sys/types.h>
+#include <unistd.h>
+#include <workflow/WFHttpServer.h>
 
 void process(WFHttpTask *httpTask) {
   protocol::HttpRequest *request = httpTask->get_req();
@@ -86,4 +89,21 @@ void process(WFHttpTask *httpTask) {
   }
 
   fprintf(stderr, "seq: %lld, peer: %s:%hu\n", seq, addrstr, port);
+}
+
+int runServer(int port) {
+
+  WFHttpServer server(process);
+
+  if (port <= 0)
+    port = 8501;
+
+  if (server.start(port) == 0) {
+    pause();
+    server.stop();
+  } else {
+    perror("server start failed");
+    exit(1);
+  }
+  return 0;
 }
