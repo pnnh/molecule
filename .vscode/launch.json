@@ -90,16 +90,6 @@
             "preLaunchTask": "pulsar-server-build",
 "setupCommands": [],
             "envFile": "${workspaceFolder}/build/linux/pulsar/server/assets/.env.local"
-        },
-        {
-            "name": "pulsar-lldb",
-            "type": "lldb",
-            "request": "launch",
-            "program": "${workspaceFolder}/build/linux/pulsar/server/pulsar-server",
-            "args": [],
-            "cwd": "${workspaceFolder}/build/linux/pulsar/server",
-            "preLaunchTask": "pulsar-server-build",
-            "envFile": "${workspaceFolder}/build/linux/pulsar/server/assets/.env.local"
-        },
+        }
     ]
 }

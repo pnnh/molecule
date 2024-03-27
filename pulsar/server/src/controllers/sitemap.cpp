@@ -1,11 +1,6 @@
-//
-// Created by ubuntu on 2/16/22.
-//
-
 #include "sitemap.h"
 #include <iostream>
-#include <fstream>
-#include "pulsar/common/utils/mime.h"
+#include <fstream> 
 #include "services/business/message.h"
 #include "pulsar/common/utils/datetime.h"
 #include <boost/property_tree/ptree.hpp>
