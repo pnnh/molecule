@@ -1,7 +1,6 @@
 
 import 'package:flutter/material.dart';
-
-import '../partial/toolbar.dart';
+import 'package:polaris/application/pages/partial/toolbar.dart';
 
 class HeaderWidget extends StatelessWidget {
   const HeaderWidget({super.key});

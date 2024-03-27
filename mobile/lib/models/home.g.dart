@@ -7,8 +7,8 @@ part of 'home.dart';
 // **************************************************************************
 
 HomeResult _$HomeResultFromJson(Map<String, dynamic> json) => HomeResult(
-      list: (json['list'] as List<dynamic>?)
-              ?.map((e) => PictureModel.fromJson(e as Map<String, dynamic>))
+      range: (json['range'] as List<dynamic>?)
+              ?.map((e) => ArticleModel.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
       count: json['count'] as int? ?? 0,
@@ -16,6 +16,6 @@ HomeResult _$HomeResultFromJson(Map<String, dynamic> json) => HomeResult(
 
 Map<String, dynamic> _$HomeResultToJson(HomeResult instance) =>
     <String, dynamic>{
-      'list': instance.list,
+      'range': instance.range,
       'count': instance.count,
     };

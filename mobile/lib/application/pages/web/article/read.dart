@@ -1,4 +1,6 @@
 
+import 'package:polaris/application/pages/partial/not_found.dart';
+import 'package:polaris/application/pages/partial/page_loading.dart';
 import 'package:polaris/config.dart';
 import 'package:polaris/models/article.dart';
 import 'package:polaris/services/articles.dart';
@@ -6,23 +8,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_highlight/flutter_highlight.dart';
 import 'package:flutter_highlight/themes/github.dart';
 import 'package:markdown_widget/markdown_widget.dart';
-import '../partial/not_found.dart';
-import '../partial/page_loading.dart';
 
 class TocItem {
   String title = "";
   int header = 0;
 }
 
-class ArticleReadPage extends StatefulWidget {
+class WArticleReadPage extends StatefulWidget {
   final Map<String, String> queryParameters;
-  const ArticleReadPage(this.queryParameters, {super.key});
+  const WArticleReadPage(this.queryParameters, {super.key});
 
   @override
-  State<ArticleReadPage> createState() => _ArticleReadPageState();
+  State<WArticleReadPage> createState() => _WArticleReadPageState();
 }
 
-class _ArticleReadPageState extends State<ArticleReadPage> {
+class _WArticleReadPageState extends State<WArticleReadPage> {
   var articleService = ArticleService();
   @override
   Widget build(BuildContext context) {
@@ -112,7 +112,7 @@ class _ArticleReadPageState extends State<ArticleReadPage> {
                                 padding:const  EdgeInsets.all(8),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: MarkdownGenerator().buildWidgets(model.body) ?? [],
+                                  children: MarkdownGenerator().buildWidgets(model.body??"") ?? [],
                                 ),
                               ))
                         ],

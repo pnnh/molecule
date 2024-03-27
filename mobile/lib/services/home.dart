@@ -5,22 +5,11 @@ import 'package:polaris/config.dart';
 import 'package:polaris/models/home.dart';
 import 'package:polaris/utils/logger.dart';
 
-
-Future<HomeResult> queryHome(int page) async {
-  var url = Uri.parse('${AppConfig.serverUrl}/pwa/restful/resources/query');
-  var response = await http.post(url,
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({
-        "page": page,
-      }));
+Future<HomeResult> queryHome() async {
+  var url = Uri.parse('${AppConfig.serverUrl}/articles');
+  var response = await http.get(url);
   logger.d('Response status: ${response.statusCode}');
-
-  var decodedResponse =
-      jsonDecode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
-  // var count = decodedResponse['count'];
-  // Iterable list = decodedResponse['list'] as List;
-
-  //print('count: $count');
+  var decodedResponse = jsonDecode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
   var result = HomeResult.fromJson(decodedResponse);
   return result;
 }
