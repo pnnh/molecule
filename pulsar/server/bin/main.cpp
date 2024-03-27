@@ -7,9 +7,9 @@
 
 int main(int argc, char *argv[]) {
 #ifndef NDEBUG
-spdlog::set_level(spdlog::level::debug); // Set global log level to debug
+    spdlog::set_level(spdlog::level::debug);
 #endif
-spdlog::debug("Hello, {}", "World!");
+    spdlog::debug("Hello, {}", "World2!");
 
     // auto server = PulsarServer();
     // server.RegisterHandler("/sitemap", HandleSitemap);

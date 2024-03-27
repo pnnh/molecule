@@ -12,6 +12,7 @@
       "binaryDir": "${sourceDir}/build/linux",
       "installDir": "${sourceDir}/install",
       "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
         "Boost_NO_WARN_NEW_VERSIONS": "ON"
       },
       "environment": {}

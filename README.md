@@ -72,3 +72,12 @@ cmake --build --preset windows --target pulsar-common-test
 cd build/windows
 ctest -C Debug
 ```
+
+Linux下执行
+
+```bash
+# 配置及构建项目
+cmake --preset linux 
+cmake --build --preset linux --verbose
+ctest --test-dir build/linux
+```
