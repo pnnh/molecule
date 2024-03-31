@@ -1,9 +1,9 @@
 // #include "server/server.h"
 // #include "controllers/sitemap.h"
 // #include "controllers/message.h"
-// #include "controllers/mail.h" 
-#include <spdlog/spdlog.h> 
-#include "lib/process.h"
+// #include "controllers/mail.h"
+#include "pulsar/server/lib/process.h"
+#include <spdlog/spdlog.h>
 
 int main(int argc, char *argv[]) {
 #ifndef NDEBUG

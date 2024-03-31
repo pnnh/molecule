@@ -1,7 +1,3 @@
-//
-// Created by ubuntu on 2/13/22.
-//
-
 #include "appconfig.h"
 #include <boost/algorithm/string/split.hpp>
 #include <iostream>
@@ -10,7 +6,6 @@
 
 AppConfig::AppConfig()
 {
-
     env::prefix envPrefix("PL");
     auto dsnKey = envPrefix.register_required_variable<std::string>("DSN");
  
@@ -26,6 +21,5 @@ AppConfig::AppConfig()
 
 std::string AppConfig::GetDSN()
 { 
-    
     return dnsValue;
 }

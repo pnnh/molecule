@@ -1,6 +1,6 @@
 #include "sitemap.h"
-#include "common/utils/datetime.h"
-#include "lib/services/business/article.h"
+#include "pulsar/common/utils/datetime.h"
+#include "pulsar/server/lib/services/business/article.h"
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 #include <fstream>

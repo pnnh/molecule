@@ -48,6 +48,7 @@ target_link_libraries(pulsar-server-lib PRIVATE pantor::inja)
 
 # 查找并引用env解析库
 find_package(libenvpp CONFIG REQUIRED)
+target_include_directories(pulsar-server-lib PRIVATE /opt/include)
 target_link_libraries(pulsar-server-lib PRIVATE libenvpp::libenvpp)
 
 # 查找并引用日期库

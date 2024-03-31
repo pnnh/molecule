@@ -1,7 +1,6 @@
-
-#include "process.h"
-#include "controllers/article.h"
-#include "controllers/sitemap.h"
+#include "pulsar/server/lib/process.h"
+#include "pulsar/server/lib/controllers/article.h"
+#include "pulsar/server/lib/controllers/sitemap.h"
 #include "router.h"
 #include "workflow/HttpMessage.h"
 #include "workflow/HttpUtil.h"
@@ -21,7 +20,8 @@
 #include <unistd.h>
 #include <workflow/WFHttpServer.h>
 
-void process(WFHttpTask *httpTask) {
+void process(WFHttpTask *httpTask)
+{
   protocol::HttpRequest *request = httpTask->get_req();
   protocol::HttpResponse *response = httpTask->get_resp();
 
@@ -34,6 +34,7 @@ void process(WFHttpTask *httpTask) {
   Router router;
   router.register_route("^/server/sitemap$", "GET", HandleSitemap);
   router.register_route("^/server/articles$", "GET", HandleArticles);
+  router.register_route("^/server/articles/get\\?[\\w\\d=-]+$", "GET", HandleArticleGet);
   router.route_request(httpTask);
 
   return;
@@ -50,7 +51,8 @@ void process(WFHttpTask *httpTask) {
                  request->get_request_uri(), request->get_http_version());
   response->append_output_body(buf, len);
 
-  while (cursor.next(name, value)) {
+  while (cursor.next(name, value))
+  {
     len = snprintf(buf, 8192, "<p>%s: %s</p>", name.c_str(), value.c_str());
     response->append_output_body(buf, len);
   }
@@ -63,9 +65,12 @@ void process(WFHttpTask *httpTask) {
 
   response->add_header_pair("Content-Type", "text/html");
   response->add_header_pair("Server", "Sogou WFHttpServer");
-  if (seq == 9) {
+  if (seq == 9)
+  {
     response->add_header_pair("Connection", "close");
-  } else {
+  }
+  else
+  {
     response->add_header_pair("Connection", "keep-alive");
   }
 
@@ -76,32 +81,41 @@ void process(WFHttpTask *httpTask) {
 
   httpTask->get_peer_addr((struct sockaddr *)&addr, &l);
 
-  if (addr.ss_family == AF_INET) {
+  if (addr.ss_family == AF_INET)
+  {
     struct sockaddr_in *s = (struct sockaddr_in *)&addr;
     port = ntohs(s->sin_port);
     inet_ntop(AF_INET, &s->sin_addr, addrstr, sizeof addrstr);
-  } else if (addr.ss_family == AF_INET6) {
+  }
+  else if (addr.ss_family == AF_INET6)
+  {
     struct sockaddr_in6 *s = (struct sockaddr_in6 *)&addr;
     port = ntohs(s->sin6_port);
     inet_ntop(AF_INET6, &s->sin6_addr, addrstr, sizeof addrstr);
-  } else {
+  }
+  else
+  {
     strcpy(addrstr, "unknown");
   }
 
   fprintf(stderr, "seq: %lld, peer: %s:%hu\n", seq, addrstr, port);
 }
 
-int runServer(int port) {
+int runServer(int port)
+{
 
   WFHttpServer server(process);
 
   if (port <= 0)
     port = 8501;
 
-  if (server.start(port) == 0) {
+  if (server.start(port) == 0)
+  {
     pause();
     server.stop();
-  } else {
+  }
+  else
+  {
     perror("server start failed");
     exit(1);
   }

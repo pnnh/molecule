@@ -24,7 +24,9 @@ void Router::route_request(WFHttpTask *httpTask)
 		if (std::regex_match(request_uri, match, pat) 
 				&& (request_method.compare(r.request_method) == 0)) {
 			r.callback(httpTask);
-			break;
+			return;
 		}
 	}
+	protocol::HttpResponse *response = httpTask->get_resp();
+	response->set_status_code("404");
 }

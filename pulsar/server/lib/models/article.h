@@ -8,15 +8,17 @@
 #include <chrono>
 #include <string>
 
-struct MessageModel {
+struct ArticleModel
+{
   std::string uid;
+  long nid;
   std::string title;
+  std::string header;
   std::string body;
+  std::string keywords;
+  std::string description;
   std::chrono::system_clock::time_point create_time;
   std::chrono::system_clock::time_point update_time;
-  std::string creator;
-  std::string sender;
-  std::string receiver;
 };
 
 #endif // PULSAR_MESSAGE_H

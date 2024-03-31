@@ -40,8 +40,8 @@ endif ()
 # 设置生成clangd compile_commands.json文件，方便和IDE集成
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/pulsar)
+# include_directories(/opt/include)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 add_subdirectory(pulsar/common)
 

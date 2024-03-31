@@ -5,6 +5,10 @@ add_library(pulsar-common STATIC
         utils/mime.h
         utils/datetime.cpp
         utils/datetime.h
+        utils/query.cpp
+        utils/query.h
+        utils/uuid.cpp
+        utils/uuid.h
         common.def
 )
 
@@ -13,7 +17,7 @@ find_library(spdlog_lib spdlog)
 target_link_libraries(pulsar-common PRIVATE ${spdlog_lib})
 
 # 查找并引用Boost库
-find_package(Boost COMPONENTS system thread chrono REQUIRED)
+find_package(Boost COMPONENTS system thread chrono url REQUIRED)
 target_include_directories(pulsar-common PUBLIC ${Boost_INCLUDE_DIRS})
 target_link_libraries(pulsar-common PUBLIC ${Boost_LIBRARIES})
 

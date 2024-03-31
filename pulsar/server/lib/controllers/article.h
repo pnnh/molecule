@@ -17,5 +17,6 @@
 #include "workflow/WFTaskFactory.h"
 
 void HandleArticles(WFHttpTask *httpTask);
+void HandleArticleGet(WFHttpTask *httpTask);
 
 #endif //PULSAR_MESSAGE_CONTROLLER_H
