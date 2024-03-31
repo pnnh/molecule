@@ -1,11 +1,11 @@
 #include "article.h"
-#include "pulsar/common/utils/datetime.h"
-#include "pulsar/server/lib/services/config/appconfig.h"
+#include "pulsar/server/common/utils/datetime.h"
+#include "pulsar/server/main/services/config/appconfig.h"
 #include <date/date.h>
 #include <iostream>
 #include <pqxx/pqxx>
+#include <pulsar/server/common/utils/uuid.h>
 #include <spdlog/spdlog.h>
-#include <pulsar/common/utils/uuid.h>
 
 MessageService::MessageService() : connection(AppConfig::Default().GetDSN())
 {
@@ -17,7 +17,7 @@ MessageService::MessageService() : connection(AppConfig::Default().GetDSN())
 
 MessageService::~MessageService()
 {
-  //this->connection.close();
+  // this->connection.close();
 }
 
 std::optional<std::vector<ArticleModel>>
@@ -41,7 +41,7 @@ MessageService::selectMessages(int limit)
         .description = itr[6].as<std::string>(),
         .create_time = makeTimePoint(itr[7].as<std::string>()),
         .update_time = makeTimePoint(itr[8].as<std::string>()),
-        };
+    };
     articlesList.push_back(model);
   }
   return articlesList;

@@ -1,16 +1,16 @@
-#include "pulsar/server/lib/controllers/article.h"
-#include "pulsar/server/lib/models/codes.h"
-#include "pulsar/server/lib/services/business/article.h"
+#include "pulsar/server/main/controllers/article.h"
+#include "pulsar/server/main/models/codes.h"
+#include "pulsar/server/main/services/business/article.h"
 #include <boost/range/algorithm.hpp>
 #include <boost/url.hpp>
 #include <boost/uuid/uuid.hpp>
 #include <boost/uuid/uuid_generators.hpp>
 #include <boost/uuid/uuid_io.hpp>
 #include <nlohmann/json.hpp>
+#include <pulsar/server/common/utils/datetime.h>
+#include <pulsar/server/common/utils/query.h>
 #include <spdlog/spdlog.h>
 #include <workflow/HttpMessage.h>
-#include <pulsar/common/utils/datetime.h>
-#include <pulsar/common/utils/query.h>
 
 using json = nlohmann::json;
 

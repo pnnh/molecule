@@ -3,7 +3,7 @@
 //
 
 #include "mail.h"
-#include "lib/services/config/appconfig.h"
+#include "pulsar/server/main/services/config/appconfig.h"
 #include "utils/datetime.h"
 #include <date/date.h>
 #include <iostream>

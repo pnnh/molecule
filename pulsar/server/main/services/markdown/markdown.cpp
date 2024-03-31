@@ -11,7 +11,7 @@ extern "C"
 
 #include "markdown.h"
 #include "mdtransform.hpp" // 需要实现的 Markdown 解析类
-#include "pulsar/server/lib/services/business/article.h"
+#include "pulsar/server/main/services/business/article.h"
 #include <QDomDocument>
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/replace.hpp>

@@ -80,16 +80,16 @@
             "name": "pulsar-server",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/linux/pulsar/server/bin/pulsar-server",
+            "program": "${workspaceFolder}/build/linux/pulsar/server/main/pulsar-server",
             "args": [],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}/build/linux/pulsar/server/bin",
+            "cwd": "${workspaceFolder}/build/linux/pulsar/server/main",
             "environment": [],
             "externalConsole": false,
             "MIMode": "gdb",
             "preLaunchTask": "pulsar-server-build",
             "setupCommands": [],
-            "envFile": "${workspaceFolder}/build/linux/pulsar/server/bin/assets/.env.local"
+            "envFile": "${workspaceFolder}/build/linux/pulsar/server/main/assets/.env.local"
         },
         {
             "name": "pulsar-server-test",

@@ -2,7 +2,7 @@
 // #include "controllers/sitemap.h"
 // #include "controllers/message.h"
 // #include "controllers/mail.h"
-#include "pulsar/server/lib/process.h"
+#include "pulsar/server/main/process.h"
 #include <spdlog/spdlog.h>
 
 int main(int argc, char *argv[]) {

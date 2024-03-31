@@ -5,7 +5,7 @@
 #ifndef PULSAR_MESSAGE_SERVICE_H
 #define PULSAR_MESSAGE_SERVICE_H
 
-#include "pulsar/server/lib/models/article.h"
+#include "pulsar/server/main/models/article.h"
 #include <optional>
 #include <pqxx/pqxx>
 #include <vector>

@@ -3,11 +3,11 @@
 //
 
 #include "http_connection.h"
+#include "pulsar/server/common/utils/md5.h"
 #include "server/handlers/index.h"
 #include "server/handlers/sitemap.h"
 #include "services/markdown/markdown.h"
 #include "utils//mime.h"
-#include "utils/md5.h"
 #include <folly/Uri.h>
 #include <iostream>
 #include <utility>
