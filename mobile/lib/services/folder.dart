@@ -2,8 +2,8 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:polaris/models/folder.dart';
 import 'package:polaris/utils/logger.dart';
-import 'package:polaris/utils/utils.dart';
 
+import '../utils/random.dart';
 import 'database.dart';
 
 

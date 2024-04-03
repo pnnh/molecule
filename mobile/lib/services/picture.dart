@@ -7,8 +7,8 @@ import 'package:polaris/models/folder.dart';
 import 'package:polaris/models/picture.dart';
 import 'package:polaris/services/folder.dart';
 import 'package:polaris/utils/image.dart';
-import 'package:polaris/utils/utils.dart';
 
+import '../utils/random.dart';
 import 'database.dart';
 
 Future<List<PictureModel>> selectPictures(

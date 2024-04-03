@@ -1,9 +1,10 @@
+import 'dart:io' show Platform;
 
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:polaris/application/pages/desktop/home.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
-import 'dart:io' show Platform;
+
 import 'pages/desktop/pictures/pictures.dart';
 import 'pages/mobile/home.dart';
 import 'pages/mobile/share/receive.dart';
@@ -20,7 +21,10 @@ final GoRouter globalRouter = GoRouter(
           return const WHomePage();
         }
 
-        if (Platform.isMacOS || Platform.isLinux || Platform.isWindows || Platform.isFuchsia) {
+        if (Platform.isMacOS ||
+            Platform.isLinux ||
+            Platform.isWindows ||
+            Platform.isFuchsia) {
           return const DHomePage();
         }
         if (Platform.isAndroid || Platform.isIOS) {
@@ -31,7 +35,7 @@ final GoRouter globalRouter = GoRouter(
       },
       routes: <RouteBase>[
         GoRoute(
-          path: 'article/read',
+          path: 'article/:pk',
           builder: (BuildContext context, GoRouterState state) {
             return WArticleReadPage(state.pathParameters);
           },

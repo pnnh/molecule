@@ -1,13 +1,11 @@
-
-import 'package:polaris/application/pages/partial/not_found.dart';
-import 'package:polaris/application/pages/partial/page_loading.dart';
-import 'package:polaris/config.dart';
-import 'package:polaris/models/article.dart';
-import 'package:polaris/services/articles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_highlight/flutter_highlight.dart';
 import 'package:flutter_highlight/themes/github.dart';
 import 'package:markdown_widget/markdown_widget.dart';
+import 'package:polaris/application/pages/partial/not_found.dart';
+import 'package:polaris/application/pages/partial/page_loading.dart';
+import 'package:polaris/models/article.dart';
+import 'package:polaris/services/web/articles.dart';
 
 class TocItem {
   String title = "";
@@ -16,6 +14,7 @@ class TocItem {
 
 class WArticleReadPage extends StatefulWidget {
   final Map<String, String> queryParameters;
+
   const WArticleReadPage(this.queryParameters, {super.key});
 
   @override
@@ -23,7 +22,6 @@ class WArticleReadPage extends StatefulWidget {
 }
 
 class _WArticleReadPageState extends State<WArticleReadPage> {
-  var articleService = ArticleService();
   @override
   Widget build(BuildContext context) {
     if (!widget.queryParameters.containsKey("pk")) {
@@ -35,9 +33,8 @@ class _WArticleReadPageState extends State<WArticleReadPage> {
     }
 
     return FutureBuilder<ArticleModel?>(
-        future: articleService.getArticle(pk),
-        builder:
-            (BuildContext context, AsyncSnapshot<ArticleModel?> snapshot) {
+        future: WArticleService.getArticle(pk),
+        builder: (BuildContext context, AsyncSnapshot<ArticleModel?> snapshot) {
           if (snapshot.hasError) {
             return Text("加载出错1 ${snapshot.error}");
           }
@@ -66,16 +63,16 @@ class _WArticleReadPageState extends State<WArticleReadPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        height: 240,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(4)),
-                        child: Image.network(
-                          AppHelper.filesUrl(model.cover),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
+                      // Container(
+                      //   height: 240,
+                      //   decoration: BoxDecoration(
+                      //       color: Colors.white,
+                      //       borderRadius: BorderRadius.circular(4)),
+                      //   child: Image.network(
+                      //     AppHelper.filesUrl(model.cover),
+                      //     fit: BoxFit.cover,
+                      //   ),
+                      // ),
                       const SizedBox(height: 16),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -84,16 +81,13 @@ class _WArticleReadPageState extends State<WArticleReadPage> {
                             padding: const EdgeInsets.all(16),
                             decoration: BoxDecoration(
                                 color: Colors.white,
-                                borderRadius:
-                                BorderRadius.circular(4)),
+                                borderRadius: BorderRadius.circular(4)),
                             child: Column(
-                                crossAxisAlignment:
-                                CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
                                     model.title,
-                                    style:
-                                    const TextStyle(fontSize: 20),
+                                    style: const TextStyle(fontSize: 20),
                                   ),
                                 ]),
                           ),
@@ -104,15 +98,15 @@ class _WArticleReadPageState extends State<WArticleReadPage> {
                               padding: const EdgeInsets.all(16),
                               decoration: BoxDecoration(
                                   color: Colors.white,
-                                  borderRadius:
-                                  BorderRadius.circular(4)),
-                              margin: const EdgeInsets.only(
-                                  bottom: 8),
+                                  borderRadius: BorderRadius.circular(4)),
+                              margin: const EdgeInsets.only(bottom: 8),
                               child: Container(
-                                padding:const  EdgeInsets.all(8),
+                                padding: const EdgeInsets.all(8),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: MarkdownGenerator().buildWidgets(model.body??"") ?? [],
+                                  children: MarkdownGenerator()
+                                          .buildWidgets(model.body ?? "") ??
+                                      [],
                                 ),
                               ))
                         ],
@@ -200,7 +194,7 @@ class _WArticleReadPageState extends State<WArticleReadPage> {
   }
 
   Widget buildCodeBlock(BuildContext context, Map<String, dynamic> nodeJson) {
-    var children = nodeJson["children"] as List<dynamic>; 
+    var children = nodeJson["children"] as List<dynamic>;
     var text = "";
     for (var element in children) {
       text += buildText(context, element);
@@ -249,7 +243,8 @@ class _WArticleReadPageState extends State<WArticleReadPage> {
           padding: const EdgeInsets.all(4),
           margin: const EdgeInsets.only(right: 8),
           decoration: BoxDecoration(
-              color: const Color(0xffefefef), borderRadius: BorderRadius.circular(4)),
+              color: const Color(0xffefefef),
+              borderRadius: BorderRadius.circular(4)),
           child: Text(
             keywordsList[index],
             style: const TextStyle(fontSize: 12),

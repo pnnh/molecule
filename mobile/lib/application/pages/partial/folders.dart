@@ -6,7 +6,8 @@ import 'package:path/path.dart';
 import 'package:polaris/application/providers/emotion.dart';
 import 'package:polaris/models/folder.dart';
 import 'package:polaris/services/folder.dart';
-import 'package:polaris/utils/utils.dart';
+
+import '../../../utils/random.dart';
 
 final StateProvider<String> directoryProvider = StateProvider((_) => "");
 
