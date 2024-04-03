@@ -2,12 +2,12 @@
     "configurations": [
         {
             "name": "Linux",
-            "includePath": [
-                "/opt/include",
-                "/usr/include",
-                "/usr/local/include",
-                "${workspaceFolder}/**"
-            ],
+            // "includePath": [
+            //     "/opt/include",
+            //     "/usr/local/include",
+            //     "/usr/include",
+            //     "${workspaceFolder}/**"
+            // ],
             "defines": [],
             "cStandard": "c23",
             "cppStandard": "c++23",
@@ -17,23 +17,19 @@
               "-m32"
             ],
             "configurationProvider": "ms-vscode.cmake-tools",
-            "forcedInclude": [
-              "${workspaceFolder}/common.h"
-            ],
+            "forcedInclude": [],
             "compileCommands": "${workspaceFolder}/build/linux/compile_commands.json",
             "mergeConfigurations": true,
             "customConfigurationVariables": {
               "myVar": "myvalue"
-            },
-            "browse": {
-              "path": [
-                "${myIncludePath}",
-                "/usr/include",
-                "${workspaceFolder}"
-              ],
-              "limitSymbolsToIncludedHeaders": true,
-              "databaseFilename": "${workspaceFolder}/.vscode/browse.vc.db"
             }
+            // "browse": {
+            //   "path": [
+            //     "/usr/include",
+            //     "${workspaceFolder}"
+            //   ],
+            //   "limitSymbolsToIncludedHeaders": true
+            // }
         },
         {
           "name": "MacOS",
@@ -53,7 +49,6 @@
           ],
           "browse": {
             "path": [
-              "${myIncludePath}",
               "${workspaceFolder}"
             ]
           }
