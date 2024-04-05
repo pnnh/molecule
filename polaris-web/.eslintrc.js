@@ -27,7 +27,8 @@ module.exports = {
   },
   ignorePatterns: [
     'next.config.js',
-    'compile/*.js'
+    'compile/*.js',
+    'workspaces/*',
   ],
   plugins: [
     'react',

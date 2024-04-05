@@ -1,9 +1,8 @@
 'use client'
 
-import { Provider } from 'react-redux'
 import React from 'react'
-import { rootStore } from './store'
+import { RecoilRoot } from 'recoil'
 
-export function ConsoleReduxProvider ({ children }: { children: React.ReactNode }) {
-  return <Provider store={rootStore}>{children}</Provider>
+export function RecoilProvider ({ children }: { children: React.ReactNode }) {
+  return <RecoilRoot>{children}</RecoilRoot>
 }

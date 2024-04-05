@@ -5,22 +5,19 @@ import Link from 'next/link'
 import { getLoginSession } from '@/services/client/account'
 import { useEffect } from 'react'
 import Image from 'next/image'
-import { useRecoilState } from 'recoil'
+import { useRecoilValue, useSetRecoilState } from 'recoil'
 import { sessionAtom } from '@/app/console/state/session'
+import { SessionModel } from '@/models/session'
 
 export function ConsoleNavbar () { 
-  const [session, setSession] = useRecoilState(sessionAtom)
+  const setSession= useSetRecoilState<SessionModel>(sessionAtom)
 
   useEffect(() => {
     const loadSession = async () => {
-      const response = await getLoginSession()
-      if (response.status !== 200 || response.data == null) {
-        throw new Error('session is null')
-      } 
-      if (response.data && response.data.account) {
-        setSession(response.data.account)
-      } 
-
+      const response = await getLoginSession() 
+      if (response.data) {
+        setSession(response.data)
+      }
     }
     loadSession()
   }, [setSession])
@@ -33,11 +30,15 @@ export function ConsoleNavbar () {
       </Link>
     </div>
     <div className={styles.rightNav}>
-      <UserAction account={session}/>
+      <UserAction/>
     </div>
   </div>
 }
 
-function UserAction (props: { account?: string }) {
+function UserAction(props: { account?: string }) {
+  const session = useRecoilValue(sessionAtom)
+  if (!session) {
+    return <div>...</div>
+  }
   return <div>{props.account}</div>
 }

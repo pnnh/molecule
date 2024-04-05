@@ -15,4 +15,9 @@ const notebookAtom = atom({
   default: ''
 })
 
-export { noteAtom, directoryAtom, notebookAtom }
+const libraryAtom = atom({
+  key: 'library',
+  default: ''
+})
+
+export { noteAtom, directoryAtom, notebookAtom, libraryAtom }

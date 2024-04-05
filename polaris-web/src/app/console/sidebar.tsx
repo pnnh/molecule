@@ -2,53 +2,53 @@
 
 import styles from './sidebar.module.scss'
 import Image from 'next/image'
-import { useEffect, useState } from 'react'
-import { DirectoryModel } from '@/models/personal/directory'
+import { useEffect, useState } from 'react' 
 import { PLSelectResult } from '@/models/common-result'
-import { directoryAtom, notebookAtom } from '@/app/console/providers/notebook'
-import { selectNotebooks } from '@/services/personal/notebook'
-import { NotebookModel } from '@/models/personal/notebook'
-import { useRecoilValue, useSetRecoilState } from 'recoil'
-import { DirectoryService } from '@/services/personal/directories'
+import { directoryAtom, libraryAtom } from '@/app/console/providers/notebook'
+import { LibraryModel } from '@/models/personal/library'
+import { useRecoilValue, useSetRecoilState } from 'recoil' 
 import { sessionAtom } from './state/session'
+import { LibraryService } from '@/services/personal/library'
+import { NotebookService } from '@/services/personal/notebook'
+import { NotebookModel } from '@/models/personal/notebook'
 
-export function DirectoryBar () {
+export function NotebookBar () {
   return <div className={styles.sidebar}>
-    <NotebookSelector ></NotebookSelector>
+    <LibrarySelector ></LibrarySelector>
     <div className={styles.directoryList}>
-      <DirectoryList />
+      <NotebookList />
     </div>
   </div>
 }
 
-function NotebookSelector () {
-  const [notebooks, setNotebooks] = useState<PLSelectResult<NotebookModel>>()
-  const [notebookDropdown, setNotebookDropdown] = useState<boolean>(false)
-  const setNotebook = useSetRecoilState(notebookAtom)
+function LibrarySelector () {
+  const [notebooks, setLibrarys] = useState<PLSelectResult<LibraryModel>>()
+  const [notebookDropdown, setLibraryDropdown] = useState<boolean>(false)
+  const setLibrary = useSetRecoilState(libraryAtom)
   const session = useRecoilValue(sessionAtom)
   useEffect(() => {
     const loadData = async () => {
-      const notebooks = await selectNotebooks('profile=' + session)
-      console.log('selectNotebooks', notebooks)
-      setNotebooks(notebooks)
+      const notebooks = await LibraryService.selectLibraries(session.account.uid, '')
+      console.log('selectLibrarys', notebooks)
+      setLibrarys(notebooks)
 
       if (notebooks && notebooks.range && notebooks.range.length > 0) {
-        setNotebook(notebooks.range[0].pk)
+        setLibrary(notebooks.range[0].uid)
       } 
     }
     loadData()
-  }, [session, setNotebook])
+  }, [session, setLibrary])
 
   if (!notebooks || !notebooks.range || notebooks.range.length <= 0) {
     return <div>暂无笔记本</div>
   }
-  const defaultNotebook = notebooks.range[0] 
+  const defaultLibrary = notebooks.range[0] 
   return <>
     <div className={styles.notebookSelector}>
       <div className={styles.notebookTitle}>
-        <span>{defaultNotebook.title}</span>
+        <span>{defaultLibrary.name}</span>
         <Image src='/icons/console/down-arrow.png' alt='选择笔记本' width={24} height={24}
-          onClick={()=>setNotebookDropdown(!notebookDropdown)}></Image>
+          onClick={()=>setLibraryDropdown(!notebookDropdown)}></Image>
       </div>
       <div className={styles.notebookAction}>
         <Image src='/icons/console/new-file-fill.png' alt='创建笔记' width={16} height={16}></Image>
@@ -59,11 +59,11 @@ function NotebookSelector () {
       notebookDropdown && <div className={styles.notebookList}>
         {
           notebooks && notebooks.range && notebooks.range.map(item => {
-            return <div key={item.pk} className={styles.notebookItem} onClick={() => {
-                  setNotebookDropdown(!notebookDropdown)
-                  setNotebook(item.pk)
+            return <div key={item.uid} className={styles.notebookItem} onClick={() => {
+                  setLibraryDropdown(!notebookDropdown)
+                  setLibrary(item.uid)
                 }}>
-              <span className={styles.notebookName}>{item.title}</span>
+              <span className={styles.notebookName}>{item.name}</span>
             </div>
           })
         }
@@ -71,15 +71,14 @@ function NotebookSelector () {
     }
   </>
 }
-function DirectoryList () {
+function NotebookList () {
 
-  const [directories, setDirectories] = useState<PLSelectResult<DirectoryModel>>()
-  const notebook = useRecoilValue(notebookAtom)
+  const [directories, setDirectories] = useState<PLSelectResult<NotebookModel>>()
+  const notebook = useRecoilValue(libraryAtom)
   useEffect(() => {
     const loadData = async () => {
-      if (notebook) {
-        const service = new DirectoryService()
-        const directories = await service.selectDirectorys('notebook=' + notebook)
+      if (notebook) { 
+        const directories = await NotebookService.selectNotebooks('notebook=' + notebook)
         setDirectories(directories)
       }
     }
@@ -92,37 +91,21 @@ function DirectoryList () {
   return <div className={styles.directoryList}>
     {
       directories.range.map(item => {
-        return <DirectoryCard key={item.pk} item={item} />
+        return <NotebookCard key={item.pk} item={item} />
       })
     }
   </div>
 }
 
-function DirectoryCard ({ item }: {item: DirectoryModel}) {
-  const [isExpanded, setIsExpanded] = useState<boolean>(false)
-  const hasChildren = item.children && item.children.length > 0
-  const setDirectory = useSetRecoilState(directoryAtom)
+function NotebookCard ({ item }: {item: NotebookModel}) {
+  const setNotebook = useSetRecoilState(directoryAtom)
   return <div className={styles.directoryCard}>
     <div className={styles.directorySelf}>
-      <div style={{ width: item.level * 8 + 'px' }}></div>
-      <div className={styles.directoryOpen} onClick={() => setIsExpanded(!isExpanded)}>
-        {
-          hasChildren &&
-          <Image src={isExpanded ? '/icons/console/triangle-down-fill.png' : '/icons/console/triangle-right-fill.png'} alt='目录' width={16} height={16}></Image>
-        }
-      </div>
       <div className={styles.directoryName} onClick={() => {
-        console.debug('setNotebook', item.name)
-        setDirectory(item.pk)
+        console.debug('setLibrary', item.name)
+        setNotebook(item.pk)
       }}>
         {item.title}</div>
-    </div>
-    <div className={styles.directoryChildren} style={{ display: isExpanded ? 'block' : 'none' }}>
-      {
-        hasChildren && item.children.map(child => {
-          return <DirectoryCard key={child.pk} item={child} />
-        })
-      }
     </div>
 </div>
 }

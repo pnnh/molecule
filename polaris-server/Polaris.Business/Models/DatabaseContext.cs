@@ -7,7 +7,6 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
     public DbSet<PostModel> Pages => Set<PostModel>();
     public DbSet<AccountModel> Accounts => Set<AccountModel>();
     public DbSet<CredentialTable> Credentials => Set<CredentialTable>();
-    public DbSet<SessionTable> Sessions => Set<SessionTable>();
     public DbSet<PartitionModel> Partitions => Set<PartitionModel>();
     public DbSet<TagModel> Tags => Set<TagModel>();
     public DbSet<CommentModel> Comments => Set<CommentModel>();

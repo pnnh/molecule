@@ -1,7 +1,7 @@
 'use client'
 
 import styles from './page.module.scss'  
-import { DirectoryBar } from './sidebar'
+import { NotebookBar } from './sidebar'
 import { ConsoleNotebar } from './notebar'
 
 import React, { useEffect, useState } from 'react' 
@@ -9,7 +9,6 @@ import MarkdownIt from 'markdown-it'
 import { useRecoilValue } from 'recoil'
 import { noteAtom } from '@/app/console/providers/notebook' 
 import { NoteModel } from '@/models/personal/note'
-import { sessionAtom } from './state/session'
 import { NoteService } from '@/services/personal/notes'
 
 function MarkdownViewer() {
@@ -48,10 +47,9 @@ function MarkdownViewer() {
 }
 
 export default function Page() {
-  const session = useRecoilValue(sessionAtom)
   return <div className={styles.notesPage}>
     <div className={styles.directoryBar}>
-      <DirectoryBar session={session}></DirectoryBar>
+      <NotebookBar></NotebookBar>
     </div>
     <div className={styles.notebarContainer}>
       <ConsoleNotebar></ConsoleNotebar>

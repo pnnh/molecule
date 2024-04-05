@@ -1,33 +1,23 @@
-import AwaitLock from 'await-lock'
+
 import {createClient, RedisClientType} from 'redis'
 import {serverConfig} from './server/config'
 
 class CacheStore {
-    lock: AwaitLock
     redisClient: unknown
 
-    constructor() {
-        this.lock = new AwaitLock()
-    }
-
     async getCacheStore() {
-        await this.lock.acquireAsync()
-        try {
-            if (this.redisClient) {
-                return this.redisClient
-            }
-            const client = createClient({
-                url: serverConfig.REDIS,
-                password: serverConfig.REDIS_PASSWORD
-            })
-            await client.connect()
-
-            this.redisClient = client
-
+        if (this.redisClient) {
             return this.redisClient
-        } finally {
-            this.lock.release()
         }
+        const client = createClient({
+            url: serverConfig.REDIS,
+            password: serverConfig.REDIS_PASSWORD
+        })
+        await client.connect()
+
+        this.redisClient = client
+
+        return this.redisClient
     }
 
     async get(key: string): Promise<string | null> {
