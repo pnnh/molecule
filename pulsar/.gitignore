@@ -4,3 +4,5 @@ cmake-build-*
 CMakeLists.txt.user
 install/
 .cache/
+.xmake/
+cmake-build/
