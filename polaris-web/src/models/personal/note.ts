@@ -1,5 +1,5 @@
 export class NoteModel {
-  pk = ''
+  uid = ''
   title = ''
   header = ''
   body = ''

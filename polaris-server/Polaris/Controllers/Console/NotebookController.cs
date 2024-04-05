@@ -22,26 +22,18 @@ public class NotebookContentController : ControllerBase
     }
 
 
-    [Route("/server/console/notebooks")]
+    [Route("/console/notebooks")]
     [AllowAnonymous]
     [HttpGet]
     public MSelectResult<NotebookModel> Select()
     {
-        var queryHelper = new MQueryHelper(Request.Query);
-        var profile = queryHelper.GetString("profile");
-
-        var profileModel = _dataContext.Accounts.FirstOrDefault(x => x.Username == profile);
-        if (profileModel == null) throw new PLBizException("用户不存在");
-
         var sqlBuilder = new StringBuilder();
         var parameters = new Dictionary<string, object>();
 
         sqlBuilder.Append(@"
 select a.*
 from personal.notebooks as a
-where a.profile = @profile
 ");
-        parameters.Add("@profile", profileModel.Username);
         var querySqlText = sqlBuilder.ToString();
 
         var modelsQuery = DatabaseContextHelper.RawSqlQuery<NotebookModel>(_dataContext, querySqlText, parameters);

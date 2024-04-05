@@ -1,3 +1,4 @@
+import 'server-only'
 import axios from '~/axios'
 import { serverConfig } from './server/config'
 import { AccountModel } from '@/models/account'

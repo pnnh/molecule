@@ -1,21 +1,16 @@
+import 'server-only'
+
 import axios from '~/axios/index'
-import { PLSelectResult } from '@/models/common-result'
-import { NoteModel } from '@/models/personal/note'
+import { cookies } from 'next/headers'
 
-export async function getNoteByKey (pk: string, baseUrl = '') {
-  const url = baseUrl + '/restful/console/notes/' + pk
-  const response = await axios.get<NoteModel>(url)
-  return response.data
-}
+export async function serverGet<T>(fullUrl: string) {
+  const cookieStore = cookies()
+  const authHeader = cookieStore.toString() 
 
-export async function getNote (queryString: string, baseUrl = '') {
-  const url = baseUrl + '/restful/console/notes/?' + queryString
-  const response = await axios.get<NoteModel>(url)
-  return response.data
-}
-
-export async function selectNotes (queryString: string, baseUrl = '') {
-  const url = baseUrl + '/restful/console/notes?' + queryString
-  const response = await axios.get<PLSelectResult<NoteModel>>(url)
-  return response.data
+  const response = await axios.get<T>(fullUrl, {
+    headers: {
+      Cookie: authHeader,
+    },
+  })
+  return response.data 
 }

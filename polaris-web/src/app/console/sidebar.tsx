@@ -10,35 +10,39 @@ import { selectNotebooks } from '@/services/personal/notebook'
 import { NotebookModel } from '@/models/personal/notebook'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
 import { DirectoryService } from '@/services/personal/directories'
+import { sessionAtom } from './state/session'
 
-export function DirectoryBar ({ profile }: {profile: string}) {
-
+export function DirectoryBar () {
   return <div className={styles.sidebar}>
-    <NotebookSelector profile={profile}></NotebookSelector>
+    <NotebookSelector ></NotebookSelector>
     <div className={styles.directoryList}>
       <DirectoryList />
     </div>
   </div>
 }
 
-function NotebookSelector ({ profile }: {profile: string}) {
+function NotebookSelector () {
   const [notebooks, setNotebooks] = useState<PLSelectResult<NotebookModel>>()
   const [notebookDropdown, setNotebookDropdown] = useState<boolean>(false)
   const setNotebook = useSetRecoilState(notebookAtom)
+  const session = useRecoilValue(sessionAtom)
   useEffect(() => {
     const loadData = async () => {
-      const notebooks = await selectNotebooks('profile=' + profile)
+      const notebooks = await selectNotebooks('profile=' + session)
       console.log('selectNotebooks', notebooks)
       setNotebooks(notebooks)
+
+      if (notebooks && notebooks.range && notebooks.range.length > 0) {
+        setNotebook(notebooks.range[0].pk)
+      } 
     }
     loadData()
-  }, [profile])
+  }, [session, setNotebook])
 
   if (!notebooks || !notebooks.range || notebooks.range.length <= 0) {
     return <div>暂无笔记本</div>
   }
-  const defaultNotebook = notebooks.range[0]
-  setNotebook(defaultNotebook.pk)
+  const defaultNotebook = notebooks.range[0] 
   return <>
     <div className={styles.notebookSelector}>
       <div className={styles.notebookTitle}>

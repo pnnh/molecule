@@ -26,11 +26,11 @@ namespace Polaris.Business.Models.Personal
 
         [Column("create_time", TypeName = "timestamptz")]
         [JsonPropertyName("create_time")]
-        public DateTimeOffset CreateTime { get; set; } = new(2023, 1, 1, 0, 0, 0, TimeSpan.Zero);
+        public DateTime CreateTime { get; set; } = DateTime.MinValue;
 
         [Column("update_time", TypeName = "timestamptz")]
         [JsonPropertyName("update_time")]
-        public DateTimeOffset UpdateTime { get; set; } = new(2023, 1, 1, 0, 0, 0, TimeSpan.Zero);
+        public DateTime UpdateTime { get; set; } = DateTime.MinValue;
 
         [Column("owner", TypeName = "varchar(96)")]
         [JsonPropertyName("owner")]

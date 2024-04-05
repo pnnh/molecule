@@ -3,22 +3,27 @@
 import styles from './navbar.module.scss'
 import Link from 'next/link'
 import { getLoginSession } from '@/services/client/account'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import Image from 'next/image'
+import { useRecoilState } from 'recoil'
+import { sessionAtom } from '@/app/console/state/session'
 
-export function ConsoleNavbar () {
-  const [account, setAccount] = useState<string | undefined>(undefined)
+export function ConsoleNavbar () { 
+  const [session, setSession] = useRecoilState(sessionAtom)
 
   useEffect(() => {
     const loadSession = async () => {
       const response = await getLoginSession()
       if (response.status !== 200 || response.data == null) {
         throw new Error('session is null')
-      }
-      setAccount(response.data.account)
+      } 
+      if (response.data && response.data.account) {
+        setSession(response.data.account)
+      } 
+
     }
     loadSession()
-  }, [])
+  }, [setSession])
 
   return <div className={styles.navHeader}>
     <div className={styles.leftNav}>
@@ -28,7 +33,7 @@ export function ConsoleNavbar () {
       </Link>
     </div>
     <div className={styles.rightNav}>
-      <UserAction account={account}/>
+      <UserAction account={session}/>
     </div>
   </div>
 }
