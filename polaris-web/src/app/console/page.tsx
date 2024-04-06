@@ -37,16 +37,19 @@ function MarkdownViewer() {
     }
   }
 
-  return <div className={styles.editorForm}>
-    <div className={styles.noteTitle}>
+  return <>
+    {/* <div className={styles.noteTitle}>
       {model.title}
-    </div>
-    <div className={styles.editorRow}>
+    </div> */}
+    <div className={styles.editorArea}>
+      <div className={styles.editCol}>
+        <textarea className={styles.editor} value={model.body} readOnly></textarea>
+      </div>
       <div className={styles.previewCol}>
         <div dangerouslySetInnerHTML={createMarkup()} />
       </div>
     </div>
-  </div>
+  </>
 }
 
 export default function Page() {
@@ -54,11 +57,14 @@ export default function Page() {
     <div className={styles.directoryBar}>
       <NotebookBar></NotebookBar>
     </div>
-    <div className={styles.notebarContainer}>
-      <ConsoleNotebar></ConsoleNotebar>
-    </div>
-    <div className={styles.noteViewer}>
-      <MarkdownViewer></MarkdownViewer>
+    <div className={styles.notesContainer}>
+      <div className={styles.notebarContainer}>
+        <ConsoleNotebar></ConsoleNotebar>
+      </div>
+      <div className={styles.noteViewer}>
+        <MarkdownViewer></MarkdownViewer>
+      </div>
+
     </div>
   </div>
 }

@@ -1,8 +1,6 @@
 .consolePage {
   background: #FFFFFF;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+  height: 100vh;
 
   .navbar {
     height: 2.5rem;
@@ -16,18 +14,20 @@
   }
 
   .mainContainer {
-    display: flex;
-    flex-direction: row;
-    flex-grow: 1;
-    height: 0; // 防止页面被撑开
+    height: calc(100vh - 2.5rem);
 
     .leftNav {
       width: 2.5rem;
-      flex-shrink: 0;
+      position: absolute;
+      left: 0;
+      height: 100%;
     }
 
     .rightBody {
-      flex: 1;
+      position: absolute;
+      left: 2.5rem;
+      width: calc(100vw - 2.5rem);
+      height: calc(200vh - 2.5rem);
       background: #FFFFFF;
     }
 
