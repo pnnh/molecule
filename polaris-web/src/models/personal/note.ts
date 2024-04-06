@@ -1,20 +1,19 @@
-export class NoteModel {
-  uid = ''
-  title = ''
-  header = ''
-  body = ''
-  create_time: Date = new Date()
-  update_time: Date = new Date()
-  creator = ''
-  keywords = ''
-  description = ''
-  cover = ''
-  name = ''
-  discover = 0
-  profile = ''
-  profile_name = ''
-  channel = ''
-  channel_name = ''
-  partition = ''
-  path = ''
+export interface NoteModel {
+  uid: string
+  title: string
+  header: string
+  body: string
+  create_time: string
+  update_time: string
+  owner: string
+  keywords: string
+  description: string
+  cover: string
+  name: string
+  discover: number 
+  channel: string
+  channel_name: string
+  partition: string
+  path: string
+  children: number
 }

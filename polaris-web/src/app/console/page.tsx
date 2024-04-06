@@ -18,6 +18,9 @@ function MarkdownViewer() {
 
   useEffect(() => {
     const loadResources = async () => {
+      if (!note) {
+        return
+      }
       const response = await NoteService.getNoteByKey(note)
       setModel(response)
     }

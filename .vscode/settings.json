@@ -35,7 +35,6 @@
   "cmake.sourceDirectory": "${workspaceFolder}",
   "cmake.configureOnOpen": false,
   "editor.suggest.snippetsPreventQuickSuggestions": true,
-  "C_Cpp.codeFolding": "disabled",
   "C_Cpp.autocompleteAddParentheses": true,
   "C_Cpp.default.cppStandard": "c++23",
   "C_Cpp.default.cStandard": "c23",

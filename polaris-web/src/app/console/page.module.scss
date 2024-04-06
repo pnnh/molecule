@@ -10,8 +10,10 @@
   }
 
   .notebarContainer {
-    width: 15rem;
+    width: 30rem;
     flex-shrink: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
 
   .noteViewer {

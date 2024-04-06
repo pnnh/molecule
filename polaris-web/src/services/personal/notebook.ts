@@ -4,8 +4,8 @@ import { NotebookModel } from '@/models/personal/notebook'
 
 export class NotebookService {
 
-   static async selectNotebooks (queryString: string) {
-    const url = '/server/console/notebooks?' + queryString
+   static async selectNotebooks (library: string, queryString: string = '') {
+    const url = `/server/console/libraries/${library}/notebooks?${queryString}`
     const response = await axios.get<PLSelectResult<NotebookModel>>(url)
     return response.data
 }

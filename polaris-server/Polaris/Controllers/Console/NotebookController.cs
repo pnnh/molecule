@@ -22,10 +22,10 @@ public class NotebookContentController : ControllerBase
     }
 
 
-    [Route("/console/notebooks")]
+    [Route("/console/libraries/{library}/notebooks")]
     [AllowAnonymous]
     [HttpGet]
-    public MSelectResult<NotebookModel> Select()
+    public MSelectResult<NotebookModel> Select([FromRoute]Guid library)
     {
         var sqlBuilder = new StringBuilder();
         var parameters = new Dictionary<string, object>();
@@ -33,7 +33,9 @@ public class NotebookContentController : ControllerBase
         sqlBuilder.Append(@"
 select a.*
 from personal.notebooks as a
+where library = @library
 ");
+        parameters.Add("library", library);
         var querySqlText = sqlBuilder.ToString();
 
         var modelsQuery = DatabaseContextHelper.RawSqlQuery<NotebookModel>(_dataContext, querySqlText, parameters);

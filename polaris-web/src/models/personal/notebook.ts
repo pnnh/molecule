@@ -1,5 +1,5 @@
 export class NotebookModel {
-  pk = ''
+  uid = ''
   title = ''
   create_time = ''
   update_time = ''

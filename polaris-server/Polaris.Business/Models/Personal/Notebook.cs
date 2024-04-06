@@ -13,12 +13,16 @@ namespace Polaris.Business.Models.Personal
 {
 
     [Table("personal.notebooks")]
-    [PrimaryKey(nameof(Pk))]
+    [PrimaryKey(nameof(Uid))]
     public class NotebookModel
     {
-        [Column("pk", TypeName = "varchar(64)")]
-        [JsonPropertyName("pk")]
-        public string Pk { get; set; } = "";
+        [Column("uid", TypeName = "uuid")]
+        [JsonPropertyName("uid")]
+        public Guid Uid { get; set; }
+
+        [Column("nid", TypeName = "bigint")]
+        [JsonPropertyName("nid")]
+        public long Nid { get; set; }
 
         [Column("title", TypeName = "varchar(128)")]
         [JsonPropertyName("title")]
@@ -32,9 +36,9 @@ namespace Polaris.Business.Models.Personal
         [JsonPropertyName("update_time")]
         public DateTime UpdateTime { get; set; } = DateTime.MinValue;
 
-        [Column("owner", TypeName = "varchar(96)")]
+        [Column("owner", TypeName = "uuid")]
         [JsonPropertyName("owner")]
-        public string Owner { get; set; } = "";
+        public Guid Owner { get; set; } 
 
         [Column("description", TypeName = "varchar(512)")]
         [JsonPropertyName("description")]

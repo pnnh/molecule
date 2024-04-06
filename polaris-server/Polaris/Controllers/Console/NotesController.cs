@@ -23,17 +23,13 @@ public class NoteContentController : ControllerBase
     }
 
 
-    [Route("/server/console/notes")]
+    [Route("/console/notebook/{notebook}/notes")]
     [AllowAnonymous]
     [HttpGet]
-    public MSelectResult<NoteModel> Select()
+    public MSelectResult<NoteModel> Select([FromRoute]Guid notebook)
     {
-        var queryHelper = new MQueryHelper(Request.Query);
-        var notebook = queryHelper.GetString("notebook");
-        var directory = queryHelper.GetString("directory");
+        var queryHelper = new MQueryHelper(Request.Query);  
         var keyword = queryHelper.GetString("keyword");
-        var sort = queryHelper.GetString("sort") ?? "latest";
-        var filter = queryHelper.GetString("filter") ?? "all";
 
         var page = queryHelper.GetInt("page") ?? 1;
         var size = queryHelper.GetInt("size") ?? 10;
@@ -43,40 +39,16 @@ public class NoteContentController : ControllerBase
         var parameters = new Dictionary<string, object>();
 
         sqlBuilder.Append(@"
-select a.*, p.username as profile_name, c.name as notebook_name,
-        '/' || replace(pa.path::varchar, '.', '/') as path
+select a.*
 from personal.notes as a
-     join personal.directories pa on pa.pk = a.directory
-     join personal.profiles as p on p.pk = a.profile
-     join personal.notebooks as c on c.pk = a.notebook
-where a.pk is not null
+where a.notebook = @notebook and a.parent is null
 ");
-        if (!string.IsNullOrEmpty(notebook))
-        {
-            sqlBuilder.Append(@" and a.notebook = @notebook");
-            parameters.Add("@notebook", notebook);
-        }
-        if (!string.IsNullOrEmpty(directory))
-        {
-            sqlBuilder.Append(@" and a.directory = @directory");
-            parameters.Add("@directory", directory);
-        }
-
+        parameters.Add("@notebook", notebook);
+        
         if (keyword != null && !string.IsNullOrEmpty(keyword))
         {
             sqlBuilder.Append(@" and (a.title like @keyword or a.description like @keyword)");
             parameters.Add("@keyword", $@"%{keyword}%");
-        }
-
-        if (filter == "month")
-        {
-            sqlBuilder.Append(@" and a.update_time > @update_time");
-            parameters.Add("@update_time", DateTime.UtcNow.AddMonths(-1));
-        }
-        else if (filter == "year")
-        {
-            sqlBuilder.Append(@" and a.update_time > @update_time");
-            parameters.Add("@update_time", DateTime.UtcNow.AddYears(-1));
         }
 
         var countSqlText = $@"
@@ -84,14 +56,48 @@ select count(1) from ({sqlBuilder}) as temp;";
 
         var totalCount = DatabaseContextHelper.RawSqlScalar<int?>(_dataContext, countSqlText, parameters);
 
-        if (sort == "read")
+        sqlBuilder.Append(@" limit @limit offset @offset;");
+        parameters.Add("@offset", offset);
+        parameters.Add("@limit", limit);
+
+        var querySqlText = sqlBuilder.ToString();
+
+        var modelsQuery = DatabaseContextHelper.RawSqlQuery<NoteModel>(_dataContext, querySqlText, parameters);
+
+        var models = modelsQuery.ToList();
+
+        return new MSelectResult<NoteModel>
         {
-            sqlBuilder.Append(@" order by a.discover desc");
-        }
-        else
-        {
-            sqlBuilder.Append(@" order by a.update_time desc");
-        }
+            Range = models,
+            Count = totalCount ?? 0,
+        };
+    }
+
+    [Route("/console/notes/{parent}/notes")]
+    [AllowAnonymous]
+    [HttpGet]
+    public MSelectResult<NoteModel> SelectSubNotes([FromRoute] Guid parent)
+    {
+        var queryHelper = new MQueryHelper(Request.Query);
+
+        var page = queryHelper.GetInt("page") ?? 1;
+        var size = queryHelper.GetInt("size") ?? 100;
+        var (offset, limit) = MPagination.CalcOffset(page, size);
+
+        var sqlBuilder = new StringBuilder();
+        var parameters = new Dictionary<string, object>();
+
+        sqlBuilder.Append(@"
+select a.*
+from personal.notes as a
+where a.parent = @parent
+");
+        parameters.Add("@parent", parent);
+
+        var countSqlText = $@"
+select count(1) from ({sqlBuilder}) as temp;";
+
+        var totalCount = DatabaseContextHelper.RawSqlScalar<int?>(_dataContext, countSqlText, parameters);
 
         sqlBuilder.Append(@" limit @limit offset @offset;");
         parameters.Add("@offset", offset);
@@ -111,24 +117,20 @@ select count(1) from ({sqlBuilder}) as temp;";
     }
 
 
-    [Route("/server/console/notes/{pk}")]
+    [Route("/console/notes/{uid}")]
     [HttpGet]
     [AllowAnonymous]
-    public NoteModel Get([FromRoute] string pk)
+    public NoteModel Get([FromRoute]Guid uid)
     {
         var sqlBuilder = new StringBuilder();
         var parameters = new Dictionary<string, object>();
 
         sqlBuilder.Append(@"
-select a.*, p.username as profile_name, c.name as notebook_name,
-        '/' || replace(pa.path::varchar, '.', '/') as path
-from personal.notes as a
-     join personal.directories pa on pa.pk = a.directory
-     join personal.profiles as p on p.pk = a.profile
-     join personal.notebooks as c on c.pk = a.notebook
-where a.pk = @pk
+select a.* 
+from personal.notes as a 
+where a.uid = @uid
 ");
-        parameters.Add("@pk", pk);
+        parameters.Add("@uid", uid);
         var querySqlText = sqlBuilder.ToString();
 
         var modelsQuery = DatabaseContextHelper.RawSqlQuery<NoteModel>(_dataContext, querySqlText, parameters);

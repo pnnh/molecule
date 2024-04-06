@@ -4,7 +4,7 @@ import styles from './sidebar.module.scss'
 import Image from 'next/image'
 import { useEffect, useState } from 'react' 
 import { PLSelectResult } from '@/models/common-result'
-import { directoryAtom, libraryAtom } from '@/app/console/providers/notebook'
+import { libraryAtom, notebookAtom } from '@/app/console/providers/notebook'
 import { LibraryModel } from '@/models/personal/library'
 import { useRecoilValue, useSetRecoilState } from 'recoil' 
 import { sessionAtom } from './state/session'
@@ -28,6 +28,9 @@ function LibrarySelector () {
   const session = useRecoilValue(sessionAtom)
   useEffect(() => {
     const loadData = async () => {
+      if (!session || !session.account || !session.account.uid) {
+        return
+      }
       const notebooks = await LibraryService.selectLibraries(session.account.uid, '')
       console.log('selectLibrarys', notebooks)
       setLibrarys(notebooks)
@@ -51,7 +54,9 @@ function LibrarySelector () {
           onClick={()=>setLibraryDropdown(!notebookDropdown)}></Image>
       </div>
       <div className={styles.notebookAction}>
-        <Image src='/icons/console/new-file-fill.png' alt='创建笔记' width={16} height={16}></Image>
+        <Image src='/icons/console/new-file-fill.png' alt='创建笔记' width={16} height={16} style={{
+          width: '16px', height: '16px'
+        }}></Image>
         <Image src='/icons/console/new-folder-fill.png' alt='创建目录' width={16} height={16}></Image>
       </div>
     </div>
@@ -74,16 +79,16 @@ function LibrarySelector () {
 function NotebookList () {
 
   const [directories, setDirectories] = useState<PLSelectResult<NotebookModel>>()
-  const notebook = useRecoilValue(libraryAtom)
+  const library = useRecoilValue(libraryAtom)
   useEffect(() => {
     const loadData = async () => {
-      if (notebook) { 
-        const directories = await NotebookService.selectNotebooks('notebook=' + notebook)
+      if (library) { 
+        const directories = await NotebookService.selectNotebooks(library)
         setDirectories(directories)
       }
     }
     loadData()
-  }, [notebook])
+  }, [library])
 
   if (!directories || !directories.range || directories.range.length <= 0) {
     return <div>Empty</div>
@@ -91,19 +96,19 @@ function NotebookList () {
   return <div className={styles.directoryList}>
     {
       directories.range.map(item => {
-        return <NotebookCard key={item.pk} item={item} />
+        return <NotebookCard key={item.uid} item={item} />
       })
     }
   </div>
 }
 
 function NotebookCard ({ item }: {item: NotebookModel}) {
-  const setNotebook = useSetRecoilState(directoryAtom)
+  const setNotebook = useSetRecoilState(notebookAtom)
   return <div className={styles.directoryCard}>
     <div className={styles.directorySelf}>
       <div className={styles.directoryName} onClick={() => {
         console.debug('setLibrary', item.name)
-        setNotebook(item.pk)
+        setNotebook(item.uid)
       }}>
         {item.title}</div>
     </div>

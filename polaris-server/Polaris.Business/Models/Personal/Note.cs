@@ -13,12 +13,16 @@ namespace Polaris.Business.Models.Personal
 {
 
     [Table("personal.notes")]
-    [PrimaryKey(nameof(Pk))]
+    [PrimaryKey(nameof(Uid))]
     public class NoteModel
     {
-        [Column("pk", TypeName = "varchar(64)")]
-        [JsonPropertyName("pk")]
-        public string Pk { get; set; } = "";
+        [Column("uid", TypeName = "uuid")]
+        [JsonPropertyName("uid")]
+        public Guid Uid { get; set; }
+
+        [Column("nid", TypeName = "bigint")]
+        [JsonPropertyName("nid")]
+        public long Nid { get; set; }
 
         [Column("title", TypeName = "varchar(128)")]
         [JsonPropertyName("title")]
@@ -40,9 +44,9 @@ namespace Polaris.Business.Models.Personal
         [JsonPropertyName("update_time")]
         public DateTime UpdateTime { get; set; } = DateTime.MinValue;
 
-        [Column("owner", TypeName = "varchar(96)")]
+        [Column("owner", TypeName = "uuid")]
         [JsonPropertyName("owner")]
-        public string Owner { get; set; } = "";
+        public Guid Owner { get; set; }
 
         [Column("keywords", TypeName = "varchar(128)")]
         [JsonPropertyName("keywords")]
@@ -64,9 +68,13 @@ namespace Polaris.Business.Models.Personal
         [JsonPropertyName("discover")]
         public int Discover { get; set; } = 0;
 
-        [Column("notebook", TypeName = "varchar(96)")]
+        [Column("children", TypeName = "integer")]
+        [JsonPropertyName("children")]
+        public int Children { get; set; } = 0;
+
+        [Column("notebook", TypeName = "uuid")]
         [JsonPropertyName("notebook")]
-        public string Notebook { get; set; } = "";
+        public Guid Notebook { get; set; }
 
         [NotMapped]
         [JsonPropertyName("notebook_name")]

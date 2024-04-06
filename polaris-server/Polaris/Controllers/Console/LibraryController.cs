@@ -33,7 +33,7 @@ public class LibraryContentController : ControllerBase
         sqlBuilder.Append(@"
 select a.*
 from personal.libraries as a
-where uid = @uid
+where owner = @uid
 ");
         parameters.Add("uid", uid);
         var querySqlText = sqlBuilder.ToString();
