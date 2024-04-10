@@ -77,6 +77,20 @@
             "cwd": "${workspaceFolder}/portal-server/authorization"
         },
         {
+            "name": "polaris-macos",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/desktop/build/macos/polaris-desktop",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/desktop/build/macos/polaris-desktop",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "lldb",
+            "preLaunchTask": "polaris-macos-build",
+            "setupCommands": []
+        },
+        {
             "name": "pulsar-server",
             "type": "cppdbg",
             "request": "launch",

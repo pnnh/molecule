@@ -3,7 +3,7 @@
 //
 
 #include "SqliteService.h"
-#include "business/AppException.h"
+#include "models/AppException.h"
 #include <QDateTime>
 #include <QSqlError>
 #include <QUuid>

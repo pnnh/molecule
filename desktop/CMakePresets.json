@@ -49,8 +49,8 @@
       "displayName": "macOS Config",
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/build/macos",
-      "cacheVariables": {
-        "CMAKE_INSTALL_PREFIX": "../macos/frameworks",
+      "installDir": "${sourceDir}/install",
+      "cacheVariables": { 
         "CMAKE_TOOLCHAIN_FILE": {
           "type": "FILEPATH",
           "value": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"

@@ -7,7 +7,7 @@
 #include <iostream>
 
 #if TARGET_OS_MAC
-  #include "macos/objc_code.h"
+  #include "platform/macos/objc_code.h"
 #endif
 #include "services/SqliteService.h"
 

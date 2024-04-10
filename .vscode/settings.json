@@ -32,7 +32,7 @@
     "install/": true,
   },
   "editor.foldingMaximumRegions": 50000,
-  "cmake.sourceDirectory": "${workspaceFolder}",
+  "cmake.sourceDirectory": "${workspaceFolder}/desktop",
   "cmake.configureOnOpen": false,
   "editor.suggest.snippetsPreventQuickSuggestions": true,
   "C_Cpp.autocompleteAddParentheses": true,
