@@ -25,12 +25,11 @@ int main(int argc, char *argv[])
 {
   QQmlDebuggingEnabler::enableDebugging(true);
   QLoggingCategory::defaultCategory()->setEnabled(QtDebugMsg, true);
-  qInfo() << "test info" << std::endl;
-  qWarning() << "test warning" << std::endl;
+  qInfo() << "test info";
+  qWarning() << "test warning";
   std::cerr << "Hello, World333333!" << std::endl;
   sayHello();
   qDebug() << "Hello, World444444!";
-  getchar();
   return 0;
 
   // QGuiApplication app(argc, argv);

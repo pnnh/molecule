@@ -83,7 +83,7 @@
             "program": "${workspaceFolder}/desktop/build/macos/polaris-desktop",
             "args": [],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}/desktop/build/macos/polaris-desktop",
+            "cwd": "${workspaceFolder}/desktop/build/macos",
             "environment": [],
             "externalConsole": false,
             "MIMode": "lldb",

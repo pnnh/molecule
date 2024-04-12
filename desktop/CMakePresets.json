@@ -54,8 +54,9 @@
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
         "Boost_NO_WARN_NEW_VERSIONS": "ON",
-        "CMAKE_OSX_ARCHITECTURES": "x86_64;arm64",
-        "CMAKE_OSX_DEPLOYMENT_TARGET": "11.0"
+        "CMAKE_OSX_ARCHITECTURES": "arm64",
+        "CMAKE_OSX_DEPLOYMENT_TARGET": "11.0",
+        "CMAKE_PREFIX_PATH": "~/Qt/6.7.0/macos/lib/cmake"
       },
       "environment": {}
     },
