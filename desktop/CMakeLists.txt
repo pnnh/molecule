@@ -83,7 +83,6 @@ set(PROJECT_SOURCES
         services/SqliteService.h
 )
 
-
 set(LINK_LIBRARIES
         Qt6::Core
         Qt6::Qml
@@ -104,10 +103,10 @@ if (APPLE)
                 platform/macos/WindowController.h)
 endif()
 
-qt6_add_executable(pulsar-desktop MANUAL_FINALIZATION ${PROJECT_SOURCES})
-target_link_libraries(pulsar-desktop PRIVATE ${LINK_LIBRARIES})
+qt6_add_executable(polaris-desktop MANUAL_FINALIZATION ${PROJECT_SOURCES})
+target_link_libraries(polaris-desktop PRIVATE ${LINK_LIBRARIES})
 
-qt6_add_qml_module(pulsar-desktop
+qt6_add_qml_module(polaris-desktop
         URI quick
         VERSION 1.0
         QML_FILES

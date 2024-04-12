@@ -91,6 +91,23 @@
             "setupCommands": []
         },
         {
+            "name": "polaris-windows",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/desktop/build/windows/Debug/polaris-desktop.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "symbolSearchPath": "C:\\Symbols;C:\\SymbolDir2",
+            "logging": {
+                "moduleLoad": false,
+                "trace": true
+            },
+            "cwd": "${workspaceFolder}/desktop/build/windows",
+            "environment": [],
+            "console": "internalConsole",
+            "preLaunchTask": "polaris-windows-build"
+        },
+        {
             "name": "pulsar-server",
             "type": "cppdbg",
             "request": "launch",

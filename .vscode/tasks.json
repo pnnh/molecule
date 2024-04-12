@@ -36,6 +36,20 @@
             ]
         },
         {
+            "label": "polaris-windows-build",
+            "command": "cmake",
+            "type": "process",
+            "options": {
+                "cwd": "${workspaceFolder}/desktop"
+            },
+            "args": [
+                "--build",
+                "--preset",
+                "windows",
+                "--verbose"
+            ]
+        },
+        {
             "label": "pulsar-server-build",
             "command": "cmake",
             "type": "process",

@@ -50,11 +50,12 @@
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/build/macos",
       "installDir": "${sourceDir}/install",
-      "cacheVariables": { 
-        "CMAKE_TOOLCHAIN_FILE": {
-          "type": "FILEPATH",
-          "value": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
-        }
+      "toolchainFile": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "Boost_NO_WARN_NEW_VERSIONS": "ON",
+        "CMAKE_OSX_ARCHITECTURES": "x86_64;arm64",
+        "CMAKE_OSX_DEPLOYMENT_TARGET": "11.0"
       },
       "environment": {}
     },
@@ -63,8 +64,12 @@
       "generator": "Visual Studio 17 2022",
       "binaryDir": "${sourceDir}/build/windows",
       "toolchainFile": "E:\\Apps\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake",
+      "installDir": "${sourceDir}/install",
       "cacheVariables": {
-        "CMAKE_INSTALL_PREFIX": "${sourceDir}/install"
+        "CMAKE_BUILD_TYPE": "Debug",
+        "Boost_NO_WARN_NEW_VERSIONS": "ON",
+        "QT_ASSUME_STDERR_HAS_CONSOLE": "ON",
+        "CMAKE_PREFIX_PATH": "E:\\Qt\\6.7.0\\msvc2019_64\\lib\\cmake"
       },
       "environment": {}
     },
