@@ -3,8 +3,8 @@ cmake_minimum_required(VERSION 3.27)
 project(polaris-desktop VERSION 0.1 LANGUAGES C CXX)
 
 if (WIN32)
-        enable_language(CSharp)
-        set(CMAKE_CSharp_FLAGS "${CMAKE_CSharp_FLAGS} /platform:x64 /langversion:latest")
+        #enable_language(CSharp)
+        #set(CMAKE_CSharp_FLAGS "${CMAKE_CSharp_FLAGS} /platform:x64 /langversion:latest")
 endif ()
 
 if (APPLE)
@@ -27,9 +27,12 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 # 启用测试
 enable_testing()
 
-include(GNUInstallDirs)
 
-find_package(PkgConfig REQUIRED)
+if (APPLE OR UNIX)
+    include(GNUInstallDirs)
+    find_package(PkgConfig REQUIRED)
+endif()
+
 
 # 查找并设置ccache
 find_program(CCACHE_PROGRAM ccache)
@@ -90,7 +93,7 @@ set(LINK_LIBRARIES
         Qt6::Gui
         Qt6::QuickControls2
         Qt6::Sql
-        Qt6::Widgets )
+        Qt6::Widgets)
 
 if (APPLE)
         list(APPEND LINK_LIBRARIES "-framework AppKit")
@@ -105,6 +108,10 @@ endif()
 
 qt6_add_executable(polaris-desktop MANUAL_FINALIZATION ${PROJECT_SOURCES})
 target_link_libraries(polaris-desktop PRIVATE ${LINK_LIBRARIES})
+
+# 查找并引用日志库
+find_package(spdlog CONFIG REQUIRED)
+target_link_libraries(polaris-desktop PRIVATE spdlog::spdlog)
 
 qt6_add_qml_module(polaris-desktop
         URI quick

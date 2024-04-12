@@ -103,8 +103,9 @@
                 "trace": true
             },
             "cwd": "${workspaceFolder}/desktop/build/windows",
-            "environment": [],
-            "console": "internalConsole",
+            "environment": [
+            ],
+            "console": "integratedTerminal",
             "preLaunchTask": "polaris-windows-build"
         },
         {

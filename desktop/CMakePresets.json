@@ -69,10 +69,10 @@
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
         "Boost_NO_WARN_NEW_VERSIONS": "ON",
-        "QT_ASSUME_STDERR_HAS_CONSOLE": "ON",
         "CMAKE_PREFIX_PATH": "E:\\Qt\\6.7.0\\msvc2019_64\\lib\\cmake"
       },
-      "environment": {}
+      "environment": {
+      }
     },
     {
       "name": "windows-dotnet",
