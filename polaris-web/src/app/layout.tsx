@@ -1,5 +1,4 @@
 import './global.scss'
-import 'tw-elements/css/tw-elements.min.css'
 import {GoogleAnalytics} from './partials/analytics' 
 import {Metadata} from 'next'
  

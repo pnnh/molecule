@@ -5,7 +5,6 @@ set -e
 
 # 构建应用
 pwd
-ls -al
 mkdir -p build
 dotnet restore "Polaris.csproj"
 dotnet build "Polaris.csproj" -c Release -o build
@@ -16,11 +15,9 @@ dotnet publish "Polaris.csproj" -c Release -o publish
 docker build -t polaris-server -f Dockerfile .
 
 # 集成环境下重启容器
-if [ ${BUILD_ID} ]; then
-    docker rm -f polaris-server
-    docker run -d --restart=always \
-        --name polaris-server \
-        -p 8101:8101 \
-        -v /opt/services/polaris/server/runtime:/data/runtime \
-        polaris-server
-fi
+docker rm -f polaris-server
+docker run -d --restart=always \
+    --name polaris-server \
+    -p 6101:8101 \
+    -v /opt/services/polaris/server/appsettings.json:/data/appsettings.json \
+    polaris-server

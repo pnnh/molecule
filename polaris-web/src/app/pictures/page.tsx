@@ -1,5 +1,4 @@
-import { calcPagination } from '@/models/pagination'
-import { PictureModel } from '@/models/picture'
+import { calcPagination } from '@/utils/helpers' 
 import React from 'react'
 import styles from './page.module.css'
 import { selectPictureModels } from '@/services/picture'
