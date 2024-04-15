@@ -4,8 +4,9 @@ module.exports = {
     es6: true
   },
   extends: [
-    'plugin:react/recommended',
     'eslint:recommended',
+    'plugin:react/recommended',
+    'plugin:react-hooks/recommended',
     'plugin:@typescript-eslint/recommended',
     'standard',
     'next',
@@ -27,6 +28,7 @@ module.exports = {
   },
   plugins: [
     'react',
+    'react-hooks',
     '@typescript-eslint'
   ],
   rules: {

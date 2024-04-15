@@ -1,7 +1,7 @@
 
 FROM golang:1.21
 
-EXPOSE 8001
+EXPOSE 6001
 
 WORKDIR /data
 
