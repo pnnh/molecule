@@ -6,11 +6,14 @@ const bundleAnalyzerPlugin = require('@next/bundle-analyzer')
 let nextConfig = {
   output: 'standalone',
   reactStrictMode: true,
+  experimental: {
+    esmExternals: 'loose', 
+  },
   webpack: function (config, options) {
     config.experiments = {
       asyncWebAssembly: true,
       topLevelAwait: true,
-      layers: true,
+      layers: true, 
     };
     return config;
   },

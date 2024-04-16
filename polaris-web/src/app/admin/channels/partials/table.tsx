@@ -9,7 +9,6 @@ import { PLSelectResult } from '@/models/common-result'
 
 export function Table (props: { data: PLSelectResult<ChannelModel> }) {
   return <table className={styles.Table + ' table w-full'}>
-    {/* head */}
     <thead>
       <tr>
         <th className={styles.columnCheck}>
@@ -30,7 +29,6 @@ export function Table (props: { data: PLSelectResult<ChannelModel> }) {
       }
 
     </tbody>
-    {/* foot */}
     <tfoot>
     </tfoot>
 

@@ -3,9 +3,9 @@ import styles from './page.module.scss'
 import Link from 'next/link'
 import { PSCard } from '@/components/client/controls'
 import { ChannelModel } from '@/models/channel'
-import { PSImage } from '@/components/client/image'
-import { serverConfig } from '@/services/server/config'
-import { ChannelService } from '@/services/channel'
+import { PSImage } from '@/components/client/image' 
+import { serverMakeHttpGet } from '@/services/server/http'
+import { PLSelectResult } from '@/models/common-result'
 
 function Item (props: { model: ChannelModel }) {
   const readUrl = `/channels/${props.model.urn}`
@@ -25,9 +25,9 @@ function Item (props: { model: ChannelModel }) {
 }
 
 export default async function Home () {
-  const pageSize = 64
-  const service = ChannelService.Instance(serverConfig.NEXT_PUBLIC_SERVER)
-  const result = await service.selectChannels(`page=1&size=${pageSize}`)
+  const pageSize = 64 
+  const url = '/channels/?' + `page=1&size=${pageSize}`
+  const result = await serverMakeHttpGet<PLSelectResult<ChannelModel>>(url)
   return <div className={styles.container}>
     <div className={styles.body}>
       <div className={styles.list}>

@@ -6,19 +6,19 @@ import {NoData} from '@/components/common/empty'
 import {PaginationPartial} from '@/components/common/pagination'
 import { replaceSearchParams} from '@/utils/query'
 import {ChannelInfo} from '@/components/common/channel'
-import {articleContentViewUrl2} from '@/services/article'
-import {serverConfig} from '@/services/server/config'
-import {PLSelectResult} from '@/models/common-result'
-import {ChannelService} from '@/services/channel'
+import {articleContentViewUrl2} from '@/services/article' 
+import {PLSelectResult} from '@/models/common-result' 
 import {calcPagination} from "@/utils/helpers";
+import { serverMakeHttpGet } from '@/services/server/http'
+import { ChannelPostsView } from '@/models/channel'
 
 const pageSize = 10
 export default async function Home({params, searchParams}: {
     params: { channel: string },
     searchParams: Record<string, string>
-}) {
-    const channelService = ChannelService.Instance(serverConfig.NEXT_PUBLIC_SERVER)
-    const channelInfo = await channelService.selectPosts(params.channel)
+}) { 
+    const url = `/channels/${params.channel}/posts` 
+    const channelInfo = await serverMakeHttpGet<ChannelPostsView>(url) 
 
     return <div className={styles.articleContainer}>
         <div className={styles.leftArea}>

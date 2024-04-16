@@ -10,7 +10,6 @@ import {ChannelModel} from '@/models/channel'
 import {ArticleModel} from '@/models/article'
 import {PaginationPartial} from '@/components/common/pagination'
 import {replaceSearchParams} from '@/utils/query'
-import {ArticleService} from '@/services/article'
 import {calcPagination} from "@/utils/helpers";
 
 export function Table(props: {
@@ -63,7 +62,6 @@ function TableRow(props: { model: RelationFullModel<ChannelModel, ArticleModel> 
         return null
     }
     const updateTimeString = formatRfc3339(props.model.update_time)
-    const service = ArticleService.Instance()
     return <tr className={styles.articleRow}>
         <th>
             <label>
@@ -71,7 +69,7 @@ function TableRow(props: { model: RelationFullModel<ChannelModel, ArticleModel> 
             </label>
         </th>
         <td className={styles.channelTitle}>
-            <Link href={service.consoleViewUrl(props.model.pk)}
+            <Link href={'/'}
                   title={channelModel.name}>{channelModel.name}</Link>
         </td>
         <td>

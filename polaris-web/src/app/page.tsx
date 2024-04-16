@@ -8,9 +8,10 @@ import {NoData} from '@/components/common/empty'
 import {PSImage} from '@/components/client/image'
 import {getIdentity} from '@/services/auth'
 import {formatRfc3339} from '@/utils/datetime'
-import {serverConfig} from '@/services/server/config'
-import {articleContentViewUrl2, ArticleService} from '@/services/article'
+import {articleContentViewUrl2} from '@/services/article'
 import {STSubString} from "@/utils/string";
+import { serverMakeHttpGet } from '@/services/server/http'
+import { PLSelectResult } from '@/models/common-result'
 
 export default async function Home({searchParams}: {
     searchParams: Record<string, string>
@@ -19,9 +20,8 @@ export default async function Home({searchParams}: {
     if (isNaN(page)) {
         page = 1
     }
-    const rawQuery = queryString.stringify(searchParams)
-    const articleService = ArticleService.Instance(serverConfig.NEXT_PUBLIC_SERVER)
-    const articles = await articleService.selectArticles(rawQuery)
+    const rawQuery = queryString.stringify(searchParams) 
+    const articles = await serverMakeHttpGet<PLSelectResult<ArticleModel>>('/posts?' + rawQuery)
 
     const identity = await getIdentity()
     return <div className={styles.indexPage}>

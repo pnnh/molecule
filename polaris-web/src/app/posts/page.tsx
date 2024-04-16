@@ -8,11 +8,11 @@ import {ArticleModel} from '@/models/article'
 import {NoData} from '@/components/common/empty'
 import {PSImage} from '@/components/client/image'
 import {formatRfc3339} from '@/utils/datetime'
-import {serverConfig} from '@/services/server/config'
-import {articleContentViewUrl2, ArticleService} from '@/services/article'
+import {articleContentViewUrl2} from '@/services/article'
 import {PLSelectResult} from '@/models/common-result'
 import {calcPagination} from "@/utils/helpers";
 import {STSubString} from "@/utils/string";
+import { serverMakeHttpGet } from '@/services/server/http'
 
 export default async function Page({searchParams}: {
     searchParams: Record<string, string>
@@ -31,9 +31,8 @@ export default async function Page({searchParams}: {
         size: pageSize,
         channel: channelPk
     }
-    const rawQuery = queryString.stringify(selectQuery)
-    const articleService = ArticleService.Instance(serverConfig.NEXT_PUBLIC_SERVER)
-    const selectResult = await articleService.selectArticles(rawQuery)
+    const rawQuery = queryString.stringify(selectQuery) 
+    const selectResult = await serverMakeHttpGet<PLSelectResult<ArticleModel>>('/posts?' + rawQuery)
 
     const pagination = calcPagination(page, selectResult.count, pageSize)
     const sortClass = (sort: string) => {
@@ -52,7 +51,7 @@ export default async function Page({searchParams}: {
         direction: 'cta',
         size: 10
     })
-    const rankSelectResult = await articleService.selectArticles(rankQuery)
+    const rankSelectResult = await serverMakeHttpGet<PLSelectResult<ArticleModel>>('/posts?' + rankQuery)
     return <div className={styles.indexPage}>
         <div className={styles.container}>
             <div className={styles.conMiddle}>
