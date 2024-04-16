@@ -2,7 +2,7 @@
   "name": "polaris-cloud",
   "version": "0.1.0",
   "scripts": {
-    "dev": "next dev --turbo -p 8100",
+    "dev": "next dev -p 8100",
     "build": "NODE_ENV=production next build",
     "start": "next start",
     "lint": "next lint",

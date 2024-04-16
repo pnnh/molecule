@@ -3,3 +3,4 @@ Dockerfile
 README.md
 .git
 next-env.d.ts
+node_modules/

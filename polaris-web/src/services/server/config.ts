@@ -11,13 +11,13 @@ interface IServerConfig {
 }
 
 export const serverConfig = {
-    NEXT_PUBLIC_SERVER: process.env.SERVER,
+    NEXT_PUBLIC_SERVER: process.env.NEXT_PUBLIC_SERVER,
     AES_KEY: process.env.AES_KEY,
     AES_IV: process.env.AES_IV,
     REDIS: process.env.REDIS,
     REDIS_PASSWORD: process.env.REDIS_PASSWORD,
-    NEXT_PUBLIC_SELF_URL: process.env.SELF_URL,
-    NEXT_PUBLIC_AUTH_SERVER: process.env.AUTH_SERVER,
+    NEXT_PUBLIC_SELF_URL: process.env.NEXT_PUBLIC_SELF_URL,
+    NEXT_PUBLIC_AUTH_SERVER: process.env.NEXT_PUBLIC_AUTH_SERVER,
     ClientId: process.env.ClientId,
     ClientSecret: process.env.ClientSecret
 } as IServerConfig

@@ -2,7 +2,7 @@ FROM node:21
 
 EXPOSE 8100
 
-ENV ENV production
+ENV NODE_ENV production
 ENV PORT 8100
 
 WORKDIR /data
