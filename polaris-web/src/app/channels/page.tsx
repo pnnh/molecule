@@ -26,7 +26,7 @@ function Item (props: { model: ChannelModel }) {
 
 export default async function Home () {
   const pageSize = 64
-  const service = ChannelService.Instance(serverConfig.SERVER)
+  const service = ChannelService.Instance(serverConfig.NEXT_PUBLIC_SERVER)
   const result = await service.selectChannels(`page=1&size=${pageSize}`)
   return <div className={styles.container}>
     <div className={styles.body}>

@@ -44,6 +44,13 @@
   "C_Cpp.intelliSenseEngine": "default",
   "C_Cpp.intelliSenseEngineFallback": "disabled",
   "C_Cpp.clang_format_sortIncludes": true,
-  "C_Cpp.codeAnalysis.clangTidy.enabled": true, 
+  "C_Cpp.codeAnalysis.clangTidy.enabled": true,
   "C_Cpp.errorSquiggles": "enabled",
+  "eslint.format.enable": true,
+  "eslint.workingDirectories": [
+    {
+      "mode": "auto"
+    }
+  ],
+  "emmet.showExpandedAbbreviation": "never",  // 不显示展开的缩写
 }

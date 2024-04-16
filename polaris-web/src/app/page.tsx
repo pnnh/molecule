@@ -12,26 +12,6 @@ import {serverConfig} from '@/services/server/config'
 import {articleContentViewUrl2, ArticleService} from '@/services/article'
 import {STSubString} from "@/utils/string";
 
-import MainModuleFactory from 'pulsar-web'
-
-
-
-const Module = {
-    locateFile: function (path: string, scriptDirectory: string) {
-        console.log('locateFile', path, scriptDirectory)
-        //return path;
-        return 'node_modules/pulsar-web/pulsar-web.wasm'
-    }
-}
-
-
-console.log('Module', MainModuleFactory)
-
-const module2 = MainModuleFactory(Module);
-
-console.log('lerp result: ' + module2);
-
-
 export default async function Home({searchParams}: {
     searchParams: Record<string, string>
 }) {
@@ -40,7 +20,7 @@ export default async function Home({searchParams}: {
         page = 1
     }
     const rawQuery = queryString.stringify(searchParams)
-    const articleService = ArticleService.Instance(serverConfig.SERVER)
+    const articleService = ArticleService.Instance(serverConfig.NEXT_PUBLIC_SERVER)
     const articles = await articleService.selectArticles(rawQuery)
 
     const identity = await getIdentity()

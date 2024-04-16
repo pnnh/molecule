@@ -3,7 +3,7 @@ import {PLInsertResult, PLSelectResult} from '@/models/common-result'
 import {ChannelModel, ChannelPostsView} from '@/models/channel'
 import {ModelService} from './service'
 import {serverConfig} from './server/config'
-import {makeHttpGet} from './server/http'
+import {serverMakeHttpGet} from './server/http'
 
 export function channelPageUrl(name: string) {
     return '/channels/' + name
@@ -20,20 +20,20 @@ export class ChannelService extends ModelService {
 
     async selectChannels(queryString: string) {
 
-        const url = serverConfig.SERVER + '/channels/?' + queryString
-        return makeHttpGet<PLSelectResult<ChannelModel>>(url)
+        const url = serverConfig.NEXT_PUBLIC_SERVER + '/channels/?' + queryString
+        return serverMakeHttpGet<PLSelectResult<ChannelModel>>(url)
 
 
     }
 
     async getChannel(pk: string) {
         const url = this.baseUrl + '/restful/channels/' + pk
-        return makeHttpGet<ChannelModel>(url)
+        return serverMakeHttpGet<ChannelModel>(url)
     }
 
     async selectPosts(urn: string) {
         const url = this.baseUrl + `/channels/${urn}/posts`
-        return makeHttpGet<ChannelPostsView>(url)
+        return serverMakeHttpGet<ChannelPostsView>(url)
     }
 
     async insertChannel(model: ChannelModel) {

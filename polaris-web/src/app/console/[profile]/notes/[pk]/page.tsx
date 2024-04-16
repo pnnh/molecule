@@ -4,9 +4,9 @@ import React, {useEffect, useState} from 'react'
 import {ArticleModel, TocItem} from '@/models/article'
 import styles from './page.module.scss'
 import {BuildBodyHtml} from '@/components/common/article'
-import {TWButton} from '@/components/client/controls'
-import {ArticleService} from '@/services/article'
+import {TWButton} from '@/components/client/controls' 
 import {generatorRandomString} from "@/utils/string";
+import { clientMakeHttpGet } from '@/services/client/http'
 
 interface IReadRequest {
     params: { pk: string }
@@ -16,9 +16,8 @@ export default function Page(request: IReadRequest) {
     const pk = request.params.pk
     const [model, setModel] = useState<ArticleModel>()
 
-    useEffect(() => {
-        const service = ArticleService.Instance()
-        service.getArticle(pk).then((result) => {
+    useEffect(() => { 
+        clientMakeHttpGet<ArticleModel | undefined>('/posts/' + pk).then((result) => {
             if (result) {
                 setModel(result)
             }

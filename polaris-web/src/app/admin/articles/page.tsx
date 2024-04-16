@@ -15,7 +15,7 @@ export default async function Page({searchParams}: {
 }) {
     console.debug('searchParams', searchParams)
     const servcie = new RelationServerService()
-    const serverRelationUrl = new CommonUrl(serverConfig.SERVER, 'relation')
+    const serverRelationUrl = new CommonUrl(serverConfig.NEXT_PUBLIC_SERVER, 'relation')
     const result = await servcie.commonSelect<PLSelectResult<RelationFullModel<ChannelModel, ArticleModel>>>(serverRelationUrl.adminSelectUrl,
         searchParams, '')
 

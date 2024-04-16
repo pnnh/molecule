@@ -6,7 +6,6 @@ import {getIdentity} from '@/services/auth'
 import Link from 'next/link'
 import {fullAuthUrl} from '@/services/common/const'
 import {FluentProviders} from '@/components/client/providers'
-import {AdminReduxProvider} from './state/ReduxProvider'
 
 export default async function ConsoleLayout({
                                                 children
@@ -25,8 +24,6 @@ export default async function ConsoleLayout({
         </div>
     }
     return (
-
-        <AdminReduxProvider>
             <FluentProviders>
                 <div className={styles.childrenContainer}>
                     <div className={styles.navbar}>
@@ -40,6 +37,5 @@ export default async function ConsoleLayout({
                     </div>
                 </div>
             </FluentProviders>
-        </AdminReduxProvider>
     )
 }

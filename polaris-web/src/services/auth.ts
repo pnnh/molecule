@@ -9,7 +9,7 @@ export async function getIdentity (): Promise<AccountModel | undefined> {
   const cookieStore = cookies()
   const authHeader = cookieStore.toString()//.get('Polaris-Authorization')?.value
   
-  const url = `${(await serverConfig).SERVER}/account/session`
+  const url = `${(await serverConfig).NEXT_PUBLIC_SERVER}/account/session`
   const response = await axios.get<AccountModel | undefined>(url, {
     headers: {
       Cookie: authHeader,

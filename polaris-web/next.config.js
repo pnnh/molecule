@@ -14,7 +14,7 @@ let nextConfig = {
     };
     return config;
   },
-  transpilePackages: ['pulsar-web'],
+  //transpilePackages: ['pulsar-web'],
   images: {
     remotePatterns: [
       {
@@ -31,23 +31,11 @@ let nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'polaris.huable.com'
-      },
-      {
-        protocol: 'https',
-        hostname: 'polaris.huable.xyz'
-      },
-      {
-        protocol: 'https',
         hostname: 'static.huable.dev'
       },
       {
         protocol: 'https',
         hostname: 'static.huable.xyz'
-      },
-      {
-        protocol: 'https',
-        hostname: 'static.huable.com'
       }
     ]
   },

@@ -6,7 +6,7 @@ import {serverConfig} from '@/services/server/config'
 import {ChannelService} from '@/services/channel'
 
 export default async function Page() {
-    const service = ChannelService.Instance(serverConfig.SERVER)
+    const service = ChannelService.Instance(serverConfig.NEXT_PUBLIC_SERVER)
     const result = await service.selectChannels('page=1&size=20')
 
     return <div>

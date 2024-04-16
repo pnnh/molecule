@@ -32,7 +32,7 @@ export default async function Page({searchParams}: {
         channel: channelPk
     }
     const rawQuery = queryString.stringify(selectQuery)
-    const articleService = ArticleService.Instance(serverConfig.SERVER)
+    const articleService = ArticleService.Instance(serverConfig.NEXT_PUBLIC_SERVER)
     const selectResult = await articleService.selectArticles(rawQuery)
 
     const pagination = calcPagination(page, selectResult.count, pageSize)

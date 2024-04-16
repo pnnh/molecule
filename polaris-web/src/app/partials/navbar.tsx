@@ -14,8 +14,8 @@ export function PublicNavbar(props: { account?: AccountModel }) {
             </div>
             <Link className={styles.navLink} href={'/channels'}>频道</Link>
             <Link className={styles.navLink} href={'/posts'}>笔记</Link>
-            <Link className={styles.navLink} href={'/posts'}>图片</Link>
-            <Link className={styles.navLink} href={'/posts'}>群组</Link>
+            {/* <Link className={styles.navLink} href={'/posts'}>图片</Link>
+            <Link className={styles.navLink} href={'/posts'}>群组</Link> */}
             <Link className={styles.navLink} href={'/tools'}>工具</Link>
         </div>
         <div className={styles.rightNav}>

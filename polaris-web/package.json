@@ -9,9 +9,6 @@
     "fix": "eslint --fix --ext .js,.jsx,.ts,.tsx .",
     "analyze": "ENV=production ANALYZE=true next build"
   },
-  "workspaces": [
-    "./workspaces/pulsar-web"
-  ],
   "dependencies": {
     "@fluentui/react": "^8.117.5",
     "@fluentui/react-components": "^9.47.5",
@@ -34,7 +31,6 @@
     "prism-react-renderer": "^2.0.0",
     "prism-themes": "^1.9.0",
     "prismjs": "^1.26.0",
-    "pulsar-web": "^0.1.0",
     "query-string": "^9.0.0",
     "react": "^18.1.0",
     "react-dom": "^18.2.0",

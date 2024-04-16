@@ -17,7 +17,7 @@ export default async function Home({params, searchParams}: {
     params: { channel: string },
     searchParams: Record<string, string>
 }) {
-    const channelService = ChannelService.Instance(serverConfig.SERVER)
+    const channelService = ChannelService.Instance(serverConfig.NEXT_PUBLIC_SERVER)
     const channelInfo = await channelService.selectPosts(params.channel)
 
     return <div className={styles.articleContainer}>

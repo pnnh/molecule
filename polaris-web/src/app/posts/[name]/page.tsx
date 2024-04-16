@@ -1,23 +1,22 @@
 import '~/prism-themes/themes/prism-one-light.min.css'
 import styles from './page.module.scss'
 import React from 'react'
-import {TocItem} from '@/models/article'
+import {ArticleModel, TocItem} from '@/models/article'
 import {BuildBodyHtml} from '@/components/common/article'
 import {TocInfo} from '@/components/common/toc'
 import {headers} from 'next/headers'
-import {formatRfc3339} from '@/utils/datetime'
-import {serverConfig} from '@/services/server/config'
-import {articleContentViewUrl2, ArticleService} from '@/services/article'
+import {formatRfc3339} from '@/utils/datetime' 
+import {articleContentViewUrl2} from '@/services/article'
 import {Metadata} from 'next'
 import {generatorRandomString} from "@/utils/string";
+import { serverMakeHttpGet } from '@/services/server/http'
 
 export const metadata: Metadata = {
     title: '北极星笔记'
 }
 
 export default async function Home({params}: { params: { name: string } }) {
-    const service = ArticleService.Instance(serverConfig.SERVER)
-    const articleModel = await service.getArticle(params.name)
+    const articleModel = await serverMakeHttpGet<ArticleModel | undefined>('/posts/' + params.name)
     if (articleModel == null) {
         return <div>遇到错误</div>
     }

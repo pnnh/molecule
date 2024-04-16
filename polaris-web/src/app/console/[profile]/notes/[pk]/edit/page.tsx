@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { ArticleModel } from '@/models/article'
 import { useRouter } from 'next/navigation'
 import { MarkdownEditorForm } from '../../partials/edit'
-import { ArticleService } from '@/services/article'
+import { clientMakeHttpGet, clientMakeHttpPut } from '@/services/client/http'
 
 interface IReadRequest {
   params: { pk: string }
@@ -13,16 +13,15 @@ interface IReadRequest {
 export default function Page (request: IReadRequest) {
   const pk = request.params.pk
   const [model, setModel] = useState<ArticleModel>()
-  const router = useRouter()
-  const service = ArticleService.Instance()
+  const router = useRouter() 
 
   useEffect(() => {
-    service.getArticle(pk).then((result) => {
+    clientMakeHttpGet<ArticleModel | undefined>('/posts/' + pk).then((result) => {
       if (result) {
         setModel(result)
       }
     })
-  }, [service, pk])
+  }, [pk])
   if (!model || !model.body) {
     return null
   }
@@ -31,7 +30,8 @@ export default function Page (request: IReadRequest) {
     if (!newModel) {
       return
     }
-    service.updateArticle(newModel).then((result) => {
+
+    clientMakeHttpPut<ArticleModel>('/restful/article', newModel).then((result) => {
       console.debug('result', result)
       if (result && result.uid) {
         router.replace('/console/articles')
