@@ -12,4 +12,3 @@ build/
 debug/
 publish/
 *.DotSettings.user
-appsettings.Development.json
