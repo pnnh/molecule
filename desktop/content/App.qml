@@ -70,7 +70,7 @@ Rectangle {
                     Layout.fillWidth: true
                     color: "#FFFFFF"
                     Text {
-                        text: qsTr("Hello Design")
+                        text: qsTr("Hello Designw222")
                         anchors.centerIn: parent
                         font.family: Constants.font.family
                     }

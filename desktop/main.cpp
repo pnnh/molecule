@@ -35,20 +35,21 @@ int main(int argc, char *argv[])
   std::cerr << "Hello, World333333!" << std::endl;
   sayHello();
   qDebug() << "Hello, World444444!";
-  //getchar(); 
 
   QGuiApplication app(argc, argv);
-  app.setApplicationDisplayName(
-      QStringLiteral("This example is powered by qmltc!"));
+  app.setApplicationDisplayName(QStringLiteral("This example is powered by qmltc!"));
 
   QQmlApplicationEngine engine;
   const QUrl url(QStringLiteral(u"qrc:/qt/qml/quick/content/Main.qml"));
 
-  // QObject::connect(&engine, &QQmlApplicationEngine::objectCreationFailed,
-  //     &app, []() { QCoreApplication::exit(-1); },
-  //     Qt::QueuedConnection);
+  QObject::connect(&engine, &QQmlApplicationEngine::objectCreationFailed,
+      &app, []() { QCoreApplication::exit(-1); },
+      Qt::QueuedConnection);
 
   engine.load(url);
+  
+  if (engine.rootObjects().isEmpty())
+    return -1;
 
   auto dbName = QGuiApplication::applicationDirPath() + "/venus22.sqlite";
 

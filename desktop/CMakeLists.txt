@@ -117,6 +117,7 @@ qt6_add_qml_module(polaris-desktop
         URI quick
         VERSION 1.0
         QML_FILES
+        content/Main.qml
         content/list_videos.qml
         content/App.qml
         content/Topbar.qml

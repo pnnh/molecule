@@ -11,3 +11,4 @@ debug/
 vcpkg_installed/
 bazel-*
 .cache/
+CMakeLists.txt.user
