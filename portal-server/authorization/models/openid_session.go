@@ -17,7 +17,7 @@ type OpenidSessionModel struct {
 }
 
 func PutOpenidSession(model *OpenidSessionModel) error {
-	sqlText := `insert into openid_session(pk, create_time, update_time, code, content)
+	sqlText := `insert into portal.openid_session(pk, create_time, update_time, code, content)
 		values(:pk, :create_time, :update_time, :code, :content);`
 
 	sqlParams := map[string]interface{}{
@@ -36,7 +36,7 @@ func PutOpenidSession(model *OpenidSessionModel) error {
 }
 
 func DeleteOpenidSession(pk string) error {
-	sqlText := `delete from openid_session where pk = :pk or code = :pk;`
+	sqlText := `delete from portal.openid_session where pk = :pk or code = :pk;`
 
 	sqlParams := map[string]interface{}{
 		"pk": pk,
@@ -50,7 +50,7 @@ func DeleteOpenidSession(pk string) error {
 }
 
 func GetOpenidSession(pk string) (*OpenidSessionModel, error) {
-	sqlText := `select * from openid_session where pk = :pk or code = :pk;`
+	sqlText := `select * from portal.openid_session where pk = :pk or code = :pk;`
 
 	sqlParams := map[string]interface{}{"pk": pk}
 	var sqlResults []*OpenidSessionModel
@@ -71,7 +71,7 @@ func GetOpenidSession(pk string) (*OpenidSessionModel, error) {
 }
 
 func UpdateOpenidSession(pk string, content string) error {
-	sqlText := `update openid_session set content = :content where pk = :pk or code = :pk;`
+	sqlText := `update portal.openid_session set content = :content where pk = :pk or code = :pk;`
 
 	sqlParams := map[string]interface{}{
 		"pk":      pk,

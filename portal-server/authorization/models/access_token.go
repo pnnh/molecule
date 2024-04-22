@@ -17,7 +17,7 @@ type AccessTokenModel struct {
 }
 
 func PutAccessToken(model *AccessTokenModel) error {
-	sqlText := `insert into access_token(pk, create_time, update_time, signature, content)
+	sqlText := `insert into portal.access_token(pk, create_time, update_time, signature, content)
 		values(:pk, :create_time, :update_time, :signature, :content);`
 
 	sqlParams := map[string]interface{}{
@@ -36,7 +36,7 @@ func PutAccessToken(model *AccessTokenModel) error {
 }
 
 func DeleteAccessToken(pk string) error {
-	sqlText := `delete from access_token where pk = :pk or signature = :pk;`
+	sqlText := `delete from portal.access_token where pk = :pk or signature = :pk;`
 
 	sqlParams := map[string]interface{}{
 		"pk": pk,
@@ -50,7 +50,7 @@ func DeleteAccessToken(pk string) error {
 }
 
 func GetAccessToken(pk string) (*AccessTokenModel, error) {
-	sqlText := `select * from access_token where pk = :pk or signature = :pk;`
+	sqlText := `select * from portal.access_token where pk = :pk or signature = :pk;`
 
 	sqlParams := map[string]interface{}{"pk": pk}
 	var sqlResults []*AccessTokenModel

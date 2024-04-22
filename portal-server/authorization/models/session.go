@@ -30,7 +30,7 @@ type SessionModel struct {
 }
 
 func PutSession(model *SessionModel) error {
-	sqlText := `insert into sessions(pk, content, create_time, update_time, username, type, code,
+	sqlText := `insert into portal.sessions(pk, content, create_time, update_time, username, type, code,
 		client_id, response_type, redirect_uri, scope, state, nonce, id_token, jwt_id, access_token, open_id, company_id) 
 	values(:pk, :content, :create_time, :update_time, :username, :type, :code, :client_id, :response_type, :redirect_uri,
 		:scope, :state, :nonce, :id_token, :jwt_id, :access_token, :open_id, :company_id)`
@@ -50,7 +50,7 @@ func PutSession(model *SessionModel) error {
 }
 
 func GetSession(pk string) (*SessionModel, error) {
-	sqlText := `select * from sessions where pk = :pk;`
+	sqlText := `select * from portal.sessions where pk = :pk;`
 
 	sqlParams := map[string]interface{}{"pk": pk}
 	var sqlResults []*SessionModel
@@ -72,7 +72,7 @@ func GetSession(pk string) (*SessionModel, error) {
 
 func FindSessionByJwtId(clientId, username, jwtId string) (*SessionModel, error) {
 
-	sqlText := `select * from sessions where client_id = :client_id and username = :username and jwt_id = :jwt_id;`
+	sqlText := `select * from portal.sessions where client_id = :client_id and username = :username and jwt_id = :jwt_id;`
 
 	sqlParams := map[string]interface{}{
 		"client_id": clientId,
@@ -98,7 +98,7 @@ func FindSessionByJwtId(clientId, username, jwtId string) (*SessionModel, error)
 }
 
 func FindSessionByAccessToken(clientId, accessToken string) (*SessionModel, error) {
-	sqlText := `select * from sessions where client_id = :client_id and access_token = :access_token;`
+	sqlText := `select * from portal.sessions where client_id = :client_id and access_token = :access_token;`
 
 	sqlParams := map[string]interface{}{
 		"client_id":    clientId,
@@ -123,7 +123,7 @@ func FindSessionByAccessToken(clientId, accessToken string) (*SessionModel, erro
 }
 
 func FindSessionByCode(clientId, code string) (*SessionModel, error) {
-	sqlText := `select * from sessions where client_id = :client_id and code = :code;`
+	sqlText := `select * from portal.sessions where client_id = :client_id and code = :code;`
 
 	sqlParams := map[string]interface{}{
 		"client_id": clientId,
@@ -148,7 +148,7 @@ func FindSessionByCode(clientId, code string) (*SessionModel, error) {
 }
 
 func UpdateSessionToken(id string, accessToken, idToken, jwtId string) error {
-	sqlText := `update sessions set id_token=:id_token, access_token=:access_token, jwt_id=:jwt_id, 
+	sqlText := `update portal.sessions set id_token=:id_token, access_token=:access_token, jwt_id=:jwt_id, 
 		update_time=:update_time
 	where pk = :pk;`
 

@@ -44,7 +44,7 @@ func NewApplicationModel(title string) *ApplicationModel {
 }
 
 func GetApplication(pk string) (*ApplicationModel, error) {
-	sqlText := `select * from applications where pk = :pk;`
+	sqlText := `select * from portal.applications where pk = :pk;`
 
 	sqlParams := map[string]interface{}{"pk": pk}
 	var sqlResults []*ApplicationModel
@@ -65,7 +65,7 @@ func GetApplication(pk string) (*ApplicationModel, error) {
 }
 
 func SelectApplications(offset int, limit int) ([]*ApplicationModel, error) {
-	sqlText := `select * from Applications offset :offset limit :limit;`
+	sqlText := `select * from portal.applications offset :offset limit :limit;`
 
 	sqlParams := map[string]interface{}{"offset": offset, "limit": limit}
 	var sqlResults []*ApplicationModel
@@ -82,7 +82,7 @@ func SelectApplications(offset int, limit int) ([]*ApplicationModel, error) {
 }
 
 func SelectApplicationsByStatus(status int) ([]*ApplicationModel, error) {
-	sqlText := `select * from Applications where status = :status and rank > 0 order by rank;`
+	sqlText := `select * from portal.applications where status = :status and rank > 0 order by rank;`
 
 	sqlParams := map[string]interface{}{"status": status}
 	var sqlResults []*ApplicationModel
@@ -99,7 +99,7 @@ func SelectApplicationsByStatus(status int) ([]*ApplicationModel, error) {
 }
 
 func CountApplications() (int64, error) {
-	sqlText := `select count(1) as count from applications;`
+	sqlText := `select count(1) as count from portal.applications;`
 
 	sqlParams := map[string]interface{}{}
 	var sqlResults []struct {

@@ -18,7 +18,7 @@ type AccessCodeModel struct {
 }
 
 func PutAccessCode(model *AccessCodeModel) error {
-	sqlText := `insert into access_code(pk, create_time, update_time, code, content, active)
+	sqlText := `insert into portal.access_code(pk, create_time, update_time, code, content, active)
 		values(:pk, :create_time, :update_time, :code, :content, :active);`
 
 	sqlParams := map[string]interface{}{
@@ -38,7 +38,7 @@ func PutAccessCode(model *AccessCodeModel) error {
 }
 
 func DeleteAccessCode(pk string) error {
-	sqlText := `delete from access_code where pk = :pk or code = :pk;`
+	sqlText := `delete from portal.access_code where pk = :pk or code = :pk;`
 
 	sqlParams := map[string]interface{}{
 		"pk": pk,
@@ -52,7 +52,7 @@ func DeleteAccessCode(pk string) error {
 }
 
 func GetAccessCode(pk string) (*AccessCodeModel, error) {
-	sqlText := `select * from access_code where pk = :pk or code = :pk;`
+	sqlText := `select * from portal.access_code where pk = :pk or code = :pk;`
 
 	sqlParams := map[string]interface{}{"pk": pk}
 	var sqlResults []*AccessCodeModel
@@ -73,7 +73,7 @@ func GetAccessCode(pk string) (*AccessCodeModel, error) {
 }
 
 func UpdateAccessCodeStatus(pk string, active int) error {
-	sqlText := `update access_code set active = :active where pk = :pk or code = :pk;`
+	sqlText := `update portal.access_code set active = :active where pk = :pk or code = :pk;`
 
 	sqlParams := map[string]interface{}{
 		"pk":     pk,

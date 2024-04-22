@@ -7,6 +7,9 @@ interface IServerConfig {
     NEXT_PUBLIC_AUTH_SERVER: string,
     ClientId: string,
     ClientSecret: string,
+    NEXT_PUBLIC_SIGN_PASSWORD: string,
+    NEXT_PUBLIC_SIGN_WEBAUTHN: string,
+    NEXT_PUBLIC_PORTAL_SERVER: string,
 }
 
 export const serverConfig = {
@@ -17,5 +20,8 @@ export const serverConfig = {
     NEXT_PUBLIC_SELF_URL: process.env.NEXT_PUBLIC_SELF_URL,
     NEXT_PUBLIC_AUTH_SERVER: process.env.NEXT_PUBLIC_AUTH_SERVER,
     ClientId: process.env.ClientId,
-    ClientSecret: process.env.ClientSecret
+    ClientSecret: process.env.ClientSecret,
+    NEXT_PUBLIC_SIGN_PASSWORD: process.env.NEXT_PUBLIC_SIGN_PASSWORD,
+    NEXT_PUBLIC_SIGN_WEBAUTHN: process.env.NEXT_PUBLIC_SIGN_WEBAUTHN,
+    NEXT_PUBLIC_PORTAL_SERVER: process.env.NEXT_PUBLIC_PORTAL_SERVER,
 } as IServerConfig
