@@ -1,5 +1,5 @@
 import React from 'react'
-import {PublicNavbar} from '../partials/navbar'
+import {PostsNavbar} from './navbar'
 import styles from './layout.module.scss'
 import {getIdentity} from '@/services/auth'
 
@@ -12,7 +12,7 @@ export default async function ArticleLayout({
 
     return <div className={styles.indexPage}>
         <div>
-            <PublicNavbar account={identity}/>
+            <PostsNavbar account={identity}/>
         </div>
         <div className={styles.container}>
             {children}

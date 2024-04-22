@@ -1,16 +1,10 @@
 import React from 'react'
-import {PublicNavbar} from "@/app/partials/navbar";
-import {getIdentity} from "@/services/auth";
+import { ToolNavbar } from './navbar';
 
-export default async function ToolsLayout({
-                                              children
-                                          }: {
-    children: React.ReactNode
-}) {
-    const identity = await getIdentity()
+export default async function ToolsLayout({children}:{children: React.ReactNode}) {
     return <div>
         <div>
-            <PublicNavbar account={identity}/>
+            <ToolNavbar/>
         </div>
         <div>
             {children}
