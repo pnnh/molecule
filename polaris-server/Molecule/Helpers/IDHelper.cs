@@ -191,9 +191,9 @@ public class Base58Encoder
 {
     public string GuidEncode(Guid guidValue)
     {
-        var bytes = guidValue.ToByteArray();
+        var bytes = guidValue.ToByteArray(true);
 
-        var base58String = Base58.Flickr.Encode(bytes);
+        var base58String = Base58.Ripple.Encode(bytes);
 
         return base58String;
     }
@@ -201,43 +201,12 @@ public class Base58Encoder
     public Guid? GuidDecode(string base36String)
     {
         var bytes = new byte[16];
-        if (Base58.Flickr.TryDecode(base36String, bytes, out var numBytesWritten))
+        if (Base58.Ripple.TryDecode(base36String, bytes, out var numBytesWritten))
         {
             byte[] binaryData = bytes.Take(numBytesWritten).ToArray();
             string strHex = BitConverter.ToString(binaryData);
-            if (Guid.TryParse(strHex, out var value))
+            if (Guid.TryParse(strHex.Replace("-", ""), out var value))
                 return value;
-        }
-
-        return null;
-    }
-
-    public string LongEncode(long intValue)
-    {
-        var bytes = new byte[8];
-        BinaryPrimitives.WriteInt64BigEndian(bytes, intValue);
-        var list = new List<byte>();
-        foreach (var b in bytes)
-            if (b != 0)
-                list.Add(b);
-
-        var base58String = Base58.Flickr.Encode(list.ToArray());
-        return base58String;
-    }
-
-    public long? LongDecode(string base58String)
-    {
-        if (base58String.Length < 1 || base58String.Length > 16) return null;
-        var bytes = new byte[8];
-
-        if (Base58.Flickr.TryDecode(base58String, bytes, out var numBytesWritten))
-        {
-            var list = new List<byte>();
-            list.AddRange(bytes.Take(numBytesWritten));
-            var itemCount = list.Count;
-            for (var i = 0; i < 8 - itemCount; i++) list.Insert(0, 0);
-            var value = BinaryPrimitives.ReadInt64BigEndian(list.ToArray());
-            return value;
         }
 
         return null;

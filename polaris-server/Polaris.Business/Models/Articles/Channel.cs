@@ -12,10 +12,7 @@ public class ChannelModel
 {
     [Column("uid", TypeName = "uuid")] public Guid Uid { get; set; }
 
-    [Column("nid", TypeName = "bigint")]
-    public long Nid { get; set; }
-
-    [NotMapped] public string Urn => MIDHelper.Base58.LongEncode(Nid);
+    [NotMapped] public string Urn => MIDHelper.Base58.GuidEncode(Uid);
 
     [Column("name", TypeName = "varchar(128)")]
     public string Name { get; set; } = "";

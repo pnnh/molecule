@@ -15,10 +15,7 @@ public class PostModel
     [JsonPropertyName("uid")]
     public Guid Uid { get; set; }
 
-    [Column("nid", TypeName = "bigint")]
-    public long Nid { get; set; }
-
-    [NotMapped] public string Urn => MIDHelper.Base58.LongEncode(Nid);
+    [NotMapped] public string Urn => MIDHelper.Base58.GuidEncode(Uid);
 
     [Column("title", TypeName = "varchar(128)")]
     [JsonPropertyName("title")]

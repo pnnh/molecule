@@ -13,12 +13,12 @@ namespace Polaris.Controllers.Articles;
 [ApiController]
 public class ArticleContentController(DatabaseContext configuration, ModelService modelService) : ControllerBase
 {
-    [Route("/articles/channels/{channel}/articles/{article}")]
+    [Route("/articles/{article}")]
     [HttpGet]
     [AllowAnonymous]
-    public PostModel? Get([FromRoute] string channel, [FromRoute] string article)
+    public PostModel? Get([FromRoute] string article)
     {
-        var model = modelService.GetByKey<PostModel>(article, channel);
+        var model = modelService.GetByKey<PostModel>(article);
         return model;
     }
 

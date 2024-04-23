@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 export default async function Home({params}: {
     params: { channel: string, article: string }
 }) {
-    const url = `/articles/channels/${params.channel}/articles/${params.article}`
+    const url = `/articles/${params.article}`
     const articleModel = await serverMakeHttpGet<ArticleModel | undefined>(url)
     if (articleModel == null) {
         return <div>遇到错误</div>

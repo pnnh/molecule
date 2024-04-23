@@ -9,24 +9,19 @@ namespace Polaris.Business.Services;
 public class ModelService(DatabaseContext databaseContext)
 {
 
-    public T? GetByKey<T>(string name, string channel = "") where T : class
+    public T? GetByKey<T>(string name) where T : class
     {
         var sqlBuilder = new StringBuilder();
         var parameters = new Dictionary<string, object>();
 
-        Guid? uid = null;
-        long? nid = null;
+        Guid? uid;
         if (Guid.TryParse(name, out var guidValue))
         {
             uid = guidValue;
         }
-        else if (long.TryParse(name, out var longValue))
+        else if (MIDHelper.Base58.GuidDecode(name) is { } baseValue)
         {
-            nid = longValue;
-        }
-        else if (MIDHelper.Base58.LongDecode(name) is { } long2Value)
-        {
-            nid = long2Value;
+            uid = baseValue;
         }
         else
         {
@@ -52,19 +47,9 @@ public class ModelService(DatabaseContext databaseContext)
             sqlBuilder.Append(" a.uid = @uid");
             parameters.Add("uid", uid);
         }
-        else if (nid != null)
-        {
-            sqlBuilder.Append(" a.nid = @nid");
-            parameters.Add("nid", nid);
-        }
         else
         {
             return null;
-        }
-        if (!string.IsNullOrEmpty(channel))
-        {
-            sqlBuilder.Append(" and a.channel = @channel");
-            parameters.Add("channel", Guid.Parse(channel));
         }
 
         var querySqlText = sqlBuilder.ToString();

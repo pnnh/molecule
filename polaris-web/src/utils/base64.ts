@@ -1,4 +1,5 @@
 import { base64url } from 'rfc4648'
+import { base58 } from '@scure/base';
 
 export function encodeBase64String (state: string): string {
   const enc = new TextEncoder()
@@ -12,4 +13,8 @@ export function decodeBase64String (base64State: string): string {
   const decoder = new TextDecoder()
   const stateDecode = decoder.decode(stateData)
   return stateDecode
+}
+
+export function binaryToBase58(data: Uint8Array): string {
+  return base58.encode(data)
 }

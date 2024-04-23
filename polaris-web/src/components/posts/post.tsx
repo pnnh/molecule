@@ -13,6 +13,7 @@ import {PLSelectResult} from '@/models/common-result'
 import {calcPagination} from "@/utils/helpers";
 import {STSubString} from "@/utils/string";
 import { serverMakeHttpGet } from '@/services/server/http'
+import { stringToBase58 } from '@/utils/uuid'
 
 export async function ArticlesPage({channel, searchParams}: {
     channel: string, searchParams: Record<string, string>
@@ -109,16 +110,14 @@ export async function ArticlesPage({channel, searchParams}: {
             </div>
         </div>
     </div>
-
-     
 }
 
 function MiddleBody({selectResult}: { selectResult: PLSelectResult<ArticleModel> }) {
     if (!selectResult || !selectResult.range || selectResult.range.length === 0) {
         return <NoData size='large'/>
     }
-    return selectResult.range.map((model) => {
-    const readUrl = `/channels/${model.channel}/articles/${model.uid}`
+    return selectResult.range.map((model) => { 
+    const readUrl = `/channels/${stringToBase58(model.channel)}/articles/${model.urn}`
         return <div className={styles.middleItem} key={model.uid}>
             <div className={styles.itemDetail}>
                 <div className={styles.title}>
