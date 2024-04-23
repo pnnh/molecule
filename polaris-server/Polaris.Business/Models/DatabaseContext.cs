@@ -14,6 +14,7 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
     public DbSet<CommentModel> Comments => Set<CommentModel>();
     public DbSet<RelationModel> Relations => Set<RelationModel>();
     public DbSet<ChannelModel> Channels => Set<ChannelModel>();
+    public DbSet<NSChannelModel> NSChannels => Set<NSChannelModel>();
     public DbSet<ViewerModel> Viewers => Set<ViewerModel>();
     public DbSet<PictureModel> Pictures => Set<PictureModel>();
 

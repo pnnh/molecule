@@ -1,7 +1,5 @@
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Data;
 using System.Text;
-using Microsoft.EntityFrameworkCore;
 using Molecule.Helpers;
 using Polaris.Business.Helpers;
 using Polaris.Business.Models;
@@ -11,7 +9,7 @@ namespace Polaris.Business.Services;
 public class ModelService(DatabaseContext databaseContext)
 {
 
-    public T? GetByKey<T>(string name) where T : class
+    public T? GetByKey<T>(string name, string channel = "") where T : class
     {
         var sqlBuilder = new StringBuilder();
         var parameters = new Dictionary<string, object>();
@@ -62,6 +60,11 @@ public class ModelService(DatabaseContext databaseContext)
         else
         {
             return null;
+        }
+        if (!string.IsNullOrEmpty(channel))
+        {
+            sqlBuilder.Append(" and a.channel = @channel");
+            parameters.Add("channel", Guid.Parse(channel));
         }
 
         var querySqlText = sqlBuilder.ToString();

@@ -13,11 +13,9 @@ import {PLSelectResult} from '@/models/common-result'
 import {calcPagination} from "@/utils/helpers";
 import {STSubString} from "@/utils/string";
 import { serverMakeHttpGet } from '@/services/server/http'
-import { ArticlesNavbar } from './navbar'
-import { getIdentity } from '@/services/auth'
 
-export async function PostsBody({searchParams, withNavbar = true}: {
-    searchParams: Record<string, string>, withNavbar?: boolean
+export async function ArticlesPage({channel, searchParams}: {
+    channel: string, searchParams: Record<string, string>
 }) {
     let page = Number(searchParams.page)
     if (isNaN(page)) {
@@ -34,7 +32,8 @@ export async function PostsBody({searchParams, withNavbar = true}: {
         channel: channelPk
     }
     const rawQuery = queryString.stringify(selectQuery) 
-    const selectResult = await serverMakeHttpGet<PLSelectResult<ArticleModel>>('/posts?' + rawQuery)
+    const url = `/articles/channels/${channel}/posts?${rawQuery}` 
+    const selectResult = await serverMakeHttpGet<PLSelectResult<ArticleModel>>(url)
 
     const pagination = calcPagination(page, selectResult.count, pageSize)
     const sortClass = (sort: string) => {
@@ -53,13 +52,10 @@ export async function PostsBody({searchParams, withNavbar = true}: {
         direction: 'cta',
         size: 10
     })
-    const rankSelectResult = await serverMakeHttpGet<PLSelectResult<ArticleModel>>('/posts?' + rankQuery)
+    const rankUrl = `/articles/channels/${channel}/posts?${rankQuery}` 
+    const rankSelectResult = await serverMakeHttpGet<PLSelectResult<ArticleModel>>(rankUrl)
 
-    const identity = await getIdentity()
     return <div className={styles.fullPage}>
-        <div>
-            {withNavbar && <ArticlesNavbar account={identity} />}
-        </div>
         <div className={styles.mainContainer}>
             <div className={styles.contentContainer}>
                 <div className={styles.conMiddle}>
@@ -88,7 +84,6 @@ export async function PostsBody({searchParams, withNavbar = true}: {
                     </div>
                 </div>
                 <div className={styles.conRight}>
-                    {/* <ChannelInfo model={channelInfo} /> */}
                     <div className={styles.rankCard}>
                         <div className={styles.rankHeader}>
                             年度阅读排行
@@ -123,10 +118,11 @@ function MiddleBody({selectResult}: { selectResult: PLSelectResult<ArticleModel>
         return <NoData size='large'/>
     }
     return selectResult.range.map((model) => {
+    const readUrl = `/channels/${model.channel}/articles/${model.uid}`
         return <div className={styles.middleItem} key={model.uid}>
             <div className={styles.itemDetail}>
                 <div className={styles.title}>
-                    <Link href={articleContentViewUrl2(model)}>{model.title}</Link></div>
+                    <Link href={readUrl}>{model.title}</Link></div>
                 <div className={styles.description} title={model.description}>
                     {STSubString(model.description, 100)}
                 </div>

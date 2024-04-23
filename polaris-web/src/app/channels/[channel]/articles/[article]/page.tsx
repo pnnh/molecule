@@ -15,8 +15,11 @@ export const metadata: Metadata = {
     title: '北极星笔记'
 }
 
-export default async function Home({params}: { params: { name: string } }) {
-    const articleModel = await serverMakeHttpGet<ArticleModel | undefined>('/posts/' + params.name)
+export default async function Home({params}: {
+    params: { channel: string, article: string }
+}) {
+    const url = `/articles/channels/${params.channel}/articles/${params.article}`
+    const articleModel = await serverMakeHttpGet<ArticleModel | undefined>(url)
     if (articleModel == null) {
         return <div>遇到错误</div>
     }

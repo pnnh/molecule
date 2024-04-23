@@ -9,7 +9,7 @@ using Polaris.Business.Models;
 using Polaris.Business.Models.Articles;
 using Polaris.Business.Services;
 
-namespace Polaris.Controllers.Channels;
+namespace Polaris.Controllers.Articles;
 
 [ApiController]
 [Authorize]
@@ -61,7 +61,7 @@ public class ChannelsController(ILogger<ChannelsController> logger, DatabaseCont
 
     [Route("/articles/channels/{urn}/posts")]
     [AllowAnonymous]
-    public ChannelPostsView? SelectPosts([FromRoute] string urn)
+    public MSelectResult<PostModel> SelectPosts([FromRoute] string urn)
     {
         var queryHelper = new MQueryHelper(Request.Query);
         var keyword = queryHelper.GetString("keyword");
@@ -120,14 +120,10 @@ select count(1) from ({sqlBuilder}) as temp;";
         var models = modelsQuery.ToList();
 
 
-        return new ChannelPostsView
-        {
-            Channel = channelModel,
-            Posts = new MSelectResult<PostModel>
-            {
-                Range = models,
-                Count = totalCount ?? 0
-            }
+        return new MSelectResult<PostModel>
+        { 
+            Range = models,
+            Count = totalCount ?? 0 
         };
     }
 
