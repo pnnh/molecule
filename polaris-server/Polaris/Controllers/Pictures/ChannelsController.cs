@@ -38,7 +38,7 @@ public class ChannelsController(DatabaseContext configuration,
 
     [Route("/pictures/channels/{urn}/pictures")]
     [AllowAnonymous]
-    public NSChannelPicturesView? SelectPictures([FromRoute] string urn)
+    public MSelectResult<PictureModel> SelectPictures([FromRoute] string urn)
     {
         var queryHelper = new MQueryHelper(Request.Query);
         var keyword = queryHelper.GetString("keyword");
@@ -60,7 +60,7 @@ select a.*
 from pictures.pictures as a
 where a.channel = @channel
 ");
-        parameters.Add("channel", channelModel.Uid);
+        parameters.Add("@channel", channelModel.Uid);
 
         if (keyword != null && !string.IsNullOrEmpty(keyword))
         {
@@ -97,14 +97,10 @@ select count(1) from ({sqlBuilder}) as temp;";
         var models = modelsQuery.ToList();
 
 
-        return new NSChannelPicturesView
+        return new MSelectResult<PictureModel>
         {
-            Channel = channelModel,
-            Pictures = new MSelectResult<PictureModel>
-            {
-                Range = models,
-                Count = totalCount ?? 0
-            }
+            Range = models,
+            Count = totalCount ?? 0
         };
     }
 }

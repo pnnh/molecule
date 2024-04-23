@@ -22,21 +22,6 @@ public class ArticleContentController(DatabaseContext configuration, ModelServic
         return model;
     }
 
-    [Route("/posts/{uid}")]
-    [HttpDelete]
-    public PModifyResult Delete([FromRoute] Guid uid)
-    {
-        var model = configuration.Pages.FirstOrDefault(m => m.Uid == uid);
-        if (model == null) throw new PLBizException("文章不存在");
-        configuration.Pages.Remove(model);
-        var changes = configuration.SaveChanges();
-
-        return new PModifyResult
-        {
-            Changes = changes
-        };
-    }
-
     [Route("/posts")]
     [HttpPost]
     public async Task<PModifyResult> Insert()

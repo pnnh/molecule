@@ -9,12 +9,10 @@ import {PSImage} from '@/components/client/image'
 import {PLSelectResult} from '@/models/common-result'
 import {calcPagination} from "@/utils/helpers";
 import { serverMakeHttpGet } from '@/services/server/http'
-import { PicturesNavbar } from './navbar'
-import { getIdentity } from '@/services/auth'
 import { PictureModel } from '@/models/picture'
 
-export async function PicturesBody({searchParams, withNavbar = true}: {
-    searchParams: Record<string, string>, withNavbar?: boolean
+export async function PicturesPage({channel, searchParams}: {
+    channel: string, searchParams: Record<string, string>
 }) {
     let page = Number(searchParams.page)
     if (isNaN(page)) {
@@ -31,7 +29,8 @@ export async function PicturesBody({searchParams, withNavbar = true}: {
         channel: channelPk
     }
     const rawQuery = queryString.stringify(selectQuery) 
-    const selectResult = await serverMakeHttpGet<PLSelectResult<PictureModel>>('/pictures?' + rawQuery)
+    const url = `/pictures/channels/${channel}/pictures?${rawQuery}` 
+    const selectResult = await serverMakeHttpGet<PLSelectResult<PictureModel>>(url)
 
     const pagination = calcPagination(page, selectResult.count, pageSize)
     const sortClass = (sort: string) => {
@@ -43,13 +42,7 @@ export async function PicturesBody({searchParams, withNavbar = true}: {
         return ' ' + (queryFilter === filter ? styles.activeLink : '')
     }
 
-    const identity = await getIdentity()
       return <div className={styles.indexPage}>
-        <div>
-              {withNavbar && <PicturesNavbar account={identity} />}
-        </div>
-        <div className={styles.container}>
-            <div className={styles.indexPage}>
         <div className={styles.container}>
             <div className={styles.conMiddle}>
                 <div className={styles.middleTop}>
@@ -78,10 +71,6 @@ export async function PicturesBody({searchParams, withNavbar = true}: {
             </div>
         </div>
     </div>
-        </div>
-    </div>
-
-     
 }
 
 function MiddleBody({selectResult}: { selectResult: PLSelectResult<PictureModel> }) {

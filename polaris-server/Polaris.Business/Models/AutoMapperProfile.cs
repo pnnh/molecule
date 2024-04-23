@@ -12,6 +12,7 @@ public class AutoMapperProfile2 : Profile
     public AutoMapperProfile2()
     {
         CreateMap<IDataReader, ChannelModel>();
+        CreateMap<IDataReader, NSChannelModel>();
         CreateMap<IDataReader, PostModel>();
         CreateMap<IDataReader, PictureModel>();
         CreateMap<IDataReader, NoteModel>();
