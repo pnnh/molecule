@@ -4,6 +4,8 @@ using System.Reflection;
 using AutoMapper;
 using Polaris.Business.Models;
 using Polaris.Business.Models.Personal;
+using Polaris.Business.Models.Articles;
+using Polaris.Business.Models.Pictures;
 
 public class AutoMapperProfile2 : Profile
 {

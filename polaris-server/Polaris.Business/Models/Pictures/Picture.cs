@@ -5,9 +5,9 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Molecule.Helpers;
 
-namespace Polaris.Business.Models;
+namespace Polaris.Business.Models.Pictures;
 
-[Table("pictures")]
+[Table("pictures", Schema = "pictures")]
 [PrimaryKey(nameof(Uid))]
 public class PictureModel
 {

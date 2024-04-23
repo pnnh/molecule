@@ -7,6 +7,7 @@ using Molecule.Models;
 using Polaris.Business.Helpers;
 using Polaris.Business.Models;
 using Polaris.Business.Services;
+using Polaris.Business.Models.Pictures;
 
 namespace Polaris.Controllers;
 
@@ -18,7 +19,7 @@ public class PicturesController(DatabaseContext configuration, ModelService mode
     [AllowAnonymous]
     public PictureModel? Get([FromRoute] string name)
     {
-        var model = modelService.GetByUrn<PictureModel>(name);
+        var model = modelService.GetByKey<PictureModel>(name);
         return model;
     }
 
@@ -86,13 +87,13 @@ select count(1) from ({sqlBuilder}) as temp;";
     [Route("/pictures")]
     [HttpPost]
     [HttpPut]
-    public async Task<PModifyResult> Insert([FromRoute]PictureModel model)
-    {   
+    public async Task<PModifyResult> Insert([FromRoute] PictureModel model)
+    {
         model.UpdateTime = DateTime.Now;
         if (model.Uid == Guid.Empty)
         {
             model.Uid = MIDHelper.Default.NewUUIDv7();
-            model.CreateTime = DateTime.Now; 
+            model.CreateTime = DateTime.Now;
             configuration.Pictures.Add(model);
             await configuration.SaveChangesAsync();
         }
@@ -107,5 +108,5 @@ select count(1) from ({sqlBuilder}) as temp;";
 
         return new PModifyResult { Pk = model.Uid };
     }
- 
+
 }

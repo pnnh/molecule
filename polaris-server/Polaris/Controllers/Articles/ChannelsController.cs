@@ -6,6 +6,7 @@ using Molecule.Helpers;
 using Molecule.Models;
 using Polaris.Business.Helpers;
 using Polaris.Business.Models;
+using Polaris.Business.Models.Articles;
 using Polaris.Business.Services;
 
 namespace Polaris.Controllers.Channels;
@@ -18,15 +19,15 @@ public class ChannelsController(ILogger<ChannelsController> logger, DatabaseCont
 {
     private readonly ILogger<ChannelsController> _logger = logger;
 
-    [Route("/channels/{urn}")]
+    [Route("/articles/channels/{urn}")]
     [HttpGet]
     [AllowAnonymous]
     public ChannelModel? Get([FromRoute] string urn)
     {
-        return modelService.GetByUrn<ChannelModel>(urn);
+        return modelService.GetByKey<ChannelModel>(urn);
     }
 
-    [Route("/channels/{pk}")]
+    [Route("/articles/channels/{pk}")]
     [HttpDelete]
     public async Task<PModifyResult> Delete([FromRoute] string pk)
     {
@@ -39,7 +40,7 @@ public class ChannelsController(ILogger<ChannelsController> logger, DatabaseCont
         return new PModifyResult { Changes = changes };
     }
 
-    [Route("/channels")]
+    [Route("/articles/channels")]
     [HttpGet]
     [AllowAnonymous]
     public MSelectResult<ChannelModel> Select()
@@ -58,7 +59,7 @@ public class ChannelsController(ILogger<ChannelsController> logger, DatabaseCont
         };
     }
 
-    [Route("/channels/{urn}/posts")]
+    [Route("/articles/channels/{urn}/posts")]
     [AllowAnonymous]
     public ChannelPostsView? SelectPosts([FromRoute] string urn)
     {
@@ -71,18 +72,15 @@ public class ChannelsController(ILogger<ChannelsController> logger, DatabaseCont
         var size = queryHelper.GetInt("size") ?? 10;
         var (offset, limit) = MPagination.CalcOffset(page, size);
 
-        var channelModel = modelService.GetByUrn<ChannelModel>(urn);
+        var channelModel = modelService.GetByKey<ChannelModel>(urn);
         if (channelModel == null) throw new PLBizException("频道不存在");
 
         var sqlBuilder = new StringBuilder();
         var parameters = new Dictionary<string, object>();
 
         sqlBuilder.Append(@"
-select a.*, p.nickname as owner_name, c.name as channel_name
-from posts as a
-     left join partitions pa on pa.uid = a.partition
-     left join accounts as p on p.uid = a.owner
-     left join channels as c on c.uid = a.channel
+select a.*
+from articles.articles as a
 where a.channel = @channel
 ");
         parameters.Add("channel", channelModel.Uid);
@@ -133,7 +131,7 @@ select count(1) from ({sqlBuilder}) as temp;";
         };
     }
 
-    [Route("/channels")]
+    [Route("/articles/channels")]
     [HttpPost]
     public async Task<PModifyResult> Insert([FromBody] ChannelModel request)
     {
@@ -155,7 +153,7 @@ select count(1) from ({sqlBuilder}) as temp;";
         return new PModifyResult { Pk = model.Uid };
     }
 
-    [Route("/channels/{pk}")]
+    [Route("/articles/channels/{pk}")]
     [HttpPut]
     public async Task<PModifyResult> Update([FromBody] ChannelModel request)
     {
@@ -168,7 +166,7 @@ select count(1) from ({sqlBuilder}) as temp;";
         return new PModifyResult { Changes = changes };
     }
 
-    [Route("/channels/{channel}/relation/{post}")]
+    [Route("/articles/channels/{channel}/relation/{post}")]
     [HttpPost]
     public PModifyResult Share([FromRoute] Guid channel, [FromRoute] Guid post)
     {

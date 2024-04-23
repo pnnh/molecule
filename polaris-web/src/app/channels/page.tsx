@@ -1,41 +1,15 @@
 import React from 'react'
-import styles from './page.module.scss'
-import Link from 'next/link'
-import { PSCard } from '@/components/client/controls'
-import { ChannelModel } from '@/models/channel'
-import { PSImage } from '@/components/client/image' 
-import { serverMakeHttpGet } from '@/services/server/http'
-import { PLSelectResult } from '@/models/common-result'
+import { userRole } from '@/services/schema'
+import { ArticlesChannelsPage } from '@/components/posts/channels'
 
-function Item (props: { model: ChannelModel }) {
-  const readUrl = `/channels/${props.model.urn}`
-  return <PSCard className={styles.item}>
-    <div className={styles.itemCover}>
-      <PSImage src={props.model.image} alt='star' width={256} height={256}/>
-    </div>
-    <div className={styles.content}>
-      <div className={styles.title}>
-        <Link className={styles.link} href={readUrl}>{props.model.name}</Link>
-      </div>
-      <div className={styles.description}>
-        {props.model.description}
-      </div>
-    </div>
-  </PSCard>
-}
+export default async function Page() {
+    const entry = userRole()
+    if (entry === 'portal') {
+        return <div>Not Found</div>
+    } else if (entry === 'venus') {
+        //return <PicturesBody searchParams={searchParams}/>
+        return <div>Not Found2</div>
+    }
 
-export default async function Home () {
-  const pageSize = 64 
-  const url = '/channels/?' + `page=1&size=${pageSize}`
-  const result = await serverMakeHttpGet<PLSelectResult<ChannelModel>>(url)
-  return <div className={styles.container}>
-    <div className={styles.body}>
-      <div className={styles.list}>
-        {result.range.map((model) => {
-          return <Item key={model.uid} model={model}/>
-        })
-        }
-      </div>
-    </div>
-  </div>
+    return <ArticlesChannelsPage/>
 }

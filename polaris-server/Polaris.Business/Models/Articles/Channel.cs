@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Molecule.Helpers;
 using Molecule.Models;
 
-namespace Polaris.Business.Models;
+namespace Polaris.Business.Models.Articles;
 
-[Table("channels")]
+[Table("channels", Schema = "articles")]
 [PrimaryKey(nameof(Uid))]
 public class ChannelModel
 {

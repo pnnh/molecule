@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using Polaris.Business.Models.Articles;
+using Polaris.Business.Models.Pictures;
 
 namespace Polaris.Business.Models;
 

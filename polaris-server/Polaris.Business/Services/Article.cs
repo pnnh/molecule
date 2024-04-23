@@ -1,6 +1,7 @@
 using Molecule.Helpers;
 using Molecule.Models;
 using Polaris.Business.Models;
+using Polaris.Business.Models.Articles;
 
 namespace Polaris.Business.Services;
 

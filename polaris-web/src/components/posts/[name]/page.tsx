@@ -34,7 +34,8 @@ export default async function Home({params}: { params: { name: string } }) {
     // 更新文章阅读次数
     // await ViewerService.Instance(serverConfig.SERVER).newArticleViewer(params.channel, params.name, clientIp)
     const readUrl = articleContentViewUrl2(articleModel)
-    return <div className={styles.articleContainer}>
+    return <div className={styles.mainContainer}>
+        <div className={styles.articleContainer}>
         <div className={styles.leftArea}>
             <div className={styles.articleInfo}>
                 <h1 className={styles.articleTitle} id={titleId}>{article.title}</h1>
@@ -50,5 +51,6 @@ export default async function Home({params}: { params: { name: string } }) {
         <div className={styles.rightArea}>
             <TocInfo readurl={readUrl} model={tocList}/>
         </div>
+    </div>
     </div>
 }

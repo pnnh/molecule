@@ -11,7 +11,7 @@ namespace Polaris.Business.Services;
 public class ModelService(DatabaseContext databaseContext)
 {
 
-    public T? GetByUrn<T>(string name) where T : class
+    public T? GetByKey<T>(string name) where T : class
     {
         var sqlBuilder = new StringBuilder();
         var parameters = new Dictionary<string, object>();
@@ -41,7 +41,13 @@ public class ModelService(DatabaseContext databaseContext)
             return null;
         }
 
-        sqlBuilder.Append($"select a.* from {tableAttribute.Name} as a");
+        var fullTableName = $"{tableAttribute.Name}";
+        if (!string.IsNullOrEmpty(tableAttribute.Schema))
+        {
+            fullTableName = $"{tableAttribute.Schema}.{fullTableName}";
+        }
+
+        sqlBuilder.Append($"select a.* from {fullTableName} as a");
         sqlBuilder.Append(" where ");
         if (uid != null)
         {

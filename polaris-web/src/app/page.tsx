@@ -1,20 +1,19 @@
 import React from 'react'
-import { schemaPortal } from '@/services/schema'
-import { ToolBody } from './tools/tool'
-import { PostsBody } from './posts/post'
-import { PicturesBody } from './pictures/picture'
+import styles from './page.module.scss'
+import { getIdentity } from '@/services/auth'
+import { PublicNavbar } from './partials/navbar'
 
-export default async function Home({searchParams}: {
+export default async function Home({ searchParams }: {
     searchParams: Record<string, string>
 }) {
-    const schema = schemaPortal()
-
-    console.log('schema', schema)
-    if (schema === 'portal') {
-        return <ToolBody/>
-    } else if (schema === 'venus') {
-        return <PicturesBody searchParams={searchParams}/>
-    }
-
-    return <PostsBody searchParams={searchParams}/>
+    console.debug('searchParams:', searchParams)
+    const identity = await getIdentity()
+    return <div className={styles.fullPage}>
+        <div>
+            {<PublicNavbar account={identity} />}
+        </div>
+        <div className={styles.mainContainer}>
+            Home
+        </div>
+    </div>
 }

@@ -12,7 +12,7 @@ using System.Data;
 namespace Polaris.Business.Models.Personal
 {
 
-    [Table("personal.directories")]
+    [Table("directories", Schema = "personal")]
     [PrimaryKey(nameof(Pk))]
     public class DirectoryModel
     {

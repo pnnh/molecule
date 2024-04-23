@@ -13,7 +13,7 @@ import {PLSelectResult} from '@/models/common-result'
 import {calcPagination} from "@/utils/helpers";
 import {STSubString} from "@/utils/string";
 import { serverMakeHttpGet } from '@/services/server/http'
-import { PostsNavbar } from './navbar'
+import { ArticlesNavbar } from './navbar'
 import { getIdentity } from '@/services/auth'
 
 export async function PostsBody({searchParams, withNavbar = true}: {
@@ -56,64 +56,62 @@ export async function PostsBody({searchParams, withNavbar = true}: {
     const rankSelectResult = await serverMakeHttpGet<PLSelectResult<ArticleModel>>('/posts?' + rankQuery)
 
     const identity = await getIdentity()
-      return <div className={styles.indexPage}>
+    return <div className={styles.fullPage}>
         <div>
-              {withNavbar && <PostsNavbar account={identity} />}
+            {withNavbar && <ArticlesNavbar account={identity} />}
         </div>
-        <div className={styles.container}>
-            <div className={styles.indexPage}>
-        <div className={styles.container}>
-            <div className={styles.conMiddle}>
-                <div className={styles.middleTop}>
-                    <div className={styles.topLeft}>
-                        <Link className={styles.sortLink + sortClass('latest')}
-                              href={replaceSearchParams(searchParams, 'sort', 'latest')}>最新</Link>
-                        <Link className={styles.sortLink + sortClass('read')}
-                              href={replaceSearchParams(searchParams, 'sort', 'read')}>阅读数</Link>
+        <div className={styles.mainContainer}>
+            <div className={styles.contentContainer}>
+                <div className={styles.conMiddle}>
+                    <div className={styles.middleTop}>
+                        <div className={styles.topLeft}>
+                            <Link className={styles.sortLink + sortClass('latest')}
+                                href={replaceSearchParams(searchParams, 'sort', 'latest')}>最新</Link>
+                            <Link className={styles.sortLink + sortClass('read')}
+                                href={replaceSearchParams(searchParams, 'sort', 'read')}>阅读数</Link>
+                        </div>
+                        <div className={styles.topRight}>
+                            <Link className={styles.filterLink + filterClass('month')}
+                                href={replaceSearchParams(searchParams, 'filter', 'month')}>一月内</Link>
+                            <Link className={styles.filterLink + filterClass('year')}
+                                href={replaceSearchParams(searchParams, 'filter', 'year')}>一年内</Link>
+                            <Link className={styles.filterLink + filterClass('all')}
+                                href={replaceSearchParams(searchParams, 'filter', 'all')}>所有</Link>
+                        </div>
                     </div>
-                    <div className={styles.topRight}>
-                        <Link className={styles.filterLink + filterClass('month')}
-                              href={replaceSearchParams(searchParams, 'filter', 'month')}>一月内</Link>
-                        <Link className={styles.filterLink + filterClass('year')}
-                              href={replaceSearchParams(searchParams, 'filter', 'year')}>一年内</Link>
-                        <Link className={styles.filterLink + filterClass('all')}
-                              href={replaceSearchParams(searchParams, 'filter', 'all')}>所有</Link>
+                    <div className={styles.middleBody}>
+                        <MiddleBody selectResult={selectResult}/>
+                    </div>
+                    <div className={styles.middlePagination}>
+                        <PaginationPartial pagination={pagination}
+                                        calcUrl={(page) => replaceSearchParams(searchParams, 'page', page.toString())}/>
                     </div>
                 </div>
-                <div className={styles.middleBody}>
-                    <MiddleBody selectResult={selectResult}/>
-                </div>
-                <div className={styles.middlePagination}>
-                    <PaginationPartial pagination={pagination}
-                                       calcUrl={(page) => replaceSearchParams(searchParams, 'page', page.toString())}/>
-                </div>
-            </div>
-            <div className={styles.conRight}>
-                {/* <ChannelInfo model={channelInfo} /> */}
-                <div className={styles.rankCard}>
-                    <div className={styles.rankHeader}>
-                        年度阅读排行
-                    </div>
-                    <div className={styles.rankBody}>
-                        {
-                            rankSelectResult.range && rankSelectResult.range.length > 0
-                                ? rankSelectResult.range.map((model, index) => {
-                                    return <div key={model.uid} className={styles.rankItem}>
-                                        <div
-                                            className={styles.rankIndex + (index <= 2 ? ' ' + styles.rankTop : '')}>{index + 1}</div>
-                                        <div className={styles.rankTitle}>
-                                            <Link href={articleContentViewUrl2(model)}
-                                                  title={model.title}>{model.title}</Link>
+                <div className={styles.conRight}>
+                    {/* <ChannelInfo model={channelInfo} /> */}
+                    <div className={styles.rankCard}>
+                        <div className={styles.rankHeader}>
+                            年度阅读排行
+                        </div>
+                        <div className={styles.rankBody}>
+                            {
+                                rankSelectResult.range && rankSelectResult.range.length > 0
+                                    ? rankSelectResult.range.map((model, index) => {
+                                        return <div key={model.uid} className={styles.rankItem}>
+                                            <div
+                                                className={styles.rankIndex + (index <= 2 ? ' ' + styles.rankTop : '')}>{index + 1}</div>
+                                            <div className={styles.rankTitle}>
+                                                <Link href={articleContentViewUrl2(model)}
+                                                    title={model.title}>{model.title}</Link>
+                                            </div>
                                         </div>
-                                    </div>
-                                })
-                                : '暂无'
-                        }
+                                    })
+                                    : '暂无'
+                            }
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
         </div>
     </div>
 

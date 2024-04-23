@@ -3,14 +3,20 @@
   "editor.formatOnPaste": true,
   "editor.formatOnType": true,
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit"
+    "source.fixAll.eslint": "always"
   },
   "css.lint.unknownAtRules": "ignore",
   "scss.lint.unknownAtRules": "ignore",
+  "[typescript]": { 
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "always"
+    }
+  },
   "[typescriptreact]": {
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
-      "source.fixAll.eslint": "explicit"
+      "source.fixAll.eslint": "always"
     }
   },
   "files.watcherExclude": {
@@ -51,6 +57,5 @@
     {
       "mode": "auto"
     }
-  ],
-  "emmet.showExpandedAbbreviation": "never",  // 不显示展开的缩写
+  ]
 }

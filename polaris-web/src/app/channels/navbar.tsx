@@ -4,7 +4,7 @@ import {fullAuthUrl} from '@/services/common/const'
 import Image from 'next/image'
 import {AccountModel} from '@/models/account'
 
-export function PostsNavbar(props: { account?: AccountModel }) {
+export function ChannelsNavbar(props: { account?: AccountModel }) {
     return <div className={styles.navHeader}>
         <div className={styles.leftNav}>
             <div>
@@ -13,9 +13,10 @@ export function PostsNavbar(props: { account?: AccountModel }) {
                 </Link>
             </div>
             <Link className={styles.navLink} href={'/channels'}>频道</Link>
-            <Link className={styles.navLink} href={'/posts'}>笔记</Link>
+            {/* <Link className={styles.navLink} href={'/posts'}>笔记</Link> */}
             {/* <Link className={styles.navLink} href={'/posts'}>图片</Link>
             <Link className={styles.navLink} href={'/posts'}>群组</Link> */}
+            {/* <Link className={styles.navLink} href={'/tools'}>工具</Link> */}
         </div>
         <div className={styles.rightNav}>
             <UserAction account={props.account}/>

@@ -32,22 +32,6 @@
             "justMyCode": false
         },
         {
-            "name": "portal-web",
-            "type": "node",
-            "request": "launch",
-            "runtimeExecutable": "npm",
-            "runtimeArgs": [
-                "run-script",
-                "dev"
-            ],
-            "console": "internalConsole",
-            "env": {
-                "NODE_ENV": "development",
-                "config": "./config.debug.js"
-            },
-            "cwd": "${workspaceFolder}/portal-web"
-        },
-        {
             "name": "portal-authorization",
             "type": "go",
             "request": "launch",

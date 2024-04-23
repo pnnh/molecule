@@ -5,6 +5,7 @@ using Molecule.Helpers;
 using Molecule.Models;
 using Polaris.Business.Helpers;
 using Polaris.Business.Models;
+using Polaris.Business.Models.Articles;
 using Polaris.Business.Services;
 
 namespace Polaris.Controllers.Articles;
@@ -17,7 +18,7 @@ public class ArticleContentController(DatabaseContext configuration, ModelServic
     [AllowAnonymous]
     public PostModel? Get([FromRoute] string name)
     {
-        var model = modelService.GetByUrn<PostModel>(name);
+        var model = modelService.GetByKey<PostModel>(name);
         return model;
     }
 
@@ -40,7 +41,7 @@ public class ArticleContentController(DatabaseContext configuration, ModelServic
 
         sqlBuilder.Append(@"
 select a.*, p.nickname as owner_name, c.name as channel_name
-from posts as a
+from articles.articles as a
      left join partitions pa on pa.uid = a.partition
      left join accounts as p on p.uid = a.owner
      left join channels as c on c.uid = a.channel

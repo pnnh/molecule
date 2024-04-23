@@ -9,16 +9,16 @@ using System.Text.Json.Serialization;
 using AutoMapper;
 using System.Data;
 
-namespace Polaris.Business.Models
+namespace Polaris.Business.Models.Articles
 {
 
-    [Table("history")]
-    [PrimaryKey(nameof(Pk))]
-    public class HistoryModel// : BaseModel
+    [Table("history", Schema = "articles")]
+    [PrimaryKey(nameof(Uid))]
+    public class HistoryModel 
     {
-        [Column("pk", TypeName = "varchar(64)")]
-        [JsonPropertyName("pk")]
-        public string Pk { get; set; } = "";
+        [Column("uid", TypeName = "uuid")]
+        [JsonPropertyName("uid")]
+        public Guid Uid { get; set; } = Guid.Empty;
 
         [Column("title", TypeName = "varchar(128)")]
         [JsonPropertyName("title")]

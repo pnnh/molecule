@@ -17,7 +17,7 @@ export default async function Home({params, searchParams}: {
     params: { channel: string },
     searchParams: Record<string, string>
 }) { 
-    const url = `/channels/${params.channel}/posts` 
+    const url = `/articles/channels/${params.channel}/posts` 
     const channelInfo = await serverMakeHttpGet<ChannelPostsView>(url) 
 
     return <div className={styles.articleContainer}>

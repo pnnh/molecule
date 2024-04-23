@@ -5,9 +5,9 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Molecule.Helpers;
 
-namespace Polaris.Business.Models;
+namespace Polaris.Business.Models.Articles;
 
-[Table("posts")]
+[Table("articles", Schema = "articles")]
 [PrimaryKey(nameof(Uid))]
 public class PostModel
 {
@@ -47,22 +47,18 @@ public class PostModel
     public string Keywords { get; set; } = "";
 
     [Column("description", TypeName = "varchar(512)")]
-    [JsonPropertyName("description")]
     public string Description { get; set; } = "";
 
     [Column("status", TypeName = "int")]
     public int Status { get; set; }
 
     [Column("cover", TypeName = "varchar(256)")]
-    [JsonPropertyName("cover")]
     public string Cover { get; set; } = "";
 
     [Column("discover", TypeName = "integer")]
-    [JsonPropertyName("discover")]
     public int Discover { get; set; }
 
     [Column("channel", TypeName = "uuid")]
-    [JsonPropertyName("channel")]
     public Guid Channel { get; set; }
 
     [NotMapped]
@@ -75,15 +71,5 @@ public class PostModel
     public string? OwnerName { get; set; } = "";
 
     [Column("partition", TypeName = "uuid")]
-    [JsonPropertyName("partition")]
     public Guid Partition { get; set; }
-
-    // public static void MapperConfig(IMapperConfigurationExpression cfg)
-    // {
-    //     cfg.CreateMap<IDataReader, PostModel>()
-    //         .ForMember(a => a.CreateTime, opt => opt.MapFrom(src => src["create_time"]))
-    //         .ForMember(a => a.UpdateTime, opt => opt.MapFrom(src => src["update_time"]));
-    //     //.ForMember(a => a.ChannelName, opt => opt.MapFrom(src => src["channel_name"]))
-    //     //.ForMember(a => a.OwnerName, opt => opt.MapFrom(src => src["profile_name"]));
-    // }
 }

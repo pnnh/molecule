@@ -12,7 +12,7 @@ using System.Data;
 namespace Polaris.Business.Models.Personal
 {
 
-    [Table("personal.notes")]
+    [Table("notes", Schema = "personal")]
     [PrimaryKey(nameof(Uid))]
     public class NoteModel
     {

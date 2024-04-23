@@ -5,6 +5,8 @@ using Molecule.Helpers;
 using Molecule.Models;
 using Polaris.Business.Helpers;
 using Polaris.Business.Models;
+using Polaris.Business.Models.Articles;
+using Polaris.Business.Models.Pictures;
 
 namespace Polaris.Controllers.Relations;
 
