@@ -11,9 +11,6 @@ export function FormEdit (props: {params: ServerAuthParams, scopes: string[], se
   const scopes = props.scopes
   const [checked, setChecked] = useState<string[]>(['openid'])
 
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-
   const [error, setError] = useState(searchParams.error)
 
   const isChecked = (item: string) => checked.includes(item)
@@ -24,21 +21,6 @@ export function FormEdit (props: {params: ServerAuthParams, scopes: string[], se
   const postUrl = props.server + '/oauth2/auth?' + query
   console.log('Home', postUrl)
 
-  const loginForm = <div>
-      <div className={styles.fieldRow + ' form-outline mb-4'}>
-        <input className="input input-bordered w-full form-control" name={'username'} type="text" placeholder="输入用户名"
-               value={username} onChange={(event) => {
-                 setUsername(event.target.value)
-               }}/>
-      </div>
-      <div className={styles.fieldRow}>
-        <input className="input input-bordered w-full form-control" name={'password'} type="password" placeholder="输入密码"
-               value={password} onChange={(event) => {
-                 setPassword(event.target.value)
-               }}/>
-      </div>
-    </div>
-
   const welcomeForm = <div className={styles.welcomeForm}>
     <input type={'hidden'} name={'username'} value={searchParams.authed} />
     <span>{searchParams.authed}</span>
@@ -46,14 +28,9 @@ export function FormEdit (props: {params: ServerAuthParams, scopes: string[], se
 
 
   return <form id={'loginForm'} className={styles.loginForm} method={'POST'} action={postUrl} onSubmit={(event) => {
-
     if (checked.length < 1) {
       event.preventDefault()
       setError('请选择授权范围') 
-    }
-    if (!searchParams.authed && (!username || !password)) {
-      event.preventDefault()
-      setError('用户名或密码不可为空') 
     }
   }}>
 
@@ -76,7 +53,7 @@ export function FormEdit (props: {params: ServerAuthParams, scopes: string[], se
                           <div className={styles.fieldsRowContent}>
 
                             <div className={styles.loginFields }>
-                              {searchParams.authed ? welcomeForm : loginForm }
+                              {welcomeForm }
                             </div>
 
                           </div>

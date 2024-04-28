@@ -1,6 +1,6 @@
 'use client'
 
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import styles from './page.module.scss' 
 import Link from '~/next/link' 
 import { WebauthnForm } from './webauthn/form'
@@ -13,20 +13,14 @@ interface ISignMethod {
   key: string, title: string, form: React.ReactElement
 }
 
-export default function Home () {
-  const [rawQuery, setRawQuery] = useState<string>('')
-
-  const [loginMethod, setLoginMethod] = useState<string>()
+export default function Home ({ searchParams }: {
+  searchParams: Record<string, string> & { source: string | undefined }
+}) { 
   const signMethods: ISignMethod[] = []
-
-  useEffect(() => {
-    const queryParams = queryString.parse(location.search)
-    if (!queryParams.source) {
-      queryParams.source = encodeBase64String(serverConfig.NEXT_PUBLIC_SELF_URL)
-    }
-    const rawQuery = queryString.stringify(queryParams)
-    setRawQuery(rawQuery)
-  }, [])
+  if (!searchParams.source) {
+      searchParams.source = encodeBase64String(serverConfig.NEXT_PUBLIC_SELF_URL)
+  }
+    const rawQuery = queryString.stringify(searchParams)
 
   if (serverConfig.NEXT_PUBLIC_SIGN_PASSWORD === 'ON') {
     signMethods.push({
@@ -47,12 +41,18 @@ export default function Home () {
   if (signMethods.length === 0) {
     throw new Error('no sign method enabled')
   }
-  const defaultSignMethod = signMethods[0]
-  setLoginMethod(defaultSignMethod.key) 
+  const defaultSignMethod = signMethods[0] 
 
   return <div> 
-  <div className={styles.loginContainer}>
-        <div className={styles.mainBox}>
+    <div className={styles.loginContainer}>
+      <MainBox signMethods={signMethods} initLoginMethod={defaultSignMethod.key} rawQuery={rawQuery} />    
+    </div> 
+  </div>
+}
+
+function MainBox({ signMethods, initLoginMethod, rawQuery }: { signMethods: ISignMethod[], initLoginMethod: string, rawQuery: string }) {
+  const [loginMethod, setLoginMethod] = useState<string>(initLoginMethod)
+  return <div className={styles.mainBox}>
             <div className={styles.boxTitle}>
                 <div className={styles.titleLeft}>
                   登录
@@ -80,7 +80,5 @@ export default function Home () {
                 还没有账号?
                 <Link href={'/account/signup?'+rawQuery}>立即注册</Link>
             </div>
-        </div>
-    </div> 
         </div>
 }
