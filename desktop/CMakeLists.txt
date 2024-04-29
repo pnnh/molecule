@@ -2,11 +2,6 @@ cmake_minimum_required(VERSION 3.27)
 
 project(polaris-desktop VERSION 0.1 LANGUAGES C CXX)
 
-if (WIN32)
-        #enable_language(CSharp)
-        #set(CMAKE_CSharp_FLAGS "${CMAKE_CSharp_FLAGS} /platform:x64 /langversion:latest")
-endif ()
-
 if (APPLE)
         enable_language(OBJC OBJCXX Swift)
 endif ()
@@ -27,16 +22,15 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 # 启用测试
 enable_testing()
 
-
 if (APPLE OR UNIX)
     include(GNUInstallDirs)
     find_package(PkgConfig REQUIRED)
 endif()
 
-
 # 查找并设置ccache
 find_program(CCACHE_PROGRAM ccache)
 if (CCACHE_PROGRAM)
+    message(STATUS "Found ccache: ${CCACHE_PROGRAM}")
     set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
 endif ()
 
@@ -46,23 +40,11 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 include_directories(/opt/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
-# if (EMSCRIPTEN)
-#         add_subdirectory(pulsar/web)
-# elseif(DEFINED VCPKG_TARGET_TRIPLET)
-#         add_subdirectory(pulsar/native)
-# endif()
-
-if (UNIX)
-        # add_subdirectory(pulsar/server)
-        #add_subdirectory(pulsar/wetee)
+if (EMSCRIPTEN)
+        add_subdirectory(wasm)
+elseif(DEFINED VCPKG_TARGET_TRIPLET)
+        add_subdirectory(native)
 endif()
-
-if (WIN32)
-        # if(NOT DEFINED VCPKG_TARGET_TRIPLET)
-        #         # 当前未采用VCPKG工具链，可以编译C#项目
-        #         add_subdirectory(polaris-server)
-        # endif(NOT DEFINED VCPKG_TARGET_TRIPLET)
-endif ()
 
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)

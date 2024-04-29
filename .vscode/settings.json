@@ -7,7 +7,7 @@
   },
   "css.lint.unknownAtRules": "ignore",
   "scss.lint.unknownAtRules": "ignore",
-  "[typescript]": { 
+  "[typescript]": {
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
       "source.fixAll.eslint": "always"
@@ -57,5 +57,6 @@
     {
       "mode": "auto"
     }
-  ]
+  ],
+  "files.autoSave": "afterDelay"
 }

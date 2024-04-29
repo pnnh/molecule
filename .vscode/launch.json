@@ -73,8 +73,7 @@
                 "trace": true
             },
             "cwd": "${workspaceFolder}/desktop/build/windows",
-            "environment": [
-            ],
+            "environment": [],
             "console": "integratedTerminal",
             "preLaunchTask": "polaris-windows-build"
         },
@@ -94,17 +93,17 @@
             "envFile": "${workspaceFolder}/build/linux/pulsar/server/main/assets/.env.local"
         },
         {
-            "name": "pulsar-server-test",
+            "name": "pulsar-test",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/linux/pulsar/server/test/pulsar-server-test",
+            "program": "${workspaceFolder}/build/linux/pulsar/server/test/pulsar-test",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}/build/linux/pulsar/server/test",
             "environment": [],
             "externalConsole": false,
             "MIMode": "gdb",
-            "preLaunchTask": "pulsar-server-test-build",
+            "preLaunchTask": "pulsar-test-build",
             "setupCommands": [],
             "envFile": "${workspaceFolder}/build/linux/pulsar/server/test/assets/.env.local"
         }

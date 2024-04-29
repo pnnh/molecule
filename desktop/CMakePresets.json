@@ -10,19 +10,8 @@
       "name": "linux",
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/build/linux",
-      "installDir": "${sourceDir}/install",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug",
-        "Boost_NO_WARN_NEW_VERSIONS": "ON"
-      },
-      "environment": {}
-    },
-    {
-      "name": "linux-desktop",
-      "generator": "Ninja",
-      "binaryDir": "${sourceDir}/build/linux",
+      "installDir": "${sourceDir}/install/linux",
       "toolchainFile": "/home/applications/vcpkg/scripts/buildsystems/vcpkg.cmake",
-      "installDir": "${sourceDir}/install",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
         "Boost_NO_WARN_NEW_VERSIONS": "ON"
@@ -30,13 +19,13 @@
       "environment": {}
     },
     {
-      "name": "Web",
+      "name": "web",
       "displayName": "Web Config",
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/build/web",
+      "installDir": "${sourceDir}/install/web",
       "toolchainFile": "/home/applications/vcpkg/scripts/buildsystems/vcpkg.cmake",
       "cacheVariables": {
-        "CMAKE_INSTALL_PREFIX": "${sourceDir}/polaris-web/workspaces/pulsar-web",
         "VCPKG_CHAINLOAD_TOOLCHAIN_FILE": {
           "type": "FILEPATH",
           "value": "/home/applications/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake"
@@ -45,7 +34,7 @@
       "environment": {}
     },
     {
-      "name": "macOS",
+      "name": "macos",
       "displayName": "macOS Config",
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/build/macos",
@@ -69,17 +58,7 @@
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
         "Boost_NO_WARN_NEW_VERSIONS": "ON",
-        "CMAKE_PREFIX_PATH": "E:\\Qt\\6.7.0\\msvc2019_64\\lib\\cmake"
-      },
-      "environment": {
-      }
-    },
-    {
-      "name": "windows-dotnet",
-      "generator": "Visual Studio 17 2022",
-      "binaryDir": "${sourceDir}/build/windows-dotnet",
-      "cacheVariables": {
-        "CMAKE_INSTALL_PREFIX": "${sourceDir}/install"
+        "CMAKE_PREFIX_PATH": "F:\\Qt\\6.7.0\\msvc2019_64\\lib\\cmake"
       },
       "environment": {}
     }
@@ -90,20 +69,16 @@
       "configurePreset": "linux"
     },
     {
-      "name": "Web",
-      "configurePreset": "Web"
+      "name": "web",
+      "configurePreset": "web"
     },
     {
-      "name": "macOS",
-      "configurePreset": "macOS"
+      "name": "macos",
+      "configurePreset": "macos"
     },
     {
       "name": "windows",
       "configurePreset": "windows"
-    },
-    {
-      "name": "windows-dotnet",
-      "configurePreset": "windows-dotnet"
     }
   ],
   "testPresets": [
