@@ -1,68 +1,48 @@
 'use client'
 
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import styles from './page.module.scss' 
 import Link from '~/next/link' 
 import { WebauthnForm } from './webauthn/form'
 import { PasswordForm } from './password/form'
 import queryString from 'query-string'
-import { encodeBase64String } from '@/utils/base64'  
-import { IClientConfig, fetchConfig } from '@/services/client/config'
+import { encodeBase64String } from '@/utils/base64'
+import { serverConfig } from '@/services/server/config'
+ 
 
-
-interface ISignMethod {
-  key: string, title: string, form: React.ReactElement
-}
-
-export default function Home () {
-  const [rawQuery, setRawQuery] = useState<string>('')
-  const [clientConfig, setClientConfig] = useState<IClientConfig>() 
-  const [loginMethod, setLoginMethod] = useState<string>()
-  const [signMethods, setSignMethods] = useState<ISignMethod[]>([])
-  useEffect(() => { 
-    fetchConfig().then((config) => {
-      setClientConfig(config)
-      const queryParams = queryString.parse(location.search)
+export default function Home ({ searchParams }: {
+  searchParams: Record<string, string> & { source: string | undefined }
+}) {  
+  const queryParams = queryString.parse(location.search)
       if (!queryParams.source) {
-        queryParams.source = encodeBase64String(config.SELF_URL + '/account/signin')
+        queryParams.source = encodeBase64String(serverConfig.NEXT_PUBLIC_SELF_URL + '/account/signin')
       }
-      const rawQuery = queryString.stringify(queryParams)
-      setRawQuery(rawQuery)
-      function getSignMethods () {
+      const rawQuery = queryString.stringify(searchParams)  
         const signMethods: {key: string, title: string, form: React.ReactElement}[] = []
       
-        if (config.SIGN.PASSWORD.ENABLE) {
+        if (serverConfig.NEXT_PUBLIC_SIGN_PASSWORD === 'ON') {
           signMethods.push({
             key: 'password',
             title: '账号密码',
             form: 
-          <PasswordForm serverUrl={config.SERVER} authServer={config.AUTH_SERVER} rawQuery={rawQuery}/>
+          <PasswordForm serverUrl={serverConfig.NEXT_PUBLIC_SERVER} authServer={serverConfig.NEXT_PUBLIC_AUTH_SERVER} rawQuery={rawQuery}/>
           })
         }
-        if (config.SIGN.WEBAUTHN.ENABLE) {
+        if (serverConfig.NEXT_PUBLIC_SIGN_WEBAUTHN === 'ON') {
           signMethods.push({
             key: 'webauthn',
             title: 'Webauthn',
             form: 
-          <WebauthnForm authServer={config.AUTH_SERVER} rawQuery={rawQuery} /> 
+          <WebauthnForm authServer={serverConfig.NEXT_PUBLIC_AUTH_SERVER} rawQuery={rawQuery} /> 
           })
         }
         if (signMethods.length === 0) {
           throw new Error('no sign method enabled')
-        }
-        return signMethods
-      }
-    
-      const signMethods=getSignMethods()
+        } 
+     
       const defaultSignMethod = signMethods[0]
-      setLoginMethod(defaultSignMethod.key)
-      setSignMethods(signMethods)
+      const loginMethod = defaultSignMethod.key
 
-    })
-  }, [])
-  if (!clientConfig) {
-    return <div>Loading...</div>
-  }
  
 
   return <div>
@@ -77,7 +57,7 @@ export default function Home () {
                     signMethods.map((method) => {
                       return <React.Fragment key={method.key}>
                         <Link href={''} className={loginMethod === method.key?'active':''} onClick={()=> {
-                          setLoginMethod(method.key)
+                          //setLoginMethod(method.key)
                         }}>{method.title}</Link>
                       </React.Fragment>
                     })

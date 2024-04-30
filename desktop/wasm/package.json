@@ -1,7 +1,0 @@
-{
-    "name": "pulsar-web",
-    "version": "0.1.0",
-    "type": "module",
-    "main": "./pulsar-web.js",
-    "types": "./pulsar-web.d.ts"
-}

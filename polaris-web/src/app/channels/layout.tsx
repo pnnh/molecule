@@ -1,6 +1,6 @@
 import React from 'react'
 import {ChannelsNavbar} from './navbar'
-import styles from './layout.module.scss'
+import styles from './layout.module.css'
 import {getIdentity} from '@/services/auth'
 
 export default async function ArticleLayout({

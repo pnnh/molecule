@@ -1,0 +1,31 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 22,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "web",
+      "displayName": "Web Config",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/web",
+      "installDir": "${sourceDir}/workspaces/polaris-wasm",
+      "toolchainFile": "/home/applications/vcpkg/scripts/buildsystems/vcpkg.cmake",
+      "cacheVariables": {
+        "VCPKG_CHAINLOAD_TOOLCHAIN_FILE": {
+          "type": "FILEPATH",
+          "value": "/home/applications/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake"
+        }
+      },
+      "environment": {}
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "web",
+      "configurePreset": "web"
+    }
+  ]
+}

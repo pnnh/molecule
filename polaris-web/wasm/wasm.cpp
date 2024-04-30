@@ -10,7 +10,7 @@ float lerp(float a, float b, float t) {
     return (1 - t) * a + t * b;
 }
 
-EMSCRIPTEN_BINDINGS(module) {
+EMSCRIPTEN_BINDINGS(polaris_wasm) {
     function("lerp", &lerp);
 }
 

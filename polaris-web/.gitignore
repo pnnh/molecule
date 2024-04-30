@@ -20,4 +20,4 @@ npm-debug.log*
 .aspect/
 runtime/
 .env.local
-workspaces/pulsar-web/
+workspaces/polaris-wasm/

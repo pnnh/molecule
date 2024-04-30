@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import styles from './navbar.module.scss'
+import styles from './navbar.module.css'
 import {fullAuthUrl} from '@/services/common/const'
 import Image from 'next/image'
 import {AccountModel} from '@/models/account'

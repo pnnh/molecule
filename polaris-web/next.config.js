@@ -7,17 +7,24 @@ let nextConfig = {
   output: 'standalone',
   reactStrictMode: true,
   experimental: {
-    esmExternals: 'loose', 
+    esmExternals: true,
   },
-  webpack: function (config, options) {
+  webpack: function (config, { isServer, dev }) {
     config.experiments = {
       asyncWebAssembly: true,
+      syncWebAssembly: true,
       topLevelAwait: true,
-      layers: true, 
+      layers: true,
     };
+    if (isServer) {
+      config.output.webassemblyModuleFilename =
+        './../static/wasm/[modulehash].wasm'
+    } else {
+      config.output.webassemblyModuleFilename = 'static/wasm/[modulehash].wasm'
+    } 
     return config;
   },
-  //transpilePackages: ['pulsar-web'],
+  //transpilePackages: ['polaris-wasm'],
   images: {
     remotePatterns: [
       {
@@ -43,10 +50,30 @@ let nextConfig = {
     ]
   },
   compress: process.env.ENV === 'production',
-  sassOptions: {
-    includePaths: [path.join(__dirname, 'styles')]
-  }
+    sassOptions: {
+  includePaths: [path.join(__dirname, 'styles')]
 }
+}
+
+
+// class WasmChunksFixPlugin {
+//   apply(compiler) {
+//     compiler.hooks.thisCompilation.tap('WasmChunksFixPlugin', (compilation) => {
+//       compilation.hooks.processAssets.tap(
+//         { name: 'WasmChunksFixPlugin' },
+//         (assets) =>
+//           Object.entries(assets).forEach(([pathname, source]) => {
+//             if (!pathname.match(/\.wasm$/)) return;
+//             compilation.deleteAsset(pathname);
+
+//             const name = pathname.split('/')[1];
+//             const info = compilation.assetsInfo.get(pathname);
+//             compilation.emitAsset(name, source, info);
+//           })
+//       );
+//     });
+//   }
+// }
 
 // 使用bundleAnalyzer插件
 nextConfig = bundleAnalyzerPlugin({

@@ -37,6 +37,24 @@
             }
         },
         {
+            "name": "polaris-web",
+            "defines": [],
+            "cStandard": "c23",
+            "cppStandard": "c++23",
+            "intelliSenseMode": "linux-gcc-x64",
+            "compilerPath": "/usr/bin/gcc",
+            "compilerArgs": [
+                "-m32"
+            ],
+            "configurationProvider": "ms-vscode.cmake-tools",
+            "forcedInclude": [],
+            "compileCommands": "${workspaceFolder}/build/web/compile_commands.json",
+            "mergeConfigurations": true,
+            "customConfigurationVariables": {
+                "myVar": "myvalue"
+            }
+        },
+        {
             "name": "polaris-macos",
             "compilerPath": "/usr/bin/clang",
             "intelliSenseMode": "macos-clang-arm64",
