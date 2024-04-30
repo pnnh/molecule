@@ -20,4 +20,3 @@ npm-debug.log*
 .aspect/
 runtime/
 .env.local
-workspaces/polaris-wasm/

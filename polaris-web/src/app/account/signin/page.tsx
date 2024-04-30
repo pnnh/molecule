@@ -1,6 +1,6 @@
 'use client'
 
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import styles from './page.module.scss' 
 import Link from '~/next/link' 
 import { WebauthnForm } from './webauthn/form'
@@ -8,6 +8,7 @@ import { PasswordForm } from './password/form'
 import queryString from 'query-string'
 import { encodeBase64String } from '@/utils/base64'   
 import { serverConfig } from '@/services/server/config'
+import { lerpBrowser } from '@/services/client/wasm-client'
 
 interface ISignMethod {
   key: string, title: string, form: React.ReactElement
@@ -16,6 +17,15 @@ interface ISignMethod {
 export default function Home ({ searchParams }: {
   searchParams: Record<string, string> & { source: string | undefined }
 }) { 
+
+  useEffect(() => {
+
+     lerpBrowser(1, 2, 0.5).then((result) => {  
+      console.debug('axxxx browser:', result)
+    })
+
+  }, [])
+
   const signMethods: ISignMethod[] = []
   if (!searchParams.source) {
       searchParams.source = encodeBase64String(serverConfig.NEXT_PUBLIC_SELF_URL)

@@ -11,7 +11,7 @@
       "displayName": "Web Config",
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/build/web",
-      "installDir": "${sourceDir}/workspaces/polaris-wasm",
+      "installDir": "${sourceDir}/public",
       "toolchainFile": "/home/applications/vcpkg/scripts/buildsystems/vcpkg.cmake",
       "cacheVariables": {
         "VCPKG_CHAINLOAD_TOOLCHAIN_FILE": {

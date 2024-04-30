@@ -8,6 +8,11 @@ let nextConfig = {
   reactStrictMode: true,
   experimental: {
     esmExternals: true,
+    outputFileTracingIncludes: {
+      '/': [
+        './workspaces/polaris-wasm/polaris-wasm.wasm'
+      ]
+    }
   },
   webpack: function (config, { isServer, dev }) {
     config.experiments = {
@@ -16,15 +21,9 @@ let nextConfig = {
       topLevelAwait: true,
       layers: true,
     };
-    if (isServer) {
-      config.output.webassemblyModuleFilename =
-        './../static/wasm/[modulehash].wasm'
-    } else {
-      config.output.webassemblyModuleFilename = 'static/wasm/[modulehash].wasm'
-    } 
     return config;
   },
-  //transpilePackages: ['polaris-wasm'],
+  transpilePackages: ['polaris-wasm-browser', 'polaris-wasm-server'],
   images: {
     remotePatterns: [
       {
@@ -50,30 +49,10 @@ let nextConfig = {
     ]
   },
   compress: process.env.ENV === 'production',
-    sassOptions: {
-  includePaths: [path.join(__dirname, 'styles')]
+  sassOptions: {
+    includePaths: [path.join(__dirname, 'styles')]
+  }
 }
-}
-
-
-// class WasmChunksFixPlugin {
-//   apply(compiler) {
-//     compiler.hooks.thisCompilation.tap('WasmChunksFixPlugin', (compilation) => {
-//       compilation.hooks.processAssets.tap(
-//         { name: 'WasmChunksFixPlugin' },
-//         (assets) =>
-//           Object.entries(assets).forEach(([pathname, source]) => {
-//             if (!pathname.match(/\.wasm$/)) return;
-//             compilation.deleteAsset(pathname);
-
-//             const name = pathname.split('/')[1];
-//             const info = compilation.assetsInfo.get(pathname);
-//             compilation.emitAsset(name, source, info);
-//           })
-//       );
-//     });
-//   }
-// }
 
 // 使用bundleAnalyzer插件
 nextConfig = bundleAnalyzerPlugin({

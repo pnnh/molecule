@@ -13,7 +13,9 @@ const sessionAtom = atom <SessionModel>({
             image: '',
             description: '',
             mail: '',
-            nickname: ''
+            nickname: '',
+            pk: '',
+            photo: ''
         },
         token: ''
     }
