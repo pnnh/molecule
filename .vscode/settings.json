@@ -58,5 +58,8 @@
       "mode": "auto"
     }
   ],
-  "files.autoSave": "afterDelay"
+  "files.autoSave": "afterDelay",
+  "files.associations": {
+    "sstream": "cpp"
+  }
 }

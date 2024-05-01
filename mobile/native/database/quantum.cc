@@ -1,7 +1,6 @@
 #include "quantum.h"
 #include <iostream>
 #include <sqlite3.h>
-
 #include <chrono>
 #include <iostream>
 #include <sstream>
@@ -46,7 +45,7 @@ void handle_rc(sqlite3 *db, int rc) {
 }
 
 int open_database(const char *path) {
-    std::cerr << "收到了2：" << path << std::endl;
+    std::cerr << "收到了2" << path << std::endl;
 
     auto currentDir = get_current_dir();
 

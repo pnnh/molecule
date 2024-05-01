@@ -1,6 +1,7 @@
-import QtQuick
-import QtQuick.Controls
-import QtQuick.Layouts
+import QtQuick 2.15
+import QtQuick.Controls 2.5
+import QtQuick.Layouts 1.3
+import "polaris"
 
 Rectangle {
     anchors.fill: parent
@@ -68,11 +69,34 @@ Rectangle {
                 }
                 Rectangle {
                     Layout.fillWidth: true
+                    Layout.fillHeight: true
                     color: "#FFFFFF"
-                    Text {
-                        text: qsTr("Hello Designw222")
-                        anchors.centerIn: parent
-                        font.family: Constants.font.family
+
+                    RowLayout {
+                        height: parent.height
+                        width: parent.width
+                        spacing: 0
+
+                        Rectangle {
+                            Layout.fillHeight: true
+                            Layout.preferredWidth: parent.width / 2 - 0.5
+                            color: "#FFFFFF"
+                            Text {
+                                text: qsTr("Hello Designw222")
+                                color: "green"
+                                anchors.centerIn: parent
+                                font.family: Constants.font.family
+                            }
+                        }
+                        Rectangle {
+                            Layout.preferredHeight: parent.height
+                            Layout.preferredWidth: 1
+                            color: "#e2e2e2"
+                        }
+
+                        Editor{
+
+                        }
                     }
                 }
             }

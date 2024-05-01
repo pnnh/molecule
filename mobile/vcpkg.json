@@ -1,23 +1,11 @@
 {
   "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
-  "name": "multiverse",
+  "name": "polaris-mobile",
   "version": "0.1.0",
   "dependencies": [
     {
       "name": "spdlog",
       "version>=": "1.9.0"
-    },
-    {
-      "name": "boost",
-      "version>=": "1.84.0"
-    },
-    {
-      "name": "inja",
-      "version>=": "3.4.0"
-    },
-    {
-      "name": "nlohmann-json",
-      "version>=": "3.11.3"
     },
     {
       "name": "cmark",
@@ -26,10 +14,6 @@
     {
       "name": "sqlite3",
       "version>=": "3.45.1"
-    },
-    {
-      "name": "libenvpp",
-      "version>=": "1.4.0"
     },
     {
       "name": "date",

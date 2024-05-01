@@ -1,8 +1,4 @@
-//
-// Created by linyangz on 2022/1/31.
-//
-
-#include "sqliteModel.h"
+#include "markdown.h"
 #include "sqlite/sqlite.h"
 
 sqliteModel::sqliteModel(QObject *parent) {

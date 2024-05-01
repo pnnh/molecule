@@ -23,7 +23,6 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 enable_testing()
 
 if (APPLE OR UNIX)
-    include(GNUInstallDirs)
     find_package(PkgConfig REQUIRED)
 endif()
 
@@ -37,14 +36,7 @@ endif ()
 # 设置生成clangd compile_commands.json文件，方便和IDE集成
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-include_directories(/opt/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-
-if (EMSCRIPTEN)
-        add_subdirectory(wasm)
-elseif(DEFINED VCPKG_TARGET_TRIPLET)
-        add_subdirectory(native)
-endif()
 
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
@@ -56,10 +48,6 @@ qt_policy(SET QTP0001 NEW)
 
 set(PROJECT_SOURCES
         main.cpp
-        models/videoListModel.cc
-        models/videoListModel.h
-        models/sqliteModel.cc
-        models/sqliteModel.h
         models/AppException.cpp
         models/AppException.h
         sqlite/sqlite.cc
@@ -95,6 +83,16 @@ target_link_libraries(polaris-desktop PRIVATE ${LINK_LIBRARIES})
 find_package(spdlog CONFIG REQUIRED)
 target_link_libraries(polaris-desktop PRIVATE spdlog::spdlog)
 
+# 查找并引用Markdown解析库
+find_package(cmark CONFIG REQUIRED)
+target_link_libraries(polaris-desktop PRIVATE cmark::cmark)
+
+# 查找并引用Sqlite解析库
+find_package(unofficial-sqlite3 CONFIG REQUIRED)
+target_link_libraries(polaris-desktop PRIVATE unofficial::sqlite3::sqlite3)
+
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/content/sources)
+
 qt6_add_qml_module(polaris-desktop
         URI quick
         VERSION 1.0
@@ -106,6 +104,10 @@ qt6_add_qml_module(polaris-desktop
         content/FxScrollBar.qml
         content/TaskList.qml
         content/NavList.qml
+        content/polaris/Editor.qml
         RESOURCES
         content/assets/images/flag-fill.png
-        content/assets/images/files.svg)
+        content/assets/images/files.svg
+        SOURCES 
+        content/sources/markdown.h
+        content/sources/markdown.cpp)
