@@ -49,7 +49,7 @@
   "C_Cpp.inlayHints.autoDeclarationTypes.enabled": true,
   "C_Cpp.intelliSenseEngine": "default",
   "C_Cpp.intelliSenseEngineFallback": "disabled",
-  "C_Cpp.clang_format_sortIncludes": true,
+  "C_Cpp.clang_format_sortIncludes": false,
   "C_Cpp.codeAnalysis.clangTidy.enabled": true,
   "C_Cpp.errorSquiggles": "enabled",
   "eslint.format.enable": true,
@@ -60,6 +60,7 @@
   ],
   "files.autoSave": "afterDelay",
   "files.associations": {
-    "sstream": "cpp"
+    "sstream": "cpp",
+    "*.rh": "cpp"
   }
 }
