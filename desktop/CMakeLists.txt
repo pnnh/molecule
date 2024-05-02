@@ -33,6 +33,13 @@ if (CCACHE_PROGRAM)
     set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
 endif ()
 
+# Clang-Tidy配置
+find_program(CLANG_TIDY_BIN NAMES "clang-tidy")
+if(CLANG_TIDY_BIN)
+    message(STATUS "Found clang-tidy: ${CLANG_TIDY_BIN}")
+  set(CMAKE_CXX_CLANG_TIDY "${CLANG_TIDY_BIN}" "-checks=*, -cppcoreguidelines-*, -modernize-*, -readability-*")
+endif()
+
 # 设置生成clangd compile_commands.json文件，方便和IDE集成
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
@@ -105,9 +112,15 @@ qt6_add_qml_module(polaris-desktop
         content/TaskList.qml
         content/NavList.qml
         content/polaris/Editor.qml
+        content/polaris/Sidebar.qml
+        content/polaris/LibraryItem.qml
         RESOURCES
         content/assets/images/flag-fill.png
         content/assets/images/files.svg
+        content/assets/material/symbols/web/description/description_48px.svg
+        content/assets/material/symbols/web/description/description_fill1_48px.svg
+        content/assets/material/symbols/web/keyboard_arrow_down/keyboard_arrow_down_48px.svg
+        content/assets/material/symbols/web/keyboard_arrow_down/keyboard_arrow_down_fill1_48px.svg
         SOURCES 
         content/sources/markdown.h
         content/sources/markdown.cpp)

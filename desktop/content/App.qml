@@ -10,6 +10,8 @@ Rectangle {
     radius: 8
     opacity: 1
 
+    property bool showSidebar: true
+
     ColumnLayout {
         anchors.fill: parent
         anchors.top: parent.top
@@ -32,7 +34,7 @@ Rectangle {
                     Layout.preferredHeight: parent.height
                     color: "transparent"
                     width: 48
-                    Layout.alignment: Qt.AlignHLeft
+                    Layout.alignment: Qt.AlignLeft
 
                     ColumnLayout {
                         width: parent.width - 16
@@ -43,29 +45,38 @@ Rectangle {
                             Layout.alignment: Qt.AlignTop | Qt.AlignCenter
                             width: 24
                             height: 24
+                            color: "transparent"
                             Image {
                                 anchors.fill: parent
-                                source: "qrc:/qt/qml/quick/assets/images/files.svg"
+                                source: "qrc:/qt/qml/quick/content/assets/material/symbols/web/description/description_48px.svg"
+                                MouseArea {
+                                    anchors.fill: parent
+                                    onClicked: () => showSidebar = !showSidebar
+                                }
                             }
                         }
                     }
                 }
                 Rectangle {
-                    Layout.alignment: Qt.AlignHLeft
+                    Layout.alignment: Qt.AlignLeft
                     Layout.preferredHeight: parent.height
                     width: 1
                     color: "#e2e2e2"
                 }
                 Rectangle {
-                    width: 280
+                    width: 240
+                    visible: showSidebar
                     Layout.preferredHeight: parent.height
                     color: "transparent"
+
+                    Sidebar {}
                 }
                 Rectangle {
-                    Layout.alignment: Qt.AlignHLeft
+                    Layout.alignment: Qt.AlignLeft
                     Layout.preferredHeight: parent.height
                     width: 1
                     color: "#e2e2e2"
+                    visible: showSidebar
                 }
                 Rectangle {
                     Layout.fillWidth: true
@@ -85,7 +96,6 @@ Rectangle {
                                 text: qsTr("Hello Designw222")
                                 color: "green"
                                 anchors.centerIn: parent
-                                font.family: Constants.font.family
                             }
                         }
                         Rectangle {
@@ -94,15 +104,10 @@ Rectangle {
                             color: "#e2e2e2"
                         }
 
-                        Editor{
-
-                        }
+                        Editor {}
                     }
                 }
             }
         }
-
-
     }
 }
-

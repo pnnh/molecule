@@ -78,7 +78,8 @@
     },
     {
       "name": "windows",
-      "configurePreset": "windows"
+      "configurePreset": "windows",
+      "jobs": 8
     }
   ],
   "testPresets": [

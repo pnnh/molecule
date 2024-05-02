@@ -15,7 +15,6 @@ Rectangle {
         width: parent.width
         spacing: 0
 
-
         Rectangle {
             Layout.fillWidth: true
             Layout.preferredHeight: parent.height / 2
@@ -26,14 +25,16 @@ Rectangle {
                 width: parent.width - 32
                 height: parent.height - 32
                 anchors.centerIn: parent
-                font.family: Constants.font.family
-                background: Rectangle { color: "#FFFFFF" }
+                background: Rectangle {
+                    color: "#FFFFFF"
+                }
                 placeholderText: qsTr("输入Markdown内容")
 
                 onTextChanged: () => {
-                   console.log('text change', this.text)
-                   markdown = this.text ? markdownModel.markdownToHtml(this.text) : ""
-                }
+                                   console.log('text change', this.text)
+                                   markdown = this.text ? markdownModel.markdownToHtml(
+                                                              this.text) : ""
+                               }
             }
         }
 
@@ -60,10 +61,7 @@ Rectangle {
                 width: parent.width - 32
                 height: parent.height - 32
                 anchors.centerIn: parent
-                font.family: Constants.font.family
             }
         }
     }
-
 }
-

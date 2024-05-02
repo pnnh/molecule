@@ -19,12 +19,12 @@ Window {
 
     onWidthChanged: {
         console.debug("onWidthChanged")
-        app.windowResize()
+        //app.windowResize()
     }
 
     onHeightChanged: {
         console.debug("onHeightChanged")
-        app.windowResize()
+        //app.windowResize()
     }
 
     App {
