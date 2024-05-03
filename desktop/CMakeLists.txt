@@ -103,6 +103,18 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/content/sources)
 qt6_add_qml_module(polaris-desktop
         URI quick
         VERSION 1.0
+        RESOURCES
+        content/assets/images/flag-fill.png
+        content/assets/images/files.svg
+        content/assets/material/symbols/web/description/description_48px.svg
+        content/assets/material/symbols/web/description/description_fill1_48px.svg
+        content/assets/material/symbols/web/keyboard_arrow_down/keyboard_arrow_down_48px.svg
+        content/assets/material/symbols/web/keyboard_arrow_down/keyboard_arrow_down_fill1_48px.svg
+        SOURCES
+        content/sources/markdown.h
+        content/sources/markdown.cpp
+        content/sources/PartitionModel.h
+        content/sources/PartitionModel.cpp
         QML_FILES
         content/Main.qml
         content/list_videos.qml
@@ -114,13 +126,4 @@ qt6_add_qml_module(polaris-desktop
         content/polaris/Editor.qml
         content/polaris/Sidebar.qml
         content/polaris/LibraryItem.qml
-        RESOURCES
-        content/assets/images/flag-fill.png
-        content/assets/images/files.svg
-        content/assets/material/symbols/web/description/description_48px.svg
-        content/assets/material/symbols/web/description/description_fill1_48px.svg
-        content/assets/material/symbols/web/keyboard_arrow_down/keyboard_arrow_down_48px.svg
-        content/assets/material/symbols/web/keyboard_arrow_down/keyboard_arrow_down_fill1_48px.svg
-        SOURCES 
-        content/sources/markdown.h
-        content/sources/markdown.cpp)
+        content/polaris/PartitionItem.qml)

@@ -2,12 +2,15 @@ import QtQuick 2.15
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.3
 
+import quick 1.0
+
 ColumnLayout {
     anchors.fill: parent
     spacing: 0
 
+    property string currentPartition: "示例分区"
     property string currentLibrary: "示例笔记库"
-    property bool showLibrarySelector: true
+    property bool showLibrarySelector: false
 
     Rectangle {
         Layout.preferredHeight: 32
@@ -50,6 +53,11 @@ ColumnLayout {
         }
     }
 
+    function selectLibrary(library) {
+        currentLibrary = library
+        showLibrarySelector = false
+    }
+
     Rectangle {
         id: librarySelector
         Layout.preferredHeight: parent.height - 32
@@ -58,22 +66,20 @@ ColumnLayout {
         visible: showLibrarySelector
 
         ColumnLayout {
-
-            // anchors.fill: parent
             anchors.left: parent.left
             anchors.right: parent.right
             spacing: 0
             LibraryItem {
                 library: "第一个笔记库"
-                onCurrentLibraryChanged: library => currentLibrary = library
+                onCurrentLibraryChanged: library => selectLibrary(library)
             }
             LibraryItem {
                 library: "另一个笔记库"
-                onCurrentLibraryChanged: library => currentLibrary = library
+                onCurrentLibraryChanged: library => selectLibrary(library)
             }
             LibraryItem {
                 library: "还有一个图片库"
-                onCurrentLibraryChanged: library => currentLibrary = library
+                onCurrentLibraryChanged: library => selectLibrary(library)
             }
         }
     }
@@ -84,5 +90,42 @@ ColumnLayout {
         Layout.preferredWidth: parent.width
         Layout.alignment: Qt.AlignTop
         visible: !showLibrarySelector
+
+        // ColumnLayout {
+        //     anchors.left: parent.left
+        //     anchors.right: parent.right
+        //     spacing: 0
+
+        //     PartitionItem {
+        //         partition: "第一个分区"
+        //         onCurrentPartitionChanged: partition => currentPartition = partition
+        //     }
+        //     PartitionItem {
+        //         partition: "第二个分区"
+        //         onCurrentPartitionChanged: partition => currentPartition = partition
+        //     }
+        // }
+
+        // Component {
+        //     id: partitionDelegate
+        //     delegate: PartitionItem {
+        //         partition: 'name'
+        //         onCurrentPartitionChanged: partition => currentPartition = partition
+        //     }
+        // }
+        ListView {
+            anchors.fill: parent
+            anchors.left: parent.left
+            anchors.right: parent.right
+            boundsBehavior: Flickable.StopAtBounds
+            model: PartitionModel {}
+            delegate: PartitionItem {
+                onCurrentPartitionChanged: partition => {
+                                               console.log('partition',
+                                                           partition)
+                                               currentPartition = partition
+                                           }
+            }
+        }
     }
 }

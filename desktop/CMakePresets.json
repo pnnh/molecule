@@ -58,7 +58,9 @@
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
         "Boost_NO_WARN_NEW_VERSIONS": "ON",
-        "CMAKE_PREFIX_PATH": "F:\\Qt\\6.7.0\\msvc2019_64\\lib\\cmake"
+        "CMAKE_PREFIX_PATH": "F:\\Qt\\6.7.0\\msvc2019_64\\lib\\cmake",
+        "QT_DECLARATIVE_DEBUG": "ON",
+        "QT_QML_DEBUG": "ON"
       },
       "environment": {}
     }

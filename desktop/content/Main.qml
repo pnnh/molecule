@@ -1,4 +1,3 @@
-
 import QtQuick
 import QtQuick.Window
 
@@ -11,8 +10,8 @@ Window {
     title: "Emotion Design"
 
     Component.onCompleted: {
-        setX(Screen.width / 2 - width / 2);
-        setY(Screen.height / 2 - height / 2);
+        setX(Screen.width / 2 - width / 2)
+        setY(Screen.height / 2 - height / 2)
         x = Screen.width / 2 - width / 2
         y = Screen.height / 2 - height / 2
     }
