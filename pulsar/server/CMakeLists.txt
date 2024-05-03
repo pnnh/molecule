@@ -40,6 +40,13 @@ endif ()
 # 设置生成clangd compile_commands.json文件，方便和IDE集成
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+# Clang-Tidy配置
+find_program(CLANG_TIDY_BIN NAMES "clang-tidy")
+if(CLANG_TIDY_BIN)
+    message(STATUS "Found clang-tidy: ${CLANG_TIDY_BIN}")
+  set(CMAKE_CXX_CLANG_TIDY "${CLANG_TIDY_BIN}" "-checks=*, -cppcoreguidelines-*, -modernize-*, -readability-*")
+endif()
+
 include_directories(/opt/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
