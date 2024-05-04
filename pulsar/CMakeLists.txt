@@ -2,10 +2,6 @@ cmake_minimum_required(VERSION 3.28)
 
 project(pulsar VERSION 0.1 LANGUAGES C CXX)
 
-if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-        enable_language(Swift)
-endif()
-
 # 设置语言标准
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -21,10 +17,10 @@ enable_testing()
 find_package(PkgConfig REQUIRED)
 
 # 查找并设置ccache
-# find_program(CCACHE_PROGRAM ccache)
-# if (CCACHE_PROGRAM)
-#     set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
-# endif ()
+find_program(CCACHE_PROGRAM ccache)
+if (CCACHE_PROGRAM)
+    set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
+endif ()
 
 # 设置生成clangd compile_commands.json文件，方便和IDE集成
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -41,19 +37,3 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 # add_subdirectory(wetee)
 add_subdirectory(modules)
-
-if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-        add_library(cxx-support SHARED
-                ./Sources/CxxTest/CxxTest.cpp
-                ./Sources/CxxTest/CxxTest.h)
-
-        target_compile_options(cxx-support PRIVATE
-                -fno-exceptions
-                -fignore-exceptions)
-
-        target_include_directories(cxx-support PUBLIC ${CMAKE_SOURCE_DIR}/Sources/CxxTest)
-
-        add_executable(CxxInterop ./Sources/CxxInterop/main.swift)
-        target_compile_options(CxxInterop PRIVATE "SHELL:-cxx-interoperability-mode=default")
-        target_link_libraries(CxxInterop PRIVATE cxx-support)
-endif()

@@ -106,6 +106,30 @@
             "preLaunchTask": "pulsar-test-build",
             "setupCommands": [],
             "envFile": "${workspaceFolder}/build/linux/pulsar/server/test/assets/.env.local"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "sourceLanguages": [
+                "swift"
+            ],
+            "args": [],
+            "cwd": "${workspaceFolder:multiverse}/pulsar",
+            "name": "Debug CxxInterop (pulsar)",
+            "program": "${workspaceFolder:multiverse}/pulsar/.build/debug/CxxInterop",
+            "preLaunchTask": "swift: Build Debug CxxInterop (pulsar)"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "sourceLanguages": [
+                "swift"
+            ],
+            "args": [],
+            "cwd": "${workspaceFolder:multiverse}/pulsar",
+            "name": "Release CxxInterop (pulsar)",
+            "program": "${workspaceFolder:multiverse}/pulsar/.build/release/CxxInterop",
+            "preLaunchTask": "swift: Build Release CxxInterop (pulsar)"
         }
     ]
 }
