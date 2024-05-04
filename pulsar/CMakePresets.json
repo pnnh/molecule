@@ -26,7 +26,6 @@
       "installDir": "${sourceDir}/install/linux-clang",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
-        "Boost_NO_WARN_NEW_VERSIONS": "ON",
         "CMAKE_C_COMPILER": "/usr/bin/clang",
         "CMAKE_CXX_COMPILER": "/usr/bin/clang++"
       },

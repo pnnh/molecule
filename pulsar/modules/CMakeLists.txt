@@ -4,7 +4,7 @@ add_library(foo)
 target_sources(foo
   PUBLIC
     FILE_SET CXX_MODULES FILES
-      foo.ixx
+      foo.cxx
 )
 
 add_executable(hello main.cxx)
