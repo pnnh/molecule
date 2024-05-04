@@ -1,8 +1,13 @@
 .idea/
 build-*
 cmake-build-*
+cmake-build/
+build/
 CMakeLists.txt.user
 install/
 .cache/
 .xmake/
-cmake-build/
+GTAGS
+GPATH
+GRTAGS
+out
