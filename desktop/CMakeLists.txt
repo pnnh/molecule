@@ -70,7 +70,11 @@ qt6_add_executable(polaris-desktop MANUAL_FINALIZATION
         models/AppException.cpp
         models/AppException.h
         services/sqlite_service.cpp
-        services/sqlite_service.h)
+        services/sqlite_service.h
+        services/markdown_service.cpp
+        services/markdown_service.h
+        tests/tests.h
+        tests/tests.cpp)
 
 # 查找并引用日志库
 find_package(spdlog CONFIG REQUIRED)
@@ -125,3 +129,5 @@ qt6_add_qml_module(polaris-desktop
 
 add_test(NAME polaris-desktop-case COMMAND polaris-desktop sqlite)
 set_tests_properties(polaris-desktop-case PROPERTIES ENVIRONMENT PL_DSN=xyz)
+
+add_test(NAME polaris-tests-markdown COMMAND polaris-desktop markdown)

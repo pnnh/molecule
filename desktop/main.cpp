@@ -1,4 +1,3 @@
-#include <QDebug>
 #include <QGuiApplication>
 #include <QLoggingCategory>
 #include <QQmlApplicationEngine>
@@ -8,6 +7,7 @@
 #include <iostream>
 #include <spdlog/spdlog.h>
 #include "services/sqlite_service.h"
+#include "tests/tests.h"
 
 #if TARGET_OS_MAC
 #include "platform/macos/objc_code.h"
@@ -63,14 +63,11 @@ int main(int argc, char *argv[]) {
             QStringLiteral("This example is powered by qmltc!"));
 
     // 执行单元测试用例
-    if (argc == 2 && strcmp(argv[1], "sqlite") == 0) {
-        auto database_path = QGuiApplication::applicationDirPath() + "/venus.sqlite";
-        services::sqlite3_service service(database_path);
-        auto version = service.sql_version();
-
-        qDebug() << "sqlite3 version: " << version;
-        int isOk = (int) version.indexOf("3.");
-        return isOk;
+    if (argc == 2) {
+        if (strcmp(argv[1], "sqlite") == 0)
+            return TestSqliteVersion();
+        if (strcmp(argv[1], "markdown") == 0)
+            return TestMarkdown();
     }
 
     QQmlApplicationEngine engine;
@@ -89,5 +86,5 @@ int main(int argc, char *argv[]) {
     /*auto svc = std::make_shared<services::sqlite3_service>(dbName);
     std::cout << "macos call: " << svc->sqlite3Version().toStdString() << std::endl;*/
 
-    return app.exec();
+    return QGuiApplication::exec();
 }
