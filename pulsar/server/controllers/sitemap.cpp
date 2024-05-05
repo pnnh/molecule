@@ -1,13 +1,10 @@
 #include "sitemap.h"
-#include "pulsar/server/common/utils/datetime.h"
-#include "pulsar/server/main/services/business/article.h"
+#include "common/utils/datetime.h"
+#include "server/services/business/article.h"
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
-#include <fstream>
-#include <iostream>
 
-void HandleSitemap(WFHttpTask *httpTask)
-{
+void HandleSitemap(WFHttpTask *httpTask) {
   protocol::HttpRequest *request = httpTask->get_req();
   protocol::HttpResponse *response = httpTask->get_resp();
 
@@ -25,13 +22,11 @@ void HandleSitemap(WFHttpTask *httpTask)
   pt.add_child("urlset.url", homeNode.get_child("url"));
 
   auto articlesList = MessageService().selectMessages(100);
-  if (articlesList == std::nullopt)
-  {
+  if (articlesList == std::nullopt) {
     response->set_status_code("500");
     return;
   }
-  for (const auto &article : *articlesList)
-  {
+  for (const auto &article : *articlesList) {
     boost::property_tree::ptree urlNode;
     urlNode.put("url.loc", "https://sfx.xyz/article/read/" + article.uid);
     urlNode.put("url.lastmod", formatTime(article.update_time));

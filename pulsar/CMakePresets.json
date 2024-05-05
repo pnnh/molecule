@@ -12,10 +12,9 @@
       "binaryDir": "${sourceDir}/build/linux-gcc",
       "installDir": "${sourceDir}/install/linux-gcc",
       "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug",
-        "Boost_NO_WARN_NEW_VERSIONS": "ON",
-        "CMAKE_C_COMPILER": "/usr/bin/gcc-14",
-        "CMAKE_CXX_COMPILER": "/usr/bin/g++-14"
+        "CMAKE_BUILD_TYPE": "Debug"
+        // "CMAKE_C_COMPILER": "/usr/bin/gcc-14",
+        // "CMAKE_CXX_COMPILER": "/usr/bin/g++-14"
       },
       "environment": {}
     },

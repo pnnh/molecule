@@ -1,69 +1,83 @@
-cmake_minimum_required(VERSION 3.27)
+add_executable(pulsar-server
+    main.cpp
+    tests/tests.h
+    tests/tests.cpp
+    process.cpp
+    process.h
+    router.cpp
+    router.h
+    controllers/article.cpp
+    controllers/article.h
+    controllers/sitemap.cpp
+    controllers/sitemap.h
+    models/codes.cpp
+    models/codes.h
+    models/article.cpp
+    models/article.h
+    services/config/appconfig.cpp
+    services/config/appconfig.h
+    services/business/article.cpp
+    services/business/article.h)
 
-project(pulsar VERSION 0.1 LANGUAGES C CXX)
+# 查找并引用Boost库
+find_package(Boost COMPONENTS system thread chrono filesystem url REQUIRED) 
+target_include_directories(pulsar-server PRIVATE ${Boost_INCLUDE_DIRS})
+target_link_libraries(pulsar-server PRIVATE ${Boost_LIBRARIES})
 
-if (WIN32)
-        enable_language(CSharp)
-        set(CMAKE_CSharp_FLAGS "${CMAKE_CSharp_FLAGS} /platform:x64 /langversion:latest")
-endif ()
+# 查找Workflow库，实现HTTP服务
+set(WORKFLOW_BUILD_STATIC_RUNTIME ON)
+find_library(workflow_lib workflow)
+target_link_libraries(pulsar-server PRIVATE ${workflow_lib})
 
-if (APPLE)
-        enable_language(OBJC OBJCXX Swift)
-endif ()
+# 查找并引用folly库
+find_package(folly REQUIRED)
+target_link_libraries(pulsar-server PRIVATE ${FOLLY_LIBRARIES})
 
-# 设置语言标准
-set(CMAKE_CXX_STANDARD 23)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-if (WIN32)
-        set(CMAKE_C_STANDARD 17)
-else()
-        set(CMAKE_C_STANDARD 23)
-endif()
-set(CMAKE_C_STANDARD_REQUIRED ON)
+# 查找并引用Postgresql库
+find_package(PostgreSQL REQUIRED)
+pkg_check_modules(PQXX REQUIRED libpqxx)
+message(STATUS "PQXX_LIBRARIES: ${PQXX_LINK_LIBRARIES}")
+target_link_libraries(pulsar-server PRIVATE PostgreSQL::PostgreSQL ${PQXX_LINK_LIBRARIES})
 
-# 设置开启显示详细的构建过程
-set(CMAKE_VERBOSE_MAKEFILE ON)
+# 查找并引用日志库
+find_library(spdlog_lib spdlog)
+target_link_libraries(pulsar-server PRIVATE ${spdlog_lib})
 
-# 启用测试
-enable_testing()
+# 查找JSON库
+find_package(nlohmann_json CONFIG REQUIRED)
+target_link_libraries(pulsar-server PRIVATE nlohmann_json::nlohmann_json)
 
-include(GNUInstallDirs)
+# 查找并链接模板库
+find_package(inja CONFIG REQUIRED)
+target_link_libraries(pulsar-server PRIVATE pantor::inja)
 
-find_package(PkgConfig REQUIRED)
+# 查找并引用env解析库
+find_package(libenvpp CONFIG REQUIRED)
+target_include_directories(pulsar-server PRIVATE /opt/include)
+target_link_libraries(pulsar-server PRIVATE libenvpp::libenvpp)
 
-# 查找并设置ccache
-find_program(CCACHE_PROGRAM ccache)
-if (CCACHE_PROGRAM)
-    set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
-endif ()
+# 查找并引用日期库
+find_package(date CONFIG REQUIRED)
+target_link_libraries(pulsar-server PRIVATE date::date-tz)
 
-# 设置生成clangd compile_commands.json文件，方便和IDE集成
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+# 拷贝资源文件到二进制目录，方便调试
+file(COPY assets DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
-# Clang-Tidy配置
-find_program(CLANG_TIDY_BIN NAMES "clang-tidy")
-if(CLANG_TIDY_BIN)
-    message(STATUS "Found clang-tidy: ${CLANG_TIDY_BIN}")
-  set(CMAKE_CXX_CLANG_TIDY "${CLANG_TIDY_BIN}" "-checks=*, -cppcoreguidelines-*, -modernize-*, -readability-*")
-endif()
+# 查找并引用日志库
+find_package(spdlog CONFIG REQUIRED)
+target_link_libraries(pulsar-server PRIVATE spdlog::spdlog)
 
-include_directories(/opt/include)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+# 引用公共库
+target_link_libraries(pulsar-server PRIVATE pulsar-common)
 
-if (EMSCRIPTEN)
-        add_subdirectory(pulsar/web)
-elseif(DEFINED VCPKG_TARGET_TRIPLET)
-        add_subdirectory(pulsar/native)
-endif()
+# 配置安装内容
+install(TARGETS pulsar-server
+        RUNTIME_DEPENDENCY_SET pulsar-server-dependencies
+        DESTINATION lib)
+install(RUNTIME_DEPENDENCY_SET pulsar-server-dependencies)
 
-if (UNIX)
-        add_subdirectory(pulsar/server)
-        #add_subdirectory(pulsar/wetee)
-endif()
 
-if (WIN32)
-        if(NOT DEFINED VCPKG_TARGET_TRIPLET)
-                # 当前未采用VCPKG工具链，可以编译C#项目
-                add_subdirectory(polaris-server)
-        endif(NOT DEFINED VCPKG_TARGET_TRIPLET)
-endif ()
+# 添加测试用例
+add_test(NAME pulsar-tests-md5 COMMAND pulsar-server md5)
+add_test(NAME pulsar-tests-dsn COMMAND pulsar-server dsn)
+set_tests_properties(pulsar-tests-dsn PROPERTIES ENVIRONMENT PL_DSN=xyz)

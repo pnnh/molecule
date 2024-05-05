@@ -20,9 +20,16 @@
     }
   },
   "files.watcherExclude": {
-    "**/.git/objects/**": true,
-    "**/.git/subtree-cache/**": true,
-    "**/node_modules/*/**": true
+    "**/.git/*/**": true,
+    "**/node_modules/*/**": true,
+    "**/dist/*/**": true,
+    "**/build/*/**": true,
+    "**/cmake-build/*/**": true,
+    "**/install/*/**": true,
+    "**/coverage/*/**": true,
+    "**/.build/*/**": true,
+    "**/target/*/**": true,
+    "**/.xmake/*/**": true
   },
   "search.exclude": {
     "**/.git": true,

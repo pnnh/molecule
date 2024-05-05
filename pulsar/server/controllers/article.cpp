@@ -1,21 +1,19 @@
-#include "pulsar/server/main/controllers/article.h"
-#include "pulsar/server/main/models/codes.h"
-#include "pulsar/server/main/services/business/article.h"
+#include "server/controllers/article.h"
+#include "common/utils/datetime.h"
+#include "common/utils/query.h"
+#include "server/services/business/article.h"
 #include <boost/range/algorithm.hpp>
 #include <boost/url.hpp>
 #include <boost/uuid/uuid.hpp>
 #include <boost/uuid/uuid_generators.hpp>
 #include <boost/uuid/uuid_io.hpp>
 #include <nlohmann/json.hpp>
-#include <pulsar/server/common/utils/datetime.h>
-#include <pulsar/server/common/utils/query.h>
 #include <spdlog/spdlog.h>
 #include <workflow/HttpMessage.h>
 
 using json = nlohmann::json;
 
-void HandleArticleGet(WFHttpTask *httpTask)
-{
+void HandleArticleGet(WFHttpTask *httpTask) {
 
   protocol::HttpRequest *request = httpTask->get_req();
   protocol::HttpResponse *response = httpTask->get_resp();
@@ -52,15 +50,13 @@ void HandleArticleGet(WFHttpTask *httpTask)
   auto uid = queryParam.getString("uid");
   auto nid = queryParam.getLong("nid");
 
-  if (uid == std::nullopt && nid == std::nullopt)
-  {
+  if (uid == std::nullopt && nid == std::nullopt) {
     response->set_status_code("400");
     return;
   }
 
   auto model = MessageService().findMessage(uid, nid);
-  if (model == std::nullopt)
-  {
+  if (model == std::nullopt) {
     response->set_status_code("404");
     return;
   }
@@ -183,8 +179,7 @@ void HandleArticleGet(WFHttpTask *httpTask)
 
 // }
 
-void HandleArticles(WFHttpTask *httpTask)
-{
+void HandleArticles(WFHttpTask *httpTask) {
 
   protocol::HttpRequest *request = httpTask->get_req();
   protocol::HttpResponse *response = httpTask->get_resp();
@@ -199,31 +194,26 @@ void HandleArticles(WFHttpTask *httpTask)
   auto fullUrl = std::string("http://localhost") + request_uri;
 
   auto url = boost::urls::parse_uri(fullUrl);
-  if (url.has_error())
-  {
+  if (url.has_error()) {
     spdlog::error("url parse error: {}", url.error().message());
     response->set_status_code("500");
     return;
   }
 
   auto it = boost::range::find_if(
-      url->params(), [](boost::urls::param p)
-      { return p.key == "limit"; });
+      url->params(), [](boost::urls::param p) { return p.key == "limit"; });
 
   int limit = 10;
   std::string limitString;
-  if (it != url->params().end())
-  {
+  if (it != url->params().end()) {
     limitString = (*it).value;
   }
-  if (!limitString.empty())
-  {
+  if (!limitString.empty()) {
     limit = std::stoi(limitString);
   }
 
   auto result = MessageService().selectMessages(limit);
-  if (result == std::nullopt)
-  {
+  if (result == std::nullopt) {
     response->set_status_code("404");
     return;
   }
@@ -231,8 +221,7 @@ void HandleArticles(WFHttpTask *httpTask)
   auto count = MessageService().count();
 
   json range = json::array();
-  for (auto &m : *result)
-  {
+  for (auto &m : *result) {
     json item = {
         {"uid", m.uid},
         {"title", m.title},

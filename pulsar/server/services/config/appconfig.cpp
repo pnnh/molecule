@@ -1,6 +1,5 @@
 #include "appconfig.h"
 #include <boost/algorithm/string/split.hpp>
-#include <iostream>
 #include <libenvpp/env.hpp>
 #include <spdlog/spdlog.h>
 

@@ -3,14 +3,13 @@
 //
 
 #include "http_connection.h"
-#include "pulsar/server/common/utils/md5.h"
 #include "server/handlers/index.h"
 #include "server/handlers/sitemap.h"
+#include "server/common/utils/md5.h "
 #include "services/markdown/markdown.h"
 #include "utils//mime.h"
 #include <folly/Uri.h>
 #include <iostream>
-#include <utility>
 
 void http_connection::read_request() {
   auto self = shared_from_this();
@@ -106,7 +105,7 @@ void http_connection::create_response() {
     boost::beast::ostream(response_.body())
         << "md5(" << s << ") = " << toString(digest) << '\n';
   } else if (uri.path() == "/markdown") {
-    //HandleMarkdown(response_);
+    // HandleMarkdown(response_);
   } else if (isArticle) {
     HandleMarkdown2(request_, response_);
   } else if (uri.path() == "/") {

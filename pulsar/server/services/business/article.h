@@ -5,9 +5,9 @@
 #ifndef PULSAR_MESSAGE_SERVICE_H
 #define PULSAR_MESSAGE_SERVICE_H
 
-#include "pulsar/server/main/models/article.h"
+#include "server/models/article.h"
 #include <optional>
-#include <pqxx/pqxx>
+//#include <pqxx/pqxx>
 #include <vector>
 
 class MessageService
@@ -30,7 +30,7 @@ public:
     long count();
 
 private:
-    pqxx::connection connection;
+   // pqxx::connection connection;
 };
 
 #endif // PULSAR_MESSAGE_SERVICE_H

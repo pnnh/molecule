@@ -3,15 +3,14 @@
 //  MarkdownParser
 //
 
-extern "C"
-{
+extern "C" {
 #include "libMultiMarkdown/libMultiMarkdown.h"
 #include <stdio.h>
 }
 
 #include "markdown.h"
 #include "mdtransform.hpp" // 需要实现的 Markdown 解析类
-#include "pulsar/server/main/services/business/article.h"
+#include "servermainservicesbusinessarticle.h "
 #include <QDomDocument>
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/replace.hpp>
@@ -33,8 +32,7 @@ extern "C"
 #include <spdlog/spdlog.h>
 
 void HandleMarkdown(
-    boost::beast::http::response<boost::beast::http::dynamic_body> &response_)
-{
+    boost::beast::http::response<boost::beast::http::dynamic_body> &response_) {
 
   // 装载构造 Markdown 文件
   MarkdownTransform transformer("assets/test.md");
@@ -62,8 +60,7 @@ void HandleMarkdown(
 }
 
 std::string render_html(ArticleModel &article, std::string body_html,
-                        std::string toc_html)
-{
+                        std::string toc_html) {
   inja::Environment env;
 
   nlohmann::json data;
@@ -80,14 +77,14 @@ std::string render_html(ArticleModel &article, std::string body_html,
   //  data["keywords"] = article.keywords;
   //  data["description"] = article.description;
 
-  env.add_callback("reslink", 2, [](inja::Arguments &args)
-                   {
+  env.add_callback("reslink", 2, [](inja::Arguments &args) {
     auto debugUri = args.at(0)->get<std::string>();
     auto releaseUri = args.at(1)->get<std::string>();
 #ifndef NDEBUG
     return debugUri;
 #endif
-    return releaseUri; });
+    return releaseUri;
+  });
 
   inja::Template headmeta_template =
       env.parse_template("assets/templates/partial/headmeta.html");
@@ -115,8 +112,7 @@ std::string render_html(ArticleModel &article, std::string body_html,
   return result;
 }
 
-std::string fill_toc(QDomDocument &doc, int header_level)
-{
+std::string fill_toc(QDomDocument &doc, int header_level) {
   auto header_title = fmt::format("h{}", header_level);
   auto h1Nodes = doc.elementsByTagName(QString::fromStdString(header_title));
   spdlog::debug("fill_toc: {} {}", header_title, h1Nodes.count());
@@ -125,8 +121,7 @@ std::string fill_toc(QDomDocument &doc, int header_level)
       "<div class='toc-item' style='padding-left: calc(8px*{});'>"
       "<a class='fx-link' href='#{}' title='{}'>{}</a>"
       "</div>\n";
-  for (int i = 0; i < h1Nodes.count(); i++)
-  {
+  for (int i = 0; i < h1Nodes.count(); i++) {
     QDomElement node = h1Nodes.at(i).toElement();
     auto header_text = node.text().toStdString();
     spdlog::debug("h1node: {}", header_text);
@@ -136,14 +131,12 @@ std::string fill_toc(QDomDocument &doc, int header_level)
   return toc_list.str();
 }
 
-std::string render_toc(std::string body_html, std::string article_title)
-{
+std::string render_toc(std::string body_html, std::string article_title) {
   QDomDocument doc("document");
   // spdlog::debug("render_toc: {}", body_html);
   QString bodyHtmlQStr = QString::fromStdString(body_html);
   QString errorString;
-  if (!doc.setContent(bodyHtmlQStr, &errorString))
-  {
+  if (!doc.setContent(bodyHtmlQStr, &errorString)) {
     spdlog::error("toc QDomDocument未初始化成功: {}",
                   errorString.toStdString());
     return "";
@@ -155,8 +148,7 @@ std::string render_toc(std::string body_html, std::string article_title)
   std::stringstream toc_list;
   toc_list << fmt::format(toc_templ, 0, article_title, article_title,
                           article_title);
-  for (int n = 1; n <= 6; n++)
-  {
+  for (int n = 1; n <= 6; n++) {
     toc_list << fill_toc(doc, n);
   }
 
@@ -165,10 +157,8 @@ std::string render_toc(std::string body_html, std::string article_title)
 
 void HandleMarkdown2(
     boost::beast::http::request<boost::beast::http::dynamic_body> &request_,
-    boost::beast::http::response<boost::beast::http::dynamic_body> &response_)
-{
-  try
-  {
+    boost::beast::http::response<boost::beast::http::dynamic_body> &response_) {
+  try {
     auto url = "http://localhost" + std::string(request_.target());
 
     folly::Uri uri(url);
@@ -181,8 +171,7 @@ void HandleMarkdown2(
     auto pk = queryPk;
 
     auto article = MessageService().findMessage(pk);
-    if (article == std::nullopt)
-    {
+    if (article == std::nullopt) {
       spdlog::error("queryArticle not found");
       return;
     }
@@ -238,9 +227,7 @@ void HandleMarkdown2(
     response_.set(boost::beast::http::field::content_type, "text/html");
 
     boost::beast::ostream(response_.body()) << result;
-  }
-  catch (std::exception const &ex)
-  {
+  } catch (std::exception const &ex) {
     spdlog::error("Markdown2 error: {}", ex.what());
     response_.result(boost::beast::http::status::internal_server_error);
     response_.set(boost::beast::http::field::server, "Beast");

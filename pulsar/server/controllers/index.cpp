@@ -3,9 +3,8 @@
 //
 
 #include "index.h"
-#include <iostream>
 #include <fstream>
-#include "utils/mime.h"
+#include "common/utils/mime.h"
 
 void HandleIndex(boost::beast::http::response<boost::beast::http::dynamic_body> &response_) {
     response_.result(boost::beast::http::status::ok);
