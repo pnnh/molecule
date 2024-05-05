@@ -23,18 +23,18 @@ endif ()
 # 设置生成clangd compile_commands.json文件，方便和IDE集成
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# Clang-Tidy配置，检测代码规范和错误
-# find_program(CLANG_TIDY_BIN NAMES "clang-tidy")
-# if(CLANG_TIDY_BIN)
-#     message(STATUS "Found clang-tidy: ${CLANG_TIDY_BIN}")
-#   set(CMAKE_CXX_CLANG_TIDY "${CLANG_TIDY_BIN}" "clang-tidy;-checks=*,-llvmlibc-*,-checks=*, -cppcoreguidelines-*, -modernize-*, -readability-*")
-# endif()
+if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    # Clang-Tidy配置，检测代码规范和错误
+    find_program(CLANG_TIDY_BIN NAMES "clang-tidy")
+    if(CLANG_TIDY_BIN)
+        message(STATUS "Found clang-tidy: ${CLANG_TIDY_BIN}")
+    set(CMAKE_CXX_CLANG_TIDY "${CLANG_TIDY_BIN}" "-extra-arg=-fprebuilt-module-path=modules/CMakeFiles/foo.dir/" "-checks=*,-llvmlibc-*,-cppcoreguidelines-*,-modernize-*,-readability-*")
+    endif()
+endif()
 
-# include_directories(/opt/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-# link_directories(/opt/lib)
 
 # add_subdirectory(wetee)
 add_subdirectory(common)
 add_subdirectory(server)
-# add_subdirectory(modules)
+add_subdirectory(modules)

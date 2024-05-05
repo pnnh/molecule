@@ -42,6 +42,10 @@
     {
       "name": "folly",
       "version>=": "2024.01.01.00"
+    },
+    {
+      "name": "workflow",
+      "version>=": "0.10.9"
     }
   ],
   "builtin-baseline": "9de2e978bdfec6bb7852cc1d6ecf375c923c485c",

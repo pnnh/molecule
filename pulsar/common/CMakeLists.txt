@@ -12,8 +12,8 @@ add_library(pulsar-common STATIC
 )
 
 # 查找并引用日志库
-find_library(spdlog_lib spdlog)
-target_link_libraries(pulsar-common PRIVATE ${spdlog_lib})
+find_package(spdlog CONFIG REQUIRED)
+target_link_libraries(pulsar-common PRIVATE spdlog::spdlog spdlog::spdlog_header_only)
 
 # 查找并引用Boost库
 find_package(Boost COMPONENTS system thread chrono url REQUIRED)

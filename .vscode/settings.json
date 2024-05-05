@@ -102,5 +102,9 @@
     "xhash": "cpp",
     "xtree": "cpp",
     "chrono": "cpp"
-  }
+  },
+  "clangd.arguments": [
+    "--compile-commands-dir=${workspaceFolder}/pulsar/build/linux-clang",
+    "--completion-style=detailed"
+  ]
 }
