@@ -14,8 +14,6 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 # 启用测试
 enable_testing()
 
-find_package(PkgConfig REQUIRED)
-
 # 查找并设置ccache
 find_program(CCACHE_PROGRAM ccache)
 if (CCACHE_PROGRAM)
@@ -32,8 +30,9 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 #   set(CMAKE_CXX_CLANG_TIDY "${CLANG_TIDY_BIN}" "clang-tidy;-checks=*,-llvmlibc-*,-checks=*, -cppcoreguidelines-*, -modernize-*, -readability-*")
 # endif()
 
-include_directories(/opt/include)
+# include_directories(/opt/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+# link_directories(/opt/lib)
 
 # add_subdirectory(wetee)
 add_subdirectory(common)

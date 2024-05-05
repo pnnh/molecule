@@ -2,6 +2,7 @@
 #include <date/date.h>
 // #include <pqxx/pqxx>
 #include "common/utils/uuid.h"
+#include "server/services/config/appconfig.h"
 #include <spdlog/spdlog.h>
 
 MessageService::MessageService() //: connection(AppConfig::Default().GetDSN())
@@ -11,9 +12,8 @@ MessageService::MessageService() //: connection(AppConfig::Default().GetDSN())
   // }
 }
 
-MessageService::~MessageService() {
-  // this->connection.close();
-}
+MessageService::~MessageService() { // this->connection.close();
+                                  }
 
 std::optional<std::vector<ArticleModel>>
 MessageService::selectMessages(int limit) {

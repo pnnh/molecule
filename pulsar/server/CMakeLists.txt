@@ -30,18 +30,16 @@ find_library(workflow_lib workflow)
 target_link_libraries(pulsar-server PRIVATE ${workflow_lib})
 
 # 查找并引用folly库
-find_package(folly REQUIRED)
-target_link_libraries(pulsar-server PRIVATE ${FOLLY_LIBRARIES})
+find_package(folly CONFIG REQUIRED)
+target_link_libraries(pulsar-server PRIVATE Folly::folly Folly::folly_deps Folly::follybenchmark Folly::folly_test_util)
 
 # 查找并引用Postgresql库
-find_package(PostgreSQL REQUIRED)
-pkg_check_modules(PQXX REQUIRED libpqxx)
-message(STATUS "PQXX_LIBRARIES: ${PQXX_LINK_LIBRARIES}")
-target_link_libraries(pulsar-server PRIVATE PostgreSQL::PostgreSQL ${PQXX_LINK_LIBRARIES})
+find_package(libpqxx REQUIRED)
+target_link_libraries(pulsar-server PRIVATE ${PQXX_LIBRARIES})
 
 # 查找并引用日志库
-find_library(spdlog_lib spdlog)
-target_link_libraries(pulsar-server PRIVATE ${spdlog_lib})
+find_package(spdlog CONFIG REQUIRED)
+target_link_libraries(pulsar-server PRIVATE spdlog::spdlog spdlog::spdlog_header_only)
 
 # 查找JSON库
 find_package(nlohmann_json CONFIG REQUIRED)
@@ -53,7 +51,6 @@ target_link_libraries(pulsar-server PRIVATE pantor::inja)
 
 # 查找并引用env解析库
 find_package(libenvpp CONFIG REQUIRED)
-target_include_directories(pulsar-server PRIVATE /opt/include)
 target_link_libraries(pulsar-server PRIVATE libenvpp::libenvpp)
 
 # 查找并引用日期库

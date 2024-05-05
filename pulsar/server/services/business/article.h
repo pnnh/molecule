@@ -1,9 +1,4 @@
-//
-// Created by ubuntu on 2/13/22.
-//
-
-#ifndef PULSAR_MESSAGE_SERVICE_H
-#define PULSAR_MESSAGE_SERVICE_H
+#pragma once
 
 #include "server/models/article.h"
 #include <optional>
@@ -30,7 +25,5 @@ public:
     long count();
 
 private:
-   // pqxx::connection connection;
+    //pqxx::connection connection;
 };
-
-#endif // PULSAR_MESSAGE_SERVICE_H
