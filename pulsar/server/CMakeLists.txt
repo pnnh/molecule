@@ -34,8 +34,8 @@ find_package(folly CONFIG REQUIRED)
 target_link_libraries(pulsar-server PRIVATE Folly::folly Folly::folly_deps Folly::follybenchmark Folly::folly_test_util)
 
 # 查找并引用Postgresql库
-find_package(libpqxx REQUIRED)
-target_link_libraries(pulsar-server PRIVATE ${PQXX_LIBRARIES})
+find_package(libpqxx CONFIG REQUIRED)
+target_link_libraries(pulsar-server PRIVATE libpqxx::pqxx)
 
 # 查找并引用日志库
 find_package(spdlog CONFIG REQUIRED)
@@ -72,7 +72,6 @@ install(TARGETS pulsar-server
         RUNTIME_DEPENDENCY_SET pulsar-server-dependencies
         DESTINATION lib)
 install(RUNTIME_DEPENDENCY_SET pulsar-server-dependencies)
-
 
 # 添加测试用例
 add_test(NAME pulsar-tests-md5 COMMAND pulsar-server md5)

@@ -1,13 +1,8 @@
-//
-// Created by azureuser on 4/10/23.
-//
+#pragma once
 
-#ifndef PULSAR_MESSAGE_CONTROLLER_H
-#define PULSAR_MESSAGE_CONTROLLER_H
-
+#include <boost/asio.hpp>
 #include <boost/beast/core.hpp>
 #include <boost/beast/http.hpp>
-#include <boost/asio.hpp>
 #include <cstdlib>
 #include <ctime>
 
@@ -15,5 +10,3 @@
 
 void HandleArticles(WFHttpTask *httpTask);
 void HandleArticleGet(WFHttpTask *httpTask);
-
-#endif //PULSAR_MESSAGE_CONTROLLER_H

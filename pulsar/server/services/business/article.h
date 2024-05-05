@@ -2,7 +2,7 @@
 
 #include "server/models/article.h"
 #include <optional>
-//#include <pqxx/pqxx>
+#include <pqxx/pqxx>
 #include <vector>
 
 class MessageService
@@ -25,5 +25,5 @@ public:
     long count();
 
 private:
-    //pqxx::connection connection;
+    pqxx::connection connection;
 };
