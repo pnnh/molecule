@@ -49,7 +49,9 @@
         "CMAKE_OSX_DEPLOYMENT_TARGET": "11.0",
         "CMAKE_PREFIX_PATH": "/Users/Larry/Qt/6.7.0/macos/lib/cmake",
         "QT_DECLARATIVE_DEBUG": "ON",
-        "QT_QML_DEBUG": "ON"
+        "QT_QML_DEBUG": "ON",
+        "CMAKE_C_COMPILER": "/opt/homebrew/opt/llvm/bin/clang",
+        "CMAKE_CXX_COMPILER": "/opt/homebrew/opt/llvm/bin/clang++"
       },
       "environment": {}
     },
@@ -87,7 +89,8 @@
     },
     {
       "name": "macos",
-      "configurePreset": "macos"
+      "configurePreset": "macos",
+      "jobs": 8
     },
     {
       "name": "windows",

@@ -15,16 +15,13 @@ else ()
     set(CMAKE_C_STANDARD 23)
 endif ()
 set(CMAKE_C_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_SCAN_FOR_MODULES ON)
 
 # 设置开启显示详细的构建过程
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
 # 启用测试
 enable_testing()
-
-if (APPLE OR UNIX)
-    find_package(PkgConfig REQUIRED)
-endif ()
 
 # 查找并设置ccache
 find_program(CCACHE_PROGRAM ccache)
@@ -36,12 +33,14 @@ endif ()
 # 设置生成clangd compile_commands.json文件，方便和IDE集成
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# Clang-Tidy配置
-find_program(CLANG_TIDY_BIN NAMES "clang-tidy")
-if (CLANG_TIDY_BIN)
-    message(STATUS "Found clang-tidy: ${CLANG_TIDY_BIN}")
-    set(CMAKE_CXX_CLANG_TIDY "${CLANG_TIDY_BIN}" "-checks=*, -cppcoreguidelines-*, -modernize-*, -readability-*")
-endif ()
+#if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+#    # Clang-Tidy配置
+#    find_program(CLANG_TIDY_BIN NAMES "clang-tidy")
+#    if (CLANG_TIDY_BIN)
+#        message(STATUS "Found clang-tidy: ${CLANG_TIDY_BIN}")
+#        set(CMAKE_CXX_CLANG_TIDY "${CLANG_TIDY_BIN}" "-extra-arg=-fprebuilt-module-path=modules/CMakeFiles/foo.dir/" "-checks=*,-cppcoreguidelines-*,-modernize-*,-readability-*")
+#    endif ()
+#endif ()
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
@@ -54,16 +53,16 @@ find_package(Qt6 COMPONENTS Core Qml Quick Gui QuickControls2 Sql Widgets REQUIR
 
 qt_policy(SET QTP0001 NEW)
 
-if (APPLE)
-    list(APPEND APPLICATION_LIBRARIES "-framework AppKit")
-    list(APPEND APPLICATION_SOURCES
-            platform/macos/macwindow.h
-            platform/macos/macwindow.mm
-            platform/macos/objc_code.mm
-            platform/macos/objc_code.h
-            platform/macos/WindowController.mm
-            platform/macos/WindowController.h)
-endif ()
+# if (APPLE)
+#     list(APPEND APPLICATION_LIBRARIES "-framework AppKit")
+#     list(APPEND APPLICATION_SOURCES
+#             macos/macwindow.h
+#             macos/macwindow.mm
+#             macos/objc_code.mm
+#             macos/objc_code.h
+#             macos/WindowController.mm
+#             macos/WindowController.h)
+# endif ()
 
 qt6_add_executable(polaris-desktop MANUAL_FINALIZATION
         main.cpp
@@ -82,7 +81,7 @@ target_link_libraries(polaris-desktop PRIVATE spdlog::spdlog)
 
 # 查找并引用Markdown解析库
 find_package(cmark CONFIG REQUIRED)
-target_link_libraries(polaris-desktop PRIVATE cmark::cmark)
+target_link_libraries(polaris-desktop PRIVATE cmark::cmark_static)
 
 # 查找并引用Sqlite解析库
 find_package(unofficial-sqlite3 CONFIG REQUIRED)
@@ -131,3 +130,5 @@ add_test(NAME polaris-desktop-case COMMAND polaris-desktop sqlite)
 set_tests_properties(polaris-desktop-case PROPERTIES ENVIRONMENT PL_DSN=xyz)
 
 add_test(NAME polaris-tests-markdown COMMAND polaris-desktop markdown)
+
+add_subdirectory(modules)
