@@ -21,7 +21,7 @@ target_include_directories(pulsar-common PUBLIC ${Boost_INCLUDE_DIRS})
 target_link_libraries(pulsar-common PUBLIC ${Boost_LIBRARIES})
 
 # 测试程序
-add_executable(pulsar-common-test main.cc)
+add_executable(pulsar-common-test main.cpp)
 target_link_libraries(pulsar-common-test PRIVATE pulsar-common)
 
 # 添加测试用例

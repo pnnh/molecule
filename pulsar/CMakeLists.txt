@@ -28,7 +28,7 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     find_program(CLANG_TIDY_BIN NAMES "clang-tidy")
     if(CLANG_TIDY_BIN)
         message(STATUS "Found clang-tidy: ${CLANG_TIDY_BIN}")
-    set(CMAKE_CXX_CLANG_TIDY "${CLANG_TIDY_BIN}" "-extra-arg=-fprebuilt-module-path=modules/CMakeFiles/foo.dir/" "-checks=*,-llvmlibc-*,-cppcoreguidelines-*,-modernize-*,-readability-*")
+    set(CMAKE_CXX_CLANG_TIDY "${CLANG_TIDY_BIN}" "-extra-arg=-fprebuilt-module-path=modules/CMakeFiles/foo.dir/")
     endif()
 endif()
 
