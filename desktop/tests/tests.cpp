@@ -1,4 +1,6 @@
 #include "tests/tests.h"
+#include "services/markdown_service.h"
+#include "services/sqlite_service.h"
 #include <QGuiApplication>
 #include <QLoggingCategory>
 #include <QQmlApplicationEngine>
@@ -7,21 +9,18 @@
 #include <QQuickWindow>
 #include <iostream>
 #include <spdlog/spdlog.h>
-#include "services/sqlite_service.h"
-#include "services/markdown_service.h"
 
 int TestSqliteVersion() {
-    auto database_path = QGuiApplication::applicationDirPath() + "/venus.sqlite";
-    services::sqlite3_service service(database_path);
-    auto version = service.sql_version();
+  auto database_path = QGuiApplication::applicationDirPath() + "/venus.sqlite";
+  auto version = services::sqlite3_service::sql_version(database_path);
 
-    qDebug() << "sqlite3 version: " << version;
-    int isOk = (int) version.indexOf("3.");
-    return isOk;
+  qDebug() << "sqlite3 version: " << version;
+  int isOk = (int)version.indexOf("3.");
+  return isOk;
 }
 
 int TestMarkdown() {
-    auto markdownText = R"(
+  auto markdownText = R"(
 ## 二级标题
 
 这是一段普通文字：
@@ -60,17 +59,17 @@ int TestMarkdown() {
 内容单元格 第一列第二格 多加文字 | 内容单元格第二列第二格
             )";
 
-    auto htmlText = services::markdownToHtml(markdownText);
-    auto titleIndex = htmlText.indexOf("<h2>");
-    if (titleIndex < 0) {
-        return -1;
-    }
-    auto paragraphIndex = htmlText.indexOf("<p>");
-    if (paragraphIndex < 0)
-        return -1;
-    auto blockquoteIndex = htmlText.indexOf("<blockquote>");
-    if (blockquoteIndex < 0)
-        return -1;
+  auto htmlText = services::markdownToHtml(markdownText);
+  auto titleIndex = htmlText.indexOf("<h2>");
+  if (titleIndex < 0) {
+    return -1;
+  }
+  auto paragraphIndex = htmlText.indexOf("<p>");
+  if (paragraphIndex < 0)
+    return -1;
+  auto blockquoteIndex = htmlText.indexOf("<blockquote>");
+  if (blockquoteIndex < 0)
+    return -1;
 
-    return 0;
+  return 0;
 }

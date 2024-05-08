@@ -1,51 +1,12 @@
-//
-// Created by linyangz on 2023/2/11.
-//
+#include "library_model.h"
 
-#include "FolderProvider.h"
+#include "../services/user_service.h"
 
-#include "business/AppException.h"
-#include <QSqlError>
-#include <QUuid>
-#include <QtSql/QSqlQuery>
-#include <QtSql/QSqlRecord>
+#include <QSqlQuery>
 #include <QtWidgets/QApplication>
-#include "services/SqliteService.h"
+#include <qdir.h>
+#include <qdiriterator.h>
 
-QVector<providers::FolderInfo> providers::SelectFolders() {
-  QString sqlText = "SELECT * FROM folders;";
-  // 查询数据
-  auto querySql = QString(sqlText);
-
-  // QSqlQuery query; // 执行操作类对象
-  // query.prepare(querySql);
-
-  // if (!query.exec(querySql)) {
-    //   throw business::AppException("SelectFolders出错: " +
-                                 //                                query.lastError().text());
-  // }
-
-  //  QSqlRecord recode =
-  //      query.record(); // recode保存查询到一些内容信息，如表头、列数等等
-  //  int column = recode.count(); // 获取读取结果的列数
-
-//auto sqlSvc = std::make_shared<services::Sqlite3Service>("venus.sqlite");
-  auto sqlSvc = services::getSqlite3Service();
-  auto query = sqlSvc->query(querySql);
-  QVector<providers::FolderInfo>
-      infoVect; // testInfo向量，用于存储数据库查询到的数据
-  while (query -> next()) {
-    providers::FolderInfo tmp;
-    tmp.pk = query -> value("pk").toString();
-    tmp.path = query -> value("path").toString();
-    tmp.count = query -> value("count").toInt();
-    tmp.bookmark = query -> value("bookmark").toString();
-
-    infoVect.push_back(tmp); // 将查询到的内容存到testInfo向量中
-  }
-
-  return infoVect;
-}
 //
 // TaskInfo sqlite::getTask(QString pk) {
 //  QSqlQuery query;

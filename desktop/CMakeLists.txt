@@ -66,14 +66,24 @@ qt_policy(SET QTP0001 NEW)
 
 qt6_add_executable(polaris-desktop MANUAL_FINALIZATION
         main.cpp
-        models/AppException.cpp
-        models/AppException.h
+        models/library_model.cpp
+        models/library_model.h
         services/sqlite_service.cpp
         services/sqlite_service.h
         services/markdown_service.cpp
         services/markdown_service.h
         tests/tests.h
-        tests/tests.cpp)
+        tests/tests.cpp
+        services/user_service.cpp
+        services/user_service.h
+        services/sync_service.cpp
+        services/sync_service.h
+        services/library_service.cpp
+        services/library_service.h
+        threads/SyncThread.cpp
+        threads/SyncThread.h
+        utils/base32.cpp
+        utils/base32.h)
 
 # 查找并引用日志库
 find_package(spdlog CONFIG REQUIRED)
@@ -86,6 +96,10 @@ target_link_libraries(polaris-desktop PRIVATE cmark::cmark_static)
 # 查找并引用Sqlite解析库
 find_package(unofficial-sqlite3 CONFIG REQUIRED)
 target_link_libraries(polaris-desktop PRIVATE unofficial::sqlite3::sqlite3)
+
+# 查找并引用CryptoPP解析库
+find_package(cryptopp CONFIG REQUIRED)
+target_link_libraries(polaris-desktop PRIVATE cryptopp::cryptopp)
 
 target_link_libraries(polaris-desktop PRIVATE
         Qt6::Core

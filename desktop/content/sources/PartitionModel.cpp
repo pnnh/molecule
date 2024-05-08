@@ -1,7 +1,4 @@
 #include "content/sources/PartitionModel.h"
-#include <QVector>
-#include <QDebug>
-#include <QStringView>
 
 PartitionModel::PartitionModel(QObject *parent) : QAbstractListModel(parent)
 {

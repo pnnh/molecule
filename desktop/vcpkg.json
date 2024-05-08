@@ -34,6 +34,10 @@
     {
       "name": "date",
       "version>=": "3.0.1"
+    },
+    {
+      "name": "cryptopp",
+      "version>=": "8.9.0"
     }
   ],
   "builtin-baseline": "9de2e978bdfec6bb7852cc1d6ecf375c923c485c",

@@ -4,6 +4,6 @@
 
 namespace services {
 
-    QString markdownToHtml(QString markdownText);
+    QString markdownToHtml(const QString& markdownText);
 
 }

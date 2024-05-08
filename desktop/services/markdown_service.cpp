@@ -1,7 +1,7 @@
 #include "markdown_service.h"
 #include "cmark.h"
 
-QString services::markdownToHtml(QString markdownText) {
+QString services::markdownToHtml(const QString& markdownText) {
     auto data = markdownText.toUtf8();
     const char *md = data.constData();
     auto length = strlen(md);
