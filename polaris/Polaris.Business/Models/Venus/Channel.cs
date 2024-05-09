@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Molecule.Helpers;
 using Molecule.Models;
 
-namespace Polaris.Business.Models.Articles;
+namespace Polaris.Business.Models.Venus;
 
-[Table("channels", Schema = "articles")]
+[Table("channels", Schema = "venus")]
 [PrimaryKey(nameof(Uid))]
-public class ChannelModel
+public class NSChannelModel
 {
     [Column("uid", TypeName = "uuid")] public Guid Uid { get; set; }
 
@@ -34,8 +34,8 @@ public class ChannelModel
     public string Image { get; set; } = "";
 }
 
-public class ChannelPostsView
+public class NSChannelPicturesView
 {
-    public ChannelModel Channel { get; set; } = new();
-    public MSelectResult<PostModel> Posts { get; set; } = new();
+    public NSChannelModel Channel { get; set; } = new();
+    public MSelectResult<NSPictureModel> Pictures { get; set; } = new();
 }

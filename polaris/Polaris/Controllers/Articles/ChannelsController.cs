@@ -5,8 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Molecule.Helpers;
 using Molecule.Models;
 using Polaris.Business.Helpers;
-using Polaris.Business.Models;
-using Polaris.Business.Models.Articles;
+using Polaris.Business.Models; 
 using Polaris.Business.Services;
 
 namespace Polaris.Controllers.Articles;
@@ -22,9 +21,9 @@ public class ChannelsController(ILogger<ChannelsController> logger, DatabaseCont
     [Route("/articles/channels/{urn}")]
     [HttpGet]
     [AllowAnonymous]
-    public ChannelModel? Get([FromRoute] string urn)
+    public PSChannelModel? Get([FromRoute] string urn)
     {
-        return modelService.GetByKey<ChannelModel>(urn);
+        return modelService.GetByKey<PSChannelModel>(urn);
     }
 
     [Route("/articles/channels/{pk}")]
@@ -43,7 +42,7 @@ public class ChannelsController(ILogger<ChannelsController> logger, DatabaseCont
     [Route("/articles/channels")]
     [HttpGet]
     [AllowAnonymous]
-    public MSelectResult<ChannelModel> Select()
+    public MSelectResult<PSChannelModel> Select()
     {
         var queryHelper = new MQueryHelper(Request.Query);
         var page = queryHelper.GetInt("page") ?? 1;
@@ -52,7 +51,7 @@ public class ChannelsController(ILogger<ChannelsController> logger, DatabaseCont
         var models = configuration.Channels.OrderByDescending(o => o.UpdateTime).Skip(offset).Take(limit).ToList();
         var totalCount = configuration.Channels.Count();
 
-        return new MSelectResult<ChannelModel>
+        return new MSelectResult<PSChannelModel>
         {
             Range = models,
             Count = totalCount
@@ -61,7 +60,7 @@ public class ChannelsController(ILogger<ChannelsController> logger, DatabaseCont
 
     [Route("/articles/channels/{urn}/posts")]
     [AllowAnonymous]
-    public MSelectResult<PostModel> SelectPosts([FromRoute] string urn)
+    public MSelectResult<PSArticleModel> SelectPosts([FromRoute] string urn)
     {
         var queryHelper = new MQueryHelper(Request.Query);
         var keyword = queryHelper.GetString("keyword");
@@ -72,7 +71,7 @@ public class ChannelsController(ILogger<ChannelsController> logger, DatabaseCont
         var size = queryHelper.GetInt("size") ?? 10;
         var (offset, limit) = MPagination.CalcOffset(page, size);
 
-        var channelModel = modelService.GetByKey<ChannelModel>(urn);
+        var channelModel = modelService.GetByKey<PSChannelModel>(urn);
         if (channelModel == null) throw new PLBizException("频道不存在");
 
         var sqlBuilder = new StringBuilder();
@@ -80,7 +79,7 @@ public class ChannelsController(ILogger<ChannelsController> logger, DatabaseCont
 
         sqlBuilder.Append(@"
 select a.*
-from articles.articles as a
+from polaris.articles as a
 where a.channel = @channel
 ");
         parameters.Add("channel", channelModel.Uid);
@@ -120,7 +119,7 @@ select count(1) from ({sqlBuilder}) as temp;";
         var models = modelsQuery.ToList();
 
 
-        return new MSelectResult<PostModel>
+        return new MSelectResult<PSArticleModel>
         { 
             Range = models,
             Count = totalCount ?? 0 
@@ -129,11 +128,11 @@ select count(1) from ({sqlBuilder}) as temp;";
 
     [Route("/articles/channels")]
     [HttpPost]
-    public async Task<PModifyResult> Insert([FromBody] ChannelModel request)
+    public async Task<PModifyResult> Insert([FromBody] PSChannelModel request)
     {
         var user = HttpContext.User;
         if (user.Identity == null || string.IsNullOrEmpty(user.Identity.Name)) throw new PLBizException("用户未登录");
-        var model = new ChannelModel
+        var model = new PSChannelModel
         {
             Uid = MIDHelper.Default.NewUUIDv7(),
             Name = request.Name,
@@ -151,7 +150,7 @@ select count(1) from ({sqlBuilder}) as temp;";
 
     [Route("/articles/channels/{pk}")]
     [HttpPut]
-    public async Task<PModifyResult> Update([FromBody] ChannelModel request)
+    public async Task<PModifyResult> Update([FromBody] PSChannelModel request)
     {
         var model = await configuration.Channels.FirstOrDefaultAsync(m => m.Uid == request.Uid);
         if (model == null) throw new PLBizException("频道不存在");

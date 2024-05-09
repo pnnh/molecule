@@ -5,6 +5,7 @@ using System.Text.Json;
 using Microsoft.Extensions.Configuration;
 using Molecule.Helpers;
 using Polaris.Business.Models;
+using Polaris.Business.Models.Polaris;
 
 namespace Polaris.Business.Services;
 
@@ -17,7 +18,7 @@ public class AccountService
     private static readonly object accountLock = new();
 
 
-    public static AccountModel SyncAccount(DatabaseContext databaseContext, string accessToken, DateTimeOffset tokenExpire,
+    public static PSAccountModel SyncAccount(DatabaseContext databaseContext, string accessToken, DateTimeOffset tokenExpire,
         OAuth2User tokenModel)
     {
         lock (accountLock)
@@ -26,7 +27,7 @@ public class AccountService
             var account = databaseContext.Accounts.FirstOrDefault(o => o.Username == tokenModel.Username);
             if (account == null)
             {
-                account = new AccountModel
+                account = new PSAccountModel
                 {
                     Uid = MIDHelper.Default.NewUUIDv7(),
                     AccessToken = accessToken,

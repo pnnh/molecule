@@ -5,11 +5,11 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Molecule.Helpers;
 
-namespace Polaris.Business.Models.Articles;
+namespace Polaris.Business.Models.Polaris;
 
-[Table("articles", Schema = "articles")]
+[Table("articles", Schema = "polaris")]
 [PrimaryKey(nameof(Uid))]
-public class PostModel
+public class PSArticleModel
 {
     [Column("uid", TypeName = "uuid")]
     [JsonPropertyName("uid")]

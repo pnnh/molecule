@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/polaris-server/Polaris/Polaris.csproj",
+                "${workspaceFolder}/polaris/Polaris/Polaris.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],

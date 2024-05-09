@@ -6,7 +6,7 @@
 		}
 	],
 	"settings": {
-		"dotnet.defaultSolution": "polaris-server/Polaris.sln",
+		"dotnet.defaultSolution": "polaris/Polaris.sln",
 		"files.autoSave": "afterDelay",
 		"remote.autoForwardPorts": false,
 		"editor.fontFamily": "Menlo, Monaco, 'Courier New', monospace",

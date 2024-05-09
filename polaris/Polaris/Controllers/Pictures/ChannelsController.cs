@@ -57,7 +57,7 @@ public class ChannelsController(DatabaseContext configuration,
 
         sqlBuilder.Append(@"
 select a.*
-from pictures.pictures as a
+from venus.pictures as a
 where a.channel = @channel
 ");
         parameters.Add("@channel", channelModel.Uid);

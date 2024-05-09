@@ -5,16 +5,16 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Molecule.Helpers;
 
-namespace Polaris.Business.Models.Pictures;
+namespace Polaris.Business.Models.Venus;
 
-[Table("pictures", Schema = "pictures")]
+[Table("pictures", Schema = "venus")]
 [PrimaryKey(nameof(Uid))]
-public class PictureModel
+public class NSPictureModel
 {
     [Column("uid", TypeName = "uuid")]
     [JsonPropertyName("uid")]
     public Guid Uid { get; set; }
-    
+
     [NotMapped] public string Urn => MIDHelper.Base58.GuidEncode(Uid);
 
     [Column("owner", TypeName = "uuid")]

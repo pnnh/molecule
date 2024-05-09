@@ -9,10 +9,10 @@ using System.Text.Json.Serialization;
 using AutoMapper;
 using System.Data;
 
-namespace Polaris.Business.Models.Articles
+namespace Polaris.Business.Models.Polaris
 {
 
-    [Table("history", Schema = "articles")]
+    [Table("history", Schema = "polaris")]
     [PrimaryKey(nameof(Uid))]
     public class HistoryModel 
     {

@@ -2,11 +2,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 
-namespace Polaris.Business.Models;
+namespace Polaris.Business.Models.Polaris;
 
-[Table("accounts")]
+[Table("accounts", Schema = "polaris")]
 [PrimaryKey(nameof(Uid))]
-public class AccountModel
+public class PSAccountModel
 {
     [Column("uid", TypeName = "uuid")] public Guid Uid { get; set; }
 

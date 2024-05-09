@@ -2,19 +2,18 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 using System.Reflection;
 using AutoMapper;
-using Polaris.Business.Models;
 using Polaris.Business.Models.Personal;
-using Polaris.Business.Models.Articles;
-using Polaris.Business.Models.Pictures;
+using Polaris.Business.Models.Polaris;
+using Polaris.Business.Models.Venus;
 
 public class AutoMapperProfile2 : Profile
 {
     public AutoMapperProfile2()
     {
-        CreateMap<IDataReader, ChannelModel>();
+        CreateMap<IDataReader, PSChannelModel>();
         CreateMap<IDataReader, NSChannelModel>();
-        CreateMap<IDataReader, PostModel>();
-        CreateMap<IDataReader, PictureModel>();
+        CreateMap<IDataReader, PSArticleModel>();
+        CreateMap<IDataReader, NSPictureModel>();
         CreateMap<IDataReader, NoteModel>();
         CreateMap<IDataReader, NotebookModel>();
         CreateMap<IDataReader, LibraryModel>();
@@ -35,7 +34,7 @@ public class AutoMapperProfile2 : Profile
         // CreateMap<IDataReader, NotebookModel>().ForAllMembers(m => 
         //    m.MapFrom(src => Map(src, m.DestinationMember)));
     }
-    
+
     internal class DateTimeTypeConverter : ITypeConverter<DateTime, DateTimeOffset>
     {
         public DateTimeOffset Convert(DateTime source, DateTimeOffset destination, ResolutionContext context)
@@ -48,25 +47,25 @@ public class AutoMapperProfile2 : Profile
     {
         var v = new PascalCaseNamingConvention();
         var colAttr = memberInfo.GetCustomAttributes().FirstOrDefault(t => t.GetType() == typeof(ColumnAttribute));
-        
+
         if (memberInfo is not PropertyInfo)
         {
             return new object();
         }
-        var propInfo = (PropertyInfo) memberInfo;
-        
-        if (!IsSimple(propInfo.PropertyType)) 
+        var propInfo = (PropertyInfo)memberInfo;
+
+        if (!IsSimple(propInfo.PropertyType))
         {
             return new object();
-        } 
-        
+        }
+
         var destName = colAttr == null ? memberInfo.Name : ((ColumnAttribute)colAttr).Name;
         var arr = v.Split(destName);
         var colName = "";
-        colName = arr.Length < 1 ? destName!.ToLower() : string.Join( "_", arr.Select(a => a.ToLower()));
+        colName = arr.Length < 1 ? destName!.ToLower() : string.Join("_", arr.Select(a => a.ToLower()));
         return dataReader[colName];
     }
-    
+
     bool IsSimple(Type type)
     {
         var typeInfo = type.GetTypeInfo();
@@ -74,7 +73,7 @@ public class AutoMapperProfile2 : Profile
         {
             return IsSimple(typeInfo.GetGenericArguments()[0]);
         }
-        return typeInfo.IsPrimitive 
+        return typeInfo.IsPrimitive
                || typeInfo.IsEnum
                || typeInfo.Equals(typeof(Guid))
                || type.Equals(typeof(string))
