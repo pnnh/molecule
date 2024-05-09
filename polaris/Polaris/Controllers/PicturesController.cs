@@ -6,8 +6,8 @@ using Molecule.Helpers;
 using Molecule.Models;
 using Polaris.Business.Helpers;
 using Polaris.Business.Models;
-using Polaris.Business.Services;
-using Polaris.Business.Models.Pictures;
+using Polaris.Business.Services; 
+using Polaris.Business.Models.Venus;
 
 namespace Polaris.Controllers;
 
@@ -17,16 +17,16 @@ public class PicturesController(DatabaseContext configuration, ModelService mode
     [Route("/pictures/{name}")]
     [HttpGet]
     [AllowAnonymous]
-    public PictureModel? Get([FromRoute] string name)
+    public NSPictureModel? Get([FromRoute] string name)
     {
-        var model = modelService.GetByKey<PictureModel>(name);
+        var model = modelService.GetByKey<NSPictureModel>(name);
         return model;
     }
 
     [Route("/pictures")]
     [AllowAnonymous]
     [HttpGet]
-    public MSelectResult<PictureModel> Select(string keyword = "", string sort = "latest", string filter = "all",
+    public MSelectResult<NSPictureModel> Select(string keyword = "", string sort = "latest", string filter = "all",
         int page = 1, int size = 10)
     {
         var (offset, limit) = MPagination.CalcOffset(page, size);
@@ -36,7 +36,7 @@ public class PicturesController(DatabaseContext configuration, ModelService mode
 
         sqlBuilder.Append(@"
 select a.*
-from pictures as a
+from venus.pictures as a
 ");
         sqlBuilder.Append(" where 1=1 ");
         if (!string.IsNullOrEmpty(keyword))
@@ -58,11 +58,11 @@ select count(1) from ({sqlBuilder}) as temp;";
 
         var querySqlText = sqlBuilder.ToString();
 
-        var modelsQuery = DatabaseContextHelper.RawSqlQuery<PictureModel>(configuration, querySqlText, parameters);
+        var modelsQuery = DatabaseContextHelper.RawSqlQuery<NSPictureModel>(configuration, querySqlText, parameters);
 
         var models = modelsQuery.ToList();
 
-        return new MSelectResult<PictureModel>
+        return new MSelectResult<NSPictureModel>
         {
             Range = models,
             Count = totalCount ?? 0
@@ -87,7 +87,7 @@ select count(1) from ({sqlBuilder}) as temp;";
     [Route("/pictures")]
     [HttpPost]
     [HttpPut]
-    public async Task<PModifyResult> Insert([FromRoute] PictureModel model)
+    public async Task<PModifyResult> Insert([FromRoute] NSPictureModel model)
     {
         model.UpdateTime = DateTime.Now;
         if (model.Uid == Guid.Empty)

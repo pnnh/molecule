@@ -4,13 +4,12 @@ import (
 	"flag"
 	"time"
 
-	//"github.com/pnnh/neutron/internal/debug"
 	"github.com/sirupsen/logrus"
-	v2 "github.com/pnnh/neutron/config/v2"
+	v2 "multiverse-authorization/neutron/config/v2"
 )
 
 // Deprecated: 已废弃，不再解析flag
-var configFile = flag.String("config", "config.yml", "配置文件路径")
+var configFile = flag.String("config", "config.yaml", "配置文件路径")
 
 // Deprecated: 已废弃，不再解析flag
 var runMode = flag.String("mode", "", "运行模式(debug, release)")

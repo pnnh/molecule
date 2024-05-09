@@ -6,7 +6,7 @@ using Molecule.Helpers;
 using Molecule.Models;
 using Polaris.Business.Helpers;
 using Polaris.Business.Models;
-using Polaris.Business.Models.Pictures;
+using Polaris.Business.Models.Venus;
 using Polaris.Business.Services;
 
 namespace Polaris.Controllers.Pictures;
@@ -38,7 +38,7 @@ public class ChannelsController(DatabaseContext configuration,
 
     [Route("/pictures/channels/{urn}/pictures")]
     [AllowAnonymous]
-    public MSelectResult<PictureModel> SelectPictures([FromRoute] string urn)
+    public MSelectResult<NSPictureModel> SelectPictures([FromRoute] string urn)
     {
         var queryHelper = new MQueryHelper(Request.Query);
         var keyword = queryHelper.GetString("keyword");
@@ -92,12 +92,12 @@ select count(1) from ({sqlBuilder}) as temp;";
 
         var querySqlText = sqlBuilder.ToString();
 
-        var modelsQuery = DatabaseContextHelper.RawSqlQuery<PictureModel>(configuration, querySqlText, parameters);
+        var modelsQuery = DatabaseContextHelper.RawSqlQuery<NSPictureModel>(configuration, querySqlText, parameters);
         
         var models = modelsQuery.ToList();
 
 
-        return new MSelectResult<PictureModel>
+        return new MSelectResult<NSPictureModel>
         {
             Range = models,
             Count = totalCount ?? 0

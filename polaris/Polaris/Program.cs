@@ -9,8 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Npgsql;
 using Polaris.Business.Models;
-using Polaris.Business.Services;
-using StackExchange.Redis;
+using Polaris.Business.Services; 
 
 namespace Polaris;
 
@@ -29,7 +28,8 @@ public class PolarisApplication
             options.UseUtcTimestamp = true;
         });
         var configFileName = "appsettings.json";
-        if (builder.Environment.IsDevelopment()) configFileName = "appsettings.Development.json";
+        var envName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+        if (!string.IsNullOrEmpty(envName) && envName != "Production") configFileName = $"appsettings.{envName}.json";
         builder.Configuration.AddJsonFile(configFileName, false, true);
 
         builder.Services.AddControllers().AddJsonOptions(options =>
@@ -53,11 +53,11 @@ public class PolarisApplication
                 .EnableDetailedErrors();
         }, ServiceLifetime.Transient);
 
-        var redisConn = builder.Configuration.GetSection("RedisConn:Url").Value;
-        if (redisConn == null)
-            throw new Exception("REDIS_CONN_URL is not set");
-        var multiplexer = ConnectionMultiplexer.Connect(redisConn);
-        builder.Services.AddSingleton<IConnectionMultiplexer>(multiplexer);
+        // var redisConn = builder.Configuration.GetSection("RedisConn:Url").Value;
+        // if (redisConn == null)
+        //     throw new Exception("REDIS_CONN_URL is not set");
+        // var multiplexer = ConnectionMultiplexer.Connect(redisConn);
+        // builder.Services.AddSingleton<IConnectionMultiplexer>(multiplexer);
 
         var secretKey = builder.Configuration["Jwt:Secret"];
         if (secretKey == null)

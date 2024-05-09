@@ -5,7 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Molecule.Helpers;
 using Molecule.Models;
 using Polaris.Business.Helpers;
-using Polaris.Business.Models; 
+using Polaris.Business.Models;
+using Polaris.Business.Models.Polaris;
 using Polaris.Business.Services;
 
 namespace Polaris.Controllers.Articles;
@@ -114,7 +115,7 @@ select count(1) from ({sqlBuilder}) as temp;";
 
         var querySqlText = sqlBuilder.ToString();
 
-        var modelsQuery = DatabaseContextHelper.RawSqlQuery<PostModel>(configuration, querySqlText, parameters);
+        var modelsQuery = DatabaseContextHelper.RawSqlQuery<PSArticleModel>(configuration, querySqlText, parameters);
         
         var models = modelsQuery.ToList();
 

@@ -2,13 +2,13 @@ package main
 
 import (
 	"fmt"
-	"github.com/pnnh/neutron/services/datastore"
 	"github.com/sirupsen/logrus"
 	"go/ast"
 	"go/format"
 	"go/parser"
 	"go/token"
 	"log"
+	"multiverse-authorization/neutron/services/datastore"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -60,7 +60,7 @@ func main() {
 package %s
 
 import (
-	"github.com/pnnh/neutron/services/datastore"
+	"multiverse-authorization/neutron/services/datastore"
 )
 `
 	packageAndImport = fmt.Sprintf(packageAndImport, f.Name.Name)

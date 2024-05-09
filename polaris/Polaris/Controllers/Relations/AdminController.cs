@@ -5,8 +5,7 @@ using Molecule.Helpers;
 using Molecule.Models;
 using Polaris.Business.Helpers;
 using Polaris.Business.Models;
-using Polaris.Business.Models.Articles;
-using Polaris.Business.Models.Pictures;
+using Polaris.Business.Models.Polaris;
 
 namespace Polaris.Controllers.Relations;
 
@@ -25,7 +24,7 @@ public class RelationsController : ControllerBase
 
     [Route("/admin/relations")]
     [HttpGet]
-    public MSelectResult<RelationFullModel<ChannelModel, HistoryModel>> Select()
+    public MSelectResult<RelationFullModel<PSChannelModel, HistoryModel>> Select()
     {
         var queryHelper = new MQueryHelper(Request.Query);
         var channel = queryHelper.GetString("channel");
@@ -63,12 +62,12 @@ select count(1) from ({sqlBuilder}) as temp;";
         var querySqlText = sqlBuilder.ToString();
 
         var modelsQuery =
-            DatabaseContextHelper.RawSqlQuery<RelationFullModel<ChannelModel, HistoryModel>>(_dataContext, querySqlText,
+            DatabaseContextHelper.RawSqlQuery<RelationFullModel<PSChannelModel, HistoryModel>>(_dataContext, querySqlText,
                 parameters);
 
         var models = modelsQuery.ToList();
 
-        return new MSelectResult<RelationFullModel<ChannelModel, HistoryModel>>
+        return new MSelectResult<RelationFullModel<PSChannelModel, HistoryModel>>
         {
             Range = models,
             Count = totalCount ?? 0

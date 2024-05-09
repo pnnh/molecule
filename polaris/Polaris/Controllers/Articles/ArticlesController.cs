@@ -1,11 +1,8 @@
-﻿using System.Text;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Molecule.Helpers;
-using Molecule.Models;
-using Polaris.Business.Helpers;
+using Molecule.Helpers; 
 using Polaris.Business.Models;
-using Polaris.Business.Models.Articles;
+using Polaris.Business.Models.Polaris;
 using Polaris.Business.Services;
 
 namespace Polaris.Controllers.Articles;
@@ -16,9 +13,9 @@ public class ArticleContentController(DatabaseContext configuration, ModelServic
     [Route("/articles/{article}")]
     [HttpGet]
     [AllowAnonymous]
-    public PostModel? Get([FromRoute] string article)
+    public PSArticleModel? Get([FromRoute] string article)
     {
-        var model = modelService.GetByKey<PostModel>(article);
+        var model = modelService.GetByKey<PSArticleModel>(article);
         return model;
     }
 
@@ -32,7 +29,7 @@ public class ArticleContentController(DatabaseContext configuration, ModelServic
 
         var user = HttpContext.User;
         if (user.Identity == null || string.IsNullOrEmpty(user.Identity.Name)) throw new PLBizException("用户未登录");
-        var model = new PostModel
+        var model = new PSArticleModel
         {
             Uid = MIDHelper.Default.NewUUIDv7(),
             Title = title,

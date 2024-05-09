@@ -3,8 +3,8 @@ package email
 import (
 	"fmt"
 
-	"github.com/pnnh/neutron/config"
 	"golang.org/x/time/rate"
+	"multiverse-authorization/neutron/config"
 
 	gomail "gopkg.in/gomail.v2"
 )
