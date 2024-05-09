@@ -3,12 +3,12 @@ import styles from './channels.module.scss'
 import Link from 'next/link'
 import { PSCard } from '@/components/client/controls'
 import { ChannelModel } from '@/models/channel'
-import { PSImage } from '@/components/client/image' 
+import { PSImage } from '@/components/client/image'
 import { serverMakeHttpGet } from '@/services/server/http'
-import { PLSelectResult } from '@/models/common-result' 
+import { PLSelectResult } from '@/models/common-result'
 
 function Item (props: { model: ChannelModel }) {
-  const readUrl = `/channels/${props.model.urn}`
+  const readUrl = `/venus/channels/${props.model.urn}`
   return <PSCard className={styles.item}>
     <div className={styles.itemCover}>
       <PSImage src={props.model.image} alt='star' width={256} height={256}/>
@@ -25,11 +25,11 @@ function Item (props: { model: ChannelModel }) {
 }
 
 export async function PicturesChannelsPage () {
-  const pageSize = 64 
+  const pageSize = 64
   const url = '/pictures/channels/?' + `page=1&size=${pageSize}`
-  const result = await serverMakeHttpGet<PLSelectResult<ChannelModel>>(url) 
-  return <div className={styles.container}> 
-        <div className={styles.body}> 
+  const result = await serverMakeHttpGet<PLSelectResult<ChannelModel>>(url)
+  return <div className={styles.container}>
+        <div className={styles.body}>
           <div className={styles.container}>
             <div className={styles.body}>
               <div className={styles.list}>

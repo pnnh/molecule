@@ -16,7 +16,7 @@ export default async function Home({ searchParams }: {
     const identity = await getIdentity()
     return <div className={styles.fullPage}>
         <div>
-            {<PublicNavbar account={identity} />}
+            <PublicNavbar account={identity} />
         </div>
         <div className={styles.mainContainer}>
             <div className={styles.contentCenter}>

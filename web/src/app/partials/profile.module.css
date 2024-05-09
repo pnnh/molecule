@@ -1,0 +1,12 @@
+.selectorBox {
+    border: solid 1px #e0e0e0;
+    border-radius: 4px;
+    padding: 8px;
+    background: #FFFFFF;
+
+    .navLink {
+        color: #4e4e4e;
+        text-decoration: none;
+        font-size: 1rem;
+    }
+}

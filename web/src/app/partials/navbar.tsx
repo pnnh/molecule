@@ -3,8 +3,12 @@ import styles from './navbar.module.scss'
 import {fullAuthUrl} from '@/services/common/const'
 import Image from 'next/image'
 import {AccountModel} from '@/models/account'
+import React from "react";
+import {UserProfileSelector} from "@/app/partials/profile";
+import {userRole} from "@/services/schema";
 
 export function PublicNavbar(props: { account?: AccountModel }) {
+    const entry = userRole()
     return <div className={styles.navHeader}>
         <div className={styles.leftNav}>
             <div>
@@ -12,16 +16,22 @@ export function PublicNavbar(props: { account?: AccountModel }) {
                     <Image src='/images/logo.png' alt='logo' fill={true} sizes={'48px,48px'}/>
                 </Link>
             </div>
-            <Link className={styles.navLink} href={'/channels'}>频道</Link>
-            {/* <Link className={styles.navLink} href={'/posts'}>笔记</Link> */}
-            {/* <Link className={styles.navLink} href={'/posts'}>图片</Link>
-            <Link className={styles.navLink} href={'/posts'}>群组</Link> */}
-            {/* <Link className={styles.navLink} href={'/tools'}>工具</Link> */}
+            <UserProfileSelector role={entry}/>
+            <RoleNavbar role={entry}/>
         </div>
         <div className={styles.rightNav}>
             <UserAction account={props.account}/>
         </div>
     </div>
+}
+
+function RoleNavbar({role}: { role: string }) {
+    if (role === 'portal') {
+        return <div>Not Found</div>
+    } else if (role === 'venus') {
+        return <Link className={styles.navLink} href={'/venus/channels'}>频道</Link>
+    }
+    return <Link className={styles.navLink} href={'/polaris/channels'}>频道</Link>
 }
 
 function UserAction(props: { account?: AccountModel }) {

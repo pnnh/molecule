@@ -1,7 +1,7 @@
 import React from 'react'
-import {ChannelsNavbar} from './navbar'
 import styles from './layout.module.css'
 import {getIdentity} from '@/services/auth'
+import {PublicNavbar} from "@/app/partials/navbar";
 
 export default async function ArticleLayout({
                                                 children
@@ -12,7 +12,7 @@ export default async function ArticleLayout({
 
     return <div className={styles.container}>
         <div>
-            <ChannelsNavbar account={identity}/>
+            <PublicNavbar account={identity} />
         </div>
         <div className={styles.body}>
             {children}
