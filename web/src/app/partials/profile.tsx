@@ -27,6 +27,7 @@ export function UserProfileSelector({role}: { role: string }) {
         <ClickAwayListener onClickAway={handleClickAway}>
             <button aria-describedby={id} onClick={handleClick}>
                 <RoleButton role={role} pathname={pathname} />
+                <KeyboardArrowDownIcon fontSize="small"/>
             </button>
         </ClickAwayListener>
         <Popper id={id} open={open} anchorEl={anchorEl} placement={'bottom-start'}>
@@ -37,24 +38,52 @@ export function UserProfileSelector({role}: { role: string }) {
 
 function RoleButton({role, pathname}: {role: string, pathname: string}) {
     if (role === 'venus' || pathname.startsWith("/venus")) {
-        return <>
-            <span>启明星</span>
-            <KeyboardArrowDownIcon fontSize="small"/>
-        </>
+        return <span>启明星</span>
     }
-    return <>
-        <span>北极星</span>
-        <KeyboardArrowDownIcon fontSize="small"/>
-    </>
+    if (role === 'sirius' || pathname.startsWith("/sirius")) {
+        return <span>天狼星</span>
+    }
+    return <span>北极星</span>
 }
 
 function RoleBox({role, pathname}: {role: string, pathname: string}) {
+    const linkList = [
+        {name: '北极星', code: 'polaris', href: '/polaris/channels'},
+        {name: '启明星', code: 'venus', href: '/venus/channels'},
+        {name: '天狼星', code: 'sirius', href: '/sirius/tools'},
+    ]
     if (role === 'venus' || pathname.startsWith("/venus")) {
         return <div className={styles.selectorBox}>
-            <Link className={styles.navLink} href={'/polaris/channels'}>北极星</Link>
+            {
+                linkList.map((item) => {
+                    if (item.code === 'venus') {
+                        return null
+                    }
+                    return <Link key={item.code} className={styles.navLink} href={item.href}>{item.name}</Link>
+                })
+            }
+        </div>
+    }
+    if (role === 'sirius' || pathname.startsWith("/sirius")) {
+        return <div className={styles.selectorBox}>
+            {
+                linkList.map((item) => {
+                    if (item.code === 'sirius') {
+                        return null
+                    }
+                    return <Link key={item.code} className={styles.navLink} href={item.href}>{item.name}</Link>
+                })
+            }
         </div>
     }
     return <div className={styles.selectorBox}>
-        <Link className={styles.navLink} href={'/venus/channels'}>启明星</Link>
+        {
+            linkList.map((item) => {
+                if (item.code === 'polaris') {
+                    return null
+                }
+                return <Link key={item.code} className={styles.navLink} href={item.href}>{item.name}</Link>
+            })
+        }
     </div>
 }
