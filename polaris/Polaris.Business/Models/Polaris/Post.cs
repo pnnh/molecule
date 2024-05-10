@@ -41,16 +41,16 @@ public class PSArticleModel
 
     [Column("keywords", TypeName = "varchar(128)")]
     [JsonPropertyName("keywords")]
-    public string Keywords { get; set; } = "";
+    public string? Keywords { get; set; } = "";
 
     [Column("description", TypeName = "varchar(512)")]
-    public string Description { get; set; } = "";
+    public string? Description { get; set; } = "";
 
     [Column("status", TypeName = "int")]
     public int Status { get; set; }
 
     [Column("cover", TypeName = "varchar(256)")]
-    public string Cover { get; set; } = "";
+    public string? Cover { get; set; } = "";
 
     [Column("discover", TypeName = "integer")]
     public int Discover { get; set; }
@@ -61,12 +61,11 @@ public class PSArticleModel
     [NotMapped]
     [JsonPropertyName("channel_name")]
     public string? ChannelName { get; set; } = "";
-
-
+    
     [NotMapped]
     [JsonPropertyName("owner_name")]
     public string? OwnerName { get; set; } = "";
 
     [Column("partition", TypeName = "uuid")]
-    public Guid Partition { get; set; }
+    public Guid? Partition { get; set; }
 }

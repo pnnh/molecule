@@ -1,12 +1,13 @@
 'use client'
 
 import React, {useEffect, useState} from 'react'
-import {ArticleModel, TocItem} from '@/models/article'
+import {TocItem} from '@/models/article'
 import styles from './page.module.scss'
 import {BuildBodyHtml} from '@/components/common/article'
-import {TWButton} from '@/components/client/controls' 
+import {TWButton} from '@/components/client/controls'
 import {generatorRandomString} from "@/utils/string";
-import { clientMakeHttpGet } from '@/services/client/http'
+import {clientMakeHttpGet} from '@/services/client/http'
+import {NoteModel} from "@/models/personal/note";
 
 interface IReadRequest {
     params: { pk: string }
@@ -14,10 +15,10 @@ interface IReadRequest {
 
 export default function Page(request: IReadRequest) {
     const pk = request.params.pk
-    const [model, setModel] = useState<ArticleModel>()
+    const [model, setModel] = useState<NoteModel>()
 
-    useEffect(() => { 
-        clientMakeHttpGet<ArticleModel | undefined>('/posts/' + pk).then((result) => {
+    useEffect(() => {
+        clientMakeHttpGet<NoteModel | undefined>('/posts/' + pk).then((result) => {
             if (result) {
                 setModel(result)
             }

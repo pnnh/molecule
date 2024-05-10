@@ -37,10 +37,10 @@ export function UserProfileSelector({role}: { role: string }) {
 }
 
 function RoleButton({role, pathname}: {role: string, pathname: string}) {
-    if (role === 'venus' || pathname.startsWith("/venus")) {
+    if (pathname.startsWith("/venus") || role === 'venus') {
         return <span>启明星</span>
     }
-    if (role === 'sirius' || pathname.startsWith("/sirius")) {
+    if (pathname.startsWith("/portal") || role === 'portal') {
         return <span>天狼星</span>
     }
     return <span>北极星</span>
@@ -48,11 +48,11 @@ function RoleButton({role, pathname}: {role: string, pathname: string}) {
 
 function RoleBox({role, pathname}: {role: string, pathname: string}) {
     const linkList = [
-        {name: '北极星', code: 'polaris', href: '/polaris/channels'},
-        {name: '启明星', code: 'venus', href: '/venus/channels'},
-        {name: '天狼星', code: 'sirius', href: '/sirius/tools'},
+        {name: '文章', code: 'polaris', href: '/polaris/channels'},
+        {name: '图片', code: 'venus', href: '/venus/channels'},
+        {name: '工具', code: 'portal', href: '/portal/tools'},
     ]
-    if (role === 'venus' || pathname.startsWith("/venus")) {
+    if (pathname.startsWith("/venus") || role === 'venus') {
         return <div className={styles.selectorBox}>
             {
                 linkList.map((item) => {
@@ -64,11 +64,11 @@ function RoleBox({role, pathname}: {role: string, pathname: string}) {
             }
         </div>
     }
-    if (role === 'sirius' || pathname.startsWith("/sirius")) {
+    if (pathname.startsWith("/portal") || role === 'portal') {
         return <div className={styles.selectorBox}>
             {
                 linkList.map((item) => {
-                    if (item.code === 'sirius') {
+                    if (item.code === 'portal') {
                         return null
                     }
                     return <Link key={item.code} className={styles.navLink} href={item.href}>{item.name}</Link>

@@ -28,10 +28,10 @@ public class PSChannelModel
     [Column("owner", TypeName = "uuid")] public Guid Owner { get; set; }
 
     [Column("description", TypeName = "varchar(256)")]
-    public string Description { get; set; } = "";
+    public string? Description { get; set; } = "";
 
     [Column("image", TypeName = "varchar(2048)")]
-    public string Image { get; set; } = "";
+    public string? Image { get; set; } = "";
 }
 
 public class ChannelPostsView

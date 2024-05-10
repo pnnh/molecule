@@ -26,9 +26,9 @@ export function PublicNavbar(props: { account?: AccountModel, pathname: string }
 }
 
 function RoleNavbar({role, pathname}: { role: string, pathname: string}) {
-    if (role === 'sirius' || pathname.startsWith('/sirius')) {
+    if (pathname.startsWith('/portal') || role === 'portal') {
         return <></>
-    } else if (role === 'venus' || pathname.startsWith('/venus')) {
+    } else if (pathname.startsWith('/venus') || role === 'venus') {
         return <Link className={styles.navLink} href={'/venus/channels'}>图片频道</Link>
     }
     return <Link className={styles.navLink} href={'/polaris/channels'}>文章频道</Link>
