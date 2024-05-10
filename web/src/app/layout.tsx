@@ -3,9 +3,8 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import './global.css'
-import {GoogleAnalytics} from './partials/analytics' 
 import {Metadata} from 'next'
- 
+
 // 隔几秒重新验证下数据
 export const revalidate = 5
 export const dynamic = 'force-dynamic'
@@ -29,7 +28,6 @@ export default async function RootLayout({children}: {
             <meta name="robots" content="index,follow"/>
             <link rel="icon" href="/favicon.ico" type="image/x-icon"/>
             <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico"/>
-            <GoogleAnalytics/>
         </head>
         <body>
         {children}
