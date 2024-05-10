@@ -7,7 +7,7 @@ import React from "react";
 import {UserProfileSelector} from "@/app/partials/profile";
 import {userRole} from "@/services/schema";
 
-export function PublicNavbar(props: { account?: AccountModel }) {
+export function PublicNavbar(props: { account?: AccountModel, pathname: string }) {
     const entry = userRole()
     return <div className={styles.navHeader}>
         <div className={styles.leftNav}>
@@ -17,7 +17,7 @@ export function PublicNavbar(props: { account?: AccountModel }) {
                 </Link>
             </div>
             <UserProfileSelector role={entry}/>
-            <RoleNavbar role={entry}/>
+            <RoleNavbar role={entry} pathname={props.pathname}/>
         </div>
         <div className={styles.rightNav}>
             <UserAction account={props.account}/>
@@ -25,13 +25,13 @@ export function PublicNavbar(props: { account?: AccountModel }) {
     </div>
 }
 
-function RoleNavbar({role}: { role: string }) {
-    if (role === 'portal') {
-        return <div>Not Found</div>
-    } else if (role === 'venus') {
-        return <Link className={styles.navLink} href={'/venus/channels'}>频道</Link>
+function RoleNavbar({role, pathname}: { role: string, pathname: string}) {
+    if (role === 'sirius' || pathname.startsWith('/sirius')) {
+        return <></>
+    } else if (role === 'venus' || pathname.startsWith('/venus')) {
+        return <Link className={styles.navLink} href={'/venus/channels'}>图片频道</Link>
     }
-    return <Link className={styles.navLink} href={'/polaris/channels'}>频道</Link>
+    return <Link className={styles.navLink} href={'/polaris/channels'}>文章频道</Link>
 }
 
 function UserAction(props: { account?: AccountModel }) {

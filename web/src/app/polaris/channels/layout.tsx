@@ -2,6 +2,7 @@ import React from 'react'
 import styles from './layout.module.css'
 import {getIdentity} from '@/services/auth'
 import {PublicNavbar} from "@/app/partials/navbar";
+import {getPathname} from "@/services/server/pathname";
 
 export default async function ArticleLayout({
                                                 children
@@ -12,7 +13,7 @@ export default async function ArticleLayout({
 
     return <div className={styles.container}>
         <div>
-            <PublicNavbar account={identity} />
+            <PublicNavbar account={identity} pathname={getPathname()} />
         </div>
         <div className={styles.body}>
             {children}
