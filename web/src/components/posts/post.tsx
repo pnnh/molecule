@@ -32,8 +32,8 @@ export async function ArticlesPage({channel, searchParams}: {
         size: pageSize,
         channel: channelPk
     }
-    const rawQuery = queryString.stringify(selectQuery) 
-    const url = `/articles/channels/${channel}/posts?${rawQuery}` 
+    const rawQuery = queryString.stringify(selectQuery)
+    const url = `/articles/channels/${channel}/posts?${rawQuery}`
     const selectResult = await serverMakeHttpGet<PLSelectResult<ArticleModel>>(url)
 
     const pagination = calcPagination(page, selectResult.count, pageSize)
@@ -53,7 +53,7 @@ export async function ArticlesPage({channel, searchParams}: {
         direction: 'cta',
         size: 10
     })
-    const rankUrl = `/articles/channels/${channel}/posts?${rankQuery}` 
+    const rankUrl = `/articles/channels/${channel}/posts?${rankQuery}`
     const rankSelectResult = await serverMakeHttpGet<PLSelectResult<ArticleModel>>(rankUrl)
 
     return <div className={styles.fullPage}>
@@ -116,8 +116,8 @@ function MiddleBody({selectResult}: { selectResult: PLSelectResult<ArticleModel>
     if (!selectResult || !selectResult.range || selectResult.range.length === 0) {
         return <NoData size='large'/>
     }
-    return selectResult.range.map((model) => { 
-    const readUrl = `/channels/${stringToBase58(model.channel)}/articles/${model.urn}`
+    return selectResult.range.map((model) => {
+    const readUrl = `/polaris/channels/${stringToBase58(model.channel)}/articles/${model.urn}`
         return <div className={styles.middleItem} key={model.uid}>
             <div className={styles.itemDetail}>
                 <div className={styles.title}>
