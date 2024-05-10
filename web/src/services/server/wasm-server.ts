@@ -26,7 +26,8 @@ interface IModule {
 const Module = {
     locateFile: function (path: string, scriptDirectory: string) {
         console.log('locateFile222', path, scriptDirectory)
-        return 'node_modules/polaris-wasm-server/polaris-wasm-server.wasm'
+        //return 'node_modules/polaris-wasm-server/polaris-wasm-server.wasm'
+        return 'public/server/polaris-wasm-server.wasm'
     }
 }
 const MainModuleFactory = await import('polaris-wasm-server')
