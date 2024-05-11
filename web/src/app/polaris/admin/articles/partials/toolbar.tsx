@@ -2,14 +2,12 @@
 
 import React from 'react'
 import styles from './toolbar.module.css'
-import {TWButton} from '@/components/client/controls'
+import {Button} from "@mui/material";
 
 export function Toolbar() {
     return <div className={styles.toolbar}>
         <div className={styles.toolbarLeft}>
-            <TWButton>
-                删除
-            </TWButton>
+            <Button variant="contained">删除</Button>
         </div>
         <div>
         </div>
