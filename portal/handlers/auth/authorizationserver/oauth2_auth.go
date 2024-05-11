@@ -21,7 +21,7 @@ import (
 )
 
 func parseUsername(gctx *gin.Context) (string, error) {
-	authCookie, err := gctx.Request.Cookie("Authorization")
+	authCookie, err := gctx.Request.Cookie("Portal-Authorization")
 	if err != nil && err != http.ErrNoCookie {
 		logrus.Errorln("获取cookie失败", err)
 		return "", err
@@ -75,11 +75,9 @@ func AuthEndpointHtml(gctx *gin.Context) {
 	// 	index = 0
 	// }
 
-	webPath := strings.Replace(gctx.Request.URL.Path, helpers.BaseUrl, "", 1)
+	webPath := gctx.Request.URL.Path
 	webAuthUrl := fmt.Sprintf("%s%s?%s", webUrl, webPath, gctx.Request.URL.RawQuery)
-	if authUser != "" {
-		webAuthUrl += fmt.Sprintf("&authed=%s", authUser)
-	}
+	webAuthUrl += fmt.Sprintf("&authed=%s", authUser)
 
 	gctx.Redirect(http.StatusFound, webAuthUrl)
 }
@@ -100,7 +98,7 @@ func AuthEndpointJson(gctx *gin.Context) {
 
 	authedUser, err := parseUsername(gctx)
 	if err != nil {
-		gctx.JSON(http.StatusOK, models.ErrorResultMessage(err, "username为空"))
+		gctx.JSON(http.StatusOK, models.ErrorResultMessage(err, "username为空3"))
 		return
 	}
 	// 若用户名不一致认为是重新登陆

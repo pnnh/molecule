@@ -11,10 +11,10 @@ public class PSAccountModel
     [Column("uid", TypeName = "uuid")] public Guid Uid { get; set; }
 
     [Column("create_time", TypeName = "timestamptz")]
-    public DateTimeOffset CreateTime { get; set; } = new(2023, 1, 1, 0, 0, 0, TimeSpan.Zero);
+    public DateTime CreateTime { get; set; } = new(2023, 1, 1, 0, 0, 0);
 
     [Column("update_time", TypeName = "timestamptz")]
-    public DateTimeOffset UpdateTime { get; set; } = new(2023, 1, 1, 0, 0, 0, TimeSpan.Zero);
+    public DateTime UpdateTime { get; set; } = new(2023, 1, 1, 0, 0, 0);
 
     [Column("account", TypeName = "varchar(96)")]
     [JsonIgnore]
@@ -48,11 +48,11 @@ public class PSAccountModel
 
     [Column("token_expire", TypeName = "timestamptz")]
     [JsonIgnore]
-    public DateTimeOffset TokenExpire { get; set; } = new(2023, 1, 1, 0, 0, 0, TimeSpan.Zero);
+    public DateTime TokenExpire { get; set; } = new(2023, 1, 1, 0, 0, 0);
 
     [Column("sync_time", TypeName = "timestamptz")]
     [JsonIgnore]
-    public DateTimeOffset SyncTime { get; set; } = new(2023, 1, 1, 0, 0, 0, TimeSpan.Zero);
+    public DateTime SyncTime { get; set; } = new(2023, 1, 1, 0, 0, 0);
 
     [Column("login_session", TypeName = "varchar(256)")]
     [JsonIgnore]

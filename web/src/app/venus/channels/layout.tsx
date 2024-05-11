@@ -13,7 +13,7 @@ export default async function ArticleLayout({
 
     return <div className={styles.container}>
         <div>
-            <PublicNavbar account={identity} pathname={getPathname()} />
+            <PublicNavbar account={identity.account} pathname={getPathname()}/>
         </div>
         <div className={styles.body}>
             {children}

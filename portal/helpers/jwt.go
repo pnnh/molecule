@@ -10,7 +10,7 @@ import (
 )
 
 func GetIssure() string {
-	issure := config.MustGetConfigurationString("SELF_URL") + BaseUrl
+	issure := config.MustGetConfigurationString("SELF_URL")
 	return issure
 }
 

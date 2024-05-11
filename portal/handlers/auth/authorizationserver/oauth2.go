@@ -60,7 +60,7 @@ func InitOAuth2() {
 var oauth2 fosite.OAuth2Provider
 
 func getUserServer() string {
-	issure := config.MustGetConfigurationString("RESOURCE_URL")
+	issure := config.MustGetConfigurationString("SELF_URL")
 	return issure
 }
 

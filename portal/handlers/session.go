@@ -14,7 +14,7 @@ type SessionHandler struct {
 }
 
 func (s *SessionHandler) Introspect(gctx *gin.Context) {
-	authHeader := gctx.Request.Header.Get("Authorization")
+	authHeader := gctx.Request.Header.Get("Portal-Authorization")
 
 	jwtToken := strings.TrimPrefix(authHeader, "Bearer ")
 

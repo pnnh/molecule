@@ -73,6 +73,6 @@ func OpenIdConfigurationHandler(gctx *gin.Context) {
 	`
 
 	responseText := fmt.Sprintf(responseTemplate, issuer, issuer, issuer, issuer,
-		resourcesServer+helpers.BaseUrl, issuer, issuer, issuer)
+		resourcesServer, issuer, issuer, issuer)
 	gctx.Data(200, "application/json", []byte(responseText))
 }

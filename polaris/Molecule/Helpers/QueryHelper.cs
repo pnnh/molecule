@@ -80,13 +80,4 @@ public class MQueryHelper
 
         return null;
     }
-
-    public DateTimeOffset? GetDateTimeOffset(string name)
-    {
-        if (_query.TryGetValue(name, out var value))
-            if (DateTimeOffset.TryParse(value, out var dateTimeOffsetValue))
-                return dateTimeOffsetValue;
-
-        return null;
-    }
 }

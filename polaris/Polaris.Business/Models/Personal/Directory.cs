@@ -1,17 +1,11 @@
 
 
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 using System.Text.Json.Serialization;
-using AutoMapper;
-using System.Data;
 
 namespace Polaris.Business.Models.Personal
 {
-
     [Table("directories", Schema = "personal")]
     [PrimaryKey(nameof(Pk))]
     public class DirectoryModel
@@ -26,11 +20,11 @@ namespace Polaris.Business.Models.Personal
 
         [Column("create_time", TypeName = "timestamptz")]
         [JsonPropertyName("create_time")]
-        public DateTimeOffset CreateTime { get; set; } = new(2023, 1, 1, 0, 0, 0, TimeSpan.Zero);
+        public DateTime CreateTime { get; set; } = new(2023, 1, 1, 0, 0, 0);
 
         [Column("update_time", TypeName = "timestamptz")]
         [JsonPropertyName("update_time")]
-        public DateTimeOffset UpdateTime { get; set; } = new(2023, 1, 1, 0, 0, 0, TimeSpan.Zero);
+        public DateTime UpdateTime { get; set; } = new(2023, 1, 1, 0, 0, 0);
 
         [Column("owner", TypeName = "varchar(96)")]
         [JsonPropertyName("owner")]

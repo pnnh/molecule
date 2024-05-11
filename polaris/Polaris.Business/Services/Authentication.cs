@@ -143,8 +143,8 @@ public class OAuth2AuthenticationHandler(
         var accountModel = databaseContext.Accounts.FirstOrDefault(o =>
             o.AccessToken == accessToken);
 
-        if (accountModel == null || accountModel.TokenExpire > DateTimeOffset.Now ||
-            accountModel.SyncTime < DateTimeOffset.Now.AddHours(-24))
+        if (accountModel == null || accountModel.TokenExpire > DateTime.Now ||
+            accountModel.SyncTime < DateTime.Now.AddHours(-24))
         {
             var parameters = new Dictionary<string, string> { { "token", accessToken } };
             var httpClient = new HttpClient();
@@ -181,7 +181,7 @@ public class OAuth2AuthenticationHandler(
             };
 
             // 将introspect结果保存到数据库
-            accountModel = AccountService.SyncAccount(databaseContext, accessToken, new DateTimeOffset(expireTime), oauth2User);
+            accountModel = AccountService.SyncAccount(databaseContext, accessToken, expireTime, oauth2User);
         }
 
         var username = accountModel.Username;

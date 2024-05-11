@@ -6,6 +6,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/gin-contrib/cors"
 	"multiverse-authorization/handlers"
 	"multiverse-authorization/handlers/account"
 	"multiverse-authorization/handlers/auth/authorizationserver"
@@ -14,9 +15,6 @@ import (
 	"multiverse-authorization/handlers/permissions"
 	"multiverse-authorization/handlers/public"
 	"multiverse-authorization/handlers/roles"
-	"multiverse-authorization/helpers"
-
-	"github.com/gin-contrib/cors"
 	"multiverse-authorization/neutron/config"
 
 	"github.com/gin-gonic/gin"
@@ -40,16 +38,16 @@ func NewWebServer() (*WebServer, error) {
 		router:    router,
 		resources: make(map[string]IResource)}
 
-	selfUrl, _ := config.GetConfigurationString("SELF_URL")
-	if selfUrl == "" {
+	webUrl, _ := config.GetConfigurationString("WEB_URL")
+	if webUrl == "" {
 		return nil, fmt.Errorf("SELF_URL未配置")
 	}
-	corsDomain := []string{selfUrl}
+	corsDomain := []string{webUrl}
 
 	router.Use(cors.New(cors.Config{
 		AllowOrigins:     corsDomain,
 		AllowMethods:     []string{"PUT", "PATCH", "POST", "GET"},
-		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Portal-Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
 		MaxAge:           12 * time.Hour,
@@ -60,13 +58,13 @@ func NewWebServer() (*WebServer, error) {
 
 func (s *WebServer) Init() error {
 	indexHandler := handlers.NewIndexHandler()
-	s.router.GET(helpers.BaseUrl+"/", indexHandler.Query)
+	s.router.GET("/", indexHandler.Query)
 
 	authHandler := &handlers.WebauthnHandler{}
-	s.router.POST(helpers.BaseUrl+"/account/signup/webauthn/begin/:username", authHandler.BeginRegistration)
-	s.router.POST(helpers.BaseUrl+"/account/signup/webauthn/finish/:username", authHandler.FinishRegistration)
-	s.router.POST(helpers.BaseUrl+"/account/signin/webauthn/begin/:username", authHandler.BeginLogin)
-	s.router.POST(helpers.BaseUrl+"/account/signin/webauthn/finish/:username", authHandler.FinishLogin)
+	s.router.POST("/account/signup/webauthn/begin/:username", authHandler.BeginRegistration)
+	s.router.POST("/account/signup/webauthn/finish/:username", authHandler.FinishRegistration)
+	s.router.POST("/account/signin/webauthn/begin/:username", authHandler.BeginLogin)
+	s.router.POST("/account/signin/webauthn/finish/:username", authHandler.FinishLogin)
 
 	// s.router.POST("/account/signup/email/begin", account.MailSignupBeginHandler)
 	// s.router.POST("/account/signup/email/finish", account.MailSignupFinishHandler)
@@ -74,49 +72,49 @@ func (s *WebServer) Init() error {
 	// s.router.POST("/account/signin/email/finish", account.MailSigninFinishHandler)
 
 	//s.router.POST("/account/signup/password/begin", account.PasswordSignupBeginHandler)
-	s.router.POST(helpers.BaseUrl+"/account/signup/password/finish", account.PasswordSignupFinishHandler)
+	s.router.POST("/account/signup/password/finish", account.PasswordSignupFinishHandler)
 	//s.router.POST("/account/signin/password/begin", account.PasswordSigninBeginHandler)
-	s.router.POST(helpers.BaseUrl+"/account/signin/password/finish", account.PasswordSigninFinishHandler)
+	s.router.POST("/account/signin/password/finish", account.PasswordSigninFinishHandler)
 
-	s.router.GET(helpers.BaseUrl+"/console/accounts", console.AdminSelectAccounts)
-	s.router.GET(helpers.BaseUrl+"/console/accounts/:pk", console.AdminSelectAccounts)
+	s.router.GET("/console/accounts", console.AdminSelectAccounts)
+	s.router.GET("/console/accounts/:pk", console.AdminSelectAccounts)
 
-	s.router.GET(helpers.BaseUrl+"/console/applications", console.ApplicationSelectHandler)
-	s.router.GET(helpers.BaseUrl+"/public/applications", public.PublicApplicationSelectHandler)
+	s.router.GET("/console/applications", console.ApplicationSelectHandler)
+	s.router.GET("/public/applications", public.PublicApplicationSelectHandler)
 
-	s.router.GET(helpers.BaseUrl+"/console/roles", roles.RoleSelectHandler)
-	s.router.GET(helpers.BaseUrl+"/console/roles/:pk", roles.RoleGetHandler)
+	s.router.GET("/console/roles", roles.RoleSelectHandler)
+	s.router.GET("/console/roles/:pk", roles.RoleGetHandler)
 
-	s.router.GET(helpers.BaseUrl+"/console/permissions", permissions.PermissionSelectHandler)
+	s.router.GET("/console/permissions", permissions.PermissionSelectHandler)
 
 	// sessionHandler := &handlers.SessionHandler{}
 	// s.router.POST("/account/session/introspect", sessionHandler.Introspect)
 
-	s.router.GET(helpers.BaseUrl+"/oauth2/auth", func(gctx *gin.Context) {
+	s.router.GET("/oauth2/auth", func(gctx *gin.Context) {
 		authorizationserver.AuthEndpointHtml(gctx)
 	})
-	s.router.POST(helpers.BaseUrl+"/oauth2/auth", func(gctx *gin.Context) {
+	s.router.POST("/oauth2/auth", func(gctx *gin.Context) {
 		authorizationserver.AuthEndpointJson(gctx)
 	})
 
-	s.router.POST(helpers.BaseUrl+"/oauth2/token", authorizationserver.TokenEndpoint)
-	s.router.POST(helpers.BaseUrl+"/oauth2/revoke", func(gctx *gin.Context) {
+	s.router.POST("/oauth2/token", authorizationserver.TokenEndpoint)
+	s.router.POST("/oauth2/revoke", func(gctx *gin.Context) {
 		authorizationserver.RevokeEndpoint(gctx)
 	})
-	s.router.POST(helpers.BaseUrl+"/oauth2/introspect", func(gctx *gin.Context) {
+	s.router.POST("/oauth2/introspect", func(gctx *gin.Context) {
 		authorizationserver.IntrospectionEndpoint(gctx)
 	})
-	s.router.GET(helpers.BaseUrl+"/oauth2/jwks", func(gctx *gin.Context) {
+	s.router.GET("/oauth2/jwks", func(gctx *gin.Context) {
 		authorizationserver.JwksEndpoint(gctx)
 	})
-	s.router.POST(helpers.BaseUrl+"/oauth2/user", func(gctx *gin.Context) {
+	s.router.POST("/oauth2/user", func(gctx *gin.Context) {
 		authorizationserver.UserEndpoint(gctx)
 	})
 
-	s.router.GET(helpers.BaseUrl+"/.well-known/openid-configuration", authorizationserver.OpenIdConfigurationHandler)
+	s.router.GET("/.well-known/openid-configuration", authorizationserver.OpenIdConfigurationHandler)
 
-	s.router.GET(helpers.BaseUrl+"/api/go_captcha_data", captcha.GetCaptchaData)
-	s.router.POST(helpers.BaseUrl+"/api/go_captcha_check_data", captcha.CheckCaptcha)
+	s.router.GET("/api/go_captcha_data", captcha.GetCaptchaData)
+	s.router.POST("/api/go_captcha_check_data", captcha.CheckCaptcha)
 
 	return nil
 }

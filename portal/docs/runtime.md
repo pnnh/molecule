@@ -12,7 +12,6 @@ OAUTH2_PUBLIC_KEY: file://runtime/data/rs256-public.pem
 OAUTH2_JWK: file://runtime/data/rs256-jwk.json
 WEB_URL: https://portal.huable.com
 SELF_URL: https://portal.huable.com
-RESOURCE_URL: https://fields.huable.com
 MAIL_HOST: smtp.abc.com
 MAIL_PORT: 587
 MAIL_USER: support@huable.com

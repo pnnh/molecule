@@ -34,11 +34,11 @@ namespace Polaris.Business.Models.Polaris
 
         [Column("create_time", TypeName = "timestamptz")]
         [JsonPropertyName("create_time")]
-        public DateTimeOffset CreateTime { get; set; } = new(2023, 1, 1, 0, 0, 0, TimeSpan.Zero);
+        public DateTime CreateTime { get; set; } = new(2023, 1, 1, 0, 0, 0);
 
         [Column("update_time", TypeName = "timestamptz")]
         [JsonPropertyName("update_time")]
-        public DateTimeOffset UpdateTime { get; set; } = new(2023, 1, 1, 0, 0, 0, TimeSpan.Zero);
+        public DateTime UpdateTime { get; set; } = new(2023, 1, 1, 0, 0, 0);
 
         [Column("creator", TypeName = "varchar(96)")]
         [JsonPropertyName("creator")]

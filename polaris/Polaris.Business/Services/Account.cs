@@ -1,8 +1,6 @@
-
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
-using Microsoft.Extensions.Configuration;
 using Molecule.Helpers;
 using Polaris.Business.Models;
 using Polaris.Business.Models.Polaris;
@@ -11,14 +9,12 @@ namespace Polaris.Business.Services;
 
 public class AccountService
 {
-
-
     public const string AuthCookieName = "Polaris-Authorization";
 
     private static readonly object accountLock = new();
 
 
-    public static PSAccountModel SyncAccount(DatabaseContext databaseContext, string accessToken, DateTimeOffset tokenExpire,
+    public static PSAccountModel SyncAccount(DatabaseContext databaseContext, string accessToken, DateTime tokenExpire,
         OAuth2User tokenModel)
     {
         lock (accountLock)
@@ -31,8 +27,8 @@ public class AccountService
                 {
                     Uid = MIDHelper.Default.NewUUIDv7(),
                     AccessToken = accessToken,
-                    CreateTime = DateTimeOffset.Now,
-                    UpdateTime = DateTimeOffset.Now,
+                    CreateTime = DateTime.Now,
+                    UpdateTime = DateTime.Now,
                     Username = tokenModel.Username,
                     Description = "",
                     Mail = "",
@@ -50,7 +46,7 @@ public class AccountService
                 account.AccessToken = accessToken;
                 account.TokenExpire = tokenExpire;
                 account.TokenIssuer = tokenModel.Issuer ?? "";
-                account.UpdateTime = DateTimeOffset.Now;
+                account.UpdateTime = DateTime.Now;
                 account.LoginSession = Guid.NewGuid().ToString();
                 databaseContext.Update(account);
                 databaseContext.SaveChanges();
@@ -60,22 +56,14 @@ public class AccountService
         }
     }
 
-    public static async Task<OAuth2User?> IntrospectAccount(string accessToken, IConfiguration configuration)
+    public static async Task<OAuth2User?> IntrospectAccount(string accessToken, string clientId, string clientSecret, string authServer)
     {
-
         var parameters = new Dictionary<string, string> { { "token", accessToken } };
         var httpClient = new HttpClient();
-
-        const string clientId = "polaris";
-        const string clientSecret = "foobar";
-
+ 
         var authHeader = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{clientId}:{clientSecret}"));
         httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authHeader);
-
-        var authServer = configuration.GetSection("AuthServer").Value;
-        if (authServer == null || string.IsNullOrEmpty(authServer))
-            return null;
-
+  
         var response = await httpClient.PostAsync($"{authServer}/oauth2/introspect",
             new FormUrlEncodedContent(parameters));
 

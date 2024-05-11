@@ -3,11 +3,11 @@ import {PublicNavbar} from "@/app/partials/navbar";
 import {getIdentity} from "@/services/auth";
 import {getPathname} from "@/services/server/pathname";
 
-export default async function ToolsLayout({children}:{children: React.ReactNode}) {
+export default async function ToolsLayout({children}: { children: React.ReactNode }) {
     const identity = await getIdentity()
     return <div>
         <div>
-            <PublicNavbar account={identity} pathname={getPathname()} />
+            <PublicNavbar account={identity.account} pathname={getPathname()}/>
         </div>
         <div>
             {children}

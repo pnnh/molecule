@@ -22,15 +22,23 @@ public class OAuth2Controller(
         {
             throw new PLBizException($"认证失败: {error}");
         }
-        var stateDecode = Encoding.UTF8.GetString(Convert.FromBase64String(state));
+        //var stateDecode = Encoding.UTF8.GetString(Convert.FromBase64String(state));
         var authServer = configuration["AuthServer"];
         var selfUrl = configuration["SelfUrl"];
+        if (string.IsNullOrEmpty(authServer) || string.IsNullOrEmpty(selfUrl))
+            throw new PLBizException("AuthServer or SelfUrl is not configured");
         var tokenUrl = $"{authServer}/oauth2/token";
+        
+        var oauth2Client = configuration["OAuth2:ClientId"];
+        var oauth2Secret = configuration["OAuth2:ClientSecret"];
+        
+        if (string.IsNullOrEmpty(oauth2Client) || string.IsNullOrEmpty(oauth2Secret))
+            throw new PLBizException("OAuth2 Client or Secret is not configured");
 
         var tokenParameters = new Dictionary<string, string>
         {
-            { "client_id", "polaris" },
-            { "client_secret", "foobar" },
+            { "client_id", oauth2Client },
+            { "client_secret", oauth2Secret },
             { "grant_type", "authorization_code" },
             { "code", code },
             { "redirect_uri", $"{selfUrl}/oauth2/code" }
@@ -57,15 +65,15 @@ public class OAuth2Controller(
             throw new PLBizException("认证失败");
         }
 
-        var oauth2User = await AccountService.IntrospectAccount(tokenResultModel.AccessToken, configuration);
+        var oauth2User = await AccountService.IntrospectAccount(tokenResultModel.AccessToken,
+            oauth2Client, oauth2Secret, authServer);
         if (oauth2User == null)
         {
             throw new PLBizException("认证失败");
         }
 
         var expireTime = DateTime.Now.AddSeconds(tokenResultModel.ExpiresIn);
-        var accountModel = AccountService.SyncAccount(databaseContext, tokenResultModel.AccessToken, new DateTimeOffset(expireTime)
-        , oauth2User);
+        var accountModel = AccountService.SyncAccount(databaseContext, tokenResultModel.AccessToken, expireTime, oauth2User);
         if (accountModel.LoginSession == null)
         {
             throw new PLBizException("认证失败");

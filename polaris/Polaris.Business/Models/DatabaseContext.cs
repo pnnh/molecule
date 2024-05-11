@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Polaris.Business.Models.Polaris;
 using Polaris.Business.Models.Venus;
 
@@ -18,7 +19,27 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
     public DbSet<ViewerModel> Viewers => Set<ViewerModel>();
     public DbSet<NSPictureModel> Pictures => Set<NSPictureModel>();
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
     {
+        base.ConfigureConventions(configurationBuilder);
+        configurationBuilder
+            .Properties<DateTime>()
+            .HaveConversion<DateTimeConverter>();
+    }
+}
+
+
+public class DateTimeConverter() : ValueConverter<DateTime, DateTime>(v => ConvertTo(v), v => ConvertFrom(v))
+{
+    private static DateTime ConvertTo(DateTime v)
+    {
+        var newValue = v.ToUniversalTime();
+        return newValue;
+    }
+
+    private static DateTime ConvertFrom(DateTime v)
+    {
+        var newValue = new DateTime(v.Ticks, DateTimeKind.Utc);
+        return newValue;
     }
 }

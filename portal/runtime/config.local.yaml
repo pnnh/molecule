@@ -4,8 +4,7 @@ OAUTH2_PRIVATE_KEY: file://runtime/data/rs256-private.pem
 OAUTH2_PUBLIC_KEY: file://runtime/data/rs256-public.pem
 OAUTH2_JWK: file://runtime/data/rs256-jwk.json
 WEB_URL: http://127.0.0.1:8100
-SELF_URL: http://127.0.0.1:8100
-RESOURCE_URL: https://fields.calieo.dev
+SELF_URL: http://127.0.0.1:8001
 MAIL_HOST: smtp.zoho.com
 MAIL_PORT: 587
 MAIL_USER: support@multiverse.direct

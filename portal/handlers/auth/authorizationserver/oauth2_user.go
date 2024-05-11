@@ -21,7 +21,7 @@ import (
 func UserEndpoint(gctx *gin.Context) {
 	ctx := gctx.Request.Context()
 
-	auth := gctx.Request.Header.Get("Authorization")
+	auth := gctx.Request.Header.Get("Portal-Authorization")
 	logrus.Infoln("auth: ", auth)
 
 	id, secret, ok := gctx.Request.BasicAuth()

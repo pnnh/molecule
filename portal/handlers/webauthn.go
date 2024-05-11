@@ -308,7 +308,7 @@ func (s *WebauthnHandler) FinishLogin(gctx *gin.Context) {
 	logrus.Debugln("sourceUrl: ", sourceUrl)
 
 	// 登录成功后设置cookie
-	gctx.SetCookie("Authorization", jwtToken, 3600*48, "/", "", true, true)
+	gctx.SetCookie("Portal-Authorization", jwtToken, 3600*48, "/", "", true, true)
 
 	resp := make(map[string]interface{})
 	resp["code"] = 200

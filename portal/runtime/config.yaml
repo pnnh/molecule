@@ -5,7 +5,6 @@ OAUTH2_PUBLIC_KEY: file://runtime/data/rs256-public.pem
 OAUTH2_JWK: file://runtime/data/rs256-jwk.json
 WEB_URL: https://calieo.xyz
 SELF_URL: https://calieo.xyz
-RESOURCE_URL: https://fields.calieo.xyz
 MAIL_HOST: 127.0.0.1
 MAIL_PORT: 587
 MAIL_USER: support@multiverse.direct
