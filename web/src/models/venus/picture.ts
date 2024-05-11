@@ -1,4 +1,4 @@
-export interface PictureModel {
+export interface NSPictureModel {
     uid: string
     title: string
     create_time: string

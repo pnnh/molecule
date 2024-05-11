@@ -1,7 +1,7 @@
 'use client'
 
 import React, {useEffect, useState} from 'react'
-import {TocItem} from '@/models/article'
+import {TocItem} from '@/models/common/article'
 import styles from './page.module.scss'
 import {BuildBodyHtml} from '@/components/common/article'
 import {TWButton} from '@/components/client/controls'

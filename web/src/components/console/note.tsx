@@ -1,9 +1,9 @@
-import {TocItem} from "@/models/article";
 import {SteleBody} from "@/services/stele/core";
 import {markdownToStele} from "@/services/stele/markdown";
 import React from "react";
 import {buildNodeView} from "@/services/stele/view";
 import {NoteModel} from "@/models/personal/note";
+import {TocItem} from "@/models/common/article";
 
 export function NoteView({model}: { model: NoteModel }) {
     return <NoteContentView header={model.header} content={model.body}/>

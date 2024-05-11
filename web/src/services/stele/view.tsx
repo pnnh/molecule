@@ -1,7 +1,7 @@
-import {TocItem} from '@/models/article'
 import styles from './view.module.scss'
 import {CodeBlockNode, HeadingNode, ParagraphNode, SteleNode} from './core'
 import {generatorRandomString} from "@/utils/string";
+import {TocItem} from "@/models/common/article";
 
 export function buildNodeView(tocList: Array<TocItem>, node: SteleNode) {
     if (!node) return <></>

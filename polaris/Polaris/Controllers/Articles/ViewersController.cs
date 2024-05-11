@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Molecule.Helpers;
 using Polaris.Business.Models;
 
-namespace Polaris.Controllers.Viewers;
+namespace Polaris.Controllers.Articles;
 
 [ApiController]
 [Authorize]

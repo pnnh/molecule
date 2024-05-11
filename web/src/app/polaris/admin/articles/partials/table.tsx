@@ -4,16 +4,14 @@ import {formatRfc3339} from '@/utils/datetime'
 import styles from './table.module.scss'
 import React from 'react'
 import Link from 'next/link'
-import {RelationFullModel} from '@/models/relation'
 import {PLSelectResult} from '@/models/common-result'
-import {ChannelModel} from '@/models/channel'
-import {ArticleModel} from '@/models/article'
 import {PaginationPartial} from '@/components/common/pagination'
 import {replaceSearchParams} from '@/utils/query'
 import {calcPagination} from "@/utils/helpers";
+import {PSArticleModel} from "@/models/polaris/article";
 
 export function Table(props: {
-    result: PLSelectResult<RelationFullModel<ChannelModel, ArticleModel>>,
+    result: PLSelectResult<PSArticleModel>,
     search: Record<string, string>
 }) {
     const result = props.result
@@ -54,14 +52,9 @@ export function Table(props: {
     </>
 }
 
-function TableRow(props: { model: RelationFullModel<ChannelModel, ArticleModel> }) {
-    const model = props.model
-    const channelModel = model.source_model
-    const targetModel = model.target_model
-    if (!channelModel || !targetModel) {
-        return null
-    }
-    const updateTimeString = formatRfc3339(props.model.update_time)
+function TableRow({model}: { model: PSArticleModel }) {
+
+    const updateTimeString = formatRfc3339(model.update_time)
     return <tr className={styles.articleRow}>
         <th>
             <label>
@@ -69,14 +62,13 @@ function TableRow(props: { model: RelationFullModel<ChannelModel, ArticleModel> 
             </label>
         </th>
         <td className={styles.channelTitle}>
-            <Link href={'/'}
-                  title={channelModel.name}>{channelModel.name}</Link>
+            <Link href={'/'}>{model.channel}</Link>
         </td>
         <td>
             {updateTimeString}
         </td>
         <td className={styles.articleTitle}>
-            {targetModel.title}
+            {model.title}
         </td>
     </tr>
 }

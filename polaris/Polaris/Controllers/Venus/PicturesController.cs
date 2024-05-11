@@ -1,7 +1,6 @@
 ﻿using System.Text;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc; 
 using Molecule.Helpers;
 using Molecule.Models;
 using Polaris.Business.Helpers;
@@ -9,10 +8,10 @@ using Polaris.Business.Models;
 using Polaris.Business.Services; 
 using Polaris.Business.Models.Venus;
 
-namespace Polaris.Controllers;
+namespace Polaris.Controllers.Venus;
 
 [ApiController]
-public class PicturesController(DatabaseContext configuration, ModelService modelService) : ControllerBase
+public class NSPicturesController(DatabaseContext configuration, ModelService modelService) : ControllerBase
 {
     [Route("/pictures/{name}")]
     [HttpGet]
