@@ -61,19 +61,6 @@
                 "pulsar-server",
                 "--verbose"
             ]
-        },
-        {
-            "label": "pulsar-test-build",
-            "command": "cmake",
-            "type": "process",
-            "args": [
-                "--build",
-                "--preset",
-                "linux",
-                "--target",
-                "pulsar-test",
-                "--verbose"
-            ]
         }
     ]
 }

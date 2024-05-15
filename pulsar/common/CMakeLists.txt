@@ -20,9 +20,9 @@ find_package(Boost COMPONENTS system thread chrono url REQUIRED)
 target_include_directories(pulsar-common PUBLIC ${Boost_INCLUDE_DIRS})
 target_link_libraries(pulsar-common PUBLIC ${Boost_LIBRARIES})
 
-# 测试程序
-add_executable(pulsar-common-test main.cpp)
-target_link_libraries(pulsar-common-test PRIVATE pulsar-common)
+# # 测试程序
+# add_executable(pulsar-common-test main.cpp)
+# target_link_libraries(pulsar-common-test PRIVATE pulsar-common)
 
-# 添加测试用例
-add_test(NAME pulsar-common-test COMMAND pulsar-common-test)
+# # 添加测试用例
+# add_test(NAME pulsar-common-test COMMAND pulsar-common-test)

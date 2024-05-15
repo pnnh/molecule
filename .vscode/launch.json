@@ -78,34 +78,14 @@
             "preLaunchTask": "polaris-windows-build"
         },
         {
-            "name": "pulsar-server",
-            "type": "cppdbg",
+            "name": "pulsar-server-lldb",
+            "type": "lldb",
             "request": "launch",
             "program": "${workspaceFolder}/build/linux/pulsar/server/main/pulsar-server",
             "args": [],
-            "stopAtEntry": false,
             "cwd": "${workspaceFolder}/build/linux/pulsar/server/main",
-            "environment": [],
-            "externalConsole": false,
-            "MIMode": "gdb",
             "preLaunchTask": "pulsar-server-build",
-            "setupCommands": [],
             "envFile": "${workspaceFolder}/build/linux/pulsar/server/main/assets/.env.local"
-        },
-        {
-            "name": "pulsar-test",
-            "type": "cppdbg",
-            "request": "launch",
-            "program": "${workspaceFolder}/build/linux/pulsar/server/test/pulsar-test",
-            "args": [],
-            "stopAtEntry": false,
-            "cwd": "${workspaceFolder}/build/linux/pulsar/server/test",
-            "environment": [],
-            "externalConsole": false,
-            "MIMode": "gdb",
-            "preLaunchTask": "pulsar-test-build",
-            "setupCommands": [],
-            "envFile": "${workspaceFolder}/build/linux/pulsar/server/test/assets/.env.local"
         }
     ]
 }
