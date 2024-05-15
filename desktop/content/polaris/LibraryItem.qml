@@ -11,7 +11,7 @@ Rectangle {
 
     MouseArea {
         anchors.fill: parent
-        onClicked: () => currentLibraryChanged(name)
+        onClicked: () => currentLibraryChanged(uid)
         hoverEnabled: true
         onEntered: parent.color = "#e0e0e0"
         onExited: parent.color = "#ffffff"

@@ -9,7 +9,7 @@
 
 #include <QUuid>
 #include <iostream>
-#include <models/library_model.h>
+#include <models/LibraryModel.h>
 #include <qdir.h>
 #include <qdiriterator.h>
 

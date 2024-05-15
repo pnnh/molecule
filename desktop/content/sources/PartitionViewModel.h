@@ -1,20 +1,24 @@
-#ifndef PS_CONTENT_MODELS_PARTITION_H
-#define PS_CONTENT_MODELS_PARTITION_H
+#pragma once
+
+#include "services/LibraryService.h"
 
 #include <QtCore>
 #include <QtQml/qqmlregistration.h>
-#include <QAbstractListModel>
 
 typedef QVector<QString> PartitionData;
 
-class PartitionModel : public QAbstractListModel
+class PartitionViewModel : public QAbstractListModel
 {
   Q_OBJECT
   QML_ELEMENT
+  Q_PROPERTY(QString library READ library WRITE setLibrary)
 
 public:
-  explicit PartitionModel(QObject *parent = nullptr);
-  ~PartitionModel() override;
+  explicit PartitionViewModel(QObject *parent = nullptr);
+  ~PartitionViewModel() override;
+
+  QString library() const;
+  void setLibrary(const QString &library);
 
   [[nodiscard]] int rowCount(const QModelIndex &parent) const override;
   [[nodiscard]] QHash<int, QByteArray> roleNames() const override;
@@ -22,8 +26,8 @@ public:
 
 private:
   void loadData();
+  QString currentLibrary;
   QHash<int, QByteArray> dataNames;
   QVector<PartitionData *> dataList;
+  LibraryService libraryService;
 };
-
-#endif // PS_CONTENT_MODELS_PARTITION_H

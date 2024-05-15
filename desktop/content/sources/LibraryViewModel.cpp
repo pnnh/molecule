@@ -1,6 +1,6 @@
-#include "content/sources/LibraryModel.h"
+#include "content/sources/LibraryViewModel.h"
 
-#include "models/library_model.h"
+#include "models/LibraryModel.h"
 
 LibraryViewModel::LibraryViewModel(QObject *parent)
     : QAbstractListModel(parent) {

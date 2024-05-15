@@ -66,8 +66,8 @@ qt_policy(SET QTP0001 NEW)
 
 qt6_add_executable(polaris-desktop MANUAL_FINALIZATION
         main.cpp
-        models/library_model.cpp
-        models/library_model.h
+        models/LibraryModel.cpp
+        models/LibraryModel.h
         services/SqliteService.cpp
         services/SqliteService.h
         services/MarkdownService.cpp
@@ -125,10 +125,10 @@ qt6_add_qml_module(polaris-desktop
         SOURCES
         content/sources/markdown.h
         content/sources/markdown.cpp
-        content/sources/PartitionModel.h
-        content/sources/PartitionModel.cpp
-        content/sources/LibraryModel.h
-        content/sources/LibraryModel.cpp
+        content/sources/PartitionViewModel.h
+        content/sources/PartitionViewModel.cpp
+        content/sources/LibraryViewModel.h
+        content/sources/LibraryViewModel.cpp
         QML_FILES
         content/Main.qml
         content/list_videos.qml

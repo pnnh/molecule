@@ -90,7 +90,9 @@ ColumnLayout {
             anchors.left: parent.left
             anchors.right: parent.right
             boundsBehavior: Flickable.StopAtBounds
-            model: PartitionModel {}
+            model: PartitionViewModel {
+                library: currentLibrary
+            }
             delegate: PartitionItem {
                 onCurrentPartitionChanged: partition => {
                                                console.log('partition',
