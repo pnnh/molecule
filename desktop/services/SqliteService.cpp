@@ -1,4 +1,4 @@
-#include "sqlite_service.h"
+#include "SqliteService.h"
 
 #include "threads/SyncThread.h"
 
@@ -51,7 +51,7 @@ QSqlDatabase getDatabase(const QString &dbPath) {
   return database;
 }
 
-QString services::sqlite3_service::sql_version(const QString &dbPath) {
+QString services::SqliteService::sql_version(const QString &dbPath) {
   auto database = getDatabase(dbPath);
   QSqlQuery versionQuery{database};
   versionQuery.exec("select sqlite_version();");
@@ -64,7 +64,7 @@ QString services::sqlite3_service::sql_version(const QString &dbPath) {
   return outVersion;
 }
 
-std::shared_ptr<services::SqlIterator> services::sqlite3_service::execute_query(
+std::shared_ptr<services::SqlIterator> services::SqliteService::execute_query(
     const QString &dbPath, const QString &sql_text,
     const QMap<QString, QVariant> &parameters) {
   QSqlDatabase database = getDatabase(dbPath);

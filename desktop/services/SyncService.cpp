@@ -2,9 +2,9 @@
 // Created by Larry on 2024/5/8.
 //
 
-#include "sync_service.h"
+#include "SyncService.h"
 
-#include "user_service.h"
+#include "UserService.h"
 #include "utils/base32.h"
 
 #include <QUuid>

@@ -68,16 +68,16 @@ qt6_add_executable(polaris-desktop MANUAL_FINALIZATION
         main.cpp
         models/library_model.cpp
         models/library_model.h
-        services/sqlite_service.cpp
-        services/sqlite_service.h
-        services/markdown_service.cpp
-        services/markdown_service.h
+        services/SqliteService.cpp
+        services/SqliteService.h
+        services/MarkdownService.cpp
+        services/MarkdownService.h
         tests/tests.h
         tests/tests.cpp
-        services/user_service.cpp
-        services/user_service.h
-        services/sync_service.cpp
-        services/sync_service.h
+        services/UserService.cpp
+        services/UserService.h
+        services/SyncService.cpp
+        services/SyncService.h
         services/LibraryService.cpp
         services/LibraryService.h
         threads/SyncThread.cpp

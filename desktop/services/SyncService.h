@@ -1,9 +1,5 @@
-//
-// Created by Larry on 2024/5/8.
-//
+#pragma once
 
-#ifndef SYNC_SERVICE_H
-#define SYNC_SERVICE_H
 #include "LibraryService.h"
 
 class SyncService {
@@ -13,7 +9,3 @@ public:
 private:
   LibraryService libraryService;
 };
-
-
-
-#endif //SYNC_SERVICE_H

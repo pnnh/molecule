@@ -1,11 +1,9 @@
-#ifndef QT_EDITOR_SQLITE_H
-#define QT_EDITOR_SQLITE_H
+#pragma once
 
 #include <QSqlDatabase>
 #include <QString>
 #include <QVariant>
 #include <map>
-#include <memory>
 
 namespace services
 {
@@ -13,13 +11,6 @@ namespace services
 	{
 	public:
 		explicit SqlIterator(std::unique_ptr<QSqlQuery> query);
-		// ~SqlIterator() = delete;
-	        //SqlIterator() = delete;
-		// SqlIterator(const SqlIterator&) = delete;
-		// SqlIterator& operator=(const SqlIterator&) = delete;
-		// // sql_iterator(sql_iterator&&) = delete;
-		// SqlIterator& operator=(SqlIterator&&) = delete;
-
 		[[nodiscard]] bool next() const;
 		[[nodiscard]] QVariant value(int index) const;
 		[[nodiscard]] QVariant value(const QString& name) const;
@@ -30,10 +21,10 @@ namespace services
 		std::unique_ptr<QSqlQuery> sqlQueryPtr;
 	};
 
-	class sqlite3_service
+	class SqliteService
 	{
 	public:
-		explicit sqlite3_service() = default;
+		explicit SqliteService() = default;
 
 		[[nodiscard]] static QString sql_version(const QString &dbPath);
 		[[nodiscard]] static std::shared_ptr<SqlIterator> execute_query(
@@ -41,5 +32,3 @@ namespace services
 		  const QMap<QString, QVariant> &parameters = QMap<QString, QVariant>());
 	};
 }
-
-#endif // QT_EDITOR_SQLITE_H

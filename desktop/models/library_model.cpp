@@ -1,6 +1,6 @@
 #include "library_model.h"
 
-#include "../services/user_service.h"
+#include "../services/UserService.h"
 
 #include <QSqlQuery>
 #include <QtWidgets/QApplication>

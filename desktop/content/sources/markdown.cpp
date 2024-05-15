@@ -1,5 +1,5 @@
 #include "content/sources/markdown.h"
-#include "services/markdown_service.h"
+#include "services/MarkdownService.h"
 
 MarkdownModel::MarkdownModel(QObject *parent) {
 }

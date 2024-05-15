@@ -1,6 +1,6 @@
 #include "tests/tests.h"
-#include "services/markdown_service.h"
-#include "services/sqlite_service.h"
+#include "services/MarkdownService.h"
+#include "services/SqliteService.h"
 #include <QGuiApplication>
 #include <QLoggingCategory>
 #include <QQmlApplicationEngine>
@@ -12,7 +12,7 @@
 
 int TestSqliteVersion() {
   auto database_path = QGuiApplication::applicationDirPath() + "/venus.sqlite";
-  auto version = services::sqlite3_service::sql_version(database_path);
+  auto version = services::SqliteService::sql_version(database_path);
 
   qDebug() << "sqlite3 version: " << version;
   int isOk = (int)version.indexOf("3.");

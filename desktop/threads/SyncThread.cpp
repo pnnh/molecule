@@ -4,7 +4,7 @@
 
 #include "SyncThread.h"
 
-#include "services/sync_service.h"
+#include "services/SyncService.h"
 
 #include <QDebug>
 

@@ -1,4 +1,4 @@
-#include "user_service.h"
+#include "UserService.h"
 
 #include <qdir.h>
 #include <qstandardpaths.h>

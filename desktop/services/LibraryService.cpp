@@ -1,9 +1,8 @@
 #include "LibraryService.h"
 
-#include "user_service.h"
+#include "UserService.h"
 
 #include <QSqlQuery>
-#include <QUuid>
 #include <QtWidgets/QApplication>
 #include <iostream>
 #include <qdir.h>
@@ -16,12 +15,12 @@ LibraryService::LibraryService() {
                            "uid varchar primary key not null,"
                            "name varchar(128) not null,"
                            "path varchar(512) not null)");
-  if (!services::sqlite3_service::execute_query(dbPath, createSql)) {
+  if (!services::SqliteService::execute_query(dbPath, createSql)) {
     throw std::runtime_error("create table libraries error");
   }
   auto indexSql = QString(
       "create index if not exists index_libraries_path on libraries(path);");
-  if (!services::sqlite3_service::execute_query(dbPath, indexSql)) {
+  if (!services::SqliteService::execute_query(dbPath, indexSql)) {
     throw std::runtime_error("create index index_libraries_path error");
   }
 }
@@ -30,8 +29,7 @@ QVector<LibraryModel> LibraryService::SelectLibraries() const {
   QVector<LibraryModel> libraryList;
   auto selectSql = QString("select * from libraries");
 
-  auto sqlIterator =
-      services::sqlite3_service::execute_query(dbPath, selectSql);
+  auto sqlIterator = services::SqliteService::execute_query(dbPath, selectSql);
 
   while (sqlIterator->next()) {
     auto model = LibraryModel{.uid = sqlIterator->value("uid").toString(),
@@ -42,7 +40,8 @@ QVector<LibraryModel> LibraryService::SelectLibraries() const {
   return libraryList;
 }
 
-void LibraryService::InsertOrUpdateLibrary(QVector<LibraryModel> libraryList) {
+void LibraryService::InsertOrUpdateLibrary(
+    const QVector<LibraryModel> &libraryList) {
   std::cout << "InsertOrUpdateLibrary: " << libraryList.size() << std::endl;
 
   const auto insertSql =
@@ -56,8 +55,8 @@ void LibraryService::InsertOrUpdateLibrary(QVector<LibraryModel> libraryList) {
                                           },
                                           {":name", library.name},
                                           {":path", library.path}};
-    if (!services::sqlite3_service::execute_query(dbPath, insertSql,
-                                                  parameters)) {
+    if (!services::SqliteService::execute_query(dbPath, insertSql,
+                                                parameters)) {
       throw std::runtime_error("create table libraries error");
     }
   }
