@@ -1,5 +1,7 @@
+#include <fcntl.h>
 #include <stdio.h>
-#include <libc.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 // 图4-8 access函数的实例
 int main(int argc, char *argv[]) {

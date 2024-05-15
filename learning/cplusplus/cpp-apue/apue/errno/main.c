@@ -1,6 +1,6 @@
-#include <stdio.h>
 #include <errno.h>
-#include <libc.h>
+#include <stdio.h>
+#include <string.h>
 
 // 示例strerror和perror
 int main(int argc, char *argv[]) {
