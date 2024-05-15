@@ -1,0 +1,58 @@
+[gd_scene load_steps=7 format=3 uid="uid://dr7mws32gdq26"]
+
+[ext_resource type="Texture2D" uid="uid://deofocvau7fpf" path="res://assets/main_menu/title.png" id="1"]
+[ext_resource type="Texture2D" uid="uid://bmnlg0gsnmvyp" path="res://assets/main_menu/label_options.png" id="2"]
+[ext_resource type="Texture2D" uid="uid://dy64f55onf6qe" path="res://assets/main_menu/version.png" id="3"]
+[ext_resource type="Texture2D" uid="uid://syfpt86nqu4e" path="res://assets/main_menu/label_new_game.png" id="4"]
+[ext_resource type="Texture2D" uid="uid://by68r2ciwgyse" path="res://assets/main_menu/characters.png" id="5"]
+[ext_resource type="Texture2D" uid="uid://cbjbhfc6mjn2v" path="res://assets/main_menu/label_continue.png" id="6"]
+
+[node name="MarginContainer" type="MarginContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_constants/margin_left = 120
+theme_override_constants/margin_top = 80
+theme_override_constants/margin_right = 120
+theme_override_constants/margin_bottom = 80
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+
+[node name="Logo" type="TextureRect" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+texture = ExtResource("1")
+
+[node name="MenuOptions" type="VBoxContainer" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="Continnue" type="TextureRect" parent="HBoxContainer/VBoxContainer/MenuOptions"]
+layout_mode = 2
+texture = ExtResource("6")
+
+[node name="NewGame" type="TextureRect" parent="HBoxContainer/VBoxContainer/MenuOptions"]
+layout_mode = 2
+texture = ExtResource("4")
+
+[node name="Options" type="TextureRect" parent="HBoxContainer/VBoxContainer/MenuOptions"]
+layout_mode = 2
+texture = ExtResource("2")
+
+[node name="Version" type="TextureRect" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+texture = ExtResource("3")
+
+[node name="CenterContainer" type="CenterContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Characters" type="TextureRect" parent="HBoxContainer/CenterContainer"]
+layout_mode = 2
+texture = ExtResource("5")

@@ -1,0 +1,92 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://addons/FontAwesome5/FontAwesome.gd" type="Script" id=1]
+[ext_resource path="res://addons/FontAwesome5/fa-solid-900.ttf" type="DynamicFontData" id=2]
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 1, 1, 1, 1 )
+
+[sub_resource type="DynamicFont" id=1]
+size = 48
+font_data = ExtResource( 2 )
+
+[sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 0.670588, 0.184314, 0.184314, 1 )
+
+[node name="MarginContainer" type="MarginContainer"]
+margin_right = 704.0
+margin_bottom = 64.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/margin_right = 8
+custom_constants/margin_top = 8
+custom_constants/margin_left = 8
+custom_constants/margin_bottom = 8
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 696.0
+margin_bottom = 56.0
+custom_styles/panel = SubResource( 2 )
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="PanelContainer"]
+margin_right = 688.0
+margin_bottom = 48.0
+
+[node name="CenterContainer" type="CenterContainer" parent="PanelContainer/HBoxContainer3"]
+margin_right = 48.0
+margin_bottom = 48.0
+rect_min_size = Vector2( 48, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="FontAwesome" type="Label" parent="PanelContainer/HBoxContainer3/CenterContainer"]
+margin_left = 3.0
+margin_right = 45.0
+margin_bottom = 48.0
+custom_fonts/font = SubResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = ""
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+icon_size = 48
+icon_name = "plus"
+
+[node name="CenterContainer2" type="CenterContainer" parent="PanelContainer/HBoxContainer3"]
+margin_left = 52.0
+margin_right = 100.0
+margin_bottom = 48.0
+rect_min_size = Vector2( 48, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="FontAwesome" type="Label" parent="PanelContainer/HBoxContainer3/CenterContainer2"]
+margin_left = 3.0
+margin_right = 45.0
+margin_bottom = 48.0
+custom_fonts/font = SubResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = ""
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+icon_size = 48
+icon_name = "plus"
+
+[node name="TextEdit" type="TextEdit" parent="PanelContainer/HBoxContainer3"]
+margin_left = 104.0
+margin_right = 688.0
+margin_bottom = 48.0
+size_flags_horizontal = 3
+custom_styles/normal = SubResource( 3 )
+text = "aaaaaaaaaaaaaaaaa"
+wrap_enabled = true

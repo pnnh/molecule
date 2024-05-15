@@ -1,0 +1,19 @@
+@import "/node_modules/@pnnh/stele/lib/index.css";
+
+body {
+  padding: 16px;
+  overflow: auto;
+}
+
+.article-edit-page {
+  .markdown-area {
+    textarea {
+      outline: none;
+    }
+  }
+
+  .body-area {
+    border: 1px solid #dedede;
+    margin-top: 16px;
+  }
+}

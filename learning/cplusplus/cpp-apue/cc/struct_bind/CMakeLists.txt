@@ -1,0 +1,2 @@
+add_executable(cc_struct_bind main.cc)
+add_executable(cc_struct_class_tuple class_tuple.cc)

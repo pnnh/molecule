@@ -1,0 +1,1 @@
+add_executable(cc_nullptr main.cc)

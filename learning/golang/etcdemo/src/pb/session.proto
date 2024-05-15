@@ -1,0 +1,17 @@
+
+// protoc --go_out=plugins=grpc:. session.proto
+
+syntax = "proto3";
+
+package pb;
+
+service Session {
+  rpc Ping(Message) returns (Message) {}
+}
+
+message Empty {
+}
+
+message Message {
+  string content = 2;
+}

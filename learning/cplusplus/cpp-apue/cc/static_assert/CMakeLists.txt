@@ -1,0 +1,1 @@
+add_executable(cc_static_assert main.cc)

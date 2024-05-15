@@ -1,0 +1,113 @@
+
+header {
+  position:relative;
+  z-index: 100;
+  min-width: 1032px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(26,26,26,.1);
+  background-clip: content-box;
+}
+
+header .body {
+  width: 768px;
+  height:50px;
+  margin: 0 auto;
+  display:flex;align-items:center;
+}
+
+header .body .content {
+}
+
+header nav a {
+  padding: 0 15px;
+  font-size: 15px;
+  line-height: 30px;
+  color: #8590a6;
+}
+
+.page-head {
+  width:100%;
+  background:#fff;
+  position: relative;
+  padding: 16px 0;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(26,26,26,.1);
+}
+
+.page-head .body {
+  width: 768px;
+  margin: 0 auto;
+}
+
+.page-head .body .content {
+  padding: 20px 0;
+}
+
+.page-main {
+  width: 768px;
+  margin: 15px auto 0;
+}
+
+
+.card {
+  background-color: #fff;
+  overflow: hidden;
+  border-radius: 2px;
+  box-shadow: 0 1px 3px rgba(26,26,26,.1);
+  box-sizing: border-box;
+}
+
+.comment-write{
+  margin-bottom:10px;
+}
+
+.comment-write .body {
+
+  padding: 15px;
+}
+
+.comment-write .body textarea {
+  border: 0px;
+  width: 100%;
+  height: 82px;
+  margin: 0px;
+  resize: none;
+  outline: none;
+  font-size: 14px;
+}
+
+.comment-write .footer {
+  box-shadow: 0 -1px 3px 0 rgba(23,81,153,.05);
+  padding:10px 15px;
+}
+
+.comment-write .footer button {
+  color: #fff;
+  background-color: #0084ff;
+  display: inline-block;
+  padding: 0 16px;
+  font-size: 14px;
+  line-height: 32px;
+  outline: none;
+  text-align: center;
+  cursor: pointer;
+  border: 1px solid #0084ff;
+  border-radius: 3px;
+}
+
+
+.comment {
+  padding: 16px 20px;
+}
+
+
+.comment .content {
+  padding-bottom:15px;
+  border-bottom: 1px solid #f6f6f6;
+}
+
+
+.comment:last-child .content {
+  border:0;
+}

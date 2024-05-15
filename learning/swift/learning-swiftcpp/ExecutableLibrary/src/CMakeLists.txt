@@ -1,0 +1,2 @@
+add_executable(factorials main.swift)
+target_link_libraries(factorials PRIVATE factorial)

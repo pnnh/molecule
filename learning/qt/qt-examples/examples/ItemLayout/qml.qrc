@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>row.qml</file>
+        <file>grid.qml</file>
+        <file>flow.qml</file>
+    </qresource>
+</RCC>

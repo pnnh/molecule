@@ -1,0 +1,59 @@
+
+body {
+  background-color: #F3F3F3;
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+nav {
+  background: #ffffff;
+  border-top: solid 2px #009550;
+
+  div.container{
+    width: 1136px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+
+    div.left {
+      flex: auto;
+      padding: 8px 0;
+      a.title {
+        font-size: 32px;color: #009550;text-decoration: none;
+        display: inline-block;
+      }
+      span.slogan {
+        display: inline-block;margin-left: 16px;padding-left: 16px;
+        border-left: solid 2px #ccc;color:#a0a0a0;
+      }
+    }
+    div.right {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      button {
+        border: 0; color: #fff;width: 64px;height:32px;background: #009550;border-radius: 2px;
+        font-size: 14px;outline: none;cursor: pointer;
+      }
+    }
+  }
+}
+
+.article {
+  border-radius: 4px;
+  margin-bottom: 16px;
+  background-color: #fff;
+
+  .title,.body,.created {
+    padding: 8px;
+  }
+  .created {
+    border-top: solid 1px #f8f8fa;
+    color: #9f9f9f;
+    font-size: 12px;
+    p {
+      margin: 0;
+    }
+  }
+}

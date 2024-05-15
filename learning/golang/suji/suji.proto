@@ -1,0 +1,18 @@
+
+// protoc --go_out=plugins=grpc:. suji.proto
+
+syntax = "proto3";
+
+package suji;
+
+service Suji {
+    rpc Say(SayRequest) returns (SayReply) {}
+}
+
+message SayRequest {
+    string msg = 1;
+}
+
+message SayReply {
+    string msg = 1;
+}

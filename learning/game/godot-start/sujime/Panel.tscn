@@ -1,0 +1,163 @@
+[gd_scene load_steps=15 format=2]
+
+[ext_resource path="res://Panel.gd" type="Script" id=1]
+[ext_resource path="res://assets/fonts/WeiRuanYaQiHei/MicrosoftYaqiHei.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://controls/editor/row.tscn" type="PackedScene" id=3]
+[ext_resource path="res://resources/fonts/WeiRuanYaHei.tres" type="DynamicFont" id=4]
+[ext_resource path="res://controls/sbutton/sbutton.tscn" type="PackedScene" id=5]
+
+[sub_resource type="Theme" id=1]
+default_font = ExtResource( 4 )
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 1, 1, 1, 1 )
+
+[sub_resource type="Theme" id=3]
+
+[sub_resource type="StyleBoxFlat" id=4]
+
+[sub_resource type="Theme" id=5]
+
+[sub_resource type="StyleBoxFlat" id=6]
+bg_color = Color( 0.905882, 0.843137, 0.843137, 1 )
+border_color = Color( 1, 1, 1, 1 )
+shadow_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="DynamicFont" id=7]
+resource_local_to_scene = true
+size = 30
+use_filter = true
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=8]
+resource_local_to_scene = true
+size = 30
+use_filter = true
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=9]
+resource_local_to_scene = true
+size = 30
+use_filter = true
+font_data = ExtResource( 2 )
+
+[node name="Panel" type="Panel"]
+margin_right = 1920.0
+margin_bottom = 1080.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource( 1 )
+custom_styles/panel = SubResource( 2 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="."]
+margin_left = 1528.0
+margin_top = 344.0
+margin_right = 1708.0
+margin_bottom = 437.0
+theme = SubResource( 3 )
+custom_styles/normal = SubResource( 4 )
+custom_fonts/font = ExtResource( 4 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "ABC测试标签"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+margin_left = 72.0
+margin_top = 272.0
+margin_right = 1488.0
+margin_bottom = 960.0
+theme = SubResource( 5 )
+custom_styles/bg = SubResource( 6 )
+scroll_horizontal_enabled = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
+margin_right = 1416.0
+margin_bottom = 128.0
+size_flags_horizontal = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" parent="ScrollContainer/VBoxContainer" instance=ExtResource( 3 )]
+margin_right = 1416.0
+
+[node name="TextEdit" type="TextEdit" parent="ScrollContainer/VBoxContainer"]
+margin_top = 68.0
+margin_right = 1416.0
+margin_bottom = 128.0
+rect_min_size = Vector2( 0, 60 )
+text = "一行可编辑文本"
+wrap_enabled = true
+
+[node name="H1Button" parent="." instance=ExtResource( 5 )]
+anchor_left = -0.003
+anchor_top = -0.004
+anchor_bottom = 0.004
+margin_left = 73.441
+margin_top = 71.188
+margin_right = 256.0
+margin_bottom = 183.812
+custom_fonts/font = SubResource( 7 )
+text = "添加按钮"
+
+[node name="H2Button" parent="." instance=ExtResource( 5 )]
+margin_left = 320.0
+margin_top = 64.0
+margin_right = 512.0
+margin_bottom = 191.0
+custom_fonts/font = SubResource( 8 )
+text = "添加二级标题"
+
+[node name="TextButton" parent="." instance=ExtResource( 5 )]
+margin_left = 576.0
+margin_top = 64.0
+margin_right = 768.0
+margin_bottom = 191.0
+custom_fonts/font = SubResource( 9 )
+text = "添加文本"
+
+[node name="VScrollBar" type="VScrollBar" parent="."]
+margin_left = 1592.0
+margin_top = 552.0
+margin_right = 1773.0
+margin_bottom = 801.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ToolButton" type="ToolButton" parent="."]
+margin_left = 848.0
+margin_top = 104.0
+margin_right = 1024.0
+margin_bottom = 152.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "添加行"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="addRow2" type="ToolButton" parent="."]
+margin_left = 1112.0
+margin_top = 104.0
+margin_right = 1244.0
+margin_bottom = 152.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "添加行二"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="pressed" from="H1Button" to="." method="_on_H1Button_pressed"]
+[connection signal="pressed" from="H2Button" to="." method="_on_H2Button_pressed"]
+[connection signal="pressed" from="TextButton" to="." method="_on_TextButton_pressed"]
+[connection signal="pressed" from="ToolButton" to="." method="_on_ToolButton_pressed"]
+[connection signal="pressed" from="addRow2" to="." method="_on_addRow2_pressed"]

@@ -1,0 +1,1 @@
+add_executable(cc_type_alias main.cc)

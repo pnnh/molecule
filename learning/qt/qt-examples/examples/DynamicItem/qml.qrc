@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>loader_test.qml</file>
+        <file>ColorPicker.qml</file>
+        <file>loader_from_file.qml</file>
+        <file>dynamic_component.qml</file>
+        <file>qt_create_component.qml</file>
+    </qresource>
+</RCC>

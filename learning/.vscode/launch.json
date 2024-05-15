@@ -1,0 +1,148 @@
+{
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "sourceLanguages": [
+                "swift"
+            ],
+            "args": [],
+            "cwd": "${workspaceFolder:learning}/learning-swiftcpp",
+            "name": "Debug swift-exec (learning-swiftcpp)",
+            "program": "${workspaceFolder:learning}/learning-swiftcpp/.build/debug/swift-exec",
+            "preLaunchTask": "swift: Build Debug swift-exec (learning-swiftcpp)"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "sourceLanguages": [
+                "swift"
+            ],
+            "args": [],
+            "cwd": "${workspaceFolder:learning}/learning-swiftcpp",
+            "name": "Release swift-exec (learning-swiftcpp)",
+            "program": "${workspaceFolder:learning}/learning-swiftcpp/.build/release/swift-exec",
+            "preLaunchTask": "swift: Build Release swift-exec (learning-swiftcpp)"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "sourceLanguages": [
+                "swift"
+            ],
+            "args": [],
+            "cwd": "${workspaceFolder:learning}/learning-swiftcpp",
+            "name": "Debug cpp-exec (learning-swiftcpp)",
+            "program": "${workspaceFolder:learning}/learning-swiftcpp/.build/debug/cpp-exec",
+            "preLaunchTask": "swift: Build Debug cpp-exec (learning-swiftcpp)"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "sourceLanguages": [
+                "swift"
+            ],
+            "args": [],
+            "cwd": "${workspaceFolder:learning}/learning-swiftcpp",
+            "name": "Release cpp-exec (learning-swiftcpp)",
+            "program": "${workspaceFolder:learning}/learning-swiftcpp/.build/release/cpp-exec",
+            "preLaunchTask": "swift: Build Release cpp-exec (learning-swiftcpp)"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "sourceLanguages": [
+                "swift"
+            ],
+            "args": [],
+            "cwd": "${workspaceFolder:learning}/learning-swiftcpp",
+            "name": "Debug c-exec (learning-swiftcpp)",
+            "program": "${workspaceFolder:learning}/learning-swiftcpp/.build/debug/c-exec",
+            "preLaunchTask": "swift: Build Debug c-exec (learning-swiftcpp)"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "sourceLanguages": [
+                "swift"
+            ],
+            "args": [],
+            "cwd": "${workspaceFolder:learning}/learning-swiftcpp",
+            "name": "Release c-exec (learning-swiftcpp)",
+            "program": "${workspaceFolder:learning}/learning-swiftcpp/.build/release/c-exec",
+            "preLaunchTask": "swift: Build Release c-exec (learning-swiftcpp)"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "sourceLanguages": [
+                "swift"
+            ],
+            "args": [],
+            "cwd": "${workspaceFolder:learning}/swift/learning-swiftcpp",
+            "name": "Debug swift-exec (swift/learning-swiftcpp)",
+            "program": "${workspaceFolder:learning}/swift/learning-swiftcpp/.build/debug/swift-exec",
+            "preLaunchTask": "swift: Build Debug swift-exec (swift/learning-swiftcpp)"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "sourceLanguages": [
+                "swift"
+            ],
+            "args": [],
+            "cwd": "${workspaceFolder:learning}/swift/learning-swiftcpp",
+            "name": "Release swift-exec (swift/learning-swiftcpp)",
+            "program": "${workspaceFolder:learning}/swift/learning-swiftcpp/.build/release/swift-exec",
+            "preLaunchTask": "swift: Build Release swift-exec (swift/learning-swiftcpp)"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "sourceLanguages": [
+                "swift"
+            ],
+            "args": [],
+            "cwd": "${workspaceFolder:learning}/swift/learning-swiftcpp",
+            "name": "Debug cpp-exec (swift/learning-swiftcpp)",
+            "program": "${workspaceFolder:learning}/swift/learning-swiftcpp/.build/debug/cpp-exec",
+            "preLaunchTask": "swift: Build Debug cpp-exec (swift/learning-swiftcpp)"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "sourceLanguages": [
+                "swift"
+            ],
+            "args": [],
+            "cwd": "${workspaceFolder:learning}/swift/learning-swiftcpp",
+            "name": "Release cpp-exec (swift/learning-swiftcpp)",
+            "program": "${workspaceFolder:learning}/swift/learning-swiftcpp/.build/release/cpp-exec",
+            "preLaunchTask": "swift: Build Release cpp-exec (swift/learning-swiftcpp)"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "sourceLanguages": [
+                "swift"
+            ],
+            "args": [],
+            "cwd": "${workspaceFolder:learning}/swift/learning-swiftcpp",
+            "name": "Debug c-exec (swift/learning-swiftcpp)",
+            "program": "${workspaceFolder:learning}/swift/learning-swiftcpp/.build/debug/c-exec",
+            "preLaunchTask": "swift: Build Debug c-exec (swift/learning-swiftcpp)"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "sourceLanguages": [
+                "swift"
+            ],
+            "args": [],
+            "cwd": "${workspaceFolder:learning}/swift/learning-swiftcpp",
+            "name": "Release c-exec (swift/learning-swiftcpp)",
+            "program": "${workspaceFolder:learning}/swift/learning-swiftcpp/.build/release/c-exec",
+            "preLaunchTask": "swift: Build Release c-exec (swift/learning-swiftcpp)"
+        }
+    ]
+}

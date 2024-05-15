@@ -1,0 +1,19 @@
+
+// protoc --go_out=plugins=grpc:. slave/slave.proto
+
+syntax = "proto3";
+
+package slave;
+
+service Slave {
+  rpc Send(SendRequest) returns (SendReply) {}
+}
+
+message SendRequest {
+  string sid = 10;
+}
+
+// 踢人请求
+message SendReply {
+  string device = 1;
+}
