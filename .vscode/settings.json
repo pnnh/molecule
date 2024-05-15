@@ -102,5 +102,6 @@
     "xhash": "cpp",
     "xtree": "cpp",
     "chrono": "cpp"
-  }
+  },
+  "cmake.cmakePath": "cmake"
 }

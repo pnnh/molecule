@@ -4,14 +4,14 @@
 
 #ifndef SYNC_SERVICE_H
 #define SYNC_SERVICE_H
-#include "library_service.h"
+#include "LibraryService.h"
 
 class SyncService {
 public:
   void SyncLibraries();
 
 private:
-  library_service libraryService;
+  LibraryService libraryService;
 };
 
 

@@ -9,15 +9,16 @@
 
 namespace services
 {
-	class sql_iterator
+	class SqlIterator
 	{
 	public:
-		explicit sql_iterator(QSqlQuery& query);
-		~sql_iterator();
-		sql_iterator(const sql_iterator&) = delete;
-		sql_iterator& operator=(const sql_iterator&) = delete;
-		sql_iterator(sql_iterator&&) = delete;
-		sql_iterator& operator=(sql_iterator&&) = delete;
+		explicit SqlIterator(std::unique_ptr<QSqlQuery> query);
+		// ~SqlIterator() = delete;
+	        //SqlIterator() = delete;
+		// SqlIterator(const SqlIterator&) = delete;
+		// SqlIterator& operator=(const SqlIterator&) = delete;
+		// // sql_iterator(sql_iterator&&) = delete;
+		// SqlIterator& operator=(SqlIterator&&) = delete;
 
 		[[nodiscard]] bool next() const;
 		[[nodiscard]] QVariant value(int index) const;
@@ -26,7 +27,7 @@ namespace services
 		[[nodiscard]] QString column_name(int index) const;
 
 	private:
-		QSqlQuery& sql_query_;
+		std::unique_ptr<QSqlQuery> sqlQueryPtr;
 	};
 
 	class sqlite3_service
@@ -35,7 +36,7 @@ namespace services
 		explicit sqlite3_service() = default;
 
 		[[nodiscard]] static QString sql_version(const QString &dbPath);
-		[[nodiscard]] static std::shared_ptr<sql_iterator> execute_query(
+		[[nodiscard]] static std::shared_ptr<SqlIterator> execute_query(
 		  const QString& dbPath, const QString& sql_text,
 		  const QMap<QString, QVariant> &parameters = QMap<QString, QVariant>());
 	};

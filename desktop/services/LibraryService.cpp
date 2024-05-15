@@ -1,4 +1,4 @@
-#include "library_service.h"
+#include "LibraryService.h"
 
 #include "user_service.h"
 
@@ -8,7 +8,7 @@
 #include <iostream>
 #include <qdir.h>
 
-library_service::library_service() {
+LibraryService::LibraryService() {
   auto appDir = UserService::EnsureApplicationDirectory("/Polaris/Index");
   dbPath = appDir + "/Library.db";
 
@@ -26,12 +26,12 @@ library_service::library_service() {
   }
 }
 
-QVector<LibraryModel> library_service::SelectLibraries() const {
+QVector<LibraryModel> LibraryService::SelectLibraries() const {
   QVector<LibraryModel> libraryList;
-  auto insertSql = QString("select * from libraries");
+  auto selectSql = QString("select * from libraries");
 
   auto sqlIterator =
-      services::sqlite3_service::execute_query(dbPath, insertSql);
+      services::sqlite3_service::execute_query(dbPath, selectSql);
 
   while (sqlIterator->next()) {
     auto model = LibraryModel{.uid = sqlIterator->value("uid").toString(),
@@ -42,7 +42,7 @@ QVector<LibraryModel> library_service::SelectLibraries() const {
   return libraryList;
 }
 
-void library_service::InsertOrUpdateLibrary(QVector<LibraryModel> libraryList) {
+void LibraryService::InsertOrUpdateLibrary(QVector<LibraryModel> libraryList) {
   std::cout << "InsertOrUpdateLibrary: " << libraryList.size() << std::endl;
 
   const auto insertSql =

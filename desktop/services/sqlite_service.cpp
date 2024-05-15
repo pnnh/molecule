@@ -1,4 +1,7 @@
 #include "sqlite_service.h"
+
+#include "threads/SyncThread.h"
+
 #include <QDateTime>
 #include <QSqlError>
 #include <QTextStream>
@@ -9,34 +12,36 @@
 #include <QtWidgets/QApplication>
 #include <iostream>
 
-services::sql_iterator::sql_iterator(QSqlQuery &query) : sql_query_(query) {}
+services::SqlIterator::SqlIterator(std::unique_ptr<QSqlQuery> query)
+    : sqlQueryPtr(std::move(query)) {}
 
-services::sql_iterator::~sql_iterator() = default;
+bool services::SqlIterator::next() const { return sqlQueryPtr->next(); }
 
-bool services::sql_iterator::next() const { return sql_query_.next(); }
-
-QVariant services::sql_iterator::value(const int index) const {
-  return sql_query_.value(index).toString();
+QVariant services::SqlIterator::value(const int index) const {
+  return sqlQueryPtr->value(index).toString();
 }
 
-QVariant services::sql_iterator::value(const QString &name) const {
-  return sql_query_.value(name).toString();
+QVariant services::SqlIterator::value(const QString &name) const {
+  return sqlQueryPtr->value(name).toString();
 }
 
-int services::sql_iterator::column_count() const {
-  return sql_query_.record().count();
+int services::SqlIterator::column_count() const {
+  return sqlQueryPtr->record().count();
 }
 
-QString services::sql_iterator::column_name(const int index) const {
-  return sql_query_.record().fieldName(index);
+QString services::SqlIterator::column_name(const int index) const {
+  return sqlQueryPtr->record().fieldName(index);
 }
 
 QSqlDatabase getDatabase(const QString &dbPath) {
   QSqlDatabase database;
-  if (QSqlDatabase::contains(dbPath)) {
-    database = QSqlDatabase::database(dbPath);
+  auto connectionName = QString("[%1]%2").arg(
+      QString::number(quint64(QThread::currentThread()), sizeof(quint64)),
+      dbPath);
+  if (QSqlDatabase::contains(connectionName)) {
+    database = QSqlDatabase::database(connectionName);
   } else {
-    database = QSqlDatabase::addDatabase("QSQLITE", dbPath);
+    database = QSqlDatabase::addDatabase("QSQLITE", connectionName);
     database.setDatabaseName(dbPath);
   }
   if (!database.open()) {
@@ -59,28 +64,28 @@ QString services::sqlite3_service::sql_version(const QString &dbPath) {
   return outVersion;
 }
 
-std::shared_ptr<services::sql_iterator>
-services::sqlite3_service::execute_query(
+std::shared_ptr<services::SqlIterator> services::sqlite3_service::execute_query(
     const QString &dbPath, const QString &sql_text,
     const QMap<QString, QVariant> &parameters) {
   QSqlDatabase database = getDatabase(dbPath);
 
-  auto query = QSqlQuery(database);
+  auto query = new QSqlQuery(database);
 
-  if (!query.prepare(sql_text)) {
+  if (!query->prepare(sql_text)) {
     throw std::runtime_error("Sqlite3Service::query出错: " +
-                             query.lastError().text().toStdString());
+                             query->lastError().text().toStdString());
   }
 
   for (const auto &each : parameters.toStdMap()) {
-    query.bindValue(each.first, each.second);
+    query->bindValue(each.first, each.second);
   }
 
-  if (!query.exec()) {
+  if (!query->exec()) {
     throw std::runtime_error("Sqlite3Service::query出错2: " +
-                             query.lastError().text().toStdString());
+                             query->lastError().text().toStdString());
   }
-  auto sqlIterator = std::make_shared<sql_iterator>(query);
+  auto sqlIterator =
+      std::make_shared<SqlIterator>(std::unique_ptr<QSqlQuery>(query));
   return sqlIterator;
 }
 

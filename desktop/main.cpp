@@ -47,8 +47,9 @@ int main(int argc, char *argv[]) {
 
   engine.load(url);
 
-  if (engine.rootObjects().isEmpty())
+  if (engine.rootObjects().isEmpty()) {
     return -1;
+  }
 
   // 启动同步服务
   SyncThread syncThread;

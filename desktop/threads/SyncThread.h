@@ -10,7 +10,13 @@
 
 class SyncThread : public QThread {
 public:
+  explicit SyncThread();
+  ~SyncThread() override;
+
   void run() override;
+
+private:
+  bool closed = false;
 };
 
 

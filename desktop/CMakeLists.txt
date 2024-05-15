@@ -78,8 +78,8 @@ qt6_add_executable(polaris-desktop MANUAL_FINALIZATION
         services/user_service.h
         services/sync_service.cpp
         services/sync_service.h
-        services/library_service.cpp
-        services/library_service.h
+        services/LibraryService.cpp
+        services/LibraryService.h
         threads/SyncThread.cpp
         threads/SyncThread.h
         utils/base32.cpp
@@ -127,6 +127,8 @@ qt6_add_qml_module(polaris-desktop
         content/sources/markdown.cpp
         content/sources/PartitionModel.h
         content/sources/PartitionModel.cpp
+        content/sources/LibraryModel.h
+        content/sources/LibraryModel.cpp
         QML_FILES
         content/Main.qml
         content/list_videos.qml

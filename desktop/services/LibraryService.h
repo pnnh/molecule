@@ -7,10 +7,11 @@
 
 #include "models/library_model.h"
 
-class library_service {
+class LibraryService {
 public:
-  library_service();
-  QList<LibraryModel> SelectLibraries() const;
+  LibraryService();
+
+  QVector<LibraryModel> SelectLibraries() const;
   void InsertOrUpdateLibrary(QVector<LibraryModel> libraryList);
 
 private:

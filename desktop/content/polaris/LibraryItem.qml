@@ -3,17 +3,15 @@ import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.3
 
 Rectangle {
+    width: 240
+    height: 40
     color: "#ffffff"
-    Layout.preferredWidth: parent.width
-    Layout.preferredHeight: 32
-    Layout.alignment: Qt.AlignTop
 
-    required property string library
     signal currentLibraryChanged(string currentLibrary)
 
     MouseArea {
         anchors.fill: parent
-        onClicked: () => currentLibraryChanged(library)
+        onClicked: () => currentLibraryChanged(name)
         hoverEnabled: true
         onEntered: parent.color = "#e0e0e0"
         onExited: parent.color = "#ffffff"
@@ -26,7 +24,7 @@ Rectangle {
         color: "transparent"
         Text {
             anchors.verticalCenter: parent.verticalCenter
-            text: library
+            text: name
         }
     }
 }

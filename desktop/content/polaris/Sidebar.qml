@@ -65,20 +65,14 @@ ColumnLayout {
         Layout.alignment: Qt.AlignTop
         visible: showLibrarySelector
 
-        ColumnLayout {
+
+        ListView {
+            anchors.fill: parent
             anchors.left: parent.left
             anchors.right: parent.right
-            spacing: 0
-            LibraryItem {
-                library: "第一个笔记库"
-                onCurrentLibraryChanged: library => selectLibrary(library)
-            }
-            LibraryItem {
-                library: "另一个笔记库"
-                onCurrentLibraryChanged: library => selectLibrary(library)
-            }
-            LibraryItem {
-                library: "还有一个图片库"
+            boundsBehavior: Flickable.StopAtBounds
+            model: LibraryViewModel {}
+            delegate: LibraryItem {
                 onCurrentLibraryChanged: library => selectLibrary(library)
             }
         }
@@ -91,28 +85,6 @@ ColumnLayout {
         Layout.alignment: Qt.AlignTop
         visible: !showLibrarySelector
 
-        // ColumnLayout {
-        //     anchors.left: parent.left
-        //     anchors.right: parent.right
-        //     spacing: 0
-
-        //     PartitionItem {
-        //         partition: "第一个分区"
-        //         onCurrentPartitionChanged: partition => currentPartition = partition
-        //     }
-        //     PartitionItem {
-        //         partition: "第二个分区"
-        //         onCurrentPartitionChanged: partition => currentPartition = partition
-        //     }
-        // }
-
-        // Component {
-        //     id: partitionDelegate
-        //     delegate: PartitionItem {
-        //         partition: 'name'
-        //         onCurrentPartitionChanged: partition => currentPartition = partition
-        //     }
-        // }
         ListView {
             anchors.fill: parent
             anchors.left: parent.left
