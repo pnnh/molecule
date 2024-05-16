@@ -13,7 +13,16 @@
         font-size: 1rem;
         border-bottom: solid 1px #e0e0e0;
     }
+
     .navLink:last-child {
         border-width: 0;
     }
+}
+
+.roleButtonContainer {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
 }

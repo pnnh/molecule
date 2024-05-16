@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Molecule.Helpers;
 using Polaris.Business.Models;
+using Polaris.Business.Models.Polaris;
 
 namespace Polaris.Controllers.Articles;
 
@@ -19,34 +20,38 @@ public class ViewersController : ControllerBase
         _dataContext = configuration;
     }
 
-    [Route("/viewer")]
+    [Route("/polaris/channels/{channel}/articles/{article}/view")]
     [AllowAnonymous]
     [HttpPost]
-    public PModifyResult Insert()
+    public async Task<PModifyResult> Insert([FromRoute] string channel, [FromRoute] string article)
     {
-        var queryHelper = new FormHelper(Request.Form);
-        var channelPk = queryHelper.GetString("channel");
-        var articlePk = queryHelper.GetString("article");
-        var clientIp = queryHelper.GetString("client_ip");
+        var queryHelper = await JsonHelper.NewAsync(Request.Body);
+        var clientIp = queryHelper.GetString("ip");
 
-        if (string.IsNullOrEmpty(clientIp) || string.IsNullOrEmpty(articlePk) || string.IsNullOrEmpty(channelPk))
+        if (string.IsNullOrEmpty(clientIp) || string.IsNullOrEmpty(channel) || string.IsNullOrEmpty(article))
             throw new PLBizException("参数有误");
 
-        if (!Guid.TryParse(articlePk, out var articleGuid)) throw new PLBizException("参数有误");
+        var channelUid = MIDHelper.Base58.GuidDecode(channel);
+        var articleUid = MIDHelper.Base58.GuidDecode(article);
 
-        if (!Guid.TryParse(channelPk, out var channelGuid)) throw new PLBizException("参数有误");
+        if (channelUid == null) throw new PLBizException("参数有误");
 
-        var clientAddress = IPAddress.Parse(clientIp);
+        if (articleUid==null) throw new PLBizException("参数有误");
 
-        using (var transaction = _dataContext.Database.BeginTransaction())
+        if (!IPAddress.TryParse(clientIp, out var clientAddress))
+        {
+            throw new PLBizException("IP地址有误");
+        }
+
+        await using (var transaction = await _dataContext.Database.BeginTransactionAsync())
         {
             var viewer = _dataContext.Viewers.FirstOrDefault(m => m.Source == clientAddress
-                                                                  && m.Target == articleGuid && m.Direction == "uta");
+                                                                  && m.Target == articleUid && m.Direction == "uta");
             if (viewer != null)
             {
                 if (viewer.UpdateTime.AddHours(24) > DateTime.UtcNow)
                     // 24小时内只能更新一次
-                    return new PModifyResult { Pk = viewer.Uid };
+                    return new PModifyResult { Uid = viewer.Uid };
 
                 _dataContext.Attach(viewer);
                 viewer.UpdateTime = DateTime.UtcNow;
@@ -54,22 +59,20 @@ public class ViewersController : ControllerBase
             }
             else
             {
-                var model = new ViewerModel
+                var model = new PSViewerModel
                 {
                     Uid = Guid.NewGuid(),
                     Direction = "uta",
                     Source = clientAddress,
-                    Target = articleGuid,
+                    Target = articleUid.Value,
                     CreateTime = DateTime.UtcNow,
                     UpdateTime = DateTime.UtcNow,
-                    Channel = channelGuid
+                    Channel = channelUid.Value
                 };
                 _dataContext.Viewers.Add(model);
             }
 
-            var articleView = _dataContext.Relations.FirstOrDefault(m => m.Source == channelGuid &&
-                                                                         m.Target == articleGuid &&
-                                                                         m.Direction == "cta");
+            var articleView = _dataContext.PSArticles.FirstOrDefault(m => m.Uid == articleUid.Value);
             if (articleView == null)
             {
                 throw new PLBizException("更新阅读数量出错");
@@ -79,11 +82,11 @@ public class ViewersController : ControllerBase
             articleView.Discover += 1;
             _dataContext.Entry(articleView).Property(p => p.Discover).IsModified = true;
 
-            _dataContext.SaveChanges();
+            await _dataContext.SaveChangesAsync();
 
-            transaction.Commit();
+            await transaction.CommitAsync();
         }
 
-        return new PModifyResult { Pk = Guid.Empty };
+        return new PModifyResult { Uid = Guid.Empty };
     }
 }

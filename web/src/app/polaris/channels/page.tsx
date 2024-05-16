@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from './channels.module.scss'
+import styles from './page.module.scss'
 import Link from 'next/link'
 import {PSCard} from '@/components/client/controls'
 import {PSImage} from '@/components/client/image'

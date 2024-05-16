@@ -43,7 +43,8 @@ public static class DatabaseContextHelper
     private static void PrepareCommand(DbCommand command, string query,
         Dictionary<string, object>? parameters)
     {
-        command.CommandText = $"SET time_zone = '+00:00';" + query;
+        //command.CommandText = $"SET time_zone = '+00:00';" + query;
+        command.CommandText = query;
         command.CommandType = CommandType.Text;
         if (parameters == null) return;
         foreach (var parameter in parameters)

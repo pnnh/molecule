@@ -3,11 +3,11 @@ using System.Net;
 using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 
-namespace Polaris.Business.Models;
+namespace Polaris.Business.Models.Polaris;
 
-[Table("viewers")]
+[Table("viewers", Schema = "polaris")]
 [PrimaryKey(nameof(Uid))]
-public class ViewerModel
+public class PSViewerModel
 {
     [Column("uid", TypeName = "uuid")] public Guid Uid { get; set; }
 

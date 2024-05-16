@@ -39,10 +39,10 @@ public class ArticleContentController(DatabaseContext configuration, ModelServic
             UpdateTime = DateTime.UtcNow,
             Owner = Guid.Empty
         };
-        configuration.Pages.Add(model);
+        configuration.PSArticles.Add(model);
         configuration.SaveChanges();
 
-        return new PModifyResult { Pk = model.Uid };
+        return new PModifyResult { Uid = model.Uid };
     }
 
     [Route("/posts/{uid}")]
@@ -53,7 +53,7 @@ public class ArticleContentController(DatabaseContext configuration, ModelServic
         var title = jsonHelper.GetString("title") ?? throw new PLBizException("title is required");
         var body = jsonHelper.GetString("body") ?? throw new PLBizException("body is required");
 
-        var model = configuration.Pages.FirstOrDefault(m => m.Uid == uid);
+        var model = configuration.PSArticles.FirstOrDefault(m => m.Uid == uid);
         if (model == null) throw new PLBizException("文章不存在");
 
         model.Title = title;

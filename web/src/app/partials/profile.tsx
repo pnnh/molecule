@@ -1,12 +1,12 @@
 'use client'
 
 import React from "react";
-import { Popper} from '@mui/material'
+import {Popper} from '@mui/material'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import styles from './profile.module.css'
 import Link from "~/next/link";
-import { ClickAwayListener } from '@mui/base/ClickAwayListener';
-import { usePathname } from 'next/navigation'
+import {ClickAwayListener} from '@mui/base/ClickAwayListener';
+import {usePathname} from 'next/navigation'
 
 export function UserProfileSelector({role}: { role: string }) {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -25,18 +25,18 @@ export function UserProfileSelector({role}: { role: string }) {
 
     return <div>
         <ClickAwayListener onClickAway={handleClickAway}>
-            <button aria-describedby={id} onClick={handleClick}>
-                <RoleButton role={role} pathname={pathname} />
+            <div className={styles.roleButtonContainer} aria-describedby={id} onClick={handleClick}>
+                <RoleButton role={role} pathname={pathname}/>
                 <KeyboardArrowDownIcon fontSize="small"/>
-            </button>
+            </div>
         </ClickAwayListener>
         <Popper id={id} open={open} anchorEl={anchorEl} placement={'bottom-start'}>
-            <RoleBox role={role} pathname={pathname} />
+            <RoleBox role={role} pathname={pathname}/>
         </Popper>
     </div>
 }
 
-function RoleButton({role, pathname}: {role: string, pathname: string}) {
+function RoleButton({role, pathname}: { role: string, pathname: string }) {
     if (pathname.startsWith("/venus") || role === 'venus') {
         return <span>启明星</span>
     }
@@ -46,7 +46,7 @@ function RoleButton({role, pathname}: {role: string, pathname: string}) {
     return <span>北极星</span>
 }
 
-function RoleBox({role, pathname}: {role: string, pathname: string}) {
+function RoleBox({role, pathname}: { role: string, pathname: string }) {
     const linkList = [
         {name: '文章', code: 'polaris', href: '/polaris/channels'},
         {name: '图片', code: 'venus', href: '/venus/channels'},

@@ -72,9 +72,9 @@ select count(1) from ({sqlBuilder}) as temp;";
     [HttpDelete]
     public PModifyResult Delete([FromRoute] Guid uid)
     {
-        var model = configuration.Pages.FirstOrDefault(m => m.Uid == uid);
+        var model = configuration.PSArticles.FirstOrDefault(m => m.Uid == uid);
         if (model == null) throw new PLBizException("文章不存在");
-        configuration.Pages.Remove(model);
+        configuration.PSArticles.Remove(model);
         var changes = configuration.SaveChanges();
 
         return new PModifyResult
@@ -105,7 +105,7 @@ select count(1) from ({sqlBuilder}) as temp;";
             await configuration.SaveChangesAsync();
         }
 
-        return new PModifyResult { Pk = model.Uid };
+        return new PModifyResult { Uid = model.Uid };
     }
 
 }

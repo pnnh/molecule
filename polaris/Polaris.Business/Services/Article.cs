@@ -20,8 +20,8 @@ public class PageService
         var size = queryHelper.GetInt("size") ?? 10;
         var (offset, limit) = MPagination.CalcOffset(page, size);
 
-        var totalCount = serviceContext.DataContext.Pages.Count();
-        var models = serviceContext.DataContext.Pages.OrderByDescending(o => o.UpdateTime)
+        var totalCount = serviceContext.DataContext.PSArticles.Count();
+        var models = serviceContext.DataContext.PSArticles.OrderByDescending(o => o.UpdateTime)
             .Skip(offset).Take(limit).ToList();
 
         return new MSelectResult<PSArticleModel>

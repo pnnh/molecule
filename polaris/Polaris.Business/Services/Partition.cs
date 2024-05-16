@@ -27,8 +27,7 @@ public class PartitionService
         var rootName = pathArray[0];
         var leafName = pathArray[^1];
         var leafLevel = pathArray.Length;
-
-
+        
         sqlBuilder.Append(@"
 with recursive result(root_pk, root_name, leaf_pk, leaf_name, root_level, path, parent) as (
     select pk, name, p.pk, p.name, level, name::varchar(8192), parent

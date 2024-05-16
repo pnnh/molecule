@@ -74,6 +74,6 @@ public class PLExceptionResult
 
 public class PModifyResult
 {
-    public Guid Pk { get; set; }
+    public Guid Uid { get; set; }
     public int Changes { get; set; }
 } 

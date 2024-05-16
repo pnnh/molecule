@@ -146,7 +146,7 @@ select count(1) from ({sqlBuilder}) as temp;";
         await configuration.Channels.AddAsync(model);
         await configuration.SaveChangesAsync();
 
-        return new PModifyResult { Pk = model.Uid };
+        return new PModifyResult { Uid = model.Uid };
     }
 
     [Route("/articles/channels/{pk}")]
@@ -157,7 +157,7 @@ select count(1) from ({sqlBuilder}) as temp;";
         if (model == null) throw new PLBizException("频道不存在");
 
         model.Name = request.Name;
-        var changes = configuration.SaveChanges();
+        var changes = await configuration.SaveChangesAsync();
 
         return new PModifyResult { Changes = changes };
     }

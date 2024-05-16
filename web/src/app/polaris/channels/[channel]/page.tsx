@@ -13,6 +13,9 @@ import {STSubString} from "@/utils/string";
 import {serverMakeHttpGet} from '@/services/server/http'
 import {stringToBase58} from '@/utils/uuid'
 import {PSArticleModel} from "@/models/polaris/article";
+import RemoveRedEyeIcon from "~/@mui/icons-material/RemoveRedEye";
+import AccessAlarmIcon from "~/@mui/icons-material/AccessAlarm";
+import {serverMakeHttpGetV2} from "@/services/server/fetch";
 
 export default async function Home({params, searchParams}: {
     params: { channel: string },
@@ -40,7 +43,7 @@ async function ArticlesPage({channel, searchParams}: {
     }
     const rawQuery = queryString.stringify(selectQuery)
     const url = `/articles/channels/${channel}/posts?${rawQuery}`
-    const selectResult = await serverMakeHttpGet<PLSelectResult<PSArticleModel>>(url)
+    const selectResult = await serverMakeHttpGetV2<PLSelectResult<PSArticleModel>>(url)
 
     const pagination = calcPagination(page, selectResult.count, pageSize)
     const sortClass = (sort: string) => {
@@ -104,7 +107,7 @@ async function ArticlesPage({channel, searchParams}: {
                                                 className={styles.rankIndex + (index <= 2 ? ' ' + styles.rankTop : '')}>{index + 1}</div>
                                             <div className={styles.rankTitle}>
                                                 <Link
-                                                    href={`/polaris/channels/${stringToBase58(channel)}/articles/${model.urn}`}
+                                                    href={`/polaris/channels/${channel}/articles/${model.urn}`}
                                                     title={model.title}>{model.title}</Link>
                                             </div>
                                         </div>
@@ -133,8 +136,8 @@ function MiddleBody({selectResult}: { selectResult: PLSelectResult<PSArticleMode
                     {STSubString(model.description, 100)}
                 </div>
                 <div className={styles.action}>
-                    <span><i className="bi bi-eye"></i>&nbsp;{model.discover}</span>&nbsp;
-                    <span><i className="bi bi-clock"></i>&nbsp;{formatRfc3339(model.update_time)}</span>
+                    <RemoveRedEyeIcon fontSize={'small'}/><span>{model.discover}</span>
+                    <AccessAlarmIcon fontSize={'small'}/><span>{formatRfc3339(model.update_time)}</span>
                 </div>
             </div>
             <div className={styles.itemCover}>

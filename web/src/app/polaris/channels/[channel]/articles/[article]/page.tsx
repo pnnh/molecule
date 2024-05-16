@@ -9,8 +9,10 @@ import {Metadata} from 'next'
 import {generatorRandomString} from "@/utils/string";
 import {serverMakeHttpGet} from '@/services/server/http'
 import {PSArticleModel} from "@/models/polaris/article";
-import {stringToBase58} from "@/utils/uuid";
+import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
 import {TocItem} from "@/models/common/article";
+import {serverMakeHttpPost} from "@/services/server/fetch";
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 
 export const metadata: Metadata = {
     title: '北极星笔记'
@@ -33,19 +35,21 @@ export default async function Home({params}: {
         return <div>暂不支持的文章类型</div>
     }
     const headersList = headers()
-    const clientIp = headersList.get('ps-ip') || 'unknown'
+    const clientIp = headersList.get('x-ip') || 'unknown'
     console.log('clientIp', clientIp)
     // 更新文章阅读次数
-    // await ViewerService.Instance(serverConfig.SERVER).newArticleViewer(params.channel, params.name, clientIp)
-    const readUrl = `/polaris/channels/${stringToBase58(params.channel)}/articles/${params.article}`
+    if (clientIp) {
+        await serverMakeHttpPost(`/polaris/channels/${params.channel}/articles/${params.article}/view`, {ip: clientIp})
+    }
+    const readUrl = `/polaris/channels/${params.channel}/articles/${params.article}`
     return <div className={styles.mainContainer}>
         <div className={styles.articleContainer}>
             <div className={styles.leftArea}>
                 <div className={styles.articleInfo}>
                     <h1 className={styles.articleTitle} id={titleId}>{article.title}</h1>
                     <div className={styles.action}>
-                        <span><i className="bi bi-eye"></i>&nbsp;{article.discover}</span>&nbsp;
-                        <span><i className="bi bi-clock"></i>&nbsp;{formatRfc3339(article.update_time)}</span>
+                        <RemoveRedEyeIcon fontSize={'small'}/><span>{article.discover}</span>&nbsp;
+                        <AccessAlarmIcon fontSize={'small'}/><span>{formatRfc3339(article.update_time)}</span>
                     </div>
                     <div className={styles.articleBody}>
                         <BuildBodyHtml tocList={tocList} header={article.header} body={article.body}/>

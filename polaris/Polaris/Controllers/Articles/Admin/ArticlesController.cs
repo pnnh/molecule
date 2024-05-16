@@ -76,4 +76,56 @@ select count(1) from ({sqlBuilder}) as temp;";
         };
     }
 
+    [Route("/admin/relations")]
+    [HttpGet]
+    public MSelectResult<RelationFullModel<PSChannelModel, HistoryModel>> Select()
+    {
+        var queryHelper = new MQueryHelper(Request.Query);
+        var channel = queryHelper.GetString("channel");
+
+        var page = queryHelper.GetInt("page") ?? 1;
+        var size = queryHelper.GetInt("size") ?? 10;
+        var (offset, limit) = MPagination.CalcOffset(page, size);
+
+        var sqlBuilder = new StringBuilder();
+        var parameters = new Dictionary<string, object>();
+
+        sqlBuilder.Append(@"
+select r.*,  row_to_json(c.*) as source_model, row_to_json(h.*) as target_model
+from relations as r
+    left join channels as c on r.source = c.uid
+    left join history as h on r.target = h.pk
+where r.status = 0 
+");
+        if (!string.IsNullOrEmpty(channel))
+        {
+            sqlBuilder.Append(@" and r.source = @channel");
+            parameters.Add("@channel", channel);
+        }
+
+        var countSqlText = $@"
+select count(1) from ({sqlBuilder}) as temp;";
+
+        var totalCount = DatabaseContextHelper.RawSqlScalar<int?>(configuration, countSqlText, parameters);
+
+        sqlBuilder.Append(@" order by r.update_time asc");
+        sqlBuilder.Append(@" limit @limit offset @offset;");
+        parameters.Add("@offset", offset);
+        parameters.Add("@limit", limit);
+
+        var querySqlText = sqlBuilder.ToString();
+
+        var modelsQuery =
+            DatabaseContextHelper.RawSqlQuery<RelationFullModel<PSChannelModel, HistoryModel>>(configuration, querySqlText,
+                parameters);
+
+        var models = modelsQuery.ToList();
+
+        return new MSelectResult<RelationFullModel<PSChannelModel, HistoryModel>>
+        {
+            Range = models,
+            Count = totalCount ?? 0
+        };
+    }
+
 }
