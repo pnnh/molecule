@@ -5,6 +5,7 @@ import React, {useState} from 'react'
 import queryString from 'query-string'
 import styles from './form.module.scss'
 import Image from '~/next/image'
+import {Button} from "@mui/material";
 
 export function FormEdit(props: { params: ServerAuthParams, scopes: string[], server: string }) {
     const searchParams = props.params
@@ -91,7 +92,7 @@ export function FormEdit(props: { params: ServerAuthParams, scopes: string[], se
                         <div>{error}</div>
                     </div>}
                     <div className={styles.submitRow}>
-                        <button className="btn" type={'submit'}>提交</button>
+                        <Button className="btn" type={'submit'}>提交</Button>
                     </div>
 
                 </div>

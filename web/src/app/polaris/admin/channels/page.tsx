@@ -1,7 +1,7 @@
 import styles from './page.module.scss'
 import React from 'react'
 import {Toolbar} from './partials/toolbar'
-import {Table} from './partials/table'
+import {ChannelTable} from './partials/table'
 import {PLSelectResult} from '@/models/common-result'
 import {clientMakeHttpGet} from '@/services/client/http'
 import {PSChannelModel} from "@/models/polaris/channel";
@@ -11,11 +11,11 @@ export default async function Page() {
     const result = await clientMakeHttpGet<PLSelectResult<PSChannelModel>>(url)
 
     return <div>
-        <div className={styles.titleBar}>
+        <div className={styles.toolBar}>
             <Toolbar/>
         </div>
         <div>
-            <Table data={result}/>
+            <ChannelTable data={result}/>
         </div>
     </div>
 }

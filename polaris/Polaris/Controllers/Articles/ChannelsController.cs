@@ -35,7 +35,7 @@ public class ChannelsController(ILogger<ChannelsController> logger, DatabaseCont
         var model = await configuration.Channels.FirstOrDefaultAsync(m => m.Uid == uid);
         if (model == null) throw new PLBizException("频道不存在");
         configuration.Channels.Remove(model);
-        var changes = configuration.SaveChanges();
+        var changes = await configuration.SaveChangesAsync();
 
         return new PModifyResult { Changes = changes };
     }
