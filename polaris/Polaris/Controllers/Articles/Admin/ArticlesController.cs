@@ -14,7 +14,7 @@ public class PSArticleAdminController(DatabaseContext configuration) : Controlle
 {
     [Route("/polaris/admin/articles")]
     [AllowAnonymous]
-    public MSelectResult<PSArticleModel> SelectPosts()
+    public MSelectResult<PSArticleModel> SelectArticles()
     {
         var queryHelper = new MQueryHelper(Request.Query);
         var keyword = queryHelper.GetString("keyword");
@@ -29,8 +29,9 @@ public class PSArticleAdminController(DatabaseContext configuration) : Controlle
         var parameters = new Dictionary<string, object>();
 
         sqlBuilder.Append(@"
-select a.*
-from polaris.articles as a
+select a.*, c.name as channel_name, u.nickname as owner_name
+from polaris.articles as a left join polaris.channels as c on a.channel = c.uid
+    left join public.accounts as u on a.owner = u.uid
 where a.uid is not null 
 ");
 
@@ -67,10 +68,11 @@ select count(1) from ({sqlBuilder}) as temp;";
         var modelsQuery = DatabaseContextHelper.RawSqlQuery<PSArticleModel>(configuration, querySqlText, parameters);
         
         var models = modelsQuery.ToList();
-
-
+        
         return new MSelectResult<PSArticleModel>
         { 
+            Page = page,
+            Size = size,
             Range = models,
             Count = totalCount ?? 0 
         };

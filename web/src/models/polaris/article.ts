@@ -10,10 +10,9 @@ export class PSArticleModel {
     keywords = ''
     description = ''
     cover = ''
-    name = ''
     discover = 0
-    profile = ''
-    profile_name = ''
+    owner = ''
+    owner_name = ''
     channel = ''
     channel_name = ''
     partition = ''

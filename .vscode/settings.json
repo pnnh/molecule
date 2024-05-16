@@ -103,5 +103,8 @@
     "xtree": "cpp",
     "chrono": "cpp"
   },
-  "cmake.cmakePath": "cmake"
+  "cmake.cmakePath": "cmake",
+  "editor.guides.bracketPairs": true,
+  "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
+  "editor.bracketPairColorization.enabled": true,
 }

@@ -9,66 +9,61 @@ import {PaginationPartial} from '@/components/common/pagination'
 import {replaceSearchParams} from '@/utils/query'
 import {calcPagination} from "@/utils/helpers";
 import {PSArticleModel} from "@/models/polaris/article";
+import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
 
-export function Table(props: {
+export function ArticleTable(props: {
     result: PLSelectResult<PSArticleModel>,
     search: Record<string, string>
 }) {
     const result = props.result
     const pagination = calcPagination(result.page, result.count, result.size)
     return <>
-        <div className={styles.tableContainer}>
+        <TableContainer className={styles.tableContainer}>
+            <Table className={styles.articleTable}>
+                <TableHead>
+                    <TableRow>
+                        <TableCell className={styles.columnCheck}>
+                            <label>
+                                <input type="checkbox" className="checkbox"/>
+                            </label>
+                        </TableCell>
+                        <TableCell>文章</TableCell>
+                        <TableCell>频道</TableCell>
+                        <TableCell className={styles.columnTime}>修改时间</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {
+                        props.result.range.map((item, index) => {
+                            return <ArticleTableRow key={index} model={item}/>
+                        })
+                    }
 
-            <table className={styles.articleTable + ' table'}>
-
-                <thead>
-                <tr>
-                    <th className={styles.columnCheck}>
-                        <label>
-                            <input type="checkbox" className="checkbox"/>
-                        </label>
-                    </th>
-                    <th>频道</th>
-                    <th className={styles.columnTime}>修改时间</th>
-                    <th>文章</th>
-                </tr>
-                </thead>
-                <tbody>
-                {
-                    props.result.range.map((item, index) => {
-                        return <TableRow key={index} model={item}/>
-                    })
-                }
-
-                </tbody>
-                <tfoot>
-                </tfoot>
-
-            </table>
-        </div>
+                </TableBody>
+            </Table>
+        </TableContainer>
         <PaginationPartial pagination={pagination}
                            calcUrl={(page) => replaceSearchParams(props.search, 'page', page.toString())}/>
 
     </>
 }
 
-function TableRow({model}: { model: PSArticleModel }) {
-
+function ArticleTableRow({model}: { model: PSArticleModel }) {
     const updateTimeString = formatRfc3339(model.update_time)
-    return <tr className={styles.articleRow}>
-        <th>
+    return <TableRow className={styles.articleRow}>
+        <TableCell>
             <label>
                 <input type="checkbox" className="checkbox"/>
             </label>
-        </th>
-        <td className={styles.channelTitle}>
-            <Link href={'/'}>{model.channel}</Link>
-        </td>
-        <td>
-            {updateTimeString}
-        </td>
-        <td className={styles.articleTitle}>
+        </TableCell>
+        <TableCell className={styles.articleTitle}>
             {model.title}
-        </td>
-    </tr>
+        </TableCell>
+        <TableCell className={styles.channelTitle}>
+            <Link href={'/'}>{model.channel_name}</Link>
+        </TableCell>
+        <TableCell>
+            {updateTimeString}
+        </TableCell>
+    </TableRow>
 }

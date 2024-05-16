@@ -56,7 +56,7 @@ public class PSArticleModel
     public int Discover { get; set; }
 
     [Column("channel", TypeName = "uuid")]
-    public Guid Channel { get; set; }
+    public Guid? Channel { get; set; }
 
     [NotMapped]
     [JsonPropertyName("channel_name")]

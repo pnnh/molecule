@@ -7,7 +7,7 @@ import {Button} from "@mui/material";
 export function Toolbar() {
     return <div className={styles.toolbar}>
         <div className={styles.toolbarLeft}>
-            <Button variant="contained">删除</Button>
+            <Button type={'button'}>删除</Button>
         </div>
         <div>
         </div>

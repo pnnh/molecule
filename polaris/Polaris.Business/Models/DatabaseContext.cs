@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Polaris.Business.Models.Polaris;
+using Polaris.Business.Models.Public;
 using Polaris.Business.Models.Venus;
 
 namespace Polaris.Business.Models;
@@ -8,7 +9,7 @@ namespace Polaris.Business.Models;
 public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbContext(options)
 {
     public DbSet<PSArticleModel> PSArticles => Set<PSArticleModel>();
-    public DbSet<PSAccountModel> Accounts => Set<PSAccountModel>();
+    public DbSet<PBAccountModel> Accounts => Set<PBAccountModel>();
     public DbSet<CredentialTable> Credentials => Set<CredentialTable>();
     public DbSet<PartitionModel> Partitions => Set<PartitionModel>();
     public DbSet<CommentModel> Comments => Set<CommentModel>();
