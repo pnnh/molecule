@@ -91,7 +91,7 @@ target_link_libraries(polaris-desktop PRIVATE spdlog::spdlog)
 
 # 查找并引用Markdown解析库
 find_package(cmark CONFIG REQUIRED)
-target_link_libraries(polaris-desktop PRIVATE cmark::cmark_static)
+target_link_libraries(polaris-desktop PRIVATE cmark::cmark)
 
 # 查找并引用Sqlite解析库
 find_package(unofficial-sqlite3 CONFIG REQUIRED)

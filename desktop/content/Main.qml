@@ -3,11 +3,16 @@ import QtQuick.Window
 
 Window {
     id: mainWindow
-    width: 1280
-    height: 800
+    objectName: "mainWindow"
 
-    visible: true
+    function sayHello() {
+        console.log("hello from mainWindow")
+    }
+
+    height: 800
     title: "Emotion Design"
+    visible: true
+    width: 1280
 
     Component.onCompleted: {
         setX(Screen.width / 2 - width / 2)
@@ -15,19 +20,18 @@ Window {
         x = Screen.width / 2 - width / 2
         y = Screen.height / 2 - height / 2
     }
-
+    onHeightChanged: {
+        console.debug("onHeightChanged")
+        //app.windowResize()
+    }
     onWidthChanged: {
         console.debug("onWidthChanged")
         //app.windowResize()
     }
 
-    onHeightChanged: {
-        console.debug("onHeightChanged")
-        //app.windowResize()
-    }
-
     App {
         id: app
+
         anchors.fill: parent
     }
 }

@@ -25,9 +25,9 @@ Rectangle {
                 width: parent.width - 32
                 height: parent.height - 32
                 anchors.centerIn: parent
-                background: Rectangle {
-                    color: "#FFFFFF"
-                }
+                // background: Rectangle {
+                //     color: "#FFFFFF"
+                // }
                 placeholderText: qsTr("输入Markdown内容")
 
                 onTextChanged: () => {
