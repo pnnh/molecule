@@ -28,19 +28,21 @@ public class ViewersController : ControllerBase
         var queryHelper = await JsonHelper.NewAsync(Request.Body);
         var clientIp = queryHelper.GetString("ip");
 
-        if (string.IsNullOrEmpty(clientIp) || string.IsNullOrEmpty(channel) || string.IsNullOrEmpty(article))
-            throw new PLBizException("参数有误");
+        if (string.IsNullOrEmpty(clientIp) || string.IsNullOrEmpty(channel) || string.IsNullOrEmpty(article)) {
+            return new PModifyResult { Uid = Guid.Empty };
+        }
 
         var channelUid = MIDHelper.Base58.GuidDecode(channel);
         var articleUid = MIDHelper.Base58.GuidDecode(article);
 
-        if (channelUid == null) throw new PLBizException("参数有误");
-
-        if (articleUid==null) throw new PLBizException("参数有误");
+        if (channelUid == null || articleUid == null) {
+            return new PModifyResult { Uid = Guid.Empty };
+        }
 
         if (!IPAddress.TryParse(clientIp, out var clientAddress))
         {
-            throw new PLBizException("IP地址有误");
+            //throw new PLBizException("IP地址有误：" + clientIp);
+            return new PModifyResult { Uid = Guid.Empty };
         }
 
         await using (var transaction = await _dataContext.Database.BeginTransactionAsync())
