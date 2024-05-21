@@ -1,7 +1,6 @@
 import 'server-only'
 import {serverConfig} from "@/services/server/config";
 import {cookies} from "~/next/headers";
-import axios from "~/axios";
 
 export async function serverMakeHttpPost<T>(url: string, params: unknown): Promise<T> {
     if (url.startsWith('/')) {

@@ -6,16 +6,8 @@ using Molecule.Models;
 namespace Polaris.Controllers;
 
 [ApiController]
-public class HomeController : ControllerBase
+public class HomeController(ILogger<HomeController> logger) : ControllerBase
 {
-    private readonly ILogger<HomeController> logger;
-
-
-    public HomeController(ILogger<HomeController> logger)
-    {
-        this.logger = logger;
-    }
-
     [Route("/")]
     public string Index()
     {
@@ -26,5 +18,5 @@ public class HomeController : ControllerBase
         }
         return "Polaris业务接口服务";
     }
-
+    
 }

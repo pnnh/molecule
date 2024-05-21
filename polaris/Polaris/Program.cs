@@ -13,13 +13,11 @@ using Polaris.Business.Services;
 
 namespace Polaris;
 
-public class PolarisApplication
+public static class PolarisApplication
 {
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-
-        var services = builder.Services;
 
         builder.Logging.ClearProviders().AddSimpleConsole(options =>
         {
@@ -53,17 +51,9 @@ public class PolarisApplication
                 .EnableDetailedErrors();
         }, ServiceLifetime.Transient);
 
-        // var redisConn = builder.Configuration.GetSection("RedisConn:Url").Value;
-        // if (redisConn == null)
-        //     throw new Exception("REDIS_CONN_URL is not set");
-        // var multiplexer = ConnectionMultiplexer.Connect(redisConn);
-        // builder.Services.AddSingleton<IConnectionMultiplexer>(multiplexer);
-
         var secretKey = builder.Configuration["Jwt:Secret"];
         if (secretKey == null)
             throw new Exception("JWT_SECRET is not set");
-
-        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
 
         builder.Services.AddAuthentication()
             .AddScheme<AuthenticationSchemeOptions, OAuth2AuthenticationHandler>(
@@ -72,12 +62,7 @@ public class PolarisApplication
 
         var app = builder.Build();
 
-        // var pathBase = app.Configuration["PathBase"] ?? "/";
-        // app.UsePathBase(new PathString(pathBase));
-        
-        if (!app.Environment.IsDevelopment()) app.UseExceptionHandler("/Home/Error");
-
-        app.UseStaticFiles();
+        //app.UseStaticFiles();
         app.UseRouting();
         app.UseAuthentication();
 
@@ -90,13 +75,8 @@ public class PolarisApplication
 
 }
 
-public class CustomExceptionHandler : IExceptionHandler
+public class CustomExceptionHandler(ILogger<CustomExceptionHandler> logger) : IExceptionHandler
 {
-    private readonly ILogger<CustomExceptionHandler> logger;
-    public CustomExceptionHandler(ILogger<CustomExceptionHandler> logger)
-    {
-        this.logger = logger;
-    }
     public ValueTask<bool> TryHandleAsync(
         HttpContext context,
         Exception exception,

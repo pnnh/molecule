@@ -2,9 +2,9 @@
 
 import React, {useState} from 'react'
 import styles from './edit.module.scss'
-import {TWButton, TWInput} from '@/components/client/controls'
 import {NoteModel} from "@/models/personal/note";
 import {NoteContentView} from "@/components/console/note";
+import {Button, Input} from "@mui/material";
 
 export function MarkdownEditorForm(props: { model: NoteModel, onSubmit?: (model: NoteModel) => void }) {
     const model = props.model
@@ -14,7 +14,7 @@ export function MarkdownEditorForm(props: { model: NoteModel, onSubmit?: (model:
 
     return <div className={styles.editorForm}>
         <div>
-            <TWInput
+            <Input
                 placeholder="文章标题"
                 value={title}
                 onChange={(event) => {
@@ -37,7 +37,7 @@ export function MarkdownEditorForm(props: { model: NoteModel, onSubmit?: (model:
             </div>
         </div>
         <div className={'mt-3'}>
-            <TWButton onClick={async () => {
+            <Button onClick={async () => {
                 if (!onSubmit) {
                     return
                 }
@@ -48,7 +48,7 @@ export function MarkdownEditorForm(props: { model: NoteModel, onSubmit?: (model:
                 }
                 onSubmit(newModel)
             }}>保存文章
-            </TWButton>
+            </Button>
         </div>
     </div>
 }

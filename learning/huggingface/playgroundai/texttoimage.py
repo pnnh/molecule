@@ -5,7 +5,7 @@ pipe = DiffusionPipeline.from_pretrained(
     "playgroundai/playground-v2.5-1024px-aesthetic",
     torch_dtype=torch.float16,
     variant="fp16",
-).to("cuda")
+)#.to("cuda")
 
 # # Optional: Use DPM++ 2M Karras scheduler for crisper fine details
 # from diffusers import EDMDPMSolverMultistepScheduler

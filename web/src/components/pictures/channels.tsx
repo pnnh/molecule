@@ -1,7 +1,6 @@
 import React from 'react'
 import styles from './channels.module.scss'
 import Link from 'next/link'
-import {PSCard} from '@/components/client/controls'
 import {PSImage} from '@/components/client/image'
 import {serverMakeHttpGet} from '@/services/server/http'
 import {PLSelectResult} from '@/models/common-result'
@@ -9,7 +8,7 @@ import {NSChannelModel} from "@/models/venus/channel";
 
 function Item(props: { model: NSChannelModel }) {
     const readUrl = `/venus/channels/${props.model.urn}`
-    return <PSCard className={styles.item}>
+    return <div className={styles.item}>
         <div className={styles.itemCover}>
             <PSImage src={props.model.image} alt='star' width={256} height={256}/>
         </div>
@@ -21,7 +20,7 @@ function Item(props: { model: NSChannelModel }) {
                 {props.model.description}
             </div>
         </div>
-    </PSCard>
+    </div>
 }
 
 export async function PicturesChannelsPage() {
