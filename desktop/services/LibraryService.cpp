@@ -92,7 +92,7 @@ LibraryService::SelectPartitions(const LibraryModel &libraryModel) {
 
 void LibraryService::InsertOrUpdateLibrary(
     const QVector<LibraryModel> &libraryList) {
-  std::cout << "InsertOrUpdateLibrary: " << libraryList.size() << std::endl;
+  //std::cout << "InsertOrUpdateLibrary: " << libraryList.size() << std::endl;
 
   const auto insertSql =
       QString("insert into libraries(uid, name, path)"

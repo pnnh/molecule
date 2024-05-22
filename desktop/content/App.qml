@@ -1,7 +1,8 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.3
-import "polaris"
+import "polaris" as Polaris
+import "venus" as Venus
 
 Rectangle {
     anchors.fill: parent
@@ -11,6 +12,7 @@ Rectangle {
     opacity: 1
 
     property bool showSidebar: true
+    property string navbarName: "polaris"
 
     ColumnLayout {
         anchors.fill: parent
@@ -37,23 +39,23 @@ Rectangle {
                     Layout.alignment: Qt.AlignLeft
 
                     ColumnLayout {
-                        width: parent.width - 16
-                        height: parent.height - 16
-                        anchors.centerIn: parent
+                        width: parent.width
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        anchors.top: parent.top
 
-                        Rectangle {
-                            Layout.alignment: Qt.AlignTop | Qt.AlignCenter
-                            width: 24
-                            height: 24
-                            color: "transparent"
-                            Image {
-                                anchors.fill: parent
-                                source: "qrc:/qt/qml/quick/content/assets/material/symbols/web/description/description_48px.svg"
-                                MouseArea {
-                                    anchors.fill: parent
-                                    onClicked: () => showSidebar = !showSidebar
-                                }
-                            }
+                        Profiles {
+                            onProfileNameChanged: name =>{
+                                                      console.log('navbarName', name)
+                                                      navbarName = name
+                        }
+                        }
+
+                        Polaris.Navbar {
+                            visible: navbarName === "polaris"
+                        }
+
+                        Venus.Navbar {
+                            visible: navbarName === "venus"
                         }
                     }
                 }
@@ -69,7 +71,7 @@ Rectangle {
                     Layout.preferredHeight: parent.height
                     color: "transparent"
 
-                    Sidebar {}
+                    Polaris.Sidebar {}
                 }
                 Rectangle {
                     Layout.alignment: Qt.AlignLeft
@@ -104,7 +106,7 @@ Rectangle {
                             color: "#e2e2e2"
                         }
 
-                        Editor {}
+                        Polaris.Editor {}
                     }
                 }
             }

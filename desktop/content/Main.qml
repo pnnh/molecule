@@ -6,7 +6,7 @@ Window {
     objectName: "mainWindow"
 
     function sayHello() {
-        console.log("hello from mainWindow")
+        //console.log("hello from mainWindow")
     }
 
     height: 800

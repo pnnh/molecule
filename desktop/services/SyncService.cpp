@@ -40,6 +40,6 @@ void SyncService::SyncLibraries() {
       libraryList.push_back(model);
     }
   }
-  std::cout << "SyncLibraries: " << libraryList.size() << std::endl;
+  //std::cout << "SyncLibraries: " << libraryList.size() << std::endl;
   libraryService.InsertOrUpdateLibrary(libraryList);
 }

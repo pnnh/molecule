@@ -26,9 +26,9 @@ void SyncThread::run() {
       return;
     }
     QThread::sleep(1);
-    qDebug() << "开始执行本次循环，开始同步数据";
+    //qDebug() << "开始执行本次循环，开始同步数据";
     syncService.SyncLibraries();
-    qDebug() << "结束执行本次循环，结束同步数据";
+    //qDebug() << "结束执行本次循环，结束同步数据";
     resultReady("OK");
   }
   qDebug() << "线程结束";

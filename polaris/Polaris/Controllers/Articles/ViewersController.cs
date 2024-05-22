@@ -9,16 +9,10 @@ namespace Polaris.Controllers.Articles;
 
 [ApiController]
 [Authorize]
-public class ViewersController : ControllerBase
+public class ViewersController(ILogger<ViewersController> logger, DatabaseContext configuration)
+    : ControllerBase
 {
-    private readonly DatabaseContext _dataContext;
-    private readonly ILogger<ViewersController> _logger;
-
-    public ViewersController(ILogger<ViewersController> logger, DatabaseContext configuration)
-    {
-        _logger = logger;
-        _dataContext = configuration;
-    }
+    private readonly ILogger<ViewersController> _logger = logger;
 
     [Route("/polaris/channels/{channel}/articles/{article}/view")]
     [AllowAnonymous]
@@ -45,9 +39,9 @@ public class ViewersController : ControllerBase
             return new PModifyResult { Uid = Guid.Empty };
         }
 
-        await using (var transaction = await _dataContext.Database.BeginTransactionAsync())
+        await using (var transaction = await configuration.Database.BeginTransactionAsync())
         {
-            var viewer = _dataContext.Viewers.FirstOrDefault(m => m.Source == clientAddress
+            var viewer = configuration.Viewers.FirstOrDefault(m => m.Source == clientAddress
                                                                   && m.Target == articleUid && m.Direction == "uta");
             if (viewer != null)
             {
@@ -55,9 +49,9 @@ public class ViewersController : ControllerBase
                     // 24小时内只能更新一次
                     return new PModifyResult { Uid = viewer.Uid };
 
-                _dataContext.Attach(viewer);
+                configuration.Attach(viewer);
                 viewer.UpdateTime = DateTime.UtcNow;
-                _dataContext.Entry(viewer).Property(p => p.UpdateTime).IsModified = true;
+                configuration.Entry(viewer).Property(p => p.UpdateTime).IsModified = true;
             }
             else
             {
@@ -71,20 +65,20 @@ public class ViewersController : ControllerBase
                     UpdateTime = DateTime.UtcNow,
                     Channel = channelUid.Value
                 };
-                _dataContext.Viewers.Add(model);
+                configuration.Viewers.Add(model);
             }
 
-            var articleView = _dataContext.PSArticles.FirstOrDefault(m => m.Uid == articleUid.Value);
+            var articleView = configuration.PSArticles.FirstOrDefault(m => m.Uid == articleUid.Value);
             if (articleView == null)
             {
                 throw new PLBizException("更新阅读数量出错");
             }
 
-            _dataContext.Attach(articleView);
+            configuration.Attach(articleView);
             articleView.Discover += 1;
-            _dataContext.Entry(articleView).Property(p => p.Discover).IsModified = true;
+            configuration.Entry(articleView).Property(p => p.Discover).IsModified = true;
 
-            await _dataContext.SaveChangesAsync();
+            await configuration.SaveChangesAsync();
 
             await transaction.CommitAsync();
         }

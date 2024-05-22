@@ -70,7 +70,7 @@ int main(int argc, char *argv[]) {
     syncThread.start();
 
     QObject::connect(&syncThread, &SyncThread::resultReady, [&engine, &rootObject](const QString &result) {
-        qDebug() << "同步结果:" << result;
+        //qDebug() << "同步结果:" << result;
       QMetaObject::invokeMethod(rootObject, "sayHello");
     });
 

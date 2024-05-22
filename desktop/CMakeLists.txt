@@ -53,18 +53,8 @@ find_package(Qt6 COMPONENTS Core Qml Quick Gui QuickControls2 Sql Widgets REQUIR
 
 qt_policy(SET QTP0001 NEW)
 
-# if (APPLE)
-#     list(APPEND APPLICATION_LIBRARIES "-framework AppKit")
-#     list(APPEND APPLICATION_SOURCES
-#             macos/macwindow.h
-#             macos/macwindow.mm
-#             macos/objc_code.mm
-#             macos/objc_code.h
-#             macos/WindowController.mm
-#             macos/WindowController.h)
-# endif ()
-
-qt6_add_executable(polaris-desktop MANUAL_FINALIZATION
+set(APP_NAME ${PROJECT_NAME})
+set(APP_SOURCES
         main.cpp
         models/LibraryModel.cpp
         models/LibraryModel.h
@@ -83,25 +73,59 @@ qt6_add_executable(polaris-desktop MANUAL_FINALIZATION
         threads/SyncThread.cpp
         threads/SyncThread.h
         utils/base32.cpp
-        utils/base32.h)
+        utils/base32.h
+)
+
+ if (APPLE)
+#     list(APPEND APPLICATION_LIBRARIES "-framework AppKit")
+#     list(APPEND APPLICATION_SOURCES
+#             macos/macwindow.h
+#             macos/macwindow.mm
+#             macos/objc_code.mm
+#             macos/objc_code.h
+#             macos/WindowController.mm
+#             macos/WindowController.h)
+
+
+     set(MACOSX_BUNDLE_GUI_IDENTIFIER ${IDENTIFIER})
+     set(MACOSX_BUNDLE_BUNDLE_NAME ${PROJECT_NAME})
+
+     set(MACOSX_BUNDLE_COPYRIGHT ${COPYRIGHT})
+
+     set(MACOSX_BUNDLE_SHORT_VERSION_STRING ${spectral_VERSION})
+     set(MACOSX_BUNDLE_BUNDLE_VERSION ${spectral_VERSION})
+
+     set(ICON_NAME "icon.icns")
+     set(APP_MAC_ICON "${PROJECT_SOURCE_DIR}/content/assets/macos/${ICON_NAME}")
+     list(APPEND APP_SOURCES ${APP_MAC_ICON})
+     set(MACOSX_BUNDLE_ICON_FILE ${ICON_NAME})
+     set_property(SOURCE "${APP_MAC_ICON}" PROPERTY MACOSX_PACKAGE_LOCATION Resources)
+endif ()
+
+qt6_add_executable(${APP_NAME} MACOSX_BUNDLE MANUAL_FINALIZATION ${APP_SOURCES})
+
+if(APPLE)
+    set_property(TARGET ${APP_NAME} PROPERTY
+            MACOSX_BUNDLE_INFO_PLIST "${PROJECT_SOURCE_DIR}/content/assets/macos/Info.plist.in")
+endif()
 
 # 查找并引用日志库
 find_package(spdlog CONFIG REQUIRED)
-target_link_libraries(polaris-desktop PRIVATE spdlog::spdlog)
+target_link_libraries(${APP_NAME} PRIVATE spdlog::spdlog)
 
 # 查找并引用Markdown解析库
 find_package(cmark CONFIG REQUIRED)
-target_link_libraries(polaris-desktop PRIVATE cmark::cmark_static)
+target_link_libraries(${APP_NAME} PRIVATE cmark::cmark_static)
 
 # 查找并引用Sqlite解析库
 find_package(unofficial-sqlite3 CONFIG REQUIRED)
-target_link_libraries(polaris-desktop PRIVATE unofficial::sqlite3::sqlite3)
+target_link_libraries(${APP_NAME} PRIVATE unofficial::sqlite3::sqlite3)
 
 # 查找并引用CryptoPP解析库
 find_package(cryptopp CONFIG REQUIRED)
-target_link_libraries(polaris-desktop PRIVATE cryptopp::cryptopp)
+target_link_libraries(${APP_NAME} PRIVATE cryptopp::cryptopp)
 
-target_link_libraries(polaris-desktop PRIVATE
+target_link_libraries(${APP_NAME} PRIVATE
         Qt6::Core
         Qt6::Qml
         Qt6::Quick
@@ -112,16 +136,27 @@ target_link_libraries(polaris-desktop PRIVATE
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/content/sources)
 
-qt6_add_qml_module(polaris-desktop
+qt6_add_qml_module(${APP_NAME}
         URI quick
         VERSION 1.0
         RESOURCES
         content/assets/images/flag-fill.png
+        content/assets/images/logo.png
         content/assets/images/files.svg
         content/assets/material/symbols/web/description/description_48px.svg
         content/assets/material/symbols/web/description/description_fill1_48px.svg
         content/assets/material/symbols/web/keyboard_arrow_down/keyboard_arrow_down_48px.svg
         content/assets/material/symbols/web/keyboard_arrow_down/keyboard_arrow_down_fill1_48px.svg
+        content/assets/material/symbols/web/book_2/book_2_48px.svg
+        content/assets/material/symbols/web/book_2/book_2_fill1_48px.svg
+        content/assets/material/symbols/web/imagesmode/imagesmode_48px.svg
+        content/assets/material/symbols/web/imagesmode/imagesmode_fill1_48px.svg
+        content/assets/material/symbols/web/photo_library/photo_library_48px.svg
+        content/assets/material/symbols/web/photo_library/photo_library_fill1_48px.svg
+        content/assets/material/symbols/web/library_books/library_books_48px.svg
+        content/assets/material/symbols/web/library_books/library_books_fill1_48px.svg
+        content/assets/material/symbols/web/image_search/image_search_48px.svg
+        content/assets/material/symbols/web/image_search/image_search_fill1_48px.svg
         SOURCES
         content/sources/markdown.h
         content/sources/markdown.cpp
@@ -131,8 +166,8 @@ qt6_add_qml_module(polaris-desktop
         content/sources/LibraryViewModel.cpp
         QML_FILES
         content/Main.qml
-        content/list_videos.qml
         content/App.qml
+        content/Profiles.qml
         content/Topbar.qml
         content/FxScrollBar.qml
         content/TaskList.qml
@@ -140,11 +175,13 @@ qt6_add_qml_module(polaris-desktop
         content/polaris/Editor.qml
         content/polaris/Sidebar.qml
         content/polaris/LibraryItem.qml
-        content/polaris/PartitionItem.qml)
+        content/polaris/PartitionItem.qml
+        content/polaris/Navbar.qml
+        content/venus/Navbar.qml)
 
-add_test(NAME polaris-desktop-case COMMAND polaris-desktop sqlite)
-set_tests_properties(polaris-desktop-case PROPERTIES ENVIRONMENT PL_DSN=xyz)
+add_test(NAME ${APP_NAME}-case COMMAND ${APP_NAME} sqlite)
+set_tests_properties(${APP_NAME}-case PROPERTIES ENVIRONMENT PL_DSN=xyz)
 
-add_test(NAME polaris-tests-markdown COMMAND polaris-desktop markdown)
+add_test(NAME polaris-tests-markdown COMMAND ${APP_NAME} markdown)
 
 add_subdirectory(modules)
