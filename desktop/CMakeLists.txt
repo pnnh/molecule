@@ -183,7 +183,12 @@ qt6_add_qml_module(${APP_NAME}
         content/polaris/Navbar.qml
         content/polaris/Page.qml
         content/venus/Navbar.qml
-        content/venus/Page.qml)
+        content/venus/LibraryPage.qml
+        content/venus/BrowserPage.qml
+        content/venus/Sidebar.qml
+        content/venus/Location.qml
+        content/venus/LibraryItem.qml
+        content/venus/PartitionItem.qml)
 
 add_test(NAME ${APP_NAME}-case COMMAND ${APP_NAME} sqlite)
 set_tests_properties(${APP_NAME}-case PROPERTIES ENVIRONMENT PL_DSN=xyz)

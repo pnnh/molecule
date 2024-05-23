@@ -13,6 +13,17 @@ Rectangle {
 
     property bool showSidebar: true
     property string navbarName: "polaris"
+    property string pageName: "/polaris/library"
+
+    function pageNameToPath(name) {
+        switch(name) {
+        case "/venus/library":
+            return "qrc:/qt/qml/quick/content/venus/LibraryPage.qml"
+        case "/venus/browser":
+            return "qrc:/qt/qml/quick/content/venus/BrowserPage.qml"
+        }
+        return "qrc:/qt/qml/quick/content/polaris/Page.qml"
+    }
 
     RowLayout {
         height: parent.height
@@ -31,33 +42,35 @@ Rectangle {
                 anchors.top: parent.top
 
                 Profiles {
-                    onProfileNameChanged: name =>{
-                                              navbarName = name
-                        }
+                    onProfileNameChanged: name => navbarName = name
                 }
 
                 Polaris.Navbar {
                     visible: navbarName === "polaris"
+                    onPageChanged: name => pageName = name
                 }
 
                 Venus.Navbar {
                     visible: navbarName === "venus"
+                    onPageChanged: name => pageName = name
                 }
             }
         }
+
         Rectangle {
             Layout.alignment: Qt.AlignLeft
             Layout.preferredHeight: parent.height
             width: 1
             color: "#e2e2e2"
         }
-        Loader {
-            id: pageLoader
-            Layout.preferredHeight: parent.height
-            Layout.preferredWidth: parent.width - 48
-            source: "qrc:/qt/qml/quick/content/polaris/Page.qml"
+
+        // Loader {
+        //     id: pageLoader
+        //     Layout.preferredHeight: parent.height
+        //     Layout.preferredWidth: parent.width - 48
+        //     source: pageNameToPath(pageName)
+        // }
+        Venus.BrowserPage{
         }
     }
-
-
 }

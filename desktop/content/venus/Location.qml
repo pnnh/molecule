@@ -3,70 +3,104 @@ import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.3
 import quick 1.0
 
-ColumnLayout {
+Rectangle {
     anchors.fill: parent
-    spacing: 0
 
-    property string currentPartition: "示例分区"
-    property string currentLibrary: "示例笔记库"
-    property bool showLibrarySelector: false
+    signal picturePathChanged(string path)
 
     Rectangle {
-        Layout.preferredHeight: 32
-        Layout.preferredWidth: parent.width
-        Layout.alignment: Qt.AlignTop
-        color: "#f8f8f8"
+        id: favoritesArea
+        width: parent.width
+        height: 200
 
-        RowLayout {
-            anchors.fill: parent
+        Rectangle {
+            height: 32
+            width: parent.width
 
-            Rectangle {
-                Layout.preferredWidth: 4
+            Row {
+                height: parent.height
+                Rectangle {
+                    width: 8
+                    height: parent.height
+                }
+
+                Text{
+                    text: "收藏"
+                    color: "gray"
+                    anchors.verticalCenter: parent.verticalCenter
+                }
             }
 
-            Text {
-                Layout.alignment: Qt.AlignCenter | Qt.AlignLeft
-                Layout.preferredWidth: 160
-                text: currentLibrary
-                font.pixelSize: 14
-            }
+        }
+        Text{
+            text: "收藏区域"
+            anchors.centerIn: parent
+        }
+    }
 
-            Rectangle {
-                Layout.alignment: Qt.AlignCenter
-                Layout.preferredHeight: 24
-                Layout.preferredWidth: 24
-                color: "transparent"
-                Image {
+    Rectangle {
+        width: parent.width
+        height: parent.height - favoritesArea.height
+        anchors.top: favoritesArea.bottom
+
+        Rectangle {
+            height: 32
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.right: parent.right
+
+            Row {
+                height: parent.height
+                Rectangle {
+                    width: 8
+                    height: parent.height
+                }
+
+                Text{
+                    text: "位置"
+                    color: "gray"
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+            }
+        }
+
+        ListView {
+            anchors.left: parent.left
+            anchors.right: parent.right
+            height: parent.height - 32
+            anchors.top: parent.top + 32
+            y:32
+            boundsBehavior: Flickable.StopAtBounds
+            model: PictureLocationViewModel {
+            }
+            delegate: Rectangle {
+                width: 240
+                height: 40
+                color: "#ffffff"
+
+                MouseArea {
                     anchors.fill: parent
-                    source: "qrc:/qt/qml/quick/content/assets/material/symbols/web/keyboard_arrow_down/keyboard_arrow_down_48px.svg"
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: () => showLibrarySelector = !showLibrarySelector
+                    hoverEnabled: true
+                    onEntered: parent.color = "#e0e0e0"
+                    onExited: parent.color = "#ffffff"
+                    onClicked: {
+                        picturePathChanged(path)
+                    }
+                }
+
+                Rectangle {
+                    width: parent.width - 16
+                    height: parent.height
+                    anchors.centerIn: parent
+                    color: "transparent"
+                    Text {
+                        anchors.verticalCenter: parent.verticalCenter
+                        text: title
                     }
                 }
             }
 
-            Rectangle {
-                Layout.preferredWidth: 4
-            }
         }
     }
 
-    Rectangle {
-        Layout.preferredHeight: parent.height - 32
-        Layout.preferredWidth: parent.width
-        Layout.alignment: Qt.AlignTop
-        visible: !showLibrarySelector
-
-        ListView {
-            anchors.fill: parent
-            anchors.left: parent.left
-            anchors.right: parent.right
-            boundsBehavior: Flickable.StopAtBounds
-            model: PictureLocationViewModel {
-            }
-            delegate: LocationItem {
-            }
-        }
-    }
 }

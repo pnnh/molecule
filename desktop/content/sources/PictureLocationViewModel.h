@@ -17,20 +17,16 @@ public:
         PictureLocationViewModel &operator=(PictureLocationViewModel &&) = delete;
 
   int rowCount(const QModelIndex &parent) const override;
-
   QVariant data(const QModelIndex &index, int role) const override;
-
   QHash<int, QByteArray> roleNames() const override;
 
-  Q_INVOKABLE void reload(const QString &path);
-
   Q_INVOKABLE void remove(int index);
-  Q_INVOKABLE QVariantMap get(int index);
+  // Q_INVOKABLE QVariantMap get(int index);
   Q_INVOKABLE void add(QVariantMap value);
   Q_INVOKABLE void update(int index, QVariantMap value);
 
 private:
-  void load(const QString &path);
+  void load();
 
   void reset();
 

@@ -9,6 +9,8 @@ Rectangle {
     Layout.preferredWidth: parent.width
     color: "transparent"
 
+    signal pageChanged(string page)
+
     ColumnLayout {
         width: parent.width
         anchors.horizontalCenter: parent.horizontalCenter
@@ -25,7 +27,7 @@ Rectangle {
                 source: "qrc:/qt/qml/quick/content/assets/material/symbols/web/library_books/library_books_48px.svg"
                 MouseArea {
                     anchors.fill: parent
-                    onClicked: () => showSidebar = !showSidebar
+                    onClicked: () => pageChanged('/polaris/library')
                 }
             }
         }

@@ -3,7 +3,8 @@ import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.3
 
 Rectangle {
-    anchors.fill: parent
+    Layout.preferredHeight: parent.height
+    Layout.preferredWidth: parent.width - 48
     color:"green"
 
     RowLayout {
@@ -13,18 +14,20 @@ Rectangle {
 
         Rectangle {
             width: 240
-            visible: showSidebar
             Layout.preferredHeight: parent.height
-            color: "transparent"
+            Layout.alignment: Qt.AlignTop | Qt.AlignLeading
+            color: "blue"
 
-            Sidebar {}
+            Location {
+                onPicturePathChanged: path => console.log('onPicturePathChanged', path)
+            }
         }
+
         Rectangle {
             Layout.alignment: Qt.AlignLeft
             Layout.preferredHeight: parent.height
             width: 1
             color: "#e2e2e2"
-            visible: showSidebar
         }
         Rectangle {
             Layout.fillWidth: true
@@ -41,18 +44,11 @@ Rectangle {
                     Layout.preferredWidth: parent.width / 2 - 0.5
                     color: "#FFFFFF"
                     Text {
-                        text: qsTr("Hello Designw222")
+                        text: qsTr("图片浏览页面")
                         color: "green"
                         anchors.centerIn: parent
                     }
                 }
-                Rectangle {
-                    Layout.preferredHeight: parent.height
-                    Layout.preferredWidth: 1
-                    color: "#e2e2e2"
-                }
-
-                Editor {}
             }
         }
     }

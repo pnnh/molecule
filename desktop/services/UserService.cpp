@@ -27,3 +27,12 @@ QString UserService::EnsureApplicationDirectory(const QString &dataDir) {
   }
   return documentsLocation[0] + dataDir;
 }
+
+QString UserService::HomeDirectory() {
+
+  auto homeLocations =
+      QStandardPaths::standardLocations(QStandardPaths::HomeLocation);
+  if (homeLocations.count() < 1)
+    throw std::runtime_error("无法读写文档目录");
+  return homeLocations[0];
+}

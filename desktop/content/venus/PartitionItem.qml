@@ -7,8 +7,11 @@ Rectangle {
     height: 40
     color: "#ffffff"
 
+    signal currentPartitionChanged(string currentpartition)
+
     MouseArea {
         anchors.fill: parent
+        onClicked: () => currentPartitionChanged(name)
         hoverEnabled: true
         onEntered: parent.color = "#e0e0e0"
         onExited: parent.color = "#ffffff"

@@ -1,5 +1,7 @@
 #include "PictureLocationViewModel.h"
 
+#include "services/UserService.h"
+
 #include <QDebug>
 #include <QDir>
 #include <QStringView>
@@ -8,16 +10,16 @@
 PictureLocationViewModel::PictureLocationViewModel(QObject *parent)
     : QAbstractListModel(parent) {
   int role = Qt::UserRole;
-  dataNames.insert(role++, "icon");
   dataNames.insert(role++, "title");
-  dataNames.insert(role++, "count");
   dataNames.insert(role++, "path");
+  load();
 }
 
 PictureLocationViewModel::~PictureLocationViewModel() { clear(); }
 
 int PictureLocationViewModel::rowCount(const QModelIndex &parent) const {
-  return dataList.size();
+  int size = dataList.size();
+  return size;
 }
 
 QVariant PictureLocationViewModel::data(const QModelIndex &index,
@@ -30,62 +32,18 @@ QHash<int, QByteArray> PictureLocationViewModel::roleNames() const {
   return dataNames;
 }
 
-void PictureLocationViewModel::reload(const QString &path) {
-  beginResetModel();
-  reset();
-  load(path);
-  endResetModel();
-}
-
 void PictureLocationViewModel::remove(int index) {
   beginRemoveRows(QModelIndex(), index, index);
   delete dataList.takeAt(index);
   endRemoveRows();
 }
 
-void PictureLocationViewModel::load(const QString &path) {
-  qInfo()
-      << "PictureLocationViewModel Load====================================: "
-      << path;
-
-  // auto dataVector = providers::SelectFolders();
-  //
-  // QVectorIterator<providers::FolderInfo> dataIterator(dataVector);
-  // while (dataIterator.hasNext()) {
-  //   auto info = dataIterator.next();
-  //   qDebug() << "info ==" << info.path;
-  //
-  //   QFileInfo fileInfo(info.path);
-  //   QString filename(fileInfo.fileName());
-  //
-  //   auto video = new QVector<QString>();
-  //   video->append("qrc:/desktop/assets/images/icons/folder.svg");
-  //   video->append(filename);
-  //   video->append(QString::number(info.count));
-  //   video->append(info.path);
-  //   m_videos.append(video);
-  // }
-
-  auto video = new QVector<QString>();
-  video->append("qrc:/desktop/assets/images/icons/folder.svg");
-  video->append("动图2");
-  video->append("19");
-  video->append("/Users/linyangz/temp/images");
-  dataList.append(video);
-
-  auto video2 = new QVector<QString>();
-  video2->append("qrc:/desktop/assets/images/icons/folder.svg");
-  video2->append("Images");
-  video2->append("2190");
-  video2->append("/Users/linyangz/temp/images");
-  dataList.append(video2);
-
-  auto video3 = new QVector<QString>();
-  video3->append("qrc:/desktop/assets/images/icons/folder.svg");
-  video3->append("搞笑");
-  video3->append("182");
-  video3->append("/Users/linyangz/temp/images");
-  dataList.append(video3);
+void PictureLocationViewModel::load() {
+  auto homeDirectory = UserService::HomeDirectory();
+  auto model = new QVector<QString>();
+  model->append("主目录");
+  model->append(homeDirectory);
+  dataList.append(model);
 
   qInfo() << "files count = " << dataList.size();
 }
@@ -102,17 +60,17 @@ void PictureLocationViewModel::clear() {
   }
 }
 
-QVariantMap PictureLocationViewModel::get(int index) {
-  QVariantMap itemMap;
-  if (index < dataList.size()) {
-    auto item = dataList[index];
-    if (item != nullptr && item->length() > 1) {
-      itemMap["pk"] = (*item)[0];
-      itemMap["title"] = (*item)[1];
-    }
-  }
-  return itemMap;
-}
+// QVariantMap PictureLocationViewModel::get(int index) {
+//   QVariantMap itemMap;
+//   if (index < dataList.size()) {
+//     auto item = dataList[index];
+//     if (item != nullptr && item->length() > 1) {
+//       itemMap["pk"] = (*item)[0];
+//       itemMap["title"] = (*item)[1];
+//     }
+//   }
+//   return itemMap;
+// }
 
 void PictureLocationViewModel::add(QVariantMap value) {
   auto index = value["index"].value<int>();
