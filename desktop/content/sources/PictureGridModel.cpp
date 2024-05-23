@@ -1,7 +1,3 @@
-//
-// Created by linyangz on 2021/11/25.
-//
-
 #include "PictureGridModel.h"
 
 #include <QDebug>
@@ -11,41 +7,34 @@
 #include <QVector>
 
 PictureGridModel::PictureGridModel(QObject *parent)
-    : QAbstractListModel(parent), m_bError(false) {
+    : QAbstractListModel(parent) {
   int role = Qt::UserRole;
-  // m_roleNames.insert(role++, "key");
-  m_roleNames.insert(role++, "picSrc");
+  dataNames.insert(role++, "picSrc");
 }
+
 PictureGridModel::~PictureGridModel() { clear(); }
+
 int PictureGridModel::rowCount(const QModelIndex &parent) const {
-  return m_videos.size();
+  return dataList.size();
 }
+
 QVariant PictureGridModel::data(const QModelIndex &index, int role) const {
-  QVector<QString> *d = m_videos[index.row()];
+  QVector<QString> *d = dataList[index.row()];
   return d->at(role - Qt::UserRole);
 }
-QHash<int, QByteArray> PictureGridModel::roleNames() const {
-  return m_roleNames;
-}
-QString PictureGridModel::source() const { return m_strXmlFile; }
-void PictureGridModel::setSource(const QString &filePath) {
-  m_strXmlFile = filePath;
-  reload(filePath);
-  if (m_bError) {
-    qDebug() << "VideoListModel, error - " << m_strError;
-  }
-}
-QString PictureGridModel::errorString() const { return m_strError; }
-bool PictureGridModel::hasError() const { return m_bError; }
+
+QHash<int, QByteArray> PictureGridModel::roleNames() const { return dataNames; }
+
 void PictureGridModel::reload(const QString &path) {
   beginResetModel();
   reset();
   load(path);
   endResetModel();
 }
+
 void PictureGridModel::remove(int index) {
   beginRemoveRows(QModelIndex(), index, index);
-  delete m_videos.takeAt(index);
+  delete dataList.takeAt(index);
   endRemoveRows();
 }
 
@@ -72,12 +61,12 @@ void PictureGridModel::load(const QString &path) {
     if (!fileName.isEmpty() && !fileName.isNull()) {
       auto video = new QVector<QString>();
       video->append("file:" + fileName);
-      m_videos.append(video);
+      dataList.append(video);
     }
 
     // iterator.next();
   }
-  qInfo() << "files count = " << m_videos.size();
+  qInfo() << "files count = " << dataList.size();
 
   //  QString elementName;
   //  int count = 10;
@@ -88,17 +77,15 @@ void PictureGridModel::load(const QString &path) {
   //    m_videos.append(video);
   //  }
 }
-void PictureGridModel::reset() {
-  m_bError = false;
-  m_strError.clear();
-  clear();
-}
+
+void PictureGridModel::reset() { clear(); }
+
 void PictureGridModel::clear() {
-  int count = m_videos.size();
+  int count = dataList.size();
   if (count > 0) {
     for (int i = 0; i < count; i++) {
-      delete m_videos.at(i);
+      delete dataList.at(i);
     }
-    m_videos.clear();
+    dataList.clear();
   }
 }

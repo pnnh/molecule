@@ -14,102 +14,50 @@ Rectangle {
     property bool showSidebar: true
     property string navbarName: "polaris"
 
-    ColumnLayout {
-        anchors.fill: parent
-        anchors.top: parent.top
+    RowLayout {
+        height: parent.height
+        width: parent.width
         spacing: 0
         Rectangle {
-            height: 1
-            Layout.preferredWidth: parent.width
-            color: "#e2e2e2"
-        }
-        Rectangle {
-            Layout.fillWidth: true
-            Layout.fillHeight: true
+            Layout.preferredHeight: parent.height
             color: "transparent"
+            width: 48
+            Layout.alignment: Qt.AlignLeft
 
-            RowLayout {
-                height: parent.height
+
+            ColumnLayout {
                 width: parent.width
-                spacing: 0
-                Rectangle {
-                    Layout.preferredHeight: parent.height
-                    color: "transparent"
-                    width: 48
-                    Layout.alignment: Qt.AlignLeft
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.top: parent.top
 
-                    ColumnLayout {
-                        width: parent.width
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        anchors.top: parent.top
-
-                        Profiles {
-                            onProfileNameChanged: name =>{
-                                                      console.log('navbarName', name)
-                                                      navbarName = name
+                Profiles {
+                    onProfileNameChanged: name =>{
+                                              navbarName = name
                         }
-                        }
-
-                        Polaris.Navbar {
-                            visible: navbarName === "polaris"
-                        }
-
-                        Venus.Navbar {
-                            visible: navbarName === "venus"
-                        }
-                    }
                 }
-                Rectangle {
-                    Layout.alignment: Qt.AlignLeft
-                    Layout.preferredHeight: parent.height
-                    width: 1
-                    color: "#e2e2e2"
+
+                Polaris.Navbar {
+                    visible: navbarName === "polaris"
                 }
-                Rectangle {
-                    width: 240
-                    visible: showSidebar
-                    Layout.preferredHeight: parent.height
-                    color: "transparent"
 
-                    Polaris.Sidebar {}
-                }
-                Rectangle {
-                    Layout.alignment: Qt.AlignLeft
-                    Layout.preferredHeight: parent.height
-                    width: 1
-                    color: "#e2e2e2"
-                    visible: showSidebar
-                }
-                Rectangle {
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
-                    color: "#FFFFFF"
-
-                    RowLayout {
-                        height: parent.height
-                        width: parent.width
-                        spacing: 0
-
-                        Rectangle {
-                            Layout.fillHeight: true
-                            Layout.preferredWidth: parent.width / 2 - 0.5
-                            color: "#FFFFFF"
-                            Text {
-                                text: qsTr("Hello Designw222")
-                                color: "green"
-                                anchors.centerIn: parent
-                            }
-                        }
-                        Rectangle {
-                            Layout.preferredHeight: parent.height
-                            Layout.preferredWidth: 1
-                            color: "#e2e2e2"
-                        }
-
-                        Polaris.Editor {}
-                    }
+                Venus.Navbar {
+                    visible: navbarName === "venus"
                 }
             }
         }
+        Rectangle {
+            Layout.alignment: Qt.AlignLeft
+            Layout.preferredHeight: parent.height
+            width: 1
+            color: "#e2e2e2"
+        }
+        Loader {
+            id: pageLoader
+            Layout.preferredHeight: parent.height
+            Layout.preferredWidth: parent.width - 48
+            source: "qrc:/qt/qml/quick/content/polaris/Page.qml"
+        }
     }
+
+
 }

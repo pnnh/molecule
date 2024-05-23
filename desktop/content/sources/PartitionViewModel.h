@@ -17,6 +17,11 @@ public:
   explicit PartitionViewModel(QObject *parent = nullptr);
   ~PartitionViewModel() override;
 
+  PartitionViewModel(const PartitionViewModel &) = delete;
+  PartitionViewModel &operator=(const PartitionViewModel &) = delete;
+  PartitionViewModel(PartitionViewModel &&) = delete;
+  PartitionViewModel &operator=(PartitionViewModel &&) = delete;
+
   QString library() const;
   void setLibrary(const QString &library);
 

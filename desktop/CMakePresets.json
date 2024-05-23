@@ -51,7 +51,9 @@
         "QT_DECLARATIVE_DEBUG": "ON",
         "QT_QML_DEBUG": "ON",
         "CMAKE_C_COMPILER": "/opt/homebrew/opt/llvm/bin/clang",
-        "CMAKE_CXX_COMPILER": "/opt/homebrew/opt/llvm/bin/clang++"
+        "CMAKE_CXX_COMPILER": "/opt/homebrew/opt/llvm/bin/clang++"//,
+//        "CMAKE_C_COMPILER_LAUNCHER": "/opt/homebrew/bin/ccache",
+//        "CMAKE_CXX_COMPILER_LAUNCHER": "/opt/homebrew/bin/ccache"
       },
       "environment": {}
     },

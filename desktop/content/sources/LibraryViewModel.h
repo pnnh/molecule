@@ -16,6 +16,12 @@ public:
   explicit LibraryViewModel(QObject *parent = nullptr);
   ~LibraryViewModel() override;
 
+  LibraryViewModel(const LibraryViewModel &) = delete;
+  LibraryViewModel &operator=(const LibraryViewModel &) = delete;
+  LibraryViewModel(LibraryViewModel &&) = delete;
+  LibraryViewModel &operator=(LibraryViewModel &&) = delete;
+
+
   [[nodiscard]] int rowCount(const QModelIndex &parent) const override;
   [[nodiscard]] QHash<int, QByteArray> roleNames() const override;
   [[nodiscard]] QVariant data(const QModelIndex &index, int role) const override;

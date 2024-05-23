@@ -164,6 +164,10 @@ qt6_add_qml_module(${APP_NAME}
         content/sources/PartitionViewModel.cpp
         content/sources/LibraryViewModel.h
         content/sources/LibraryViewModel.cpp
+        content/sources/PictureLocationViewModel.h
+        content/sources/PictureLocationViewModel.cpp
+        content/sources/PictureGridModel.h
+        content/sources/PictureGridModel.cpp
         QML_FILES
         content/Main.qml
         content/App.qml
@@ -177,7 +181,9 @@ qt6_add_qml_module(${APP_NAME}
         content/polaris/LibraryItem.qml
         content/polaris/PartitionItem.qml
         content/polaris/Navbar.qml
-        content/venus/Navbar.qml)
+        content/polaris/Page.qml
+        content/venus/Navbar.qml
+        content/venus/Page.qml)
 
 add_test(NAME ${APP_NAME}-case COMMAND ${APP_NAME} sqlite)
 set_tests_properties(${APP_NAME}-case PROPERTIES ENVIRONMENT PL_DSN=xyz)

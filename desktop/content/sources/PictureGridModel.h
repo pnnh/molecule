@@ -1,9 +1,4 @@
-//
-// Created by linyangz on 2021/11/25.
-//
-
-#ifndef QTEMPTY_VIDEOLISTMODEL_H
-#define QTEMPTY_VIDEOLISTMODEL_H
+#pragma once
 
 #include <QAbstractListModel>
 #include <QtQml/qqmlregistration.h>
@@ -11,25 +6,20 @@
 class PictureGridModel : public QAbstractListModel {
   Q_OBJECT
   QML_ELEMENT
-  Q_PROPERTY(QString source READ source WRITE setSource)
+
 public:
-  PictureGridModel(QObject *parent = 0);
+  explicit PictureGridModel(QObject *parent = 0);
+  ~PictureGridModel() override;
+  PictureGridModel(const PictureGridModel &) = delete;
+  PictureGridModel &operator=(const PictureGridModel &) = delete;
+  PictureGridModel(PictureGridModel &&) = delete;
+  PictureGridModel &operator=(PictureGridModel &&) = delete;
 
-  ~PictureGridModel();
+  int rowCount(const QModelIndex &parent) const override;
 
-  int rowCount(const QModelIndex &parent) const;
+  QVariant data(const QModelIndex &index, int role) const override;
 
-  QVariant data(const QModelIndex &index, int role) const;
-
-  QHash<int, QByteArray> roleNames() const;
-
-  QString source() const;
-
-  void setSource(const QString &filePath);
-
-  Q_INVOKABLE QString errorString() const;
-
-  Q_INVOKABLE bool hasError() const;
+  QHash<int, QByteArray> roleNames() const override;
 
   Q_INVOKABLE void reload(const QString &path);
 
@@ -42,11 +32,6 @@ private:
 
   void clear();
 
-  QString m_strXmlFile;
-  QString m_strError;
-  bool m_bError;
-  QHash<int, QByteArray> m_roleNames;
-  QVector<QVector<QString> *> m_videos;
+  QHash<int, QByteArray> dataNames;
+  QVector<QVector<QString> *> dataList;
 };
-
-#endif // QTEMPTY_VIDEOLISTMODEL_H
