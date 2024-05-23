@@ -15,7 +15,9 @@
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
         "CMAKE_C_COMPILER": "/usr/bin/gcc-14",
-        "CMAKE_CXX_COMPILER": "/usr/bin/g++-14"
+        "CMAKE_CXX_COMPILER": "/usr/bin/g++-14",
+        "CMAKE_C_COMPILER_LAUNCHER": "ccache;distcc",
+        "CMAKE_CXX_COMPILER_LAUNCHER": "ccache;distcc"
       },
       "environment": {}
     },
@@ -28,7 +30,9 @@
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
         "CMAKE_C_COMPILER": "/usr/bin/clang",
-        "CMAKE_CXX_COMPILER": "/usr/bin/clang++"
+        "CMAKE_CXX_COMPILER": "/usr/bin/clang++",
+        "CMAKE_C_COMPILER_LAUNCHER": "ccache;distcc",
+        "CMAKE_CXX_COMPILER_LAUNCHER": "ccache;distcc"
       },
       "environment": {}
     }

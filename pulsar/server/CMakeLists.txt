@@ -19,8 +19,8 @@ add_executable(pulsar-server
     services/business/article.cpp
     services/business/article.h)
     
-add_dependencies(pulsar-server pulsar-modules)
-target_link_libraries(pulsar-server PRIVATE pulsar-modules)
+# add_dependencies(pulsar-server pulsar-modules)
+# target_link_libraries(pulsar-server PRIVATE pulsar-modules)
 
 # 查找并引用Boost库
 find_package(Boost COMPONENTS system thread chrono filesystem url REQUIRED) 
