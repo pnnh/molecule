@@ -157,6 +157,8 @@ qt6_add_qml_module(${APP_NAME}
         content/assets/material/symbols/web/library_books/library_books_fill1_48px.svg
         content/assets/material/symbols/web/image_search/image_search_48px.svg
         content/assets/material/symbols/web/image_search/image_search_fill1_48px.svg
+        content/assets/material/symbols/web/mail/mail_48px.svg
+        content/assets/material/symbols/web/mail/mail_fill1_48px.svg
         SOURCES
         content/sources/markdown.h
         content/sources/markdown.cpp
@@ -188,7 +190,8 @@ qt6_add_qml_module(${APP_NAME}
         content/venus/Sidebar.qml
         content/venus/Location.qml
         content/venus/LibraryItem.qml
-        content/venus/PartitionItem.qml)
+        content/venus/PartitionItem.qml
+        content/pulsar/Page.qml)
 
 add_test(NAME ${APP_NAME}-case COMMAND ${APP_NAME} sqlite)
 set_tests_properties(${APP_NAME}-case PROPERTIES ENVIRONMENT PL_DSN=xyz)

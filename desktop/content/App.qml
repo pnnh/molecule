@@ -3,6 +3,7 @@ import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.3
 import "polaris" as Polaris
 import "venus" as Venus
+import "pulsar" as Pulsar
 
 Rectangle {
     anchors.fill: parent
@@ -54,6 +55,29 @@ Rectangle {
                     visible: navbarName === "venus"
                     onPageChanged: name => pageName = name
                 }
+
+            }
+            Rectangle {
+                height: 16
+                width: 36
+                color: "transparent"
+                anchors.bottom: parent.bottom
+                anchors.horizontalCenter: parent.horizontalCenter
+                Rectangle {
+                    width: 20
+                    height: 20
+                    color: "transparent"
+                    anchors.bottom: parent.top
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    Image {
+                        anchors.fill: parent
+                        source: "qrc:/qt/qml/quick/content/assets/material/symbols/web/mail/mail_48px.svg"
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: () => pageChanged('/venus/library')
+                        }
+                    }
+                }
             }
         }
 
@@ -70,7 +94,7 @@ Rectangle {
         //     Layout.preferredWidth: parent.width - 48
         //     source: pageNameToPath(pageName)
         // }
-        Venus.BrowserPage{
+        Pulsar.Page{
         }
     }
 }
