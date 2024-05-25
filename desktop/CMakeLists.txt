@@ -212,6 +212,7 @@ qt6_add_shaders(${APP_NAME} "shaders"
         "/"
         FILES
         "content/shaders/rounded.frag"
+        "content/shaders/rounded.vert"
 )
 
 install(TARGETS ${APP_NAME}

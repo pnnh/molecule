@@ -1,25 +1,18 @@
 #version 440
-
-layout(location = 0) in vec2 qt_TexCoord0;
+layout(location = 0) in vec2 coord;
 layout(location = 0) out vec4 fragColor;
-
 layout(std140, binding = 0) uniform buf {
     mat4 qt_Matrix;
     float qt_Opacity;
-    vec2 pixelStep;
-    int radius;
+    float edge;
 };
 layout(binding = 1) uniform sampler2D src;
 
-void main(void)
-{
-    vec3 sum = vec3(0.0, 0.0, 0.0);
-    for (int x = -radius; x <= radius; ++x) {
-        for (int y = -radius; y <= radius; ++y) {
-            vec2 c = qt_TexCoord0 + vec2(x, y) * pixelStep;
-            sum += texture(src, c).rgb;
-        }
-    }
+void main() {
+    float dist = distance(coord, vec2( 0.5 ));
+    float delta = fwidth(dist);
+    float alpha = smoothstep( mix(clamp(edge, 0.0, 1.0), 0.0, 0.5) - delta, 0.5, dist );
 
-    fragColor = vec4(sum / ((radius*2 + 1) * (radius*2 + 1)), 1.0) * qt_Opacity;
+    vec4 tex = texture(src, coord);
+    fragColor = mix( tex, vec4(0.0), alpha ) * qt_Opacity;
 }

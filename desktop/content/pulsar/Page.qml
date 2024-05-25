@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.3
+import QtQuick.Effects
 
 Rectangle {
     Layout.preferredHeight: parent.height
@@ -54,11 +55,42 @@ Rectangle {
                     Layout.fillHeight: true
                     Layout.preferredWidth: parent.width / 2 - 0.5
                     color: "#FFFFFF"
-                    Text {
-                        text: qsTr("通讯页面")
-                        color: "green"
-                        anchors.centerIn: parent
-                    }
+
+
+
+
+                    Image {
+                            id: sourceItem
+                            visible: false
+                            width: 320
+                            height: 320
+                            anchors.centerIn: parent
+                            source: "qrc:/qt/qml/quick/content/assets/photos/photo1.webp"
+                        }
+
+                        MultiEffect {
+                            source: sourceItem
+                            anchors.fill: sourceItem
+                            maskEnabled: true
+                            maskSource: mask
+                        }
+
+                        Item {
+                            id: mask
+                            width: sourceItem.width
+                            height: sourceItem.height
+                            layer.enabled: true
+                            visible: false
+
+                            Rectangle {
+                                width: sourceItem.width
+                                height: sourceItem.height
+                                radius: 16
+                                color: "black"
+                            }
+                        }
+
+
                 }
             }
         }
