@@ -10,9 +10,10 @@ layout(binding = 1) uniform sampler2D src;
 
 void main() {
     float dist = distance(coord, vec2( 0.5 ));
-    float delta = fwidth(dist);
-    float alpha = smoothstep( mix(clamp(edge, 0.0, 1.0), 0.0, 0.5) - delta, 0.5, dist );
+    //float delta = fwidth(dist);
+    //float alpha = smoothstep( mix(clamp(edge, 0.0, 1.0), 0.0, 0.5) - delta, 0.5, dist );
 
+    float alpha = dist > 0.65 ? 1.0 : 0.0;
     vec4 tex = texture(src, coord);
     fragColor = mix( tex, vec4(0.0), alpha ) * qt_Opacity;
 }
