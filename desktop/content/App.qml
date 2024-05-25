@@ -17,7 +17,7 @@ Rectangle {
     property string pageName: "/polaris/library"
 
     function pageNameToPath(name) {
-        switch(name) {
+        switch (name) {
         case "/venus/library":
             return "qrc:/qt/qml/quick/content/venus/LibraryPage.qml"
         case "/venus/browser":
@@ -36,11 +36,14 @@ Rectangle {
             width: 48
             Layout.alignment: Qt.AlignLeft
 
-
             ColumnLayout {
                 width: parent.width
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.top: parent.top
+
+                Users {
+
+                }
 
                 Profiles {
                     onProfileNameChanged: name => navbarName = name
@@ -55,8 +58,8 @@ Rectangle {
                     visible: navbarName === "venus"
                     onPageChanged: name => pageName = name
                 }
-
             }
+
             Rectangle {
                 height: 16
                 width: 36
@@ -94,7 +97,6 @@ Rectangle {
         //     Layout.preferredWidth: parent.width - 48
         //     source: pageNameToPath(pageName)
         // }
-        Pulsar.Page{
-        }
+        Pulsar.Page {}
     }
 }

@@ -49,7 +49,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
 # 查找并引用Qt库
-find_package(Qt6 COMPONENTS Core Qml Quick Gui QuickControls2 Sql Widgets REQUIRED)
+find_package(Qt6 COMPONENTS Core Qml Quick Gui QuickControls2 Sql Widgets Network Concurrent ShaderTools REQUIRED)
 
 qt_policy(SET QTP0001 NEW)
 
@@ -89,12 +89,9 @@ set(APP_SOURCES
 
      set(MACOSX_BUNDLE_GUI_IDENTIFIER ${IDENTIFIER})
      set(MACOSX_BUNDLE_BUNDLE_NAME ${PROJECT_NAME})
-
      set(MACOSX_BUNDLE_COPYRIGHT ${COPYRIGHT})
-
      set(MACOSX_BUNDLE_SHORT_VERSION_STRING ${spectral_VERSION})
      set(MACOSX_BUNDLE_BUNDLE_VERSION ${spectral_VERSION})
-
      set(ICON_NAME "icon.icns")
      set(APP_MAC_ICON "${PROJECT_SOURCE_DIR}/content/assets/macos/${ICON_NAME}")
      list(APPEND APP_SOURCES ${APP_MAC_ICON})
@@ -102,10 +99,13 @@ set(APP_SOURCES
      set_property(SOURCE "${APP_MAC_ICON}" PROPERTY MACOSX_PACKAGE_LOCATION Resources)
 endif ()
 
-qt6_add_executable(${APP_NAME} MACOSX_BUNDLE MANUAL_FINALIZATION ${APP_SOURCES})
+qt6_add_executable(${APP_NAME}
+        WIN32
+        MACOSX_BUNDLE
+        MANUAL_FINALIZATION ${APP_SOURCES})
 
 if(APPLE)
-    set_property(TARGET ${APP_NAME} PROPERTY
+    set_target_properties(${APP_NAME} PROPERTIES
             MACOSX_BUNDLE_INFO_PLIST "${PROJECT_SOURCE_DIR}/content/assets/macos/Info.plist.in")
 endif()
 
@@ -132,7 +132,9 @@ target_link_libraries(${APP_NAME} PRIVATE
         Qt6::Gui
         Qt6::QuickControls2
         Qt6::Sql
-        Qt6::Widgets)
+        Qt6::Widgets
+        Qt6::Network
+        Qt6::Concurrent)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/content/sources)
 
@@ -143,6 +145,8 @@ qt6_add_qml_module(${APP_NAME}
         content/assets/images/flag-fill.png
         content/assets/images/logo.png
         content/assets/images/files.svg
+        content/assets/photos/photo1.webp
+        content/assets/photos/photo2.jpeg
         content/assets/material/symbols/web/description/description_48px.svg
         content/assets/material/symbols/web/description/description_fill1_48px.svg
         content/assets/material/symbols/web/keyboard_arrow_down/keyboard_arrow_down_48px.svg
@@ -170,9 +174,14 @@ qt6_add_qml_module(${APP_NAME}
         content/sources/PictureLocationViewModel.cpp
         content/sources/PictureGridModel.h
         content/sources/PictureGridModel.cpp
+        content/sources/SAChannelViewModel.h
+        content/sources/SAChannelViewModel.cpp
+        content/sources/SASessionListViewModel.h
+        content/sources/SASessionListViewModel.cpp
         QML_FILES
         content/Main.qml
         content/App.qml
+        content/Users.qml
         content/Profiles.qml
         content/Topbar.qml
         content/FxScrollBar.qml
@@ -191,7 +200,25 @@ qt6_add_qml_module(${APP_NAME}
         content/venus/Location.qml
         content/venus/LibraryItem.qml
         content/venus/PartitionItem.qml
-        content/pulsar/Page.qml)
+        content/pulsar/Page.qml
+        content/pulsar/ChannelList.qml
+        content/pulsar/SessionList.qml)
+
+qt6_add_shaders(${APP_NAME} "shaders"
+        BATCHABLE
+        PRECOMPILE
+        OPTIMIZED
+        PREFIX
+        "/"
+        FILES
+        "content/shaders/rounded.frag"
+)
+
+install(TARGETS ${APP_NAME}
+        BUNDLE  DESTINATION .
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+)
 
 add_test(NAME ${APP_NAME}-case COMMAND ${APP_NAME} sqlite)
 set_tests_properties(${APP_NAME}-case PROPERTIES ENVIRONMENT PL_DSN=xyz)

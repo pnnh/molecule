@@ -5,7 +5,7 @@ import QtQuick.Layouts 1.3
 Rectangle {
     Layout.preferredHeight: parent.height
     Layout.preferredWidth: parent.width - 48
-    color:"green"
+    color: "green"
 
     RowLayout {
         height: parent.height
@@ -18,11 +18,22 @@ Rectangle {
             Layout.alignment: Qt.AlignTop | Qt.AlignLeading
             color: "blue"
 
-            Location {
-                onPicturePathChanged: path => console.log('onPicturePathChanged', path)
-            }
+            ChannelList {}
         }
+        Rectangle {
+            Layout.alignment: Qt.AlignLeft
+            Layout.preferredHeight: parent.height
+            width: 1
+            color: "#e2e2e2"
+        }
+        Rectangle {
+            width: 240
+            Layout.preferredHeight: parent.height
+            Layout.alignment: Qt.AlignTop | Qt.AlignLeading
+            color: "blue"
 
+            SessionList {}
+        }
         Rectangle {
             Layout.alignment: Qt.AlignLeft
             Layout.preferredHeight: parent.height
