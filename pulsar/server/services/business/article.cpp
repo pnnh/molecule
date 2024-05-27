@@ -11,8 +11,6 @@ MessageService::MessageService() : connection(AppConfig::Default().GetDSN()) {
   }
 }
 
-MessageService::~MessageService() { this->connection.close(); }
-
 std::optional<std::vector<ArticleModel>>
 MessageService::selectMessages(int limit) {
   std::vector<ArticleModel> articlesList;

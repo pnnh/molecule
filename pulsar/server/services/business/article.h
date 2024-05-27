@@ -10,8 +10,6 @@ class MessageService
 public:
     MessageService();
 
-    ~MessageService();
-
     std::optional<std::vector<ArticleModel>> selectMessages(int limit);
 
     int insertMessage(const ArticleModel &model);

@@ -1,4 +1,0 @@
-module CxxTest {
-    header "CxxTest.h"
-    requires cplusplus
-}

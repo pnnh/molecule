@@ -4,8 +4,6 @@
 #include <cstdlib>
 #include <string>
 #include "common/utils/md5.h"
-#include <cstdio>
-#include <cstdlib>
 
 int TestMd5() {
   std::string content = "hello world";

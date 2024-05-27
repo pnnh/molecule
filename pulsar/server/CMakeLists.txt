@@ -39,6 +39,14 @@ target_link_libraries(pulsar-server PRIVATE Folly::folly Folly::folly_deps Folly
 # 查找并引用Postgresql库
 find_package(libpqxx CONFIG REQUIRED)
 target_link_libraries(pulsar-server PRIVATE libpqxx::pqxx)
+# find_library(libpq pq)
+# message(STATUS "libpq: ${libpq}")
+# target_link_libraries(pulsar-server PRIVATE ${libpq})
+
+# find_library(libpqxx pqxx)
+# message(STATUS "libpqxx: ${libpqxx}")
+# target_link_libraries(pulsar-server PRIVATE ${libpqxx})
+
 
 # 查找并引用日志库
 find_package(spdlog CONFIG REQUIRED)

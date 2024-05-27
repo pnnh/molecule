@@ -1,8 +1,3 @@
-#ifndef PL_PROCESS_H
-#define PL_PROCESS_H
-
-#include "workflow/WFServer.h"
+#pragma once
 
 int runServer(int port);
-
-#endif //PL_PROCESS_H

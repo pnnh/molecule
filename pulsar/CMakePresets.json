@@ -7,10 +7,10 @@
   },
   "configurePresets": [
     {
-      "name": "linux-gcc",
+      "name": "linux",
       "generator": "Ninja",
-      "binaryDir": "${sourceDir}/build/linux-gcc",
-      "installDir": "${sourceDir}/install/linux-gcc",
+      "binaryDir": "${sourceDir}/build",
+      "installDir": "${sourceDir}/install",
       "toolchainFile": "/home/applications/vcpkg/scripts/buildsystems/vcpkg.cmake",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
@@ -20,31 +20,12 @@
         "CMAKE_CXX_COMPILER_LAUNCHER": "ccache;distcc"
       },
       "environment": {}
-    },
-    {
-      "name": "linux-clang",
-      "generator": "Ninja",
-      "binaryDir": "${sourceDir}/build/linux-clang",
-      "installDir": "${sourceDir}/install/linux-clang",
-      "toolchainFile": "/home/applications/vcpkg/scripts/buildsystems/vcpkg.cmake",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug",
-        "CMAKE_C_COMPILER": "/usr/bin/clang",
-        "CMAKE_CXX_COMPILER": "/usr/bin/clang++",
-        "CMAKE_C_COMPILER_LAUNCHER": "ccache;distcc",
-        "CMAKE_CXX_COMPILER_LAUNCHER": "ccache;distcc"
-      },
-      "environment": {}
     }
   ],
   "buildPresets": [
     {
-      "name": "linux-gcc",
-      "configurePreset": "linux-gcc"
-    },
-    {
-      "name": "linux-clang",
-      "configurePreset": "linux-clang"
+      "name": "linux",
+      "configurePreset": "linux"
     }
   ],
   "testPresets": []

@@ -12,14 +12,11 @@ public:
         static AppConfig instance;
         return instance;
     }
-    AppConfig(AppConfig const &) = delete;
-    AppConfig &operator=(AppConfig const &) = delete;
     AppConfig();
 
     std::string GetDSN();
 
 private:
-    ~AppConfig() = default;
     std::shared_ptr<env::parsed_and_validated_prefix<env::prefix>> parsedEnvPrefixPtr;
     std::string dnsValue;
 };
