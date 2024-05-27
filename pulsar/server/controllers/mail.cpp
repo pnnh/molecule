@@ -1,17 +1,13 @@
-//
-// Created by azureuser on 4/17/23.
-//
-
-#include "mail.h"
-#include "services/business/mail.h"
-#include <nlohmann/json.hpp>
-#include <boost/url.hpp>
-#include <spdlog/spdlog.h>
+#include "server/controllers/mail.h"
+#include "server/models/codes.h"
+#include "server/services/business/mail.h"
 #include <boost/range/algorithm.hpp>
+#include <boost/url.hpp>
 #include <boost/uuid/uuid.hpp>
-#include <boost/uuid/uuid_io.hpp>
 #include <boost/uuid/uuid_generators.hpp>
-#include "models/codes.h"
+#include <boost/uuid/uuid_io.hpp>
+#include <nlohmann/json.hpp>
+#include <spdlog/spdlog.h>
 
 using json = nlohmann::json;
 

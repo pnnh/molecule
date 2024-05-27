@@ -3,11 +3,11 @@
 //
 
 #include "server.h"
-#include "controllers/index.h"
-#include "server/http_connection.h"
-#include "server/common/utils/md5.h "
-#include "services/markdown/markdown.h"
-#include "utils/mime.h"
+#include "server/controllers/index.h"
+#include "server/server/http_connection.h"
+#include "common/utils/md5.h"
+#include "server/services/markdown/markdown.h"
+#include "common/utils/mime.h"
 #include <boost/asio.hpp>
 #include <boost/beast/http.hpp>
 #include <folly/Uri.h>

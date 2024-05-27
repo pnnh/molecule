@@ -5,7 +5,7 @@
 #ifndef SFX_SERVER_API_PQ_H
 #define SFX_SERVER_API_PQ_H
 
-#include "servermainmodelsarticle.h "
+#include "server/models/article.h"
 #include <vector>
 
 std::vector<ArticleModel> selectArticles();

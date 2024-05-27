@@ -1,5 +1,4 @@
-#ifndef MD2HTML
-#define MD2HTML
+#pragma once
 
 #include <cstdlib>
 #include <fstream>
@@ -520,4 +519,3 @@ public:
         destroy<Cnode>(Croot);
     }
 };
-#endif

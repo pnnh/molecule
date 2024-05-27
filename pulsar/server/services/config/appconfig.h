@@ -1,9 +1,4 @@
-//
-// Created by ubuntu on 2/13/22.
-//
-
-#ifndef SFX_SERVER_API_APPCONFIG_H
-#define SFX_SERVER_API_APPCONFIG_H
+#pragma once
 
 #include <memory>
 #include <string>
@@ -29,4 +24,3 @@ private:
     std::string dnsValue;
 };
 
-#endif // SFX_SERVER_API_APPCONFIG_H

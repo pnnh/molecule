@@ -10,7 +10,7 @@
 #include <string>
 
 struct MailModel {
-    std::string pk;
+    std::string uid;
     std::string title;
     std::string content;
     std::chrono::system_clock::time_point create_time;

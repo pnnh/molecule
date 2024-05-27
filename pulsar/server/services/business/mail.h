@@ -1,14 +1,8 @@
-//
-// Created by azureuser on 4/17/23.
-//
-
-#ifndef PULSAR_MAIL_SERVICE_H
-#define PULSAR_MAIL_SERVICE_H
-
+#pragma once
 #include <optional>
 #include <vector>
 #include <pqxx/pqxx>
-#include "models/mail.h"
+#include "server/models/mail.h"
 
 class MailService {
 public:
@@ -31,6 +25,3 @@ public:
 private:
     pqxx::connection connection;
 };
-
-
-#endif //PULSAR_MAIL_SERVICE_H

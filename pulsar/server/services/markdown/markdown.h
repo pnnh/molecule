@@ -1,9 +1,4 @@
-//
-// Created by ubuntu on 12/26/21.
-//
-
-#ifndef CPP_SERVER_MARKDOWN_H
-#define CPP_SERVER_MARKDOWN_H
+#pragma once
 
 #include <boost/asio.hpp>
 #include <boost/beast/core.hpp>
@@ -20,4 +15,3 @@ void HandleMarkdown2(
     boost::beast::http::request<boost::beast::http::dynamic_body> &request,
     boost::beast::http::response<boost::beast::http::dynamic_body> &response);
 
-#endif // CPP_SERVER_MARKDOWN_H

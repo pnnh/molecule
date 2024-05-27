@@ -1,10 +1,4 @@
-//
-// Created by azureuser on 4/17/23.
-//
-
-#ifndef PULSAR_MAIL_CONTROLLER_H
-#define PULSAR_MAIL_CONTROLLER_H
-
+#pragma once
 
 #include <boost/beast/core.hpp>
 #include <boost/beast/http.hpp>
@@ -32,6 +26,3 @@ public:
     static void HandleUpdate(boost::beast::http::request<boost::beast::http::dynamic_body> &request,
                              boost::beast::http::response<boost::beast::http::dynamic_body> &response);
 };
-
-
-#endif //PULSAR_MAIL_CONTROLLER_H

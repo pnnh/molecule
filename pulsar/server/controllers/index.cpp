@@ -2,7 +2,7 @@
 // Created by ubuntu on 12/25/21.
 //
 
-#include "index.h"
+#include "server/controllers/index.h"
 #include <fstream>
 #include "common/utils/mime.h"
 

@@ -5,7 +5,7 @@
 #include <boost/property_tree/xml_parser.hpp>
 
 void HandleSitemap(WFHttpTask *httpTask) {
-  protocol::HttpRequest *request = httpTask->get_req();
+  //protocol::HttpRequest *request = httpTask->get_req();
   protocol::HttpResponse *response = httpTask->get_resp();
 
   response->set_http_version("HTTP/1.1");

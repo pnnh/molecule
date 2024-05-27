@@ -1,10 +1,7 @@
-//
-// Created by azureuser on 4/17/23.
-//
 
 #include "mail.h"
-#include "server/services/config/appconfig.h "
-#include "utils/datetime.h"
+#include "server/services/config/appconfig.h"
+#include "common/utils/datetime.h"
 #include <date/date.h>
 #include <pqxx/pqxx>
 #include <spdlog/spdlog.h>
@@ -19,15 +16,16 @@ MailService::~MailService() { this->connection.close(); }
 
 std::optional<std::vector<MailModel>> MailService::selectMails(int limit) {
   std::vector<MailModel> articlesList;
-  const char *sqlText = "select  pk, title, content, create_time, update_time, "
-                        "creator, sender, receiver "
-                        "from mails order by update_time desc limit $1;";
+  const char *sqlText =
+      "select  uid, title, content, create_time, update_time, "
+      "creator, sender, receiver "
+      "from mails order by update_time desc limit $1;";
   pqxx::nontransaction N(this->connection);
   pqxx::result R(N.exec_params(sqlText, limit));
 
   for (pqxx::result::const_iterator itr = R.begin(); itr != R.end(); ++itr) {
     auto model = MailModel{
-        .pk = itr[0].as<std::string>(),
+        .uid = itr[0].as<std::string>(),
         .title = itr[1].as<std::string>(),
         .content = itr[2].as<std::string>(),
         .create_time = makeTimePoint(itr[3].as<std::string>()),
@@ -41,16 +39,16 @@ std::optional<std::vector<MailModel>> MailService::selectMails(int limit) {
   return articlesList;
 }
 
-std::optional<MailModel> MailService::findMail(const std::string &pk) {
-  const char *sqlText = "select pk, title, content, create_time, update_time, "
+std::optional<MailModel> MailService::findMail(const std::string &uid) {
+  const char *sqlText = "select uid, title, content, create_time, update_time, "
                         "creator, sender, receiver "
-                        "from mails where pk = $1;";
+                        "from mails where uid = $1;";
   pqxx::nontransaction N(this->connection);
-  pqxx::result R(N.exec_params(sqlText, pk));
+  pqxx::result R(N.exec_params(sqlText, uid));
 
   for (pqxx::result::const_iterator itr = R.begin(); itr != R.end();) {
     auto model = MailModel{
-        .pk = itr[0].as<std::string>(),
+        .uid = itr[0].as<std::string>(),
         .title = itr[1].as<std::string>(),
         .content = itr[2].as<std::string>(),
         .create_time = makeTimePoint(itr[3].as<std::string>()),
@@ -66,7 +64,7 @@ std::optional<MailModel> MailService::findMail(const std::string &pk) {
 
 int MailService::insertMail(const MailModel &model) {
   const char *sqlText =
-      "insert into mails (pk, title, content, create_time, update_time, "
+      "insert into mails (uid, title, content, create_time, update_time, "
       "creator, sender, receiver) "
       "values ($1, $2, $3, to_timestamp($4, 'YYYY-MM-DDTHH24:MI:SS.USZ'), "
       "to_timestamp($5, 'YYYY-MM-DDTHH24:MI:SS.USZ'), $6, $7, $8);";
@@ -86,7 +84,7 @@ int MailService::insertMail(const MailModel &model) {
 int MailService::updateMail(const MailModel &model) {
   const char *sqlText = "update mails set title = $1, content = $2, "
                         "update_time = $3, sender = $4, receiver = $5 "
-                        "where pk = $6;";
+                        "where uid = $6;";
 
   pqxx::work W(this->connection);
   W.exec_params(sqlText, model.title, model.content,
@@ -97,11 +95,11 @@ int MailService::updateMail(const MailModel &model) {
   return 0;
 }
 
-int MailService::deleteMail(const std::string &pk) {
-  const char *sqlText = "delete from mails where pk = $1;";
+int MailService::deleteMail(const std::string &uid) {
+  const char *sqlText = "delete from mails where uid = $1;";
 
   pqxx::work W(this->connection);
-  W.exec_params(sqlText, pk);
+  W.exec_params(sqlText, uid);
   W.commit();
 
   return 0;

@@ -1,9 +1,4 @@
-//
-// Created by linyangz on 2021/12/21.
-//
-
-#ifndef CPP_SERVER_HTTP_CONNECTION_H
-#define CPP_SERVER_HTTP_CONNECTION_H
+#pragma once
 
 #include <boost/beast/core.hpp>
 #include <boost/beast/http.hpp>
@@ -13,7 +8,6 @@
 #include <ctime>
 #include <iostream>
 #include <memory>
-#include "state.h"
 
 class http_connection : public std::enable_shared_from_this<http_connection> {
 public:
@@ -55,5 +49,3 @@ private:
 
     void check_deadline();
 };
-
-#endif //CPP_SERVER_HTTP_CONNECTION_H

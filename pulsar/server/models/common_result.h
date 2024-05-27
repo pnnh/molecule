@@ -1,11 +1,7 @@
-//
-// Created by azureuser on 4/11/23.
-//
-
-#ifndef PULSAR_COMMON_RESULT_H
-#define PULSAR_COMMON_RESULT_H
+#pragma once
 
 #include <string>
+#include <stdint.h>
 
 class CommonResult {
 public:
@@ -31,6 +27,3 @@ private:
     uint16_t code;
     std::string message;
 };
-
-
-#endif //PULSAR_COMMON_RESULT_H

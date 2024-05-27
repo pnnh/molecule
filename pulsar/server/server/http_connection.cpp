@@ -3,11 +3,11 @@
 //
 
 #include "http_connection.h"
-#include "server/handlers/index.h"
-#include "server/handlers/sitemap.h"
-#include "server/common/utils/md5.h "
-#include "services/markdown/markdown.h"
-#include "utils//mime.h"
+// #include "server/handlers/index.h"
+// #include "server/handlers/sitemap.h"
+#include "common/utils/md5.h"
+// #include "services/markdown/markdown.h"
+#include "common/utils/mime.h"
 #include <folly/Uri.h>
 #include <iostream>
 
@@ -49,7 +49,7 @@ void http_connection::process_request() {
 void http_connection::create_response() {
   std::cout << "query222: " << request_.target() << std::endl;
   auto isMd5 = request_.target().find("/md5", 0);
-  auto url = "http://localhost" + request_.target().to_string();
+  auto url = "http://localhost";// + request_.target().to_string();
   auto isArticle = request_.target().find("/blog/articles/", 0) == 0;
 
   std::cout << "print_uri: " << url << std::endl;
@@ -77,7 +77,7 @@ void http_connection::create_response() {
         << "<head><title>Request count</title></head>\n"
         << "<body>\n"
         << "<h1>Request count</h1>\n"
-        << "<p>There have been " << my_program_state::request_count()
+        //<< "<p>There have been " << my_program_state::request_count()
         << " requests so far.</p>\n"
         << "</body>\n"
         << "</html>\n";
@@ -88,7 +88,7 @@ void http_connection::create_response() {
         << "<head><title>Current time</title></head>\n"
         << "<body>\n"
         << "<h1>Current time</h1>\n"
-        << "<p>The current time is " << my_program_state::now()
+        //<< "<p>The current time is " << my_program_state::now()
         << " seconds since the epoch.</p>\n"
         << "</body>\n"
         << "</html>\n";
@@ -107,12 +107,12 @@ void http_connection::create_response() {
   } else if (uri.path() == "/markdown") {
     // HandleMarkdown(response_);
   } else if (isArticle) {
-    HandleMarkdown2(request_, response_);
+    // HandleMarkdown2(request_, response_);
   } else if (uri.path() == "/") {
-    HandleIndex(response_);
+    // HandleIndex(response_);
     // send_file();
   } else if (uri.path() == "/sitemap") {
-    HandleSitemap(response_);
+    // HandleSitemap(response_);
   } else {
     response_.result(boost::beast::http::status::not_found);
     response_.set(boost::beast::http::field::content_type, "text/plain");

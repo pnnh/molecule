@@ -1,9 +1,4 @@
-//
-// Created by azureuser on 4/9/23.
-//
-
-#ifndef PULSAR_MESSAGE_H
-#define PULSAR_MESSAGE_H
+#pragma once
 
 #include <chrono>
 #include <string>
@@ -21,4 +16,3 @@ struct ArticleModel
   std::chrono::system_clock::time_point update_time;
 };
 
-#endif // PULSAR_MESSAGE_H
