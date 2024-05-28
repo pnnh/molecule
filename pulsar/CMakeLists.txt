@@ -7,6 +7,7 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_C_STANDARD 23)
 set(CMAKE_C_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_SCAN_FOR_MODULES ON)
 
 # 设置开启显示详细的构建过程
 set(CMAKE_VERBOSE_MAKEFILE ON)
@@ -36,5 +37,5 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 # add_subdirectory(wetee)
 add_subdirectory(common)
-# add_subdirectory(modules)
+add_subdirectory(modules)
 add_subdirectory(server)

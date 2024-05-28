@@ -7,5 +7,5 @@ target_sources(pulsar-modules
       foo.cxx
 )
 
-add_executable(hello main.cxx)
-target_link_libraries(hello foo)
+#add_executable(hello main.cxx)
+#target_link_libraries(hello pulsar-modules)

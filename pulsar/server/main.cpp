@@ -1,4 +1,4 @@
-// import foo;
+import foo;
 
 // #include "server/server.h"
 // #include "controllers/sitemap.h"
@@ -14,8 +14,8 @@ int main(int argc, char *argv[]) {
 #endif
   spdlog::debug("Hello, {}", "World2!");
 
-  // foo f;
-  // f.helloworld();
+  foo f;
+  f.helloworld();
   // auto server = PulsarServer();
   // server.RegisterHandler("/sitemap", HandleSitemap);
   // server.RegisterHandler("/message/get", MessageController::HandleGet);
