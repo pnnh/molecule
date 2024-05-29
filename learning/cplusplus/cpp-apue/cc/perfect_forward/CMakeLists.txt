@@ -1,1 +1,0 @@
-add_executable(cc_perfect_forward main.cc)

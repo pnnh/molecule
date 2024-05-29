@@ -1,1 +1,0 @@
-QT 6.2 QML CMake API

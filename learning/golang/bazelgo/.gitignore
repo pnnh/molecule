@@ -1,6 +1,0 @@
-bazel-bazelgo
-bazel-bin
-bazel-out
-bazel-testlogs
-gen
-.idea

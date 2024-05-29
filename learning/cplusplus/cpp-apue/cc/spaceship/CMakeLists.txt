@@ -1,1 +1,0 @@
-add_executable(cc_spaceship_strong_ordering main.cc)

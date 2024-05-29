@@ -1,4 +1,0 @@
-headerFilter = *.h
----
-#include "lib.h"
-#include "lib.c"

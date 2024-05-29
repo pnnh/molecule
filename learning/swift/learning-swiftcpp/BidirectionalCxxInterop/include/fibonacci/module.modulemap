@@ -1,3 +1,0 @@
-module Fibonacci {
-  header "fibonacci.h"
-}

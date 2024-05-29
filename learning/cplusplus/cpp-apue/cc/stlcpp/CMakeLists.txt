@@ -1,1 +1,0 @@
-add_executable(cc_stlcpp main.cc)

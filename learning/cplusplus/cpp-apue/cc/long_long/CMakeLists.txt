@@ -1,1 +1,0 @@
-add_executable(cc_long_long main.cc)

@@ -1,5 +1,0 @@
-.xmake
-.idea
-build/
-cmake-build-*
-build-cmake
