@@ -1,11 +1,10 @@
-
 ## 如何构建
 
 ```shell
 npm run setup --workspaces
 npm run build --workspaces
 ```
- 
+
 ## 更新依赖包版本
 
 ```shell
@@ -33,4 +32,15 @@ sudo docker tag polaris-cloud:latest elarry/polaris-cloud:v0.1.0
 
 # 推送镜像（需要先登录）
 sudo docker push elarry/polaris-cloud:v0.1.0
+```
+
+## wasm构建和安装
+
+```bash
+# 配置cmake项目
+cmake --preset web
+# 构建wasm
+cmake --build --preset web
+# 安装wasm
+cmake --install build/web/wasm
 ```

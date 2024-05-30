@@ -12,11 +12,11 @@
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/build/web",
       "installDir": "${sourceDir}/public",
-      "toolchainFile": "/home/applications/vcpkg/scripts/buildsystems/vcpkg.cmake",
+      "toolchainFile": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
       "cacheVariables": {
         "VCPKG_CHAINLOAD_TOOLCHAIN_FILE": {
           "type": "FILEPATH",
-          "value": "/home/applications/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake"
+          "value": "$env{EMSDK}/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake"
         }
       },
       "environment": {}
