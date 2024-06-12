@@ -1,18 +1,20 @@
-const path = require('path')
-const bundleAnalyzerPlugin = require('@next/bundle-analyzer')
+import path from 'path'
+import remarkGfm from 'remark-gfm'
+import bundleAnalyzerPlugin from '@next/bundle-analyzer'
+import * as NextMdx from '@next/mdx'
+import {fileURLToPath} from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 
 /** @type {import('next').NextConfig} */
 let nextConfig = {
     output: 'standalone',
     reactStrictMode: true,
+    pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
     experimental: {
         esmExternals: true,
-        // outputFileTracingIncludes: {
-        //   '/': [
-        //     './workspaces/polaris-wasm/polaris-wasm.wasm'
-        //   ]
-        // }
     },
     webpack: function (config, {isServer, dev}) {
         config.experiments = {
@@ -52,4 +54,11 @@ nextConfig = bundleAnalyzerPlugin({
 })(nextConfig)
 
 // 导出nextjs配置
-module.exports = nextConfig
+const withMdx = NextMdx.default(nextConfig, {
+    options: {
+        remarkPlugins: [remarkGfm],
+        rehypePlugins: [],
+    },
+})
+
+export default withMdx(nextConfig)
