@@ -1,8 +1,9 @@
 import path from 'path'
 import remarkGfm from 'remark-gfm'
 import bundleAnalyzerPlugin from '@next/bundle-analyzer'
-import * as NextMdx from '@next/mdx'
-import {fileURLToPath} from 'url';
+import createMDX from '@next/mdx'
+import {fileURLToPath} from 'url'
+import rehypeHighlight from 'rehype-highlight'
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -12,7 +13,7 @@ const __dirname = path.dirname(__filename);
 let nextConfig = {
     output: 'standalone',
     reactStrictMode: true,
-    pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
+    pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
     experimental: {
         esmExternals: true,
     },
@@ -54,10 +55,11 @@ nextConfig = bundleAnalyzerPlugin({
 })(nextConfig)
 
 // 导出nextjs配置
-const withMdx = NextMdx.default(nextConfig, {
+const withMdx = createMDX({
+    extension: /\.mdx?$/,
     options: {
         remarkPlugins: [remarkGfm],
-        rehypePlugins: [],
+        rehypePlugins: [rehypeHighlight],
     },
 })
 
