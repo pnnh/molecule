@@ -1,5 +1,5 @@
 import {startAuthentication, startRegistration} from '~/@simplewebauthn/browser'
-import {AuthenticationResponseJSON} from '~/@simplewebauthn/typescript-types'
+import {AuthenticationResponseJSON} from '~/@simplewebauthn/types'
 
 export async function handleRegisterSubmit (username: string, displayName: string) {
   if (!username) {
