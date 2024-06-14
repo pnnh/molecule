@@ -10,6 +10,7 @@ interface IServerConfig {
     NEXT_PUBLIC_SIGN_PASSWORD: string,
     NEXT_PUBLIC_SIGN_WEBAUTHN: string,
     NEXT_PUBLIC_PORTAL_SERVER: string,
+    INITIAL_DOMAINS: string,
 }
 
 export const serverConfig = {
@@ -24,4 +25,5 @@ export const serverConfig = {
     NEXT_PUBLIC_SIGN_PASSWORD: process.env.NEXT_PUBLIC_SIGN_PASSWORD,
     NEXT_PUBLIC_SIGN_WEBAUTHN: process.env.NEXT_PUBLIC_SIGN_WEBAUTHN,
     NEXT_PUBLIC_PORTAL_SERVER: process.env.NEXT_PUBLIC_PORTAL_SERVER,
+    INITIAL_DOMAINS: process.env.INITIAL_DOMAINS,
 } as IServerConfig

@@ -2,22 +2,18 @@ import React from 'react'
 import styles from './page.module.scss'
 import Link from 'next/link'
 import {PSImage} from '@/components/client/image'
-import {serverMakeHttpGet} from '@/services/server/http'
 import {PLSelectResult} from '@/models/common-result'
-import {PSChannelModel} from "@/models/polaris/channel";
-import {base58ToString, stringToBase58} from "@/utils/basex";
+import {PSChannelModel} from "@/models/polaris/channel"
+import {signinDomain} from "@/services/server/domain/domain";
 
 export default async function Page({params, searchParams}: {
     params: { viewer: string },
     searchParams: Record<string, string> & { query: string | undefined }
 }) {
-    console.debug('params', params)
-    console.debug('searchParams', searchParams)
-    const base58Encoded = stringToBase58(params.viewer)
-    console.debug('base58', base58Encoded, base58ToString(base58Encoded))
+    const domain = signinDomain(params.viewer)
     const pageSize = 64
-    const url = '/articles/channels/?' + `page=1&size=${pageSize}`
-    const result = await serverMakeHttpGet<PLSelectResult<PSChannelModel>>(url)
+    const url = '/articles/channels?' + `page=1&size=${pageSize}`
+    const result = await domain.makeGet<PLSelectResult<PSChannelModel>>(url)
     return <div className={styles.container}>
         <div className={styles.body}>
             <div className={styles.container}>

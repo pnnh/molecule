@@ -3,6 +3,7 @@ import axios from '~/axios'
 import {serverConfig} from './server/config'
 import {cookies} from 'next/headers'
 import {SessionModel} from "@/models/session";
+import {signinDomain, trySigninDomain} from "@/services/server/domain/domain";
 
 // 获取身份认证信息
 export async function getIdentity(): Promise<SessionModel> {
@@ -16,4 +17,10 @@ export async function getIdentity(): Promise<SessionModel> {
         },
     })
     return response.data
+}
+
+// 根据viewer标识获取身份认证信息
+export async function getIdentity2(viewerToken: string): Promise<SessionModel> {
+    const domain = signinDomain(viewerToken)
+    return await domain.makeGet<SessionModel>('/account/session')
 }

@@ -1,0 +1,10 @@
+{
+  "system": {
+    "url": "file:///Users/Larry/Projects/github/blog",
+    "anonymous": "true"
+  },
+  "remote": {
+    "url": "http://127.0.0.1:8101",
+    "anonymous": "true"
+  }
+}
