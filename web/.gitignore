@@ -21,3 +21,8 @@ npm-debug.log*
 runtime/
 .env.local
 coverage/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+.swc/
