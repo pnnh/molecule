@@ -1,68 +1,57 @@
 import {IDomain} from "@/services/server/domain/domain";
-import parseUri from "parse-uri";
 import {parseInitialDomains} from "@/services/server/config2";
 import parseURI from "parse-uri"
-import * as fs from "node:fs"
-import ignore from 'ignore'
-import {PLSelectResult} from "@/models/common-result";
-import {PSChannelModel} from "@/models/polaris/channel";
+import {SystemChannelService} from "@/services/server/domain/system/channel";
+import {URLPattern} from "urlpattern-polyfill";
+
+export type SystemPathParams = {
+    [key: string]: string | undefined;
+}
+
+export type SystemServiceFunction = (pathParams: SystemPathParams | undefined) => Promise<unknown>
+
+export interface ISystemService {
+    makeGet<T>(url: parseURI.URI, pathParams: SystemPathParams | undefined): Promise<T>
+}
 
 export class SystemDomain implements IDomain {
-    userUri: parseURI.URI = {} as any
-    ig = ignore().add(['.git', 'node_modules'])
+    userUri: parseURI.URI
+    basePath = ''
+    routeMap = new Map<URLPattern, SystemServiceFunction>()
 
     constructor(userUri: parseURI.URI) {
         this.userUri = userUri
+
+        if (userUri.user !== 'anonymous') {
+            throw new Error('user not supported')
+        }
+        if (userUri.host !== 'system') {
+            throw new Error('host not supported')
+        }
+        const domains = parseInitialDomains()
+        if (domains.system.anonymous) {
+            console.debug('anonymous', domains.system.url)
+            this.basePath = domains.system.url.replace('file://', '')
+        }
+
+        const channelService = new SystemChannelService(this)
+        this.#registerRoute('/articles/channels', channelService, channelService.selectChannels)
+        this.#registerRoute('/articles/channels/:channel/assets/:path+', channelService, channelService.readAssets)
     }
 
-    async makeGet<T>(urlString: string): Promise<T> {
-        const url = parseUri(urlString)
-        switch (url.path) {
-            case '/articles/channels':
-                return this.#selectChannels() as any
-        }
-        return {} as any
+    #registerRoute(route: string, object: unknown, serviceFunction: SystemServiceFunction) {
+        this.routeMap.set(new URLPattern({
+            pathname: route,
+        }), serviceFunction.bind(object))
     }
 
-    #selectChannels(): PLSelectResult<PSChannelModel> {
-        if (this.userUri.user === 'anonymous') {
-            let basePath = ''
-            if (this.userUri.host === 'system') {
-                const domains = parseInitialDomains()
-                if (domains.system.anonymous) {
-                    console.debug('anonymous', domains.system.url)
-                    basePath = domains.system.url.replace('file://', '')
-                }
-            }
-            const channels: PSChannelModel[] = []
-            const files = fs.readdirSync(basePath)
-            for (const file of files) {
-                const stat = fs.statSync(basePath + '/' + file)
-                const testResult = this.ig.test(file)
-                if (stat.isDirectory() && !testResult.ignored) {
-                    const model: PSChannelModel = {
-                        create_time: "", creator: "", nid: 0, profile: "", update_time: "",
-                        uid: file,
-                        image: '',
-                        name: file,
-                        description: '',
-                        urn: file
-                    }
-                    channels.push(model)
-                }
-            }
-            return {
-                range: channels,
-                count: channels.length,
-                page: 1,
-                size: channels.length
+    async makeGet<T>(urlString: string) {
+        const mockUrl = `http://localhost:3000${urlString}`
+        for (const [route, serviceFunction] of this.routeMap) {
+            if (route.test(mockUrl)) {
+                return await serviceFunction(route.exec(mockUrl)?.pathname.groups) as T
             }
         }
-        return {
-            range: [],
-            count: 0,
-            page: 1,
-            size: 100
-        }
+        throw new Error('route not found')
     }
 }
