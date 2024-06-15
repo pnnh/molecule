@@ -4,7 +4,6 @@ import {getIdentity} from '@/services/auth'
 import {PublicNavbar} from './partials/navbar'
 import Image from 'next/image'
 import {lerpServer} from '@/services/server/wasm-server'
-import {getPathname} from "@/services/server/pathname";
 
 export default async function Home({searchParams}: {
     searchParams: Record<string, string>
@@ -16,7 +15,7 @@ export default async function Home({searchParams}: {
     const identity = await getIdentity()
     return <div className={styles.fullPage}>
         <div>
-            <PublicNavbar account={identity.account} pathname={getPathname()}/>
+            <PublicNavbar/>
         </div>
         <div className={styles.mainContainer}>
             <div className={styles.contentCenter}>

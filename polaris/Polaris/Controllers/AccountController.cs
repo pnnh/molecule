@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Polaris.Business.Models;
+using Polaris.Business.Models.Public;
 
 namespace Polaris.Controllers;
 
@@ -12,7 +13,19 @@ public class AccountController(DatabaseContext databaseContext) : ControllerBase
     {
         var claims = HttpContext.User;
         if (claims.Identity == null || string.IsNullOrEmpty(claims.Identity.Name))
-            return null;
+        {
+            return new SessionModel()
+            {
+                Account = new PBAccountModel()
+                {
+                    Uid = Guid.NewGuid(),
+                    Nickname = "Anonymous",
+                    Username = "anonymous",
+                    Role = "anonymous",
+                },
+                Token = ""
+            };
+        }
 
         var account = databaseContext.Accounts.FirstOrDefault(o => o.LoginSession == claims.Identity.Name);
         if (account == null)

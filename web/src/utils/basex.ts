@@ -3,6 +3,7 @@ import {parse as uuidParse} from 'uuid';
 import {
     base58xrp,
 } from '@scure/base';
+import md5 from "md5";
 
 export function encodeBase64String(state: string): string {
     const enc = new TextEncoder()
@@ -50,4 +51,10 @@ export function stringToBase58(data: string): string {
 export function base58ToString(data: string): string {
     const dec = new TextDecoder()
     return dec.decode(base58xrp.decode(data))
+}
+
+export function stringToMd5(data: string): string {
+    const hash = md5(data)
+    // 在md5字符串中间插入连字符
+    return hash.slice(0, 8) + '-' + hash.slice(8, 12) + '-' + hash.slice(12, 16) + '-' + hash.slice(16, 20) + '-' + hash.slice(20)
 }

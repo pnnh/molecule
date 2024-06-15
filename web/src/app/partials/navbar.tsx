@@ -2,13 +2,15 @@ import Link from 'next/link'
 import styles from './navbar.module.scss'
 import {fullAuthUrl} from '@/services/common/const'
 import Image from 'next/image'
-import {AccountModel} from '@/models/account'
 import React from "react";
 import {UserProfileSelector} from "@/app/partials/profile";
 import {userRole} from "@/services/schema";
+import {getPathname} from "@/services/server/pathname";
+import {loadSessions} from "@/services/auth";
 
-export function PublicNavbar(props: { account?: AccountModel, pathname: string }) {
+export async function PublicNavbar() {
     const entry = userRole()
+    const pathname = getPathname()
     return <div className={styles.navHeader}>
         <div className={styles.leftNav}>
             <div>
@@ -17,15 +19,19 @@ export function PublicNavbar(props: { account?: AccountModel, pathname: string }
                 </Link>
             </div>
             <UserProfileSelector role={entry}/>
-            <RoleNavbar role={entry} pathname={props.pathname}/>
+            <Image src={'/icons/materials/chevron_right_24dp_FILL0_wght400_GRAD0_opsz24.svg'}
+                   className={'caret-blue-300'} alt={'chevron'}
+                   height={24} width={24}>
+            </Image>
+            <RoleNavbar role={entry} pathname={pathname}/>
         </div>
         <div className={styles.rightNav}>
-            <UserAction account={props.account}/>
+            <UserAction/>
         </div>
     </div>
 }
 
-function RoleNavbar({role, pathname}: { role: string, pathname: string}) {
+function RoleNavbar({role, pathname}: { role: string, pathname: string }) {
     if (pathname.startsWith('/portal') || role === 'portal') {
         return <></>
     } else if (pathname.startsWith('/venus') || role === 'venus') {
@@ -34,13 +40,17 @@ function RoleNavbar({role, pathname}: { role: string, pathname: string}) {
     return <Link className={styles.navLink} href={'/polaris/channels'}>文章频道</Link>
 }
 
-function UserAction(props: { account?: AccountModel }) {
-    if (!props.account) {
-        const clientAuthUrl = fullAuthUrl('/')
-        return <Link
-            href={clientAuthUrl} rel='nofollow' className={styles.loginLink}>登录</Link>
-    }
+async function UserAction() {
+    const sessionList = await loadSessions()
+    const clientAuthUrl = fullAuthUrl('/')
     return <div>
-        <Link className={styles.loginLink} href={'/console'}>{props.account.nickname}</Link>
+        {
+            sessionList.map((session) => {
+                const linkUrl = `/content/${session.account.urn}/channels`
+                return <Link key={session.account.uid} href={linkUrl}>{session.account.nickname}</Link>
+            })
+        }
+        <Link
+            href={clientAuthUrl} rel='nofollow' className={styles.loginLink}>登录</Link>
     </div>
 }

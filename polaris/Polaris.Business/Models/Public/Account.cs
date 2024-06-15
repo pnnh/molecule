@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
+using Molecule.Helpers;
 
 namespace Polaris.Business.Models.Public;
 
@@ -9,6 +10,9 @@ namespace Polaris.Business.Models.Public;
 public class PBAccountModel
 {
     [Column("uid", TypeName = "uuid")] public Guid Uid { get; set; }
+    
+    [JsonPropertyName("urn")]
+    [NotMapped] public string Urn => MIDHelper.Base58.GuidEncode(Uid);
 
     [Column("create_time", TypeName = "timestamptz")]
     public DateTime CreateTime { get; set; } = new(2023, 1, 1, 0, 0, 0);
@@ -21,6 +25,7 @@ public class PBAccountModel
     public string Username { get; set; } = "";
 
     [Column("password", TypeName = "varchar(96)")]
+    [JsonIgnore]
     public string Password { get; set; } = "";
 
     [Column("image", TypeName = "varchar(256)")]
@@ -31,6 +36,9 @@ public class PBAccountModel
 
     [Column("mail", TypeName = "varchar(128)")]
     public string Mail { get; set; } = "";
+    
+    [Column("role", TypeName = "varchar(128)")]
+    public string Role { get; set; } = "";
 
     [Column("status", TypeName = "int")] public int Status { get; set; } = 0;
 

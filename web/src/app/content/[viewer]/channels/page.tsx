@@ -5,6 +5,7 @@ import {PSImage} from '@/components/client/image'
 import {PLSelectResult} from '@/models/common-result'
 import {PSChannelModel} from "@/models/polaris/channel"
 import {signinDomain} from "@/services/server/domain/domain";
+import {stringToBase58} from "@/utils/basex";
 
 export default async function Page({params, searchParams}: {
     params: { viewer: string },
@@ -20,7 +21,7 @@ export default async function Page({params, searchParams}: {
                 <div className={styles.body}>
                     <div className={styles.list}>
                         {result.range.map((model) => {
-                            return <Item key={model.uid} model={model}/>
+                            return <Item key={model.uid} model={model} viewer={params.viewer}/>
                         })
                         }
                     </div>
@@ -30,12 +31,13 @@ export default async function Page({params, searchParams}: {
     </div>
 }
 
-function Item(props: { model: PSChannelModel }) {
+function Item(props: { model: PSChannelModel, viewer: string }) {
     const readUrl = `/polaris/channels/${props.model.urn}`
+    const imageUrl = `/content/${props.viewer}/channels/${props.model.urn}/${props.model.image}`
 
     return < div className={styles.item}>
         <div className={styles.itemCover}>
-            <PSImage src={props.model.image} alt='star' width={256} height={256}/>
+            <PSImage src={imageUrl} alt='star' width={256} height={256}/>
         </div>
         <div className={styles.content}>
             <div className={styles.title}>

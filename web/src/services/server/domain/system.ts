@@ -37,6 +37,7 @@ export class SystemDomain implements IDomain {
         const channelService = new SystemChannelService(this)
         this.#registerRoute('/articles/channels', channelService, channelService.selectChannels)
         this.#registerRoute('/articles/channels/:channel/assets/:path+', channelService, channelService.readAssets)
+        this.#registerRoute('/account/session', channelService, channelService.userSession)
     }
 
     #registerRoute(route: string, object: unknown, serviceFunction: SystemServiceFunction) {

@@ -5,6 +5,7 @@ import {serverConfig} from '@/services/server/config'
 
 export interface AccountModel {
     uid: string
+    urn: string
     create_time: string
     update_time: string
     username: string
@@ -13,6 +14,7 @@ export interface AccountModel {
     mail: string
     nickname: string
     photo: string
+    role: string
 }
 
 export async function getAccountModel(token: string): Promise<AccountModel | null> {
