@@ -23,6 +23,7 @@ public class AccountController(DatabaseContext databaseContext) : ControllerBase
                     Username = "anonymous",
                     Role = "anonymous",
                 },
+                Name = "anonymous",
                 Token = ""
             };
         }
@@ -38,5 +39,26 @@ public class AccountController(DatabaseContext databaseContext) : ControllerBase
         };
 
         return session;
+    }
+    
+    [Route("/account/information")]
+    [HttpGet]
+    public PBAccountModel? Information()
+    {
+        var claims = HttpContext.User;
+        if (claims.Identity == null || string.IsNullOrEmpty(claims.Identity.Name))
+        {
+            return new PBAccountModel()
+            {
+                Uid = Guid.NewGuid(),
+                Nickname = "Anonymous",
+                Username = "anonymous",
+                Role = "anonymous",
+            };
+        }
+
+        var account = databaseContext.Accounts.FirstOrDefault(o => o.LoginSession == claims.Identity.Name);
+ 
+        return account;
     }
 }
