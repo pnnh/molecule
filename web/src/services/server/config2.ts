@@ -6,6 +6,11 @@ import path from "path";
 
 export interface IDomainConfig {
     [name: string]: {
+        name: string
+        protocol: string
+        host: string
+        port: number
+        path: string
         url: string
         anonymous: boolean
     }

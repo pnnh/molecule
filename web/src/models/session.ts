@@ -1,6 +1,8 @@
-import { AccountModel } from '@/models/account'
+import {AccountModel} from '@/models/account'
 
 export interface SessionModel {
-  account: AccountModel
-  token: string
+    account: AccountModel
+    name: string
+    token: string
+    domain: string
 }

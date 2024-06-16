@@ -10,5 +10,11 @@ namespace Polaris.Business.Models
         
         [JsonPropertyName("token")]
         public string Token { get; set; } = "";
+        
+        [JsonPropertyName("name")]
+        public string Name { get; set; } = "";
+        
+        [JsonPropertyName("domain")]
+        public string Domain { get; set; } = "";
     }
 }

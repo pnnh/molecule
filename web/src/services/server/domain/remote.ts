@@ -1,6 +1,5 @@
 import {IDomain} from "@/services/server/domain/domain";
 import parseURI from "parse-uri"
-import {serverConfig} from "@/services/server/config";
 import {cookies} from "next/headers";
 import {parseInitialDomains} from "@/services/server/config2";
 
@@ -22,7 +21,6 @@ export class RemoteDomain implements IDomain {
     }
 
     async makeGet<T>(urlString: string) {
-
         urlString = this.baseUrl + urlString
 
         const cookieStore = cookies()

@@ -6,7 +6,9 @@ import React from "react";
 import {UserProfileSelector} from "@/app/partials/profile";
 import {userRole} from "@/services/schema";
 import {getPathname} from "@/services/server/pathname";
-import {loadSessions} from "@/services/auth";
+import {loadSessions2} from "@/services/auth";
+import {stringToBase58} from "@/utils/basex";
+import {PSImage} from "@/components/client/image";
 
 export async function PublicNavbar() {
     const entry = userRole()
@@ -19,10 +21,9 @@ export async function PublicNavbar() {
                 </Link>
             </div>
             <UserProfileSelector role={entry}/>
-            <Image src={'/icons/materials/chevron_right_24dp_FILL0_wght400_GRAD0_opsz24.svg'}
-                   className={'caret-blue-300'} alt={'chevron'}
-                   height={24} width={24}>
-            </Image>
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#C6C6C6">
+                <path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z"/>
+            </svg>
             <RoleNavbar role={entry} pathname={pathname}/>
         </div>
         <div className={styles.rightNav}>
@@ -41,16 +42,21 @@ function RoleNavbar({role, pathname}: { role: string, pathname: string }) {
 }
 
 async function UserAction() {
-    const sessionList = await loadSessions()
+    const sessionList = await loadSessions2()
     const clientAuthUrl = fullAuthUrl('/')
-    return <div>
+    return <>
         {
             sessionList.map((session) => {
-                const linkUrl = `/content/${session.account.urn}/channels`
-                return <Link key={session.account.uid} href={linkUrl}>{session.account.nickname}</Link>
+                const viewerString = `${session.name}@${session.domain}`
+                const linkUrl = `/content/${stringToBase58(viewerString)}/channels`
+                return <Link className={styles.loginLink} key={session.account.uid} href={linkUrl}>
+                    <PSImage src={session.account.image} alt={session.account.nickname} height={32} width={32}/>
+                </Link>
             })
         }
         <Link
-            href={clientAuthUrl} rel='nofollow' className={styles.loginLink}>登录</Link>
-    </div>
+            href={clientAuthUrl} rel='nofollow' className={styles.plusLink}>
+            <Image src='/icons/navbar/plus.svg' alt='login' height={32} width={32}/>
+        </Link>
+    </>
 }

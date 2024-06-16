@@ -5,7 +5,6 @@ import {PSImage} from '@/components/client/image'
 import {PLSelectResult} from '@/models/common-result'
 import {PSChannelModel} from "@/models/polaris/channel"
 import {signinDomain} from "@/services/server/domain/domain";
-import {stringToBase58} from "@/utils/basex";
 
 export default async function Page({params, searchParams}: {
     params: { viewer: string },
@@ -33,7 +32,12 @@ export default async function Page({params, searchParams}: {
 
 function Item(props: { model: PSChannelModel, viewer: string }) {
     const readUrl = `/polaris/channels/${props.model.urn}`
-    const imageUrl = `/content/${props.viewer}/channels/${props.model.urn}/${props.model.image}`
+    let imageUrl = props.model.image
+    // 针对特定资产类型的图片，返回拼接的URL以进行资源寻址
+    if (imageUrl && imageUrl.startsWith('assets://')) {
+        // 拼接资源地址，并截取掉前缀
+        imageUrl = `/content/${props.viewer}/channels/${props.model.urn}/${props.model.image.replace('assets://', '')}`
+    }
 
     return < div className={styles.item}>
         <div className={styles.itemCover}>

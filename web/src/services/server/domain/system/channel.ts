@@ -7,6 +7,7 @@ import {SystemDomain, SystemPathParams} from "@/services/server/domain/system";
 import path from "path";
 import {base58ToString, stringToBase58, stringToMd5} from "@/utils/basex";
 import {SessionModel} from "@/models/session";
+import {AccountModel} from "@/models/account";
 
 const fileIgnore = ignore().add(['.git', 'node_modules'])
 
@@ -48,7 +49,7 @@ export class SystemChannelService {
                             model.description = metadata.description
                         }
                         if (metadata.image) {
-                            model.image = metadata.image
+                            model.image = `assets://${metadata.image}`
                         }
                         if (metadata.title) {
                             model.name = metadata.title
@@ -97,7 +98,26 @@ export class SystemChannelService {
                 photo: '',
                 role: 'anonymous'
             },
-            token: ''
+            name: 'anonymous',
+            token: '',
+            domain: 'system',
+        }
+        return userSession
+    }
+
+    async accountInformation(pathParams: SystemPathParams | undefined) {
+        const userSession: AccountModel = {
+            uid: stringToMd5('anonymous'),
+            urn: stringToBase58('anonymous'),
+            create_time: '',
+            update_time: '',
+            username: '',
+            image: '/photos/8.png',
+            description: '',
+            mail: '',
+            nickname: 'anonymous',
+            photo: '',
+            role: 'anonymous',
         }
         return userSession
     }

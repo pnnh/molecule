@@ -22,9 +22,9 @@ export class SystemDomain implements IDomain {
     constructor(userUri: parseURI.URI) {
         this.userUri = userUri
 
-        if (userUri.user !== 'anonymous') {
-            throw new Error('user not supported')
-        }
+        // if (userUri.user !== 'anonymous') {
+        //     throw new Error('user not supported')
+        // }
         if (userUri.host !== 'system') {
             throw new Error('host not supported')
         }
@@ -38,6 +38,7 @@ export class SystemDomain implements IDomain {
         this.#registerRoute('/articles/channels', channelService, channelService.selectChannels)
         this.#registerRoute('/articles/channels/:channel/assets/:path+', channelService, channelService.readAssets)
         this.#registerRoute('/account/session', channelService, channelService.userSession)
+        this.#registerRoute('/account/information', channelService, channelService.accountInformation)
     }
 
     #registerRoute(route: string, object: unknown, serviceFunction: SystemServiceFunction) {

@@ -6,6 +6,7 @@ import {SessionModel} from "@/models/session";
 import {signinDomain, trySigninDomain} from "@/services/server/domain/domain";
 import {parseInitialDomains} from "@/services/server/config2";
 import {stringToBase58} from "@/utils/basex";
+import {AccountModel} from "@/models/account";
 
 // 获取身份认证信息
 export async function getIdentity(): Promise<SessionModel> {
@@ -21,7 +22,25 @@ export async function getIdentity(): Promise<SessionModel> {
     return response.data
 }
 
-export async function loadSessions() {
+//
+// export async function loadSessions() {
+//     const sessionList: SessionModel[] = []
+//
+//     const domainConfig = parseInitialDomains()
+//     for (const name in domainConfig) {
+//         if (!Object.prototype.hasOwnProperty.call(domainConfig, name) || !domainConfig[name].anonymous) {
+//             continue
+//         }
+//         const userToken = stringToBase58(`anonymous@${name}`)
+//         const session = await trySigninDomain(userToken)?.makeGet<SessionModel>('/account/session')
+//         if (session) {
+//             sessionList.push(session)
+//         }
+//     }
+//     return sessionList
+// }
+
+export async function loadSessions2() {
     const sessionList: SessionModel[] = []
 
     const domainConfig = parseInitialDomains()
@@ -30,9 +49,14 @@ export async function loadSessions() {
             continue
         }
         const userToken = stringToBase58(`anonymous@${name}`)
-        const session = await trySigninDomain(userToken)?.makeGet<SessionModel>('/account/session')
-        if (session) {
-            sessionList.push(session)
+        const accountModel = await trySigninDomain(userToken)?.makeGet<AccountModel>('/account/information')
+        if (accountModel) {
+            sessionList.push({
+                account: accountModel,
+                name: accountModel.urn,
+                token: userToken,
+                domain: name,
+            })
         }
     }
     return sessionList
