@@ -4,15 +4,20 @@ import {fullAuthUrl} from '@/services/common/const'
 import Image from 'next/image'
 import React from "react";
 import {UserProfileSelector} from "@/app/partials/profile";
-import {userRole} from "@/services/schema";
-import {getPathname} from "@/services/server/pathname";
 import {loadSessions2} from "@/services/auth";
 import {stringToBase58} from "@/utils/basex";
 import {PSImage} from "@/components/client/image";
+import {SessionModel} from "@/models/session";
 
-export async function PublicNavbar() {
-    const entry = userRole()
-    const pathname = getPathname()
+export async function PublicNavbar({viewer}: { viewer: string }) {
+    const sessionList = await loadSessions2()
+    if (!viewer && sessionList.length > 0) {
+        const firstSession = sessionList[0]
+        viewer = stringToBase58(`${firstSession.name}@${firstSession.domain}`)
+    }
+    if (!viewer) {
+        throw new Error('No viewer')
+    }
     return <div className={styles.navHeader}>
         <div className={styles.leftNav}>
             <div>
@@ -20,29 +25,16 @@ export async function PublicNavbar() {
                     <Image src='/images/logo.png' alt='logo' fill={true} sizes={'48px,48px'}/>
                 </Link>
             </div>
-            <UserProfileSelector role={entry}/>
-            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#C6C6C6">
-                <path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z"/>
-            </svg>
-            <RoleNavbar role={entry} pathname={pathname}/>
+            <UserProfileSelector viewer={viewer}/>
         </div>
         <div className={styles.rightNav}>
-            <UserAction/>
+            <UserAction sessionList={sessionList}/>
         </div>
     </div>
 }
 
-function RoleNavbar({role, pathname}: { role: string, pathname: string }) {
-    if (pathname.startsWith('/portal') || role === 'portal') {
-        return <></>
-    } else if (pathname.startsWith('/venus') || role === 'venus') {
-        return <Link className={styles.navLink} href={'/venus/channels'}>图片频道</Link>
-    }
-    return <Link className={styles.navLink} href={'/polaris/channels'}>文章频道</Link>
-}
 
-async function UserAction() {
-    const sessionList = await loadSessions2()
+async function UserAction({sessionList}: { sessionList: SessionModel[] }) {
     const clientAuthUrl = fullAuthUrl('/')
     return <>
         {

@@ -19,12 +19,19 @@
     }
 }
 
+.navLink {
+    color: #4e4e4e;
+    text-decoration: none;
+    font-size: 0.95rem;
+}
+
 .roleButtonContainer {
     display: flex;
     flex-direction: row;
     gap: 8px;
     justify-content: center;
     align-items: center;
+
 
     a.siteLink {
         text-decoration: none;
