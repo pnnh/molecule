@@ -1,6 +1,5 @@
 export interface PSChannelModel {
     uid: string
-    nid: number
     urn: string
     name: string
     create_time: string

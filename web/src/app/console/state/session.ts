@@ -13,9 +13,13 @@ const sessionAtom = atom<SessionModel>({
             description: '',
             mail: '',
             nickname: '',
-            photo: ''
+            photo: '',
+            urn: '',
+            role: '',
         },
-        token: ''
+        token: '',
+        name: '',
+        domain: '',
     }
 })
 

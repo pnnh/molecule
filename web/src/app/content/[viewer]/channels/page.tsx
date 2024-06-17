@@ -31,7 +31,7 @@ export default async function Page({params, searchParams}: {
 }
 
 function Item(props: { model: PSChannelModel, viewer: string }) {
-    const readUrl = `/polaris/channels/${props.model.urn}`
+    const readUrl = `/content/${props.viewer}/channels/${props.model.urn}`
     let imageUrl = props.model.image
     // 针对特定资产类型的图片，返回拼接的URL以进行资源寻址
     if (imageUrl && imageUrl.startsWith('assets://')) {

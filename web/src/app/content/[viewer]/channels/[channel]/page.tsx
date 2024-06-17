@@ -10,22 +10,14 @@ import {formatRfc3339} from '@/utils/datetime'
 import {PLSelectResult} from '@/models/common-result'
 import {calcPagination} from "@/utils/helpers";
 import {STSubString} from "@/utils/string";
-import {serverMakeHttpGet} from '@/services/server/http'
-import {uuidToBase58} from '@/utils/basex'
 import {PSArticleModel} from "@/models/polaris/article";
 import RemoveRedEyeIcon from "~/@mui/icons-material/RemoveRedEye";
 import AccessAlarmIcon from "~/@mui/icons-material/AccessAlarm";
-import {serverMakeHttpGetV2} from "@/services/server/fetch";
+import {signinDomain} from "@/services/server/domain/domain";
 
-export default async function Home({params, searchParams}: {
-    params: { channel: string },
+export default async function Page({params, searchParams}: {
+    params: { viewer: string, channel: string },
     searchParams: Record<string, string>
-}) {
-    return <ArticlesPage channel={params.channel} searchParams={searchParams}/>
-}
-
-async function ArticlesPage({channel, searchParams}: {
-    channel: string, searchParams: Record<string, string>
 }) {
     let page = Number(searchParams.page)
     if (isNaN(page)) {
@@ -42,8 +34,10 @@ async function ArticlesPage({channel, searchParams}: {
         channel: channelPk
     }
     const rawQuery = queryString.stringify(selectQuery)
-    const url = `/articles/channels/${channel}/posts?${rawQuery}`
-    const selectResult = await serverMakeHttpGetV2<PLSelectResult<PSArticleModel>>(url)
+    const url = `/articles/channels/${params.channel}/posts?${rawQuery}`
+
+    const domain = signinDomain(params.viewer)
+    const selectResult = await domain.makeGet<PLSelectResult<PSArticleModel>>(url)
 
     const pagination = calcPagination(page, selectResult.count, pageSize)
     const sortClass = (sort: string) => {
@@ -62,8 +56,8 @@ async function ArticlesPage({channel, searchParams}: {
         direction: 'cta',
         size: 10
     })
-    const rankUrl = `/articles/channels/${channel}/posts?${rankQuery}`
-    const rankSelectResult = await serverMakeHttpGet<PLSelectResult<PSArticleModel>>(rankUrl)
+    const rankUrl = `/articles/channels/${params.channel}/posts?${rankQuery}`
+    const rankSelectResult = await domain.makeGet<PLSelectResult<PSArticleModel>>(rankUrl)
 
     return <div className={styles.fullPage}>
         <div className={styles.mainContainer}>
@@ -86,7 +80,7 @@ async function ArticlesPage({channel, searchParams}: {
                         </div>
                     </div>
                     <div className={styles.middleBody}>
-                        <MiddleBody selectResult={selectResult}/>
+                        <MiddleBody viewer={params.viewer} selectResult={selectResult}/>
                     </div>
                     <div className={styles.middlePagination}>
                         <PaginationPartial pagination={pagination}
@@ -107,7 +101,7 @@ async function ArticlesPage({channel, searchParams}: {
                                                 className={styles.rankIndex + (index <= 2 ? ' ' + styles.rankTop : '')}>{index + 1}</div>
                                             <div className={styles.rankTitle}>
                                                 <Link
-                                                    href={`/polaris/channels/${channel}/articles/${model.urn}`}
+                                                    href={`/polaris/channels/${params.channel}/articles/${model.urn}`}
                                                     title={model.title}>{model.title}</Link>
                                             </div>
                                         </div>
@@ -122,12 +116,12 @@ async function ArticlesPage({channel, searchParams}: {
     </div>
 }
 
-function MiddleBody({selectResult}: { selectResult: PLSelectResult<PSArticleModel> }) {
+function MiddleBody({viewer, selectResult}: { viewer: string, selectResult: PLSelectResult<PSArticleModel> }) {
     if (!selectResult || !selectResult.range || selectResult.range.length === 0) {
         return <NoData size='large'/>
     }
     return selectResult.range.map((model) => {
-        const readUrl = `/polaris/channels/${uuidToBase58(model.channel)}/articles/${model.urn}`
+        const readUrl = `/content/${viewer}/channels/${model.channel}/articles/${model.uid}`
         return <div className={styles.middleItem} key={model.uid}>
             <div className={styles.itemDetail}>
                 <div className={styles.title}>

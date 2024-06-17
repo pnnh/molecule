@@ -1,5 +1,5 @@
 import {base64url} from 'rfc4648'
-import {parse as uuidParse} from 'uuid';
+import {parse as uuidParse, v4 as uuidv4} from 'uuid';
 import {base58xrp,} from '@scure/base';
 import md5 from "md5";
 
@@ -28,8 +28,12 @@ export function binaryToBase58String(data: Uint8Array): string {
     return base58xrp.encode(data)
 }
 
+export function generateUuid(): string {
+    return uuidv4();
+}
+
 export function stringToUuid(uuidString: string) {
-    return uuidParse(uuidString);
+    return uuidParse(uuidString).toString();
 }
 
 export function uuidToBase58(uuidString: string) {

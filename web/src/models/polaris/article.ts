@@ -1,20 +1,20 @@
-export class PSArticleModel {
-    uid = ''
-    urn = ''
-    title = ''
-    header = ''
-    body = ''
-    create_time = ''
-    update_time = ''
-    creator = ''
-    keywords = ''
-    description = ''
-    cover = ''
-    discover = 0
-    owner = ''
-    owner_name = ''
-    channel = ''
-    channel_name = ''
-    partition = ''
-    path = ''
+export interface PSArticleModel {
+    uid: string
+    urn: string
+    title: string
+    header: string
+    body: string
+    create_time: string
+    update_time: string
+    creator: string
+    keywords: string
+    description: string
+    cover: string
+    discover: number
+    owner: string
+    owner_name: string
+    channel: string
+    channel_name: string
+    partition: string
+    path: string
 }
