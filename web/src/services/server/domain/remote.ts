@@ -36,4 +36,23 @@ export class RemoteDomain implements IDomain {
         })
         return response.json()
     }
+
+    async makePost<T>(url: string, params: unknown): Promise<T> {
+        url = this.baseUrl + url
+
+        const cookieStore = cookies()
+        const authHeader = cookieStore.toString()
+
+        const response = await fetch(url, {
+            credentials: 'include',
+            method: 'POST',
+            headers: {
+                Cookie: authHeader,
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(params),
+        })
+        return response.json()
+    }
 }

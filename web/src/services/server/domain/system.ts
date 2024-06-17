@@ -3,6 +3,8 @@ import {parseInitialDomains} from "@/services/server/config2";
 import parseURI from "parse-uri"
 import {SystemChannelService} from "@/services/server/domain/system/channel";
 import {URLPattern} from "urlpattern-polyfill";
+import {SystemArticleService} from "@/services/server/domain/system/article";
+import {SystemAccountService} from "@/services/server/domain/system/account";
 
 export type SystemPathParams = {
     [key: string]: string | undefined;
@@ -31,12 +33,17 @@ export class SystemDomain implements IDomain {
             this.basePath = domains.system.url.replace('file://', '')
         }
 
+        const accountService = new SystemAccountService(this)
+        this.#registerRoute('/account/session', accountService, accountService.userSession)
+        this.#registerRoute('/account/information', accountService, accountService.accountInformation)
+
         const channelService = new SystemChannelService(this)
         this.#registerRoute('/articles/channels', channelService, channelService.selectChannels)
         this.#registerRoute('/articles/channels/:channel/assets/:path+', channelService, channelService.readAssets)
-        this.#registerRoute('/account/session', channelService, channelService.userSession)
-        this.#registerRoute('/account/information', channelService, channelService.accountInformation)
-        this.#registerRoute('/articles/channels/:channel/posts', channelService, channelService.selectArticles)
+
+        const articleService = new SystemArticleService(this)
+        this.#registerRoute('/articles/channels/:channel/posts', articleService, articleService.selectArticles)
+        this.#registerRoute('/channels/:channel/articles/:article', articleService, articleService.getArticle)
     }
 
     #registerRoute(route: string, object: unknown, serviceFunction: SystemServiceFunction) {
@@ -53,5 +60,10 @@ export class SystemDomain implements IDomain {
             }
         }
         throw new Error('route not found')
+    }
+
+    async makePost<T>(url: string, params: unknown): Promise<T> {
+        // 暂不实现更新操作
+        return {} as T
     }
 }

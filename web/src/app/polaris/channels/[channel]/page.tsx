@@ -102,7 +102,7 @@ async function ArticlesPage({channel, searchParams}: {
                             {
                                 rankSelectResult.range && rankSelectResult.range.length > 0
                                     ? rankSelectResult.range.map((model, index) => {
-                                        return <div key={model.uid} className={styles.rankItem}>
+                                        return <div key={model.urn} className={styles.rankItem}>
                                             <div
                                                 className={styles.rankIndex + (index <= 2 ? ' ' + styles.rankTop : '')}>{index + 1}</div>
                                             <div className={styles.rankTitle}>
@@ -128,7 +128,7 @@ function MiddleBody({selectResult}: { selectResult: PLSelectResult<PSArticleMode
     }
     return selectResult.range.map((model) => {
         const readUrl = `/polaris/channels/${uuidToBase58(model.channel)}/articles/${model.urn}`
-        return <div className={styles.middleItem} key={model.uid}>
+        return <div className={styles.middleItem} key={model.urn}>
             <div className={styles.itemDetail}>
                 <div className={styles.title}>
                     <Link href={readUrl}>{model.title}</Link></div>

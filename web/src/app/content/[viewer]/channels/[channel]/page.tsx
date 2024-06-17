@@ -96,7 +96,7 @@ export default async function Page({params, searchParams}: {
                             {
                                 rankSelectResult.range && rankSelectResult.range.length > 0
                                     ? rankSelectResult.range.map((model, index) => {
-                                        return <div key={model.uid} className={styles.rankItem}>
+                                        return <div key={model.urn} className={styles.rankItem}>
                                             <div
                                                 className={styles.rankIndex + (index <= 2 ? ' ' + styles.rankTop : '')}>{index + 1}</div>
                                             <div className={styles.rankTitle}>
@@ -121,8 +121,8 @@ function MiddleBody({viewer, selectResult}: { viewer: string, selectResult: PLSe
         return <NoData size='large'/>
     }
     return selectResult.range.map((model) => {
-        const readUrl = `/content/${viewer}/channels/${model.channel}/articles/${model.uid}`
-        return <div className={styles.middleItem} key={model.uid}>
+        const readUrl = `/content/${viewer}/channels/${model.channel}/articles/${model.urn}`
+        return <div className={styles.middleItem} key={model.urn}>
             <div className={styles.itemDetail}>
                 <div className={styles.title}>
                     <Link href={readUrl}>{model.title}</Link></div>

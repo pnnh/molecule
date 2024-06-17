@@ -69,65 +69,6 @@ export class SystemChannelService {
 
     }
 
-    async selectArticles(pathParams: SystemPathParams | undefined) {
-        const channelUrn = pathParams?.channel
-        if (!channelUrn) {
-            throw new Error('channel invalid')
-        }
-        const channelName = base58ToString(channelUrn)
-        const basePath = path.join(this.systemDomain.basePath, channelName)
-        const articles: PSArticleModel[] = []
-        const files = fs.readdirSync(basePath)
-        for (const file of files) {
-            const fullPath = path.join(basePath, file)
-            const stat = fs.statSync(fullPath)
-            const testResult = fileIgnore.test(file)
-            const extName = path.extname(file)
-            if (stat.isFile() && !testResult.ignored && extName === '.md') {
-                const model: PSArticleModel = {
-                    discover: 0,
-                    create_time: "", creator: "", update_time: "",
-                    uid: generateUuid(),
-                    description: '',
-                    urn: '',
-                    title: file.replace('.md', ''),
-                    header: 'markdown',
-                    body: '',
-                    keywords: '',
-                    cover: '',
-                    owner: '',
-                    owner_name: '',
-                    channel: channelName,
-                    channel_name: '',
-                    partition: '',
-                    path: ''
-                }
-                model.urn = stringToBase58(model.uid)
-                const metadataText = fs.readFileSync(fullPath, 'utf-8')
-                const metadata = frontMatter(metadataText).attributes as
-                    { image: string, description: string, title: string }
-                if (metadata) {
-                    if (metadata.description) {
-                        model.description = metadata.description
-                    }
-                    if (metadata.image) {
-                        model.cover = `assets://${metadata.image}`
-                    }
-                    if (metadata.title) {
-                        model.title = metadata.title
-                    }
-                }
-                articles.push(model)
-            }
-        }
-        return {
-            range: articles,
-            count: articles.length,
-            page: 1,
-            size: articles.length
-        }
-    }
-
     async readAssets(pathParams: SystemPathParams | undefined) {
         const channelUrn = pathParams?.channel
         const filePath = pathParams?.path

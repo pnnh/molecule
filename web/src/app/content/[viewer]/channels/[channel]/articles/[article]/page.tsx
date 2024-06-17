@@ -7,22 +7,25 @@ import {headers} from 'next/headers'
 import {formatRfc3339} from '@/utils/datetime'
 import {Metadata} from 'next'
 import {generatorRandomString} from "@/utils/string";
-import {serverMakeHttpGet} from '@/services/server/http'
 import {PSArticleModel} from "@/models/polaris/article";
 import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
 import {TocItem} from "@/models/common/article";
-import {serverMakeHttpPost} from "@/services/server/fetch";
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import {signinDomain} from "@/services/server/domain/domain";
 
 export const metadata: Metadata = {
     title: '北极星笔记'
 }
 
-export default async function Home({params}: {
-    params: { channel: string, article: string }
+export default async function Home({params, searchParams}: {
+    params: { viewer: string, channel: string, article: string },
+    searchParams: Record<string, string>
 }) {
-    const url = `/articles/${params.article}`
-    const articleModel = await serverMakeHttpGet<PSArticleModel | undefined>(url)
+
+    const domain = signinDomain(params.viewer)
+    const url = `/channels/${params.channel}/articles/${params.article}`
+    const articleModel = await domain.makeGet<PSArticleModel | undefined>(url)
+
     if (articleModel == null) {
         return <div>遇到错误</div>
     }
@@ -39,7 +42,7 @@ export default async function Home({params}: {
     console.log('clientIp', clientIp)
     // 更新文章阅读次数
     if (clientIp) {
-        await serverMakeHttpPost(`/polaris/channels/${params.channel}/articles/${params.article}/view`, {ip: clientIp})
+        await domain.makePost(`/polaris/channels/${params.channel}/articles/${params.article}/view`, {ip: clientIp})
     }
     const readUrl = `/polaris/channels/${params.channel}/articles/${params.article}`
     return <div className={styles.mainContainer}>

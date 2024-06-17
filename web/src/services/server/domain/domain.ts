@@ -5,6 +5,8 @@ import {RemoteDomain} from "@/services/server/domain/remote";
 
 export interface IDomain {
     makeGet<T>(url: string): Promise<T>
+
+    makePost<T>(url: string, params: unknown): Promise<T>
 }
 
 const domainMap = new Map<string, IDomain>()
