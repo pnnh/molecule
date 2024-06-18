@@ -57,6 +57,10 @@ public class PSArticleModel
 
     [Column("channel", TypeName = "uuid")]
     public Guid? Channel { get; set; }
+    
+    [NotMapped]
+    [JsonPropertyName("channel_urn")]
+    public string ChannelUrn => MIDHelper.Base58.GuidEncode(Channel ?? Guid.Empty);
 
     [NotMapped]
     [JsonPropertyName("channel_name")]

@@ -18,7 +18,7 @@ public class AccountController(DatabaseContext databaseContext) : ControllerBase
             {
                 Account = new PBAccountModel()
                 {
-                    Uid = Guid.NewGuid(),
+                    Uid = Guid.Empty,
                     Nickname = "Anonymous",
                     Username = "anonymous",
                     Role = "anonymous",
@@ -50,7 +50,7 @@ public class AccountController(DatabaseContext databaseContext) : ControllerBase
         {
             return new PBAccountModel()
             {
-                Uid = Guid.NewGuid(),
+                Uid = Guid.Empty,
                 Nickname = "Anonymous",
                 Username = "anonymous",
                 Role = "anonymous",

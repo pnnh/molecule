@@ -14,6 +14,7 @@ export interface PSArticleModel {
     owner: string
     owner_name: string
     channel: string
+    channel_urn: string
     channel_name: string
     partition: string
     path: string

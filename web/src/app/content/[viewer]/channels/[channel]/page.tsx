@@ -121,7 +121,7 @@ function MiddleBody({viewer, selectResult}: { viewer: string, selectResult: PLSe
         return <NoData size='large'/>
     }
     return selectResult.range.map((model) => {
-        const readUrl = `/content/${viewer}/channels/${model.channel}/articles/${model.urn}`
+        const readUrl = `/content/${viewer}/channels/${model.channel_urn}/articles/${model.urn}`
         return <div className={styles.middleItem} key={model.urn}>
             <div className={styles.itemDetail}>
                 <div className={styles.title}>

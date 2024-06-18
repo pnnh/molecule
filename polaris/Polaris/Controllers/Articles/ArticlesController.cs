@@ -10,7 +10,7 @@ namespace Polaris.Controllers.Articles;
 [ApiController]
 public class ArticleContentController(DatabaseContext configuration, ModelService modelService) : ControllerBase
 {
-    [Route("/articles/{article}")]
+    [Route("/channels/{channel}/articles/{article}")]
     [HttpGet]
     [AllowAnonymous]
     public PSArticleModel? Get([FromRoute] string article)

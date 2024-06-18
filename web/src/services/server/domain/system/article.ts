@@ -1,7 +1,6 @@
 import fs from "node:fs";
 import frontMatter from "front-matter";
 import ignore from "ignore";
-import parseURI from "parse-uri";
 import {SystemDomain, SystemPathParams} from "@/services/server/domain/system";
 import path from "path";
 import {base58ToString, generateUuid, stringToBase58, stringToMd5} from "@/utils/basex";
@@ -46,6 +45,7 @@ export class SystemArticleService {
                     owner: '',
                     owner_name: '',
                     channel: channelUrn,
+                    channel_urn: channelUrn,
                     channel_name: '',
                     partition: '',
                     path: ''
@@ -102,6 +102,7 @@ export class SystemArticleService {
                 owner: '',
                 owner_name: '',
                 channel: channelUrn,
+                channel_urn: channelUrn,
                 channel_name: '',
                 partition: '',
                 path: ''

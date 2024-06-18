@@ -8,7 +8,6 @@ namespace Polaris.Business.Services;
 
 public class ModelService(DatabaseContext databaseContext)
 {
-
     public T? GetByKey<T>(string name) where T : class
     {
         var sqlBuilder = new StringBuilder();
@@ -42,15 +41,8 @@ public class ModelService(DatabaseContext databaseContext)
 
         sqlBuilder.Append($"select a.* from {fullTableName} as a");
         sqlBuilder.Append(" where ");
-        if (uid != null)
-        {
-            sqlBuilder.Append(" a.uid = @uid");
-            parameters.Add("uid", uid);
-        }
-        else
-        {
-            return null;
-        }
+        sqlBuilder.Append(" a.uid = @uid");
+        parameters.Add("uid", uid);
 
         var querySqlText = sqlBuilder.ToString();
 

@@ -2,7 +2,7 @@ import Link from 'next/link'
 import styles from './navbar.module.scss'
 import {fullAuthUrl} from '@/services/common/const'
 import Image from 'next/image'
-import React from "react";
+import React, {CSSProperties} from "react";
 import {UserProfileSelector} from "@/app/partials/profile";
 import {loadSessions2} from "@/services/auth";
 import {stringToBase58} from "@/utils/basex";
@@ -28,21 +28,29 @@ export async function PublicNavbar({viewer}: { viewer: string }) {
             <UserProfileSelector viewer={viewer}/>
         </div>
         <div className={styles.rightNav}>
-            <UserAction sessionList={sessionList}/>
+            <UserAction viewer={viewer} sessionList={sessionList}/>
         </div>
     </div>
 }
 
 
-async function UserAction({sessionList}: { sessionList: SessionModel[] }) {
+async function UserAction({viewer, sessionList}: { viewer: string, sessionList: SessionModel[] }) {
     const clientAuthUrl = fullAuthUrl('/')
     return <>
         {
             sessionList.map((session) => {
-                const viewerString = `${session.name}@${session.domain}`
-                const linkUrl = `/content/${stringToBase58(viewerString)}/channels`
+                const viewerString = stringToBase58(`${session.name}@${session.domain}`)
+                let style: CSSProperties = {}
+                if (viewerString === viewer) {
+                    style = {
+                        borderWidth: 2,
+                        borderColor: '#4A95DD',
+                    }
+                }
+                const linkUrl = `/content/${viewerString}/channels`
                 return <Link className={styles.loginLink} key={session.account.uid} href={linkUrl}>
-                    <PSImage src={session.account.image} alt={session.account.nickname} height={32} width={32}/>
+                    <PSImage src={session.account.image} style={style} alt={session.account.nickname} height={32}
+                             width={32}/>
                 </Link>
             })
         }

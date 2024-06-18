@@ -22,24 +22,6 @@ export async function getIdentity(): Promise<SessionModel> {
     return response.data
 }
 
-//
-// export async function loadSessions() {
-//     const sessionList: SessionModel[] = []
-//
-//     const domainConfig = parseInitialDomains()
-//     for (const name in domainConfig) {
-//         if (!Object.prototype.hasOwnProperty.call(domainConfig, name) || !domainConfig[name].anonymous) {
-//             continue
-//         }
-//         const userToken = stringToBase58(`anonymous@${name}`)
-//         const session = await trySigninDomain(userToken)?.makeGet<SessionModel>('/account/session')
-//         if (session) {
-//             sessionList.push(session)
-//         }
-//     }
-//     return sessionList
-// }
-
 export async function loadSessions2() {
     const sessionList: SessionModel[] = []
 
