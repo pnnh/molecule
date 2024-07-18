@@ -13,3 +13,17 @@ bazel-*
 .cache/
 CMakeLists.txt.user
 .xmake/
+bin/
+obj/
+/packages/
+riderModule.iml
+/_ReSharper.Caches/
+.idea/
+.vs/
+Polaris/wwwroot/assets/
+Browser/debug/
+Docker/bin
+build/
+debug/
+publish/
+*.DotSettings.user
