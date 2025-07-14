@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Polaris.Business.Models;
+namespace Molecule.Models;
 
 public class PLBizException : Exception
 {
@@ -71,6 +71,27 @@ public class PLExceptionResult
 
     [JsonPropertyName("message")] public string Message { get; set; } = "";
 }
+
+public class MCommonResult<T>
+{
+    [JsonPropertyName("code")] public int Code { get; set; }
+    [JsonPropertyName("message")] public string Message { get; set; } = "";
+    [JsonPropertyName("data")] public required T Data { get; set; }
+}
+
+public class MSelectData<T>
+{ 
+    [JsonPropertyName("count")] public int Count { get; set; }
+    [JsonPropertyName("range")] public required List<T> Range { get; set; }
+    
+    [JsonPropertyName("page")]  
+    public int Page { get; set; }
+    
+    [JsonPropertyName("size")] 
+    public int Size { get; set; }
+}
+
+public class MSelectResult<T> : MCommonResult<MSelectData<T>>;
 
 public class PModifyResult
 {
