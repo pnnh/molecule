@@ -92,6 +92,7 @@ public class MSelectData<T>
 }
 
 public class MSelectResult<T> : MCommonResult<MSelectData<T>>;
+public class MGetResult<T> : MCommonResult<T>;
 
 public class PModifyResult
 {
