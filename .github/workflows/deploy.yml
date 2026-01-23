@@ -65,7 +65,8 @@ jobs:
         run: |
           dotnet nuget push ./nupkgs/*.nupkg \
             --source https://api.nuget.org/v3/index.json \
-            --skip-duplicate
+            --skip-duplicate \
+            --no-symbols false   # optional but clearer
         env:
           DOTNET_NOLOGO: true
 
