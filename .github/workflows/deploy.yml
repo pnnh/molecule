@@ -60,22 +60,13 @@ jobs:
 
       - name: Pack
         run: dotnet pack "Molecule/Molecule.csproj" --configuration Release --no-build -p:IncludeSymbols=true -p:SymbolPackageFormat=snupkg -o ./nupkgs
-      
-      - name: Show current authentication status
-        run: dotnet nuget list source --format detailed
-
-      - name: Debug – show if OIDC token exists
-        run: |
-          echo "ID_TOKEN length = ${#ACTIONS_ID_TOKEN_REQUEST_TOKEN}"
-          echo "Request URL  = $ACTIONS_ID_TOKEN_REQUEST_URL"
-          cat ./Molecule/Molecule.csproj
 
       - name: Publish to nuget.org
         run: |
           dotnet nuget push ./nupkgs/*.nupkg \
             --source https://api.nuget.org/v3/index.json \
-            --skip-duplicate \
-            --no-symbols false   # optional but clearer
+            --api-key ${{ secrets.NUGET_API_KEY }} \
+            --skip-duplicate
         env:
           DOTNET_NOLOGO: true
 
