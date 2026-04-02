@@ -6,12 +6,6 @@ public static class HttpHelper
 
     static HttpHelper()
     {
-        ServicePointManager.UseNagleAlgorithm = true;
-        ServicePointManager.Expect100Continue = true;
-        ServicePointManager.CheckCertificateRevocationList = true;
-        ServicePointManager.DefaultConnectionLimit = 1024;
-        ServicePointManager.SetTcpKeepAlive(true, 1800000, 2000);
-
         Client = new HttpClient();
         Client.Timeout = TimeSpan.FromSeconds(60);
     }
